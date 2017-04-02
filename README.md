@@ -2,6 +2,8 @@
 Thymeleaf JS
 ============
 
+[![License](https://img.shields.io/github/license/ultraq/thymeleaf-js.svg?maxAge=2592000)](https://github.com/ultraq/thymeleaf-js/blob/master/LICENSE.txt)
+
 A basic implementation of the [Thymeleaf](http://thymeleaf.org/) templating
 engine in JavaScript.
 
