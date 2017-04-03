@@ -3,14 +3,18 @@
 	"version": "0.1.0",
 	"description": "A basic implementation of the Thymeleaf templating engine in JavaScript",
 	"author": "Emanuel Rabina <emanuelrabina@gmail.com> (http://www.ultraq.net.nz/)",
-	"license": "Apache License 2.0",
+	"license": "Apache-2.0",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/ultraq/thymeleaf-js"
 	},
+	"main": "./lib/thymeleaf.js",
 	"scripts": {
-		"lint": "eslint **/*.js",
-		"test": "npm run lint"
+		"lint": "eslint **/*.js"
+	},
+	"dependencies": {
+		"bluebird": "^3.5.0",
+		"xmldom": "~0.1.27"
 	},
 	"devDependencies": {
 		"eslint": "^3.19.0"
