@@ -10,7 +10,8 @@
 	},
 	"main": "./lib/thymeleaf.js",
 	"scripts": {
-		"lint": "eslint **/*.js"
+		"lint": "eslint **/*.js",
+		"test": "mocha"
 	},
 	"dependencies": {
 		"bluebird": "^3.5.0",
