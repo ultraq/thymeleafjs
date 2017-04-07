@@ -15,6 +15,7 @@
 		"no-mixed-spaces-and-tabs": ["error", "smart-tabs"],
 		"no-unused-vars": ["error", { "args": "none" }],
 		"quotes": ["error", "single", "avoid-escape"],
+		"semi": "error",
 		"space-before-function-paren": ["error", "never"],
 		"valid-jsdoc": ["error", {
 			"requireParamDescription": false,

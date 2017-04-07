@@ -29,7 +29,7 @@ const path = require('path');
  */
 describe('Thymeleaf', function() {
 
-	it('Should work', function(done) {
+	it('Process a template without any processors', function(done) {
 		let templatePath = path.join(__dirname, 'template.html');
 		thymeleaf.processFile(templatePath, {
 			title: 'Hello!'
