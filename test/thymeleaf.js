@@ -29,19 +29,14 @@ const path = require('path');
  */
 describe('Thymeleaf', function() {
 
-	it('Process a template without any processors', function(done) {
+	it('Process a template without any processors', function() {
 		let templatePath = path.join(__dirname, 'template.html');
-		thymeleaf.processFile(templatePath, {
+		return thymeleaf.processFile(templatePath, {
 			title: 'Hello!'
 		})
 			.then(template => {
 				let templateFromFile = fs.readFileSync(templatePath).toString();
 				assert.isTrue(areSerializedDocumentsEqual(template, templateFromFile));
-				done();
-			})
-			.catch(error => {
-				assert.fail();
-				done();
 			});
 	});
 });
