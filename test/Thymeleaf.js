@@ -15,27 +15,25 @@
  */
 'use strict';
 
-const thymeleaf                     = require('../lib/Thymeleaf');
-const {areSerializedDocumentsEqual} = require('../lib/utilities/Dom');
+const thymeleaf = require('../lib/Thymeleaf');
 
 const {assert} = require('chai');
-
-const fs   = require('fs');
-const path = require('path');
+const fs       = require('fs');
+const path     = require('path');
 
 /**
  * Tests for the Thymeleaf processing functions.
  */
 describe('Thymeleaf', function() {
 
-	it('Process a template without any processors', function() {
-		let templatePath = path.join(__dirname, 'template.html');
-		return thymeleaf.processFile(templatePath, {
-			title: 'Hello!'
+	it('Main example', function() {
+		let inputTemplatePath = path.join(__dirname, 'template.html');
+		return thymeleaf.processFile(inputTemplatePath, {
+			greeting: 'Hello!'
 		})
 			.then(template => {
-				let templateFromFile = fs.readFileSync(templatePath).toString();
-				assert.isTrue(areSerializedDocumentsEqual(template, templateFromFile));
+				let expectedTemplate = fs.readFileSync(path.join(__dirname, 'template-expected.html')).toString();
+				assert.strictEqual(template.replace(/(\t|\n)/g, ''), expectedTemplate.replace(/(\t|\n)/g, ''));
 			});
 	});
 });
