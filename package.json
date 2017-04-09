@@ -8,7 +8,7 @@
 		"type": "git",
 		"url": "https://github.com/ultraq/thymeleaf-js"
 	},
-	"main": "./lib/thymeleaf.js",
+	"main": "./lib/Thymeleaf.js",
 	"scripts": {
 		"lint": "eslint **/*.js",
 		"test": "mocha --recursive"

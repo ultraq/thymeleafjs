@@ -15,7 +15,7 @@
  */
 'use strict';
 
-const thymeleaf                     = require('../lib/thymeleaf');
+const thymeleaf                     = require('../lib/Thymeleaf');
 const {areSerializedDocumentsEqual} = require('../lib/utilities/Dom');
 
 const {assert} = require('chai');
