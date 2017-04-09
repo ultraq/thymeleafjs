@@ -38,7 +38,7 @@ describe('processors/StndardTextAttributeProcessor', function() {
 		let text = 'Hello!';
 		let element = div({ 'th:text': text }, 'Goodbye');
 		let attributeValue = getThymeleafAttributeValue(element, processor.prefix, processor.name);
-		processor.process(element, attributeValue, {});
+		processor.process(element, 'th:text', attributeValue, {});
 		assert.strictEqual(element.textContent, text);
 	});
 });
