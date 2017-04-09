@@ -17,6 +17,7 @@
 		"quotes": ["error", "single", "avoid-escape"],
 		"semi": "error",
 		"space-before-function-paren": ["error", "never"],
+		"strict": "error",
 		"valid-jsdoc": ["error", {
 			"requireParamDescription": false,
 			"requireReturn": false,
