@@ -11,7 +11,7 @@
 	"main": "./lib/Thymeleaf.js",
 	"scripts": {
 		"lint": "eslint **/*.js",
-		"test": "mocha --recursive"
+		"test": "npm run lint && mocha --recursive"
 	},
 	"dependencies": {
 		"bluebird": "^3.5.0",
