@@ -3,7 +3,7 @@ Thymeleaf JS
 ============
 
 [![Build Status](https://travis-ci.org/ultraq/thymeleaf-js.svg?branch=master)](https://travis-ci.org/ultraq/thymeleaf-js)
-[![Node Version](https://img.shields.io/node/v/thymeleaf-js.svg)]()
+[![GitHub tag](https://img.shields.io/github/tag/ultraq/thymeleaf-js.svg?maxAge=3600)](https://github.com/ultraq/thymeleaf-js/tags)
 [![License](https://img.shields.io/github/license/ultraq/thymeleaf-js.svg?maxAge=2592000)](https://github.com/ultraq/thymeleaf-js/blob/master/LICENSE.txt)
 
 A basic implementation of the [Thymeleaf](http://thymeleaf.org/) templating
