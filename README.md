@@ -12,7 +12,7 @@ engine in JavaScript.
 Having worked with Thymeleaf for several years, other templating languages are
 starting to look foreign to me.  Upon evaluating several existing JavaScript
 templating languages to help build a mock Node server for development, it made
-me yearn for the static-prototyping-friendliness of Thymeleaf.
+me yearn for the natural templating feature of Thymeleaf.
 
 The goal of this project is not to be a full JS implementation of Thymeleaf, but
 rather to support the use of equivalent Thymeleaf "attribute processors" which
@@ -21,23 +21,13 @@ And then, finally, I can use it with a Node server like [Express](http://express
 and achieve my Thymeleaf-in-JS dream :)
 
 
-Installation
-------------
-
-Via NPM:
-
-```
-npm install thymeleaf --save
-```
-
-
 Natural Templates
 -----------------
 
-Just like the original Thymeleaf, Thymeleaf for JavaScript brings elegant
-*natural templates* to your development workflow - HTML that can be correctly
-displayed in browsers and also work as static prototypes, allowing for stronger
-collaboration in development teams.
+For those unfamiliar with Thymeleaf, it's main feature is being able to use
+*natural templates*, HTML that can be correctly displayed in browsers and also
+work as static prototypes, allowing for stronger collaboration in development
+teams.
 
 Taking this:
 
@@ -51,6 +41,16 @@ And making it this:
 ```html
 <p><span>Hello!</span>
 You're using Thymeleaf for JavaScript!</p>
+```
+
+
+Installation
+------------
+
+Via NPM:
+
+```
+npm install thymeleaf --save
 ```
 
 
@@ -96,3 +96,13 @@ which is resolved with the processed template.
  - **templateFile**: path to the Thymeleaf template to process
  - **context**: an object of key/value pairs, what the expressions evaluate to
    and the values they're set to
+
+
+Integration
+-----------
+
+### Express
+
+Integration with the Express server is its own module,
+[express-thymeleaf](https://github.com/ultraq/express-thymeleaf).  Installation
+and usage instructions are also in that project's readme.
