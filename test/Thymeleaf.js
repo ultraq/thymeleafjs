@@ -29,7 +29,8 @@ describe('Thymeleaf', function() {
 	it('Main example', function() {
 		let inputTemplatePath = path.join(__dirname, 'template.html');
 		return thymeleaf.processFile(inputTemplatePath, {
-			greeting: 'Hello!'
+			greeting: 'Hello!',
+			showGreeting: true
 		})
 			.then(template => {
 				let expectedTemplate = fs.readFileSync(path.join(__dirname, 'template-expected.html')).toString();
