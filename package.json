@@ -10,7 +10,7 @@
 	},
 	"main": "./lib/Thymeleaf.js",
 	"scripts": {
-		"lint": "eslint **/*.js",
+		"lint": "eslint '**/*.js'",
 		"test": "npm run lint && mocha --recursive"
 	},
 	"dependencies": {
