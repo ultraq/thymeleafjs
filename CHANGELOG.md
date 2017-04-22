@@ -2,6 +2,10 @@
 Changelog
 =========
 
+### 0.3.0
+ - Add support for the `th:utext`/`data-th-utext` attribute processor
+ - Fixed `th:text` not escaping unsafe HTML content.
+
 ### 0.2.0
  - Extract the Express integration into its own module,
    [express-thymeleaf](https://github.com/ultraq/express-thymeleaf)

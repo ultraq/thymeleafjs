@@ -15,7 +15,7 @@
  */
 'use strict';
 
-const StandardIfAttributeProcessor = require('../../lib/processors/StandardIfAttributeProcessor');
+const StandardIfAttributeProcessor = require('../../lib/standard/processors/StandardIfAttributeProcessor');
 const {getThymeleafAttributeValue} = require('../../lib/utilities/Dom');
 
 const {assert} = require('chai');
