@@ -41,4 +41,12 @@ describe('processors/StndardTextAttributeProcessor', function() {
 		processor.process(element, 'th:text', attributeValue, {});
 		assert.strictEqual(element.textContent, text);
 	});
+
+	it('Escapes special HTML characters in the text content', function() {
+		let text = '<script>';
+		let element = div({ 'th:text': text }, 'HTML stuffs');
+		let attributeValue = getThymeleafAttributeValue(element, processor.prefix, processor.name);
+		processor.process(element, 'th:text', attributeValue, {});
+		assert.strictEqual(element.childNodes[0].value, '&lt;script&gt;');
+	});
 });
