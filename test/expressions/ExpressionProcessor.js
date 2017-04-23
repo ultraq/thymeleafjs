@@ -15,7 +15,7 @@
  */
 'use strict';
 
-const {processExpression} = require('../../lib/expressions/ExpressionProcessor');
+const {processExpression} = require('../../src/expressions/ExpressionProcessor');
 
 const {assert} = require('chai');
 

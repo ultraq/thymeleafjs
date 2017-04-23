@@ -15,7 +15,7 @@
  */
 'use strict';
 
-const StandardAttrAttributeProcessor = require('../../lib/standard/processors/StandardAttrAttributeProcessor');
+const StandardAttrAttributeProcessor = require('../../src/standard/processors/StandardAttrAttributeProcessor');
 
 const {assert} = require('chai');
 const h        = require('hyperscript');

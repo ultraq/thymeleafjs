@@ -15,7 +15,7 @@
  */
 'use strict';
 
-const thymeleaf = require('../lib/Thymeleaf');
+const thymeleaf = require('../src/Thymeleaf');
 
 const {assert} = require('chai');
 const fs       = require('fs');

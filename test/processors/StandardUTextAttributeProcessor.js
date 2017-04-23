@@ -15,8 +15,8 @@
  */
 'use strict';
 
-const StandardTUextAttributeProcessor = require('../../lib/standard/processors/StandardUTextAttributeProcessor');
-const {getThymeleafAttributeValue}    = require('../../lib/utilities/Dom');
+const StandardTUextAttributeProcessor = require('../../src/standard/processors/StandardUTextAttributeProcessor');
+const {getThymeleafAttributeValue}    = require('../../src/utilities/Dom');
 
 const {assert} = require('chai');
 const h        = require('hyperscript');
