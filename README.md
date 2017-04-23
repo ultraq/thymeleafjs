@@ -25,7 +25,7 @@ Natural Templates
 -----------------
 
 For those unfamiliar with Thymeleaf, it's main feature is being able to use
-*natural templates*, HTML that can be correctly displayed in browsers and also
+*natural templates* - HTML that can be correctly displayed in browsers and also
 work as static prototypes, allowing for stronger collaboration in development
 teams.
 

@@ -25,9 +25,9 @@ const hh       = require('hyperscript-helpers');
 const {div} = hh(h);
 
 /**
- * Tests for the `th:Utext` attribute processor.
+ * Tests for the `th:utext` attribute processor.
  */
-describe('processors/StndardTextAttributeProcessor', function() {
+describe('processors/StandardTextAttributeProcessor', function() {
 
 	let processor;
 	beforeEach(function() {

@@ -27,7 +27,7 @@ const {div, p} = hh(h);
 /**
  * Tests for the `th:if` attribute processor.
  */
-describe('processors/StndardIfAttributeProcessor', function() {
+describe('processors/StandardIfAttributeProcessor', function() {
 
 	let processor;
 	beforeEach(function() {

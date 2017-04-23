@@ -27,7 +27,7 @@ const {div} = hh(h);
 /**
  * Tests for the `th:text` attribute processor.
  */
-describe('processors/StndardTextAttributeProcessor', function() {
+describe('processors/StandardTextAttributeProcessor', function() {
 
 	let processor;
 	beforeEach(function() {
