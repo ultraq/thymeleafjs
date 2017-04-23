@@ -13,13 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-'use strict';
 
-const Dialect                         = require('../dialects/Dialect');
-const StandardAttrAttributeProcessor  = require('./processors/StandardAttrAttributeProcessor');
-const StandardIfAttributeProcessor    = require('./processors/StandardIfAttributeProcessor');
-const StandardTextAttributeProcessor  = require('./processors/StandardTextAttributeProcessor');
-const StandardUTextAttributeProcessor = require('./processors/StandardUTextAttributeProcessor');
+import Dialect                         from '../dialects/Dialect';
+import StandardAttrAttributeProcessor  from './processors/StandardAttrAttributeProcessor';
+import StandardIfAttributeProcessor    from './processors/StandardIfAttributeProcessor';
+import StandardTextAttributeProcessor  from './processors/StandardTextAttributeProcessor';
+import StandardUTextAttributeProcessor from './processors/StandardUTextAttributeProcessor';
 
 const NAME   = 'Standard';
 const PREFIX = 'th';
@@ -62,4 +61,4 @@ class StandardDialect extends Dialect {
 StandardDialect.NAME   = NAME;
 StandardDialect.PREFIX = PREFIX;
 
-module.exports = StandardDialect;
+export default StandardDialect;

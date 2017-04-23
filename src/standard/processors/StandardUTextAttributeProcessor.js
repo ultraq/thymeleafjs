@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-'use strict';
 
-const AttributeProcessor  = require('../../processors/AttributeProcessor');
-const {processExpression} = require('../../expressions/ExpressionProcessor');
+import AttributeProcessor  from '../../processors/AttributeProcessor';
+import {processExpression} from '../../expressions/ExpressionProcessor';
+
 
 const NAME = 'utext';
 
@@ -59,4 +59,4 @@ class StandardUTextAttributeProcessor extends AttributeProcessor {
 
 StandardUTextAttributeProcessor.NAME = NAME;
 
-module.exports = StandardUTextAttributeProcessor;
+export default StandardUTextAttributeProcessor;

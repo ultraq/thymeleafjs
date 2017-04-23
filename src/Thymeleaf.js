@@ -14,19 +14,4 @@
  * limitations under the License.
  */
 
-/**
- * Returns the value of a Thymeleaf attribute processor.  Checks for both the
- * XML and data attribute variants.
- * 
- * TODO: Copied from thymeleaf-layout-dialect-js.  Publish as module?
- * 
- * @param {Element} element
- * @param {String} prefix
- * @param {String} name
- * @return {String} Value of a matching Thymeleaf attribute, or `null` if no
- *   attribute with that prefix and name exists.
- */
-export function getThymeleafAttributeValue(element, prefix, name) {
-
-	return element[`${prefix}:${name}`] || element[`data-${prefix}-${name}`];
-}
+export {default as TemplateEngine} from './TemplateEngine';

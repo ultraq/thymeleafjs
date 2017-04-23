@@ -13,11 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-'use strict';
 
-const AttributeProcessor  = require('../../processors/AttributeProcessor');
-const {processExpression} = require('../../expressions/ExpressionProcessor');
-const escape              = require('lodash.escape');
+import AttributeProcessor  from '../../processors/AttributeProcessor';
+import {processExpression} from '../../expressions/ExpressionProcessor';
+
+import {escape} from 'lodash-es';
+
 
 const NAME = 'attr';
 
@@ -63,4 +64,4 @@ class StandardAttrAttributeProcessor extends AttributeProcessor {
 
 StandardAttrAttributeProcessor.NAME = NAME;
 
-module.exports = StandardAttrAttributeProcessor;
+export default StandardAttrAttributeProcessor;

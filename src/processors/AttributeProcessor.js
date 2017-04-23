@@ -13,14 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-'use strict';
 
 /**
  * Common class for attribute processors.
  * 
  * @author Emanuel Rabina
  */
-class AttributeProcessor {
+export default class AttributeProcessor {
 
 	/**
 	 * Constructor, sets this processor's prefix and name.
@@ -34,5 +33,3 @@ class AttributeProcessor {
 		this.name   = name;
 	}
 }
-
-module.exports = AttributeProcessor;

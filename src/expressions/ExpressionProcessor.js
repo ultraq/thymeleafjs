@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-'use strict';
 
 const SIMPLE_NAMED_ITEM_EXPRESSION = /\$\{(.+)\}/;
 
@@ -24,7 +23,7 @@ const SIMPLE_NAMED_ITEM_EXPRESSION = /\$\{(.+)\}/;
  * @param {Object} context
  * @return {String} The result of evaluating the expression.
  */
-function processExpression(expression, context) {
+export function processExpression(expression, context) {
 
 	// TODO: This should really be done using a parser generator like PEG.js so
 	//       that we can describe more complicated expressions.  For now, only
@@ -36,5 +35,3 @@ function processExpression(expression, context) {
 	}
 	return expression;
 }
-
-exports.processExpression = processExpression;

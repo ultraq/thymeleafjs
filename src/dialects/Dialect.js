@@ -13,14 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-'use strict';
 
 /**
  * Common class for dialects.
  * 
  * @author Emanuel Rabina
  */
-class Dialect {
+export default class Dialect {
 
 	/**
 	 * Constructor, sets this dialect's name and prefix.
@@ -34,5 +33,3 @@ class Dialect {
 		this.prefix = prefix;
 	}
 }
-
-module.exports = Dialect;
