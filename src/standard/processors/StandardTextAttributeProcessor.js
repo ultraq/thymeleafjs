@@ -19,7 +19,6 @@ import {processExpression} from '../../expressions/ExpressionProcessor';
 
 import {escape} from 'lodash-es';
 
-
 const NAME = 'text';
 
 /**

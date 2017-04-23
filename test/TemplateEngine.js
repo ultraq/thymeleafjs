@@ -13,13 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-'use strict';
 
-const thymeleaf = require('../src/Thymeleaf');
+import {TemplateEngine} from '../src/Thymeleaf';
 
-const {assert} = require('chai');
-const fs       = require('fs');
-const path     = require('path');
+import {assert} from 'chai';
+import fs       from 'fs';
+import path     from 'path';
 
 /**
  * Tests for the Thymeleaf processing functions.
@@ -28,7 +27,9 @@ describe('Thymeleaf', function() {
 
 	it('Main example', function() {
 		let inputTemplatePath = path.join(__dirname, 'template.html');
-		return thymeleaf.processFile(inputTemplatePath, {
+
+		let templateEngine = new TemplateEngine();
+		return templateEngine.processFile(inputTemplatePath, {
 			greeting: 'Hello!',
 			showGreeting: true
 		})

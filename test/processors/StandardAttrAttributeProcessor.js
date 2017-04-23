@@ -13,13 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-'use strict';
 
-const StandardAttrAttributeProcessor = require('../../src/standard/processors/StandardAttrAttributeProcessor');
+import StandardAttrAttributeProcessor from '../../src/standard/processors/StandardAttrAttributeProcessor';
 
-const {assert} = require('chai');
-const h        = require('hyperscript');
-const hh       = require('hyperscript-helpers');
+import {assert} from 'chai';
+import h        from 'hyperscript';
+import hh       from 'hyperscript-helpers';
 
 const {div} = hh(h);
 

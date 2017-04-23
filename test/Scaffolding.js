@@ -13,17 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-'use strict';
+'use strict'; // eslint-disable-line strict
 
+/* 
+ * Invoke the babel compiler to run over any source, tests, and any known ES6
+ * dependencies.  Let's me use ES6 module syntax (`import`/`export`) in test
+ * scripts, but doesn't work on this one.
+ */
+require('babel-register')({
+	only: [
+		'/src',
+		'/test',
+		'/lodash-es'
+	]
+});
+
+/* 
+ * Set up JSDOM to mock a DOM/browser environment
+ */
 const {jsdom} = require('jsdom');
 
-/**
- * Common scaffolding for all the tests, sets up JSDOM to mock a DOM
- * environment.
- * 
- * @author Emanuel Rabina
- */
-/* global global, document */
 const DEFAULT_HTML = `
 <html>
 <body>
@@ -31,5 +40,6 @@ const DEFAULT_HTML = `
 </body>
 </html>`;
 
+/* global global, document */
 global.document = jsdom(DEFAULT_HTML);
 global.window = document.defaultView;

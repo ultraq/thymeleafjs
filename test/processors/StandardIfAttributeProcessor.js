@@ -13,14 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-'use strict';
 
-const StandardIfAttributeProcessor = require('../../src/standard/processors/StandardIfAttributeProcessor');
-const {getThymeleafAttributeValue} = require('../../src/utilities/Dom');
+import StandardIfAttributeProcessor from '../../src/standard/processors/StandardIfAttributeProcessor';
+import {getThymeleafAttributeValue} from '../../src/utilities/Dom';
 
-const {assert} = require('chai');
-const h        = require('hyperscript');
-const hh       = require('hyperscript-helpers');
+import {assert} from 'chai';
+import h        from 'hyperscript';
+import hh       from 'hyperscript-helpers';
 
 const {div, p} = hh(h);
 

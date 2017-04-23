@@ -17,7 +17,6 @@
 import AttributeProcessor  from '../../processors/AttributeProcessor';
 import {processExpression} from '../../expressions/ExpressionProcessor';
 
-
 const NAME = 'if';
 
 /**

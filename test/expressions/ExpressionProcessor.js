@@ -13,12 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-'use strict';
 
-const {processExpression} = require('../../src/expressions/ExpressionProcessor');
+import {processExpression} from '../../src/expressions/ExpressionProcessor';
 
-const {assert} = require('chai');
+import {assert} from 'chai';
 
+/**
+ * Tests for the expression processor.
+ */
 describe('expressions/ExpressionProcessor', function() {
 
 	describe('Named context object expressions', function() {
