@@ -17,7 +17,7 @@
 	"dependencies": {
 		"bluebird": "~3.5.0",
 		"jsdom": "~9.12.0",
-		"lodash.escape": "~4.0.1"
+		"lodash-es": "~4.17.4"
 	},
 	"devDependencies": {
 		"chai": "^3.5.0",
