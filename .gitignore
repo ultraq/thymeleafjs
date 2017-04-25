@@ -1,4 +1,6 @@
 /.idea
+/.nyc_output
+/coverage
 /node_modules
 *.iml
 npm-debug.log
