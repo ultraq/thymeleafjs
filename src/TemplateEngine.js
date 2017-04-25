@@ -22,7 +22,11 @@ import {flatten}                  from 'lodash-es';
 
 import fs from 'fs';
 
-
+const DEFAULT_CONFIGURATION = {
+	dialects: [
+		new StandardDialect()
+	]
+};
 const XML_NAMESPACE_ATTRIBUTE = 'xmlns:th';
 
 /**
@@ -40,7 +44,7 @@ export default class TemplateEngine {
 	 *   List of dialects to use in the new template engine.  Defaults to just the
 	 *   standard dialect.
 	 */
-	constructor({dialects = [new StandardDialect()]}) {
+	constructor({ dialects } = DEFAULT_CONFIGURATION) {
 
 		// Create the engine's instance of processors from all of the configured
 		// dialect processors
