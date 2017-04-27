@@ -16,7 +16,6 @@
 
 import StandardDialect from './standard/StandardDialect';
 
-import Promise                    from 'bluebird';
 import {jsdom, serializeDocument} from 'jsdom';
 import {flatten}                  from 'lodash-es';
 

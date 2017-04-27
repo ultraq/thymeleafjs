@@ -20,7 +20,6 @@
 		"watch": "chokidar '**/*.js' -c 'npm test'"
 	},
 	"dependencies": {
-		"bluebird": "~3.5.0",
 		"jsdom": "~9.12.0",
 		"lodash-es": "~4.17.4"
 	},
