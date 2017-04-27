@@ -15,9 +15,9 @@
  */
 
 import StandardDialect from './standard/StandardDialect';
+import {flatten}       from './utilities/Arrays';
 
 import {jsdom, serializeDocument} from 'jsdom';
-import {flatten}                  from 'lodash-es';
 
 import fs from 'fs';
 

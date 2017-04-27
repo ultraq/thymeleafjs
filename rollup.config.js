@@ -19,15 +19,15 @@ import commonjs     from 'rollup-plugin-commonjs';
 import json         from 'rollup-plugin-json';
 import nodeBuiltins from 'rollup-plugin-node-builtins';
 import nodeResolve  from 'rollup-plugin-node-resolve';
-import uglify       from 'rollup-plugin-uglify';
+// import uglify       from 'rollup-plugin-uglify';
 
-import {minify} from 'uglify-js';
+// import {minify} from 'uglify-js';
 
 export default {
 	entry: 'src/Thymeleaf.js',
 	format: 'umd',
 	moduleName: 'Thymeleaf',
-	dest: 'dist/thymeleaf.js',
+	dest: 'dist/thymeleaf.min.js',
 	sourceMap: true,
 	external: [
 		'jsdom'
@@ -38,7 +38,7 @@ export default {
 		nodeBuiltins(),
 		nodeResolve({
 			jsnext: true
-		}),
-		uglify({}, minify)
+		})/*,
+		uglify({}, minify)*/
 	]
 };

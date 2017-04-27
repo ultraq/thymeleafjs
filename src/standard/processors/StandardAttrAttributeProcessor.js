@@ -16,8 +16,7 @@
 
 import AttributeProcessor  from '../../processors/AttributeProcessor';
 import {processExpression} from '../../expressions/ExpressionProcessor';
-
-import {escape} from 'lodash-es';
+import {escapeHtml}        from '../../utilities/Strings';
 
 const NAME = 'attr';
 
@@ -54,7 +53,7 @@ class StandardAttrAttributeProcessor extends AttributeProcessor {
 
 		attributeValue.split(',').forEach(attribute => {
 			let attributeParts = attribute.split('=');
-			element.setAttribute(attributeParts[0], escape(processExpression(attributeParts[1], context)));
+			element.setAttribute(attributeParts[0], escapeHtml(processExpression(attributeParts[1], context)));
 		});
 
 		element.removeAttribute(attribute);

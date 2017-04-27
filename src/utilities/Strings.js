@@ -13,32 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-'use strict'; // eslint-disable-line strict
 
-/* 
- * Invoke the babel compiler to run over any source, tests, and any known ES6
- * dependencies.  Let's me use ES6 module syntax (`import`/`export`) in test
- * scripts, but doesn't work on this one.
+/**
+ * Escapes HTML special characters with their entity codes.
+ * 
+ * @param {String} string
+ * @return {String} Escaped string.
  */
-require('babel-register')({
-	only: [
-		'/src',
-		'/test'
-	]
-});
+export function escapeHtml(string) {
 
-/* 
- * Set up JSDOM to mock a DOM/browser environment
- */
-const {jsdom} = require('jsdom');
-
-const DEFAULT_HTML = `
-<html>
-<body>
-	<div id="test-sandbox"></div>
-</body>
-</html>`;
-
-/* global global, document */
-global.document = jsdom(DEFAULT_HTML);
-global.window = document.defaultView;
+	return string
+		.replace(/&/g, '&amp;')
+		.replace(/</g, '&lt;')
+		.replace(/>/g, '&gt;')
+		.replace(/"/g, '&quot;')
+		.replace(/'/g, '&#039;');
+}

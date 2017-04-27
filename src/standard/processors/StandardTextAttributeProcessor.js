@@ -16,8 +16,7 @@
 
 import AttributeProcessor  from '../../processors/AttributeProcessor';
 import {processExpression} from '../../expressions/ExpressionProcessor';
-
-import {escape} from 'lodash-es';
+import {escapeHtml}        from '../../utilities/Strings';
 
 const NAME = 'text';
 
@@ -53,7 +52,7 @@ class StandardTextAttributeProcessor extends AttributeProcessor {
 	 */
 	process(element, attribute, attributeValue, context) {
 
-		element.textContent = escape(processExpression(attributeValue, context));
+		element.textContent = escapeHtml(processExpression(attributeValue, context));
 		element.removeAttribute(attribute);
 	}
 }
