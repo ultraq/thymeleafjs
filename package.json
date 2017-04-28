@@ -11,7 +11,7 @@
 	"main": "./lib/Thymeleaf.js",
 	"module": "./src/Thymeleaf.js",
 	"scripts": {
-		"lint": "eslint src test",
+		"lint": "eslint rollup.config.js browser src test",
 		"test": "npm run lint && nyc mocha",
 		"coverage": "nyc report --reporter=text-lcov | coveralls",
 		"build": "npm run build:browser && npm run build:node",
