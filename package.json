@@ -12,7 +12,7 @@
 	"module": "./src/Thymeleaf.js",
 	"scripts": {
 		"lint": "eslint src test",
-		"test": "npm run lint && nyc --include=src/**/*.js --reporter=html --report-dir=.coverage mocha --require=test/Scaffolding.js --recursive",
+		"test": "npm run lint && nyc mocha",
 		"coverage": "nyc report --reporter=text-lcov | coveralls",
 		"build": "npm run build:browser && npm run build:node",
 		"build:browser": "TARGET=browser rollup --config",
@@ -31,6 +31,7 @@
 		"eslint": "^3.19.0",
 		"hyperscript": "^2.0.2",
 		"hyperscript-helpers": "^3.0.2",
+		"jsdom-global": "^2.1.1",
 		"mocha": "^3.2.0",
 		"nyc": "^10.2.0",
 		"rollup": "^0.41.6",
