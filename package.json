@@ -8,8 +8,9 @@
 		"type": "git",
 		"url": "https://github.com/ultraq/thymeleaf-js"
 	},
-	"main": "./lib/Thymeleaf.js",
-	"module": "./src/Thymeleaf.js",
+	"main": "dist/thymeleaf.node.js",
+	"browser": "dist/thymeleaf.js",
+	"module": "src/Thymeleaf.js",
 	"scripts": {
 		"lint": "eslint rollup.config.js browser src test",
 		"test": "npm run lint && nyc mocha",
