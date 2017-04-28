@@ -17,9 +17,8 @@
 import StandardDialect from './standard/StandardDialect';
 import {flatten}       from './utilities/Arrays';
 
+import fs                         from 'fs';
 import {jsdom, serializeDocument} from 'jsdom';
-
-import fs from 'fs';
 
 const DEFAULT_CONFIGURATION = {
 	dialects: [

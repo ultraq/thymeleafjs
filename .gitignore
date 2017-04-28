@@ -1,6 +1,6 @@
+/.coverage
 /.idea
 /.nyc_output
-/coverage
 /dist
 /lib
 /node_modules

@@ -13,32 +13,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+/* eslint-env node */
 
-import commonjs     from 'rollup-plugin-commonjs';
-// import ignore       from 'rollup-plugin-ignore';
-import json         from 'rollup-plugin-json';
-import nodeBuiltins from 'rollup-plugin-node-builtins';
-import nodeResolve  from 'rollup-plugin-node-resolve';
-// import uglify       from 'rollup-plugin-uglify';
+import alias       from 'rollup-plugin-alias';
+import commonjs    from 'rollup-plugin-commonjs';
+import json        from 'rollup-plugin-json';
+import nodeResolve from 'rollup-plugin-node-resolve';
 
-// import {minify} from 'uglify-js';
+import path from 'path';
+
+let isBrowser = process.env.TARGET === 'browser';
+let isNode    = process.env.TARGET === 'node';
 
 export default {
 	entry: 'src/Thymeleaf.js',
-	format: 'umd',
+	format: isBrowser ? 'iife' : 'cjs',
 	moduleName: 'Thymeleaf',
-	dest: 'dist/thymeleaf.min.js',
-	sourceMap: true,
-	external: [
-		'jsdom'
-	],
+	dest: `dist/thymeleaf.${process.env.TARGET}.js`,
+	external: ['jsdom'].concat(isNode ? ['fs'] : []),
 	plugins: [
 		commonjs(),
 		json(),
-		nodeBuiltins(),
 		nodeResolve({
 			jsnext: true
-		})/*,
-		uglify({}, minify)*/
-	]
+		})
+	].concat(isBrowser ? [
+		alias({
+			'fs': path.join(__dirname, 'browser/mock-fs')
+		})
+	] : [])
 };
