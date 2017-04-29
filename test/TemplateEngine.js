@@ -23,9 +23,9 @@ import path     from 'path';
 /**
  * Tests for the Thymeleaf processing functions.
  */
-describe('Thymeleaf', function() {
+describe('TemplateEngine', function() {
 
-	it('Main example', function() {
+	it('#processFile', function() {
 		let inputTemplatePath = path.join(__dirname, 'template.html');
 
 		let templateEngine = new TemplateEngine();

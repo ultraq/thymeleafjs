@@ -61,26 +61,32 @@ API
 > thymeleaf-js is still under development, denoted by the 0.x semver, so expect
 > anything below to change.
 
-Include the Thymeleaf module like you would any other module, then use one of
-its `process*` functions process your Thymeleaf template, eg:
+Create a new instance of a Thymeleaf `TemplateEngine`, then use one of its
+`process*` functions process your Thymeleaf template, eg:
 
 ```javascript
-import thymeleaf from 'thymeleaf';
+import {TemplateEngine} from 'thymeleaf';
+
+let templateEngine = new TemplateEngine();
 
 // Render template from string
-thymeleaf.process('<div data-th-text="${greeting}">(greeting)</div>', { greeting: 'Hello!' })
+templateEngine.process('<div data-th-text="${greeting}">(greeting)</div>', { greeting: 'Hello!' })
   .then(result => {
   	// Do something with the result...
   });
 
 // Render template from file
-thymeleaf.processFile('template.html', { greeting: 'Hello!' })
+templateEngine.processFile('template.html', { greeting: 'Hello!' })
   .then(result => {
   	// Do something with the result...
   });
 ```
 
-### process(templateString, context)
+### TemplateEngine
+
+The main class for the processing of templates.
+
+#### process(templateString, context)
 
 Process the Thymeleaf template, returning a Promise which is resolved with the
 processed template.
@@ -89,7 +95,7 @@ processed template.
  - **context**: an object of key/value pairs, what the expressions evaluate to
    and the values they're set to
 
-### processFile(templateFile, context)
+#### processFile(templateFile, context)
 
 Process the Thymeleaf template at the given file location, returning a Promise
 which is resolved with the processed template.
