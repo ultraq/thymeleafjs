@@ -2,7 +2,6 @@
 /.idea
 /.nyc_output
 /dist
-/lib
 /node_modules
 *.iml
 npm-debug.log

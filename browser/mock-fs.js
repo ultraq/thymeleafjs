@@ -22,7 +22,7 @@
  * @author Emanuel Rabina
  */
 export default {
-	readFile: function() {
-		console.error('Cannot use fs.readFile inside a browser');
+	readFile: function(filePath, callback) {
+		callback('Cannot use fs.readFile inside a browser');
 	}
 };

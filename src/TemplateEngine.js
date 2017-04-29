@@ -82,8 +82,8 @@ export default class TemplateEngine {
 	 * @param {String} template
 	 * @param {Object} context
 	 * @return {Promise}
-	 *   Bluebird promise resolved with the processed template, or rejected with an
-	 *   error message.
+	 *   A promise resolved with the processed template, or rejected with an error
+	 *   message.
 	 */
 	process(template, context) {
 
@@ -122,8 +122,8 @@ export default class TemplateEngine {
 	 * @param {String} filePath
 	 * @param {Object} context
 	 * @return {Promise}
-	 *   Bluebird promise resolved with the processed template, or rejected with an
-	 *   error message.
+	 *   A promise resolved with the processed template, or rejected with an error
+	 *   message.
 	 */
 	processFile(filePath, context) {
 
