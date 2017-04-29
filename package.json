@@ -16,7 +16,7 @@
 		"test": "npm run lint && nyc mocha",
 		"coverage": "nyc report --reporter=text-lcov | coveralls",
 		"build": "npm run build:browser && npm run build:node",
-		"build:browser": "TARGET=browser rollup --config",
+		"build:browser": "TARGET=browser rollup --config && uglifyjs dist/thymeleaf.js --compress --mangle --output dist/thymeleaf.min.js",
 		"build:node": "TARGET=node rollup --config",
 		"watch": "chokidar '**/*.js' -c 'npm test'"
 	},
@@ -39,7 +39,8 @@
 		"rollup-plugin-alias": "^1.3.1",
 		"rollup-plugin-commonjs": "^8.0.2",
 		"rollup-plugin-json": "^2.1.1",
-		"rollup-plugin-node-resolve": "^3.0.0"
+		"rollup-plugin-node-resolve": "^3.0.0",
+		"uglify-js": "https://github.com/mishoo/UglifyJS2.git#harmony"
 	},
 	"engines": {
 		"node": ">=6.5.0"
