@@ -14,4 +14,5 @@
  * limitations under the License.
  */
 
-export {default as TemplateEngine} from './TemplateEngine';
+export {default as TemplateEngine}  from './TemplateEngine';
+export {default as StandardDialect} from './standard/StandardDialect';
