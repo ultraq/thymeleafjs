@@ -130,7 +130,7 @@ export default class TemplateEngine {
 		return new Promise((resolve, reject) => {
 			fs.readFile(filePath, (error, data) => {
 				if (error) {
-					reject(error);
+					reject(new Error(error));
 				}
 				else {
 					resolve(this.process(data, context));
