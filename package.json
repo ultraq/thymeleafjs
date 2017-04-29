@@ -18,7 +18,8 @@
 		"build": "npm run build:browser && npm run build:node",
 		"build:browser": "TARGET=browser rollup --config && uglifyjs dist/thymeleaf.js --compress --mangle --output dist/thymeleaf.min.js",
 		"build:node": "TARGET=node rollup --config",
-		"watch": "chokidar '**/*.js' -c 'npm test'"
+		"watch": "chokidar '**/*.js' -c 'npm test'",
+		"prepublish": "npm run build"
 	},
 	"dependencies": {
 		"jsdom": "~9.12.0"
