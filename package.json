@@ -17,7 +17,7 @@
 		"coverage": "nyc report --reporter=text-lcov | coveralls",
 		"build": "npm run build:browser && npm run build:node",
 		"build:browser": "TARGET=browser rollup --config",
-		"build:node": "babel src --out-dir lib",
+		"build:node": "TARGET=node rollup --config",
 		"watch": "chokidar '**/*.js' -c 'npm test'"
 	},
 	"dependencies": {

@@ -29,7 +29,7 @@ export default {
 	entry: 'src/Thymeleaf.js',
 	format: isBrowser ? 'iife' : 'cjs',
 	moduleName: 'Thymeleaf',
-	dest: `dist/thymeleaf${isNode ? '.node' : '.'}js`,
+	dest: `dist/thymeleaf${isNode ? '.node.' : '.'}js`,
 	external: ['jsdom'].concat(isNode ? ['fs'] : []),
 	plugins: [
 		commonjs(),
