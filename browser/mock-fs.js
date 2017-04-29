@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/* eslint-env browser */
 
 /**
  * A mock implementation of Node's `fs` so that uses of it in a browser

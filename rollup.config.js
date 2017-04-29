@@ -30,16 +30,16 @@ export default {
 	format: isBrowser ? 'iife' : 'cjs',
 	moduleName: 'Thymeleaf',
 	dest: `dist/thymeleaf${isNode ? '.node.' : '.'}js`,
-	external: ['jsdom'].concat(isNode ? ['fs'] : []),
+	external: isNode ? ['fs', 'jsdom'] : [],
 	plugins: [
+		alias(isBrowser ? {
+			'fs':    path.join(__dirname, 'browser/mock-fs'),
+			'jsdom': path.join(__dirname, 'browser/mock-jsdom')
+		} : {}),
 		commonjs(),
 		json(),
 		nodeResolve({
 			jsnext: true
 		})
-	].concat(isBrowser ? [
-		alias({
-			'fs': path.join(__dirname, 'browser/mock-fs')
-		})
-	] : [])
+	]
 };
