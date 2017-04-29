@@ -62,7 +62,7 @@ API
 > anything below to change.
 
 Create a new instance of a Thymeleaf `TemplateEngine`, then use one of its
-`process*` functions process your Thymeleaf template, eg:
+`process*` functions to process your Thymeleaf template, eg:
 
 ```javascript
 import {TemplateEngine} from 'thymeleaf';
@@ -72,13 +72,13 @@ let templateEngine = new TemplateEngine();
 // Render template from string
 templateEngine.process('<div data-th-text="${greeting}">(greeting)</div>', { greeting: 'Hello!' })
   .then(result => {
-  	// Do something with the result...
+    // Do something with the result...
   });
 
 // Render template from file
 templateEngine.processFile('template.html', { greeting: 'Hello!' })
   .then(result => {
-  	// Do something with the result...
+    // Do something with the result...
   });
 ```
 
