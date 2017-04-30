@@ -3,7 +3,12 @@
 		"src/**/*.js"
 	],
 	"reporter": [
-		"html"
+		"html",
+		"text-summary"
 	],
+	"require": [
+		"babel-register"
+	],
+	"all": true,
 	"report-dir": ".coverage"
 }
