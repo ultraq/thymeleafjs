@@ -16,7 +16,8 @@
 
 import AttributeProcessor  from '../../processors/AttributeProcessor';
 import {processExpression} from '../../expressions/ExpressionProcessor';
-import {escapeHtml}        from '../../utilities/Strings';
+
+import {escapeHtml} from '@ultraq/string-utils';
 
 const NAME = 'text';
 

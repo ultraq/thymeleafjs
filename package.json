@@ -22,6 +22,7 @@
 		"prepublish": "npm run build"
 	},
 	"dependencies": {
+		"@ultraq/string-utils": "~1.0.0",
 		"jsdom": "~9.12.0"
 	},
 	"devDependencies": {
