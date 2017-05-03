@@ -32,6 +32,7 @@
 		"chokidar-cli": "^1.2.0",
 		"coveralls": "^2.13.0",
 		"eslint": "^3.19.0",
+		"eslint-config-ultraq": "^1.0.1",
 		"hyperscript": "^2.0.2",
 		"hyperscript-helpers": "^3.0.2",
 		"jsdom-global": "^2.1.1",
