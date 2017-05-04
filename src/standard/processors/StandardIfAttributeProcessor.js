@@ -16,6 +16,7 @@
 
 import AttributeProcessor  from '../../processors/AttributeProcessor';
 import {processExpression} from '../../expressions/ExpressionProcessor';
+import {clearChildren}     from '../../utilities/Dom';
 
 const NAME = 'if';
 
@@ -53,9 +54,7 @@ class StandardIfAttributeProcessor extends AttributeProcessor {
 
 		let expressionResult = processExpression(attributeValue, context);
 		if (!expressionResult) {
-			while (element.firstChild) {
-				element.removeChild(element.firstChild);
-			}
+			clearChildren(element);
 			element.parentNode.removeChild(element);
 		}
 		element.removeAttribute(attribute);

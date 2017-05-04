@@ -16,6 +16,7 @@
 
 import Dialect                         from '../dialects/Dialect';
 import StandardAttrAttributeProcessor  from './processors/StandardAttrAttributeProcessor';
+import StandardEachAttributeProcessor  from './processors/StandardEachAttributeProcessor';
 import StandardIfAttributeProcessor    from './processors/StandardIfAttributeProcessor';
 import StandardTextAttributeProcessor  from './processors/StandardTextAttributeProcessor';
 import StandardUTextAttributeProcessor from './processors/StandardUTextAttributeProcessor';
@@ -50,6 +51,7 @@ class StandardDialect extends Dialect {
 		//       processors.  It's currently ordered in the same way as OG
 		//       Thymeleaf.  Figure out a 'proper' way to do the ordering.
 		return [
+			new StandardEachAttributeProcessor(),
 			new StandardIfAttributeProcessor(),
 			new StandardAttrAttributeProcessor(),
 			new StandardTextAttributeProcessor(),

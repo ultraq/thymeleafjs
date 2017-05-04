@@ -15,6 +15,18 @@
  */
 
 /**
+ * Removes all of an element's child nodes.
+ * 
+ * @param {Element} element
+ */
+export function clearChildren(element) {
+
+	while (element.firstChild) {
+		element.removeChild(element.firstChild);
+	}
+}
+
+/**
  * Returns the value of a Thymeleaf attribute processor.  Checks for both the
  * XML and data attribute variants.
  * 

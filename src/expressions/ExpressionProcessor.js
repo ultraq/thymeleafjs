@@ -14,6 +14,34 @@
  * limitations under the License.
  */
 
+// TODO: This should really be done using a parser generator like PEG.js so that
+//       we can discern between the various expression syntaxes and so execute
+//       the right functions for handling them.  For now, only assumed
+//       expressions are supported, with separate functions for each of those
+//       best guesses.
+
+const ITERATION_EXPRESSION = /(.+)\s*:(\$\{.+\})/;
+
+/**
+ * Parses and evaluates a Thymeleaf iteration expression.
+ * 
+ * @param {String} expression
+ * @param {Object} context
+ * @return {Object} Information about the iteration expression.
+ */
+export function processIterationExpression(expression, context) {
+
+	let expressionParts = ITERATION_EXPRESSION.exec(expression);
+	if (expressionParts) {
+		return {
+			localValueName: expressionParts[1],
+			iterable: processExpression(expressionParts[2], context)
+		};
+	}
+	return null;
+}
+
+
 const SIMPLE_NAMED_ITEM_EXPRESSION = /\$\{(.+)\}/;
 
 /**
@@ -25,9 +53,6 @@ const SIMPLE_NAMED_ITEM_EXPRESSION = /\$\{(.+)\}/;
  */
 export function processExpression(expression, context) {
 
-	// TODO: This should really be done using a parser generator like PEG.js so
-	//       that we can describe more complicated expressions.  For now, only
-	//       named context items or verbatim string values are supported.
 	let namedResults = SIMPLE_NAMED_ITEM_EXPRESSION.exec(expression);
 	if (namedResults) {
 		let itemValue = context ? context[namedResults[1]] : null;
