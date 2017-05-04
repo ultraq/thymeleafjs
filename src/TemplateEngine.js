@@ -59,19 +59,20 @@ export default class TemplateEngine {
 	processNode(element, context) {
 
 		// TODO: Standardize this data attribute somewhere.  Shared const?
-		let localVariables = JSON.parse(element.dataset.localVariables);
+		let {dataset} = element;
+		let localVariables = dataset ? JSON.parse(dataset.localVariables) : {};
 		let localContext = merge({}, context, localVariables);
 
 		// Process the current element
 		this.processors.forEach(processor => {
 			let attribute = `${processor.prefix}:${processor.name}`;
-			if (!(attribute in element)) {
+			if (!element.hasAttribute(attribute)) {
 				attribute = `data-${processor.prefix}-${processor.name}`;
-				if (!(attribute in element)) {
+				if (!element.hasAttribute(attribute)) {
 					return;
 				}
 			}
-			let attributeValue = element[attribute];
+			let attributeValue = element.getAttribute(attribute);
 			processor.process(element, attribute, attributeValue, localContext);
 		});
 
