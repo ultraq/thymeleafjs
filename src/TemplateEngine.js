@@ -15,8 +15,9 @@
  */
 
 import StandardDialect from './standard/StandardDialect';
-import {flatten}       from './utilities/Arrays';
 
+import {flatten}                  from '@ultraq/array-utils';
+import {merge}                    from '@ultraq/object-utils';
 import fs                         from 'fs';
 import {jsdom, serializeDocument} from 'jsdom';
 
@@ -57,22 +58,26 @@ export default class TemplateEngine {
 	 */
 	processNode(element, context) {
 
+		// TODO: Standardize this data attribute somewhere.  Shared const?
+		let localVariables = JSON.parse(element.dataset.localVariables);
+		let localContext = merge({}, context, localVariables);
+
 		// Process the current element
 		this.processors.forEach(processor => {
 			let attribute = `${processor.prefix}:${processor.name}`;
-			if (!element.hasAttribute(attribute)) {
+			if (!(attribute in element)) {
 				attribute = `data-${processor.prefix}-${processor.name}`;
-				if (!element.hasAttribute(attribute)) {
+				if (!(attribute in element)) {
 					return;
 				}
 			}
-			let attributeValue = element.getAttribute(attribute);
-			processor.process(element, attribute, attributeValue, context);
+			let attributeValue = element[attribute];
+			processor.process(element, attribute, attributeValue, localContext);
 		});
 
 		// Process this element's children
 		Array.from(element.children).forEach(child => {
-			this.processNode(child, context);
+			this.processNode(child, localContext);
 		});
 	}
 

@@ -18,11 +18,13 @@
 		"build": "npm run build:browser && npm run build:node",
 		"build:browser": "TARGET=browser rollup --config && uglifyjs dist/thymeleaf.js --compress --mangle --output dist/thymeleaf.min.js",
 		"build:node": "TARGET=node rollup --config",
-		"watch": "chokidar '**/*.js' -c 'npm test'",
+		"watch": "chokidar 'src/**/*.js' 'test/**/*.js' -c 'npm test'",
 		"prepublish": "npm run build"
 	},
 	"dependencies": {
-		"@ultraq/string-utils": "~1.0.0",
+		"@ultraq/array-utils": "^1.0.0",
+		"@ultraq/object-utils": "^1.1.0",
+		"@ultraq/string-utils": "^1.1.0",
 		"jsdom": "~9.12.0"
 	},
 	"devDependencies": {
