@@ -16,7 +16,6 @@
 
 import AttributeProcessor           from '../../processors/AttributeProcessor';
 import {processIterationExpression} from '../../expressions/ExpressionProcessor';
-import {clearChildren}              from '../../utilities/Dom';
 
 const NAME = 'each';
 
@@ -48,6 +47,9 @@ class StandardEachAttributeProcessor extends AttributeProcessor {
 	 * @param {String} attributeValue
 	 *   The value given by the attribute.
 	 * @param {Object} context
+	 * @return {String}
+	 *   The command to request that this node be reprocessed given that it has
+	 *   now been affected by the iteration.
 	 */
 	process(element, attribute, attributeValue, context) {
 
@@ -55,21 +57,26 @@ class StandardEachAttributeProcessor extends AttributeProcessor {
 
 		let iterationInfo = processIterationExpression(attributeValue, context);
 		if (iterationInfo) {
-			let {localName, iterable} = iterationInfo;
-			clearChildren(element);
+			let {localValueName, iterable} = iterationInfo;
+			let templateNode = element.cloneNode(true);
 
 			for (let value of iterable) {
-				let clone = element.cloneNode(true);
-
+				let localClone = templateNode.cloneNode(true);
 				let localVariable = {};
-				localVariable[localName] = value;
+				localVariable[localValueName] = value;
 
 				// TODO: Standardize this data attribute somewhere.  Shared const?
-				clone.dataset.localVariables = JSON.stringify(localVariable);
+				// element.dataset not yet implemented in JSDOM (https://github.com/tmpvar/jsdom/issues/961),
+				// so until then we're setting data- attributes the old-fashioned way.
+				localClone.setAttribute('data-thymeleaf-local-variables', JSON.stringify(localVariable));
 
-				element.appendChild(clone);
+				element.parentElement.appendChild(localClone);
 			}
 		}
+		element.parentElement.removeChild(element);
+
+		// TODO: Take inspiration from Thymeleaf 2's return values
+		return 'reprocess';
 	}
 }
 

@@ -55,15 +55,20 @@ export default class TemplateEngine {
 	 * 
 	 * @param {Element} element
 	 * @param {Object} context
+	 * @return {String}
+	 *   A post-processing command to be returned to the parent node to action.
 	 */
 	processNode(element, context) {
 
 		// TODO: Standardize this data attribute somewhere.  Shared const?
-		let {dataset} = element;
-		let localVariables = dataset ? JSON.parse(dataset.localVariables) : {};
+		// element.dataset not yet implemented in JSDOM (https://github.com/tmpvar/jsdom/issues/961),
+		// so until then we're getting data- attributes the old-fashioned way.
+		let localVariables = JSON.parse(element.getAttribute('data-thymeleaf-local-variables'));
+		element.removeAttribute('data-thymeleaf-local-variables');
 		let localContext = merge({}, context, localVariables);
 
 		// Process the current element
+		let processingResults = [];
 		this.processors.forEach(processor => {
 			let attribute = `${processor.prefix}:${processor.name}`;
 			if (!element.hasAttribute(attribute)) {
@@ -73,13 +78,27 @@ export default class TemplateEngine {
 				}
 			}
 			let attributeValue = element.getAttribute(attribute);
-			processor.process(element, attribute, attributeValue, localContext);
+			processingResults.push(processor.process(element, attribute, attributeValue, localContext));
 		});
 
+		// TODO: Take inspiration from Thymeleaf 2's return values
+		if (processingResults.some(processingResult => processingResult === 'reprocess')) {
+			return 'reprocess';
+		}
+
 		// Process this element's children
-		Array.from(element.children).forEach(child => {
-			this.processNode(child, localContext);
-		});
+		let reprocess;
+		do {
+			reprocess = false;
+			for (let child of element.children) {
+				let processingResult = this.processNode(child, localContext);
+				if (processingResult === 'reprocess') {
+					reprocess = true;
+					break;
+				}
+			}
+		}
+		while (reprocess);
 	}
 
 	/**

@@ -16,6 +16,7 @@
 
 import {TemplateEngine} from '../src/Thymeleaf';
 
+import {range}  from '@ultraq/array-utils';
 import {assert} from 'chai';
 import fs       from 'fs';
 import path     from 'path';
@@ -30,8 +31,10 @@ describe('TemplateEngine', function() {
 
 		let templateEngine = new TemplateEngine();
 		return templateEngine.processFile(inputTemplatePath, {
+			normalizeCss: 'https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.css',
 			greeting: 'Hello!',
-			showGreeting: true
+			showGreeting: true,
+			numbers: range(1, 10)
 		})
 			.then(template => {
 				let expectedTemplate = fs.readFileSync(path.join(__dirname, 'template-expected.html')).toString();

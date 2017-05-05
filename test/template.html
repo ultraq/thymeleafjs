@@ -2,9 +2,16 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 	<title>Thymeleaf example template</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="local-stylesheet.css" th:attr="href=${normalizeCss}">
 </head>
 <body>
 	<p th:if="${showGreeting}"><span th:text="${greeting}">(greeting)</span>
 	You're using Thymeleaf for JavaScript!</p>
+	<p>Count to 10?  Sure:</p>
+	<ul>
+		<li th:each="number: ${numbers}" th:text="${number}">(number)</li>
+	</ul>
 </body>
 </html>

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import {processExpression} from '../../src/expressions/ExpressionProcessor';
+import {processExpression, processIterationExpression} from '../../src/expressions/ExpressionProcessor';
 
 import {assert} from 'chai';
 
@@ -42,9 +42,22 @@ describe('expressions/ExpressionProcessor', function() {
 		});
 	});
 
+
 	it('Verbatim expressions', function() {
 		let greeting = 'Hello!';
 		let result = processExpression(greeting);
 		assert.strictEqual(result, greeting);
+	});
+
+
+	describe('Iteration expressions', function() {
+
+		it('Value and local name mapping', function() {
+			let items = ['a', 'b', 'c'];
+			let expression = 'item: ${items}';
+			let result = processIterationExpression(expression, { items });
+			assert.strictEqual(result.localValueName, 'item');
+			assert.strictEqual(result.iterable, items);
+		});
 	});
 });
