@@ -13,12 +13,12 @@
 	"module": "src/Thymeleaf.js",
 	"scripts": {
 		"lint": "eslint rollup.config.js browser src test",
-		"test": "npm run lint && nyc mocha",
+		"test": "npm run lint --silent && nyc mocha",
 		"coverage": "nyc report --reporter=text-lcov | coveralls",
-		"build": "npm run build:browser && npm run build:node",
+		"build": "npm run build:browser --silent && npm run build:node --silent",
 		"build:browser": "TARGET=browser rollup --config && uglifyjs dist/thymeleaf.js --compress --mangle --output dist/thymeleaf.min.js",
 		"build:node": "TARGET=node rollup --config",
-		"watch": "chokidar 'src/**/*.js' 'test/**/*.js' -c 'npm test'",
+		"watch": "chokidar 'src/**/*.js' 'test/**/*.js' -c 'npm test --silent'",
 		"prepublish": "npm run build"
 	},
 	"dependencies": {
