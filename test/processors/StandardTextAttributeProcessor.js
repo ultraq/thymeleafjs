@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import StandardTextAttributeProcessor from '../../src/standard/processors/StandardTextAttributeProcessor';
-import {getThymeleafAttributeValue}   from '../../src/utilities/Dom';
+import StandardTextAttributeProcessor  from '../../src/standard/processors/StandardTextAttributeProcessor';
+import {createThymeleafAttributeValue} from '../../src/utilities/Dom';
 
 import {assert} from 'chai';
 import h        from 'hyperscript';
@@ -28,24 +28,23 @@ const {div} = hh(h);
  */
 describe('processors/StandardTextAttributeProcessor', function() {
 
-	let processor;
-	beforeEach(function() {
-		processor = new StandardTextAttributeProcessor();
+	let attribute, processor;
+	before(function() {
+		processor = new StandardTextAttributeProcessor('test');
+		attribute = `${processor.name}:${processor.prefix}`;
 	});
 
 	it("Replaces an element's text content", function() {
 		let text = 'Hello!';
-		let element = div({ 'th:text': text }, 'Goodbye');
-		let attributeValue = getThymeleafAttributeValue(element, processor.prefix, processor.name);
-		processor.process(element, 'th:text', attributeValue, {});
+		let element = createThymeleafAttributeValue(div('Goodbye!'), attribute, text);
+		processor.process(element, attribute, text);
 		assert.strictEqual(element.textContent, text);
 	});
 
 	it('Escapes special HTML characters in the text content', function() {
 		let text = '<script>';
-		let element = div({ 'th:text': text }, 'HTML stuffs');
-		let attributeValue = getThymeleafAttributeValue(element, processor.prefix, processor.name);
-		processor.process(element, 'th:text', attributeValue, {});
+		let element = createThymeleafAttributeValue(div('HTML stuffs'), attribute, text);
+		processor.process(element, attribute, text);
 		assert.strictEqual(element.textContent, '&lt;script&gt;');
 	});
 });

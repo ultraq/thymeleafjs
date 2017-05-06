@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 
-import StandardAttrAttributeProcessor from '../../src/standard/processors/StandardAttrAttributeProcessor';
+import StandardAttrAttributeProcessor  from '../../src/standard/processors/StandardAttrAttributeProcessor';
+import {createThymeleafAttributeValue} from '../../src/utilities/Dom';
 
 import {assert} from 'chai';
 import h        from 'hyperscript';
@@ -28,18 +29,18 @@ const {div} = hh(h);
 describe('processors/StandardAttrAttributeProcessor', function() {
 
 	let processor;
-	beforeEach(function() {
-		processor = new StandardAttrAttributeProcessor();
+	let attribute;
+	before(function() {
+		processor = new StandardAttrAttributeProcessor('test');
+		attribute = `${processor.name}:${processor.prefix}`;
 	});
 
 	it('Set the value of the target attribute', function() {
 		let value = 'test-class';
-		let attributeName = 'th:attr';
 		let attributeValue = 'class=${value}';
-		let element = div();
-		element.setAttribute(attributeName, attributeValue);
+		let element = createThymeleafAttributeValue(div(), attribute, attributeValue);
 
-		processor.process(element, attributeName, attributeValue, { value });
+		processor.process(element, attribute, attributeValue, { value });
 
 		assert.isTrue(element.classList.contains(value));
 	});
@@ -47,12 +48,10 @@ describe('processors/StandardAttrAttributeProcessor', function() {
 	it('Set multiple attributes', function() {
 		let valueId = 'test-id';
 		let valueClass = 'test-class';
-		let attributeName = 'th:attr';
 		let attributeValue = `id=\${valueId},class=${valueClass}`;
-		let element = div();
-		element.setAttribute(attributeName, attributeValue);
+		let element = createThymeleafAttributeValue(div(), attribute, attributeValue);
 
-		processor.process(element, attributeName, attributeValue, { valueId });
+		processor.process(element, attribute, attributeValue, { valueId });
 
 		assert.strictEqual(element.id, valueId);
 		assert.isTrue(element.classList.contains(valueClass));

@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import StandardIfAttributeProcessor from '../../src/standard/processors/StandardIfAttributeProcessor';
-import {getThymeleafAttributeValue} from '../../src/utilities/Dom';
+import StandardIfAttributeProcessor    from '../../src/standard/processors/StandardIfAttributeProcessor';
+import {createThymeleafAttributeValue} from '../../src/utilities/Dom';
 
 import {assert} from 'chai';
 import h        from 'hyperscript';
@@ -28,32 +28,29 @@ const {div, p} = hh(h);
  */
 describe('processors/StandardIfAttributeProcessor', function() {
 
-	let processor;
-	beforeEach(function() {
-		processor = new StandardIfAttributeProcessor();
+	let attribute, processor;
+	before(function() {
+		processor = new StandardIfAttributeProcessor('test');
+		attribute = `${processor.name}:${processor.prefix}`;
 	});
 
 	it('Renders the element and children if the expression is truthy', function() {
-		let childElement = p({ 'th:if': '${value}' }, 'Hello!');
-		let element = div([
-			childElement
+		let expression = '${value}';
+		let child = createThymeleafAttributeValue(p('Hello!'), attribute, expression);
+		let parent = div([
+			child
 		]);
-		let attributeValue = getThymeleafAttributeValue(childElement, processor.prefix, processor.name);
-		processor.process(childElement, 'th:if', attributeValue, {
-			value: true
-		});
-		assert.strictEqual(element.childNodes.length, 1);
+		processor.process(child, attribute, expression, { value: true });
+		assert.strictEqual(parent.childNodes.length, 1);
 	});
 
 	it('Removes the element and children if the expression is falsey', function() {
-		let childElement = p({ 'th:if': '${value}' }, 'Hello!');
+		let expression = '${value}';
+		let childElement = createThymeleafAttributeValue(p('Hello!'), attribute, expression);
 		let element = div([
 			childElement
 		]);
-		let attributeValue = getThymeleafAttributeValue(childElement, processor.prefix, processor.name);
-		processor.process(childElement, 'th:if', attributeValue, {
-			value: false
-		});
+		processor.process(childElement, 'th:if', expression, { value: false });
 		assert.strictEqual(element.childNodes.length, 0);
 	});
 });

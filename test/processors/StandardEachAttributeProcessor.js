@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 
-import StandardEachAttributeProcessor from '../../src/standard/processors/StandardEachAttributeProcessor';
+import StandardEachAttributeProcessor  from '../../src/standard/processors/StandardEachAttributeProcessor';
+import {createThymeleafAttributeValue} from '../../src/utilities/Dom';
 
 import {range}  from '@ultraq/array-utils';
 import {assert} from 'chai';
@@ -28,17 +29,20 @@ const {ul, li} = hh(h);
  */
 describe('processors/StandardEachAttributeProcessor', function() {
 
-	let processor;
-	beforeEach(function() {
-		processor = new StandardEachAttributeProcessor();
+	let processor, attribute;
+	before(function() {
+		processor = new StandardEachAttributeProcessor('test');
+		attribute = `${processor.name}:${processor.prefix}`;
 	});
 
 	it('Repeats an element for every item in an iterable', function() {
 		let iterationExpression = 'items: ${items}';
 		let items = range(1, 10);
-		let child = li({ 'th:each': iterationExpression });
-		let parent = ul(child);
-		let result = processor.process(child, 'th:each', iterationExpression, { items });
+		let child = createThymeleafAttributeValue(li(), attribute, iterationExpression);
+		let parent = ul([
+			child
+		]);
+		let result = processor.process(child, attribute, iterationExpression, { items });
 
 		assert.strictEqual(result, 'reprocess');
 		assert.strictEqual(parent.childElementCount, 9);

@@ -27,6 +27,21 @@ export function clearChildren(element) {
 }
 
 /**
+ * Sets a Thymeleaf attribute and value on an existing element.  Used primarily
+ * in tests.
+ * 
+ * @param {Element} element
+ * @param {String} attribute
+ * @param {String} value
+ * @return {Element} The same element but with the attribute and value set on it.
+ */
+export function createThymeleafAttributeValue(element, attribute, value) {
+
+	element.setAttribute(attribute, value);
+	return element;
+}
+
+/**
  * Returns the value of a Thymeleaf attribute processor.  Checks for both the
  * XML and data attribute variants.
  * 
