@@ -26,14 +26,14 @@ const SIMPLE_NAMED_ITEM_EXPRESSION = /\$\{(.+)\}/;
  * Parses and evaluates a Thymeleaf expression.
  * 
  * @param {String} expression
- * @param {Object} context
+ * @param {Object} [context={}]
  * @return {String} The result of evaluating the expression.
  */
-export function processExpression(expression, context) {
+export function processExpression(expression, context ={}) {
 
 	let namedResults = SIMPLE_NAMED_ITEM_EXPRESSION.exec(expression);
 	if (namedResults) {
-		let itemValue = context ? context[namedResults[1]] : null;
+		let itemValue = context[namedResults[1]];
 		return (itemValue === null || itemValue === undefined) ? '' : itemValue;
 	}
 	return expression;
@@ -45,10 +45,10 @@ const ITERATION_EXPRESSION = /(.+)\s*:\s*(\$\{.+\})/;
  * Parses and evaluates a Thymeleaf iteration expression.
  * 
  * @param {String} expression
- * @param {Object} context
+ * @param {Object} [context={}]
  * @return {Object} Information about the iteration expression.
  */
-export function processIterationExpression(expression, context) {
+export function processIterationExpression(expression, context = {}) {
 
 	let expressionParts = ITERATION_EXPRESSION.exec(expression);
 	if (expressionParts) {
