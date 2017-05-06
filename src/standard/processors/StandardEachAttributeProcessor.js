@@ -49,9 +49,8 @@ class StandardEachAttributeProcessor extends AttributeProcessor {
 	 * @param {String} attributeValue
 	 *   The value given by the attribute.
 	 * @param {Object} context
-	 * @return {String}
-	 *   The command to request that this node be reprocessed given that it has
-	 *   now been affected by the iteration.
+	 * @return {Boolean} Whether or not the parent element needs to do a second
+	 *   pass as its children have been modified by this processor.
 	 */
 	process(element, attribute, attributeValue, context) {
 
@@ -77,8 +76,7 @@ class StandardEachAttributeProcessor extends AttributeProcessor {
 		}
 		element.parentElement.removeChild(element);
 
-		// TODO: Take inspiration from Thymeleaf 2's return values
-		return 'reprocess';
+		return true;
 	}
 }
 

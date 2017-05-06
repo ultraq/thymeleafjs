@@ -55,8 +55,7 @@ export default class TemplateEngine {
 	 * 
 	 * @param {Element} element
 	 * @param {Object} context
-	 * @return {String}
-	 *   A post-processing command to be returned to the parent node to action.
+	 * @return {Boolean} Whether or not the parent node needs reprocessing.
 	 */
 	processNode(element, context) {
 
@@ -67,23 +66,24 @@ export default class TemplateEngine {
 		element.removeAttribute('data-thymeleaf-local-variables');
 		let localContext = merge({}, context, localVariables);
 
-		// Process the current element
-		let processingResults = [];
-		this.processors.forEach(processor => {
-			let attribute = `${processor.prefix}:${processor.name}`;
-			if (!element.hasAttribute(attribute)) {
-				attribute = `data-${processor.prefix}-${processor.name}`;
+		// Process the current element, store whether or not reprocessing of the
+		// parent needs to happen before moving on to this element's children.
+		let requireReprocessing = this.processors
+			.map(processor => {
+				let attribute = `${processor.prefix}:${processor.name}`;
 				if (!element.hasAttribute(attribute)) {
-					return;
+					attribute = `data-${processor.prefix}-${processor.name}`;
+					if (!element.hasAttribute(attribute)) {
+						return;
+					}
 				}
-			}
-			let attributeValue = element.getAttribute(attribute);
-			processingResults.push(processor.process(element, attribute, attributeValue, localContext));
-		});
+				let attributeValue = element.getAttribute(attribute);
+				return processor.process(element, attribute, attributeValue, localContext);
+			})
+			.reduce((accumulator, processorResult) => accumulator || processorResult, false);
 
-		// TODO: Take inspiration from Thymeleaf 2's return values
-		if (processingResults.some(processingResult => processingResult === 'reprocess')) {
-			return 'reprocess';
+		if (requireReprocessing) {
+			return true;
 		}
 
 		// Process this element's children
@@ -91,9 +91,8 @@ export default class TemplateEngine {
 		do {
 			reprocess = false;
 			for (let child of element.children) {
-				let processingResult = this.processNode(child, localContext);
-				if (processingResult === 'reprocess') {
-					reprocess = true;
+				reprocess = this.processNode(child, localContext);
+				if (reprocess) {
 					break;
 				}
 			}

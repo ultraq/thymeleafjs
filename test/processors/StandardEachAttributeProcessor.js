@@ -44,7 +44,7 @@ describe('processors/StandardEachAttributeProcessor', function() {
 		]);
 		let result = processor.process(child, attribute, iterationExpression, { items });
 
-		assert.strictEqual(result, 'reprocess');
+		assert.isTrue(result);
 		assert.strictEqual(parent.childElementCount, 9);
 	});
 });
