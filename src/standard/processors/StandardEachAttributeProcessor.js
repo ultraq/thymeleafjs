@@ -29,11 +29,13 @@ const NAME = 'each';
 class StandardEachAttributeProcessor extends AttributeProcessor {
 
 	/**
-	 * Constructor, set this processor to use the `each` name.
+	 * Constructor, set this processor to use the `each` name and supplied prefix.
+	 * 
+	 * @param {String} prefix
 	 */
-	constructor() {
+	constructor(prefix) {
 
-		super('th', NAME);
+		super(prefix, NAME);
 	}
 
 	/**

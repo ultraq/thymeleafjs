@@ -30,11 +30,13 @@ const NAME = 'if';
 class StandardIfAttributeProcessor extends AttributeProcessor {
 
 	/**
-	 * Constructor, set this processor to use the `if` name.
+	 * Constructor, set this processor to use the `if` name and supplied prefix.
+	 * 
+	 * @param {String} prefix
 	 */
-	constructor() {
+	constructor(prefix) {
 
-		super('th', NAME);
+		super(prefix, NAME);
 	}
 
 	/**

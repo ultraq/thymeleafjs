@@ -21,8 +21,8 @@ import StandardIfAttributeProcessor    from './processors/StandardIfAttributePro
 import StandardTextAttributeProcessor  from './processors/StandardTextAttributeProcessor';
 import StandardUTextAttributeProcessor from './processors/StandardUTextAttributeProcessor';
 
-const NAME   = 'Standard';
-const PREFIX = 'th';
+const NAME           = 'Standard';
+const DEFAULT_PREFIX = 'th';
 
 /**
  * The out-of-the-box dialect for Thymeleaf, the "Standard Dialect".
@@ -32,12 +32,14 @@ const PREFIX = 'th';
 class StandardDialect extends Dialect {
 
 	/**
-	 * Create an instance of this dialect with the default name (Standard) and
-	 * prefix (th).
+	 * Create an instance of this dialect with the name "Standard" and
+	 * given prefix, defaulting to "th" if not supplied.
+	 * 
+	 * @param {String} [prefix='th']
 	 */
-	constructor() {
+	constructor(prefix = DEFAULT_PREFIX) {
 
-		super(NAME, PREFIX);
+		super(NAME, prefix);
 	}
 
 	/**
@@ -50,17 +52,18 @@ class StandardDialect extends Dialect {
 		// TODO: This is a very basic way of imposing the order of attribute
 		//       processors.  It's currently ordered in the same way as OG
 		//       Thymeleaf.  Figure out a 'proper' way to do the ordering.
+		let {prefix} = this;
 		return [
-			new StandardEachAttributeProcessor(),
-			new StandardIfAttributeProcessor(),
-			new StandardAttrAttributeProcessor(),
-			new StandardTextAttributeProcessor(),
-			new StandardUTextAttributeProcessor()
+			new StandardEachAttributeProcessor(prefix),
+			new StandardIfAttributeProcessor(prefix),
+			new StandardAttrAttributeProcessor(prefix),
+			new StandardTextAttributeProcessor(prefix),
+			new StandardUTextAttributeProcessor(prefix)
 		];
 	}
 }
 
-StandardDialect.NAME   = NAME;
-StandardDialect.PREFIX = PREFIX;
+StandardDialect.NAME           = NAME;
+StandardDialect.DEFAULT_PREFIX = DEFAULT_PREFIX;
 
 export default StandardDialect;

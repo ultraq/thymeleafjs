@@ -31,11 +31,13 @@ const NAME = 'text';
 class StandardTextAttributeProcessor extends AttributeProcessor {
 
 	/**
-	 * Constructor, set this processor to use the `text` name.
+	 * Constructor, set this processor to use the `text` name and supplied prefix.
+	 * 
+	 * @param {String} prefix
 	 */
-	constructor() {
+	constructor(prefix) {
 
-		super('th', NAME);
+		super(prefix, NAME);
 	}
 
 	/**

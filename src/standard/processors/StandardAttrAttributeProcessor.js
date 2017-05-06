@@ -30,11 +30,13 @@ const NAME = 'attr';
 class StandardAttrAttributeProcessor extends AttributeProcessor {
 
 	/**
-	 * Constructor, set this processor to use the `attr` name.
+	 * Constructor, set this processor to use the `attr` name and supplied prefix.
+	 * 
+	 * @param {String} prefix
 	 */
-	constructor() {
+	constructor(prefix) {
 
-		super('th', NAME);
+		super(prefix, NAME);
 	}
 
 	/**

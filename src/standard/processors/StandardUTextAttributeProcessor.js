@@ -29,11 +29,14 @@ const NAME = 'utext';
 class StandardUTextAttributeProcessor extends AttributeProcessor {
 
 	/**
-	 * Constructor, set this processor to use the `utext` name.
+	 * Constructor, set this processor to use the `utext` name and supplied
+	 * prefix.
+	 * 
+	 * @param {String} prefix
 	 */
-	constructor() {
+	constructor(prefix) {
 
-		super('th', NAME);
+		super(prefix, NAME);
 	}
 
 	/**
