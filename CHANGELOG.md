@@ -2,6 +2,9 @@
 Changelog
 =========
 
+### 0.5.0
+ - Add support for the `th:each`/`data-th-each` attribute processor.
+
 ### 0.4.0
  - Add support for the `th:attr`/`data-th-attr` attribute processor.
 
