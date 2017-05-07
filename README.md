@@ -30,18 +30,17 @@ For those unfamiliar with Thymeleaf, it's main feature is being able to use
 work as static prototypes, allowing for stronger collaboration in development
 teams.
 
-Taking this:
+Borrowing the example from the front page of the Thymeleaf website:
 
 ```html
-<p><span data-th-text="${greeting}">(greeting)</span>
-You're using Thymeleaf for JavaScript!</p>
-```
-
-And making it this:
-
-```html
-<p><span>Hello!</span>
-You're using Thymeleaf for JavaScript!</p>
+<p>Hello <span data-th-text="${username}">(username)</span>
+You're using Thymeleaf for JavaScript!  Wanna see some random fruit?</p>
+<ul>
+  <li data-th-each="product: ${allProducts}">
+    <div data-th-text="${product.name}">Oranges</div>
+    <div data-th-text="${product.price}">0.99</td>
+  </li>
+</ul>
 ```
 
 
@@ -103,6 +102,28 @@ which is resolved with the processed template.
  - **templateFile**: path to the Thymeleaf template to process
  - **context**: an object of key/value pairs, what the expressions evaluate to
    and the values they're set to
+
+
+Supported features (so far)
+---------------------------
+
+Given that Thymeleaf JS has only a subset of Thymeleaf's features, and that most
+people familiar with Thymeleaf are from the Java side who have used the full
+feature set, it might help those coming here to let them know what this project
+is capable, and thus incapable, of doing.
+
+### Processors
+
+ - `th:text` (text replacement)
+ - `th:utext` (text replacement, unescaped)
+ - `th:attr` (attribute replacement)
+ - `th:if` (conditional rendering)
+ - `th:each` (iteration)
+
+### Expressions
+
+ - `${name}`/`${item.name}` (navigation expressions, references any object and
+   its properties on the current context)
 
 
 Integration
