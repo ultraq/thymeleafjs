@@ -23,16 +23,29 @@ import {assert} from 'chai';
  */
 describe('expressions/ExpressionProcessor', function() {
 
-	describe('Named context object expressions', function() {
+	describe('Object navigation expressions', function() {
 
-		it('Value mapping', function() {
-			let greeting = 'Hello!';
-			let result = processExpression('${greeting}', { greeting });
-			assert.strictEqual(result, greeting);
+		const context = {
+			greeting: 'Good morning!',
+			greetings: {
+				hello: 'Hello :)',
+				goodbye: 'Goodbye :(',
+				goodnight: null
+			}
+		};
+
+		it('Simple object navigation', function() {
+			let result = processExpression('${greeting}', context);
+			assert.strictEqual(result, context.greeting);
+		});
+
+		it('Complex object navigation', function() {
+			let result = processExpression('${greetings.hello}', context);
+			assert.strictEqual(result, context.greetings.hello);
 		});
 
 		it('null/undefined value handling', function() {
-			let result = processExpression('${greeting}', { greeting: null });
+			let result = processExpression('${greetings.goodnight}', context);
 			assert.strictEqual(result, '');
 		});
 
@@ -40,13 +53,6 @@ describe('expressions/ExpressionProcessor', function() {
 			let result = processExpression('${greeting}');
 			assert.strictEqual(result, '');
 		});
-	});
-
-
-	it('Verbatim expressions', function() {
-		let greeting = 'Hello!';
-		let result = processExpression(greeting);
-		assert.strictEqual(result, greeting);
 	});
 
 
@@ -59,5 +65,12 @@ describe('expressions/ExpressionProcessor', function() {
 			assert.strictEqual(result.localValueName, 'item');
 			assert.strictEqual(result.iterable, items);
 		});
+	});
+
+
+	it('Verbatim expressions (fallback)', function() {
+		let greeting = 'Hello!';
+		let result = processExpression(greeting);
+		assert.strictEqual(result, greeting);
 	});
 });

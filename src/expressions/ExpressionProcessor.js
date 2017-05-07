@@ -20,7 +20,7 @@
 //       expressions are supported, with separate functions for each of those
 //       best guesses.
 
-const SIMPLE_NAMED_ITEM_EXPRESSION = /\$\{(.+)\}/;
+const NAVIGATION_EXPRESSION = /\$\{(.+)\}/;
 
 /**
  * Parses and evaluates a Thymeleaf expression.
@@ -29,12 +29,15 @@ const SIMPLE_NAMED_ITEM_EXPRESSION = /\$\{(.+)\}/;
  * @param {Object} [context={}]
  * @return {String} The result of evaluating the expression.
  */
-export function processExpression(expression, context ={}) {
+export function processExpression(expression, context = {}) {
 
-	let namedResults = SIMPLE_NAMED_ITEM_EXPRESSION.exec(expression);
-	if (namedResults) {
-		let itemValue = context[namedResults[1]];
-		return (itemValue === null || itemValue === undefined) ? '' : itemValue;
+	let result = NAVIGATION_EXPRESSION.exec(expression);
+	if (result) {
+		let [, query] = result;
+		return query.split('.')
+			.reduce((previousValue, queryToken) => {
+				return previousValue && previousValue[queryToken];
+			}, context) || '';
 	}
 	return expression;
 }
@@ -50,11 +53,12 @@ const ITERATION_EXPRESSION = /(.+)\s*:\s*(\$\{.+\})/;
  */
 export function processIterationExpression(expression, context = {}) {
 
-	let expressionParts = ITERATION_EXPRESSION.exec(expression);
-	if (expressionParts) {
+	let result = ITERATION_EXPRESSION.exec(expression);
+	if (result) {
+		let [, localValueName, navigationExpression] = result;
 		return {
-			localValueName: expressionParts[1],
-			iterable: processExpression(expressionParts[2], context)
+			localValueName,
+			iterable: processExpression(navigationExpression, context)
 		};
 	}
 	return null;
