@@ -53,11 +53,12 @@ export default class TemplateEngine {
 	/**
 	 * Process a DOM element.
 	 * 
+	 * @private
 	 * @param {Element} element
-	 * @param {Object} context
+	 * @param {Object} [context={}]
 	 * @return {Boolean} Whether or not the parent node needs reprocessing.
 	 */
-	processNode(element, context) {
+	processNode(element, context = {}) {
 
 		// TODO: Standardize this data attribute somewhere.  Shared const?
 		// element.dataset not yet implemented in JSDOM (https://github.com/tmpvar/jsdom/issues/961),
@@ -104,12 +105,12 @@ export default class TemplateEngine {
 	 * Process the Thymeleaf template data, returning the processed template.
 	 * 
 	 * @param {String} template
-	 * @param {Object} context
+	 * @param {Object} [context={}]
 	 * @return {Promise}
 	 *   A promise resolved with the processed template, or rejected with an error
 	 *   message.
 	 */
-	process(template, context) {
+	process(template, context = {}) {
 
 		return new Promise((resolve, reject) => {
 			try {
@@ -144,12 +145,12 @@ export default class TemplateEngine {
 	 * processed template.
 	 * 
 	 * @param {String} filePath
-	 * @param {Object} context
+	 * @param {Object} [context={}]
 	 * @return {Promise}
 	 *   A promise resolved with the processed template, or rejected with an error
 	 *   message.
 	 */
-	processFile(filePath, context) {
+	processFile(filePath, context = {}) {
 
 		return new Promise((resolve, reject) => {
 			fs.readFile(filePath, (error, data) => {
