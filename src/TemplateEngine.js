@@ -71,6 +71,10 @@ export default class TemplateEngine {
 		// parent needs to happen before moving on to this element's children.
 		let requireReprocessing = this.processors
 			.map(processor => {
+
+				// TODO: This attribute hunting should go into some kind of matcher
+				//       module.  Note that it should be re-usable so that it can match
+				//       other kinds of processors in future.
 				let attribute = `${processor.prefix}:${processor.name}`;
 				if (!element.hasAttribute(attribute)) {
 					attribute = `data-${processor.prefix}-${processor.name}`;
@@ -78,6 +82,7 @@ export default class TemplateEngine {
 						return;
 					}
 				}
+
 				let attributeValue = element.getAttribute(attribute);
 				return processor.process(element, attribute, attributeValue, localContext);
 			})
