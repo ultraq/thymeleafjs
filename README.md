@@ -38,7 +38,7 @@ You're using Thymeleaf for JavaScript!  Wanna see some random fruit?</p>
 <ul>
   <li data-th-each="product: ${allProducts}">
     <div data-th-text="${product.name}">Oranges</div>
-    <div data-th-text="${product.price}">0.99</td>
+    <div data-th-text="${product.price}">0.99</div>
   </li>
 </ul>
 ```
