@@ -9,6 +9,5 @@
 	"require": [
 		"babel-register"
 	],
-	"all": true,
-	"report-dir": ".coverage"
+	"all": true
 }
