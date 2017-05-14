@@ -21,8 +21,8 @@ import nodeResolve from 'rollup-plugin-node-resolve';
 
 import path from 'path';
 
-let isBrowser = process.env.TARGET === 'browser';
-let isNode    = process.env.TARGET === 'node';
+let isBrowser = process.env.NODE_ENV === 'browser';
+let isNode    = process.env.NODE_ENV === 'node';
 
 export default {
 	entry: 'src/Thymeleaf.js',
