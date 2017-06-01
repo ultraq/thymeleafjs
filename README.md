@@ -90,8 +90,7 @@ The main class for the processing of templates.
 When constructing a new instance of the template engine, a config object can be
 passed in to set any of the available options.  These are:
 
- - **dialects**: array of [Dialect](https://github.com/ultraq/thymeleaf-js/blob/master/src/dialects/Dialect.js)
-   instances
+ - **dialects**: array of [Dialect](#dialect) instances to use in processing
 
 ```javascript
 import {TemplateEngine} from 'thymeleaf';
@@ -152,7 +151,7 @@ let templateEngine = new TemplateEngine({
 });
 ```
 
-Use the [STANDARD_CONFIGURATION](#standard-configuration) export to do this more
+Use the [STANDARD_CONFIGURATION](#standard_configuration) export to do this more
 succinctly.
 
 
