@@ -33,12 +33,12 @@ teams.
 Borrowing the example from the front page of the Thymeleaf website:
 
 ```html
-<p>Hello <span data-th-text="${username}">(username)</span>
+<p>Hello <span thjs:text="${username}">(username)</span>
 You're using Thymeleaf for JavaScript!  Wanna see some random fruit?</p>
 <ul>
-  <li data-th-each="product: ${allProducts}">
-    <div data-th-text="${product.name}">Oranges</div>
-    <div data-th-text="${product.price}">0.99</div>
+  <li thjs:each="product: ${allProducts}">
+    <div thjs:text="${product.name}">Oranges</div>
+    <div thjs:text="${product.price}">0.99</div>
   </li>
 </ul>
 ```
@@ -69,7 +69,7 @@ import {TemplateEngine} from 'thymeleaf';
 let templateEngine = new TemplateEngine();
 
 // Render template from string
-templateEngine.process('<div data-th-text="${greeting}">(greeting)</div>', { greeting: 'Hello!' })
+templateEngine.process('<div thjs:text="${greeting}">(greeting)</div>', { greeting: 'Hello!' })
   .then(result => {
     // Do something with the result...
   });
@@ -84,6 +84,24 @@ templateEngine.processFile('template.html', { greeting: 'Hello!' })
 ### TemplateEngine
 
 The main class for the processing of templates.
+
+#### new TemplateEngine(options)
+
+When constructing a new instance of the template engine, a config object can be
+passed in to set any of the available options.  These are:
+
+ - **dialects**: array of [Dialect](https://github.com/ultraq/thymeleaf-js/blob/master/src/dialects/Dialect.js)
+   instances
+
+```javascript
+import {TemplateEngine} from 'thymeleaf';
+
+let templateEngine = new TemplateEngine({
+	dialects: [
+		// Dialect instances here
+	]
+});
+```
 
 #### process(templateString, context)
 
@@ -102,6 +120,55 @@ which is resolved with the processed template.
  - **templateFile**: path to the Thymeleaf template to process
  - **context**: an object of key/value pairs, what the expressions evaluate to
    and the values they're set to
+
+
+### Dialect
+
+A basic class that is used as a template for implementing dialects that contain
+processors to expand Thymeleaf's functionality.  The [Standard Dialect](#standarddialect)
+is itself an instance of `Dialect`.
+
+
+### AttributeProcessor
+
+A basic class that is used for creating processors that work using HTML
+attributes.  All of the processors in the Standard Dialect are currently
+`AttributeProcessor`s.
+
+
+### StandardDialect
+
+The built-in dialect that provides all the functionality that Thymeleaf is known
+for.  Importing this class is only useful for specifying a prefix different from
+the default of `thjs`, eg:
+
+```javascript
+import {TemplateEngine, StandardDialect} from 'thymeleaf';
+
+let templateEngine = new TemplateEngine({
+	dialects: [
+		new StandardDialect('th')
+	]
+});
+```
+
+Use the [STANDARD_CONFIGURATION](#standard-configuration) export to do this more
+succinctly.
+
+
+### STANDARD_CONFIGURATION
+
+A configuration object used to set the prefix to the `th` that many of us will
+be used to from the original Thymeleaf.
+
+```javascript
+import {TemplateEngine, STANDARD_CONFIGURATION} from 'thymeleaf';
+
+let templateEngine = new TemplateEngine(STANDARD_CONFIGURATION);
+```
+
+This configuration object may contain more default options in the future, but
+for now it only serves this 1 purpose.
 
 
 Supported features (so far)

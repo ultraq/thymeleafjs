@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 
-export {default as TemplateEngine}     from './TemplateEngine';
-export {default as Dialect}            from './dialects/Dialect';
-export {default as AttributeProcessor} from './processors/AttributeProcessor';
-export {default as StandardDialect}    from './standard/StandardDialect';
+export {default as TemplateEngine,
+                   STANDARD_CONFIGURATION} from './TemplateEngine';
+export {default as Dialect}                from './dialects/Dialect';
+export {default as AttributeProcessor}     from './processors/AttributeProcessor';
+export {default as StandardDialect}        from './standard/StandardDialect';

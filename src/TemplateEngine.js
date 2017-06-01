@@ -26,7 +26,13 @@ const DEFAULT_CONFIGURATION = {
 		new StandardDialect()
 	]
 };
-const XML_NAMESPACE_ATTRIBUTE = 'xmlns:th';
+export const STANDARD_CONFIGURATION = Object.assign({}, DEFAULT_CONFIGURATION, {
+	dialects: [
+		new StandardDialect('th')
+	]
+});
+
+const XML_NAMESPACE_ATTRIBUTE = `xmlns:${StandardDialect.DEFAULT_PREFIX}`;
 
 /**
  * A highly-configurable class responsible for processing the Thymeleaf

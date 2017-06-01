@@ -22,7 +22,7 @@ import StandardTextAttributeProcessor  from './processors/StandardTextAttributeP
 import StandardUTextAttributeProcessor from './processors/StandardUTextAttributeProcessor';
 
 const NAME           = 'Standard';
-const DEFAULT_PREFIX = 'th';
+const DEFAULT_PREFIX = 'thjs';
 
 /**
  * The out-of-the-box dialect for Thymeleaf, the "Standard Dialect".
