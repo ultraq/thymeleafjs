@@ -56,4 +56,14 @@ describe('processors/StandardAttrAttributeProcessor', function() {
 		assert.strictEqual(element.id, valueId);
 		assert.isTrue(element.classList.contains(valueClass));
 	});
+
+	it("Do nothing if an expression doesn't match the attribute expression pattern", function() {
+		['class=', '${noting}'].forEach(attributeValue => {
+			let element = createThymeleafAttributeValue(div(), attribute, attributeValue);
+
+			processor.process(element, attribute, attributeValue);
+
+			assert.isUndefined(div.attributes);
+		});
+	});
 });

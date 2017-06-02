@@ -21,6 +21,8 @@ import {escapeHtml} from '@ultraq/string-utils';
 
 const NAME = 'attr';
 
+const ATTRIBUTE_EXPRESSION_PATTERN = /(.+=.+,)*.+=.+/;
+
 /**
  * JS equivalent of Thymeleaf's `th:attr` attribute processor, modifies or sets
  * a target attribute to whatever its associated expression evaluates to.
@@ -54,11 +56,15 @@ class StandardAttrAttributeProcessor extends AttributeProcessor {
 	 */
 	process(element, attribute, attributeValue, context) {
 
-		attributeValue.split(',').forEach(attribute => {
-			let attributeParts = attribute.split('=');
-			element.setAttribute(attributeParts[0], escapeHtml(processExpression(attributeParts[1], context)));
-		});
-
+		if (ATTRIBUTE_EXPRESSION_PATTERN.test(attributeValue)) {
+			attributeValue.split(',').forEach(attribute => {
+				let attributeParts = attribute.split('=');
+				element.setAttribute(attributeParts[0], escapeHtml(processExpression(attributeParts[1], context)));
+			});
+		}
+		else {
+			console.warn(`Value to ${attribute}, ${attributeValue}, doesn't seem to contain an attribute assignment expression.  Ignoring.`);
+		}
 		element.removeAttribute(attribute);
 	}
 }
