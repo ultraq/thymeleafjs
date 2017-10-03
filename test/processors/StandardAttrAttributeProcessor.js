@@ -58,7 +58,7 @@ describe('processors/StandardAttrAttributeProcessor', function() {
 	});
 
 	it("Do nothing if an expression doesn't match the attribute expression pattern", function() {
-		['class=', '${noting}'].forEach(attributeValue => {
+		['class=', '${nothing}'].forEach(attributeValue => {
 			let element = createThymeleafAttributeValue(div(), attribute, attributeValue);
 
 			processor.process(element, attribute, attributeValue);

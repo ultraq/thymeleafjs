@@ -14,7 +14,11 @@
  * limitations under the License.
  */
 
-import {processExpression, processIterationExpression} from '../../src/expressions/ExpressionProcessor';
+import {
+	processExpression,
+	processIterationExpression,
+	processLinkExpression
+} from '../../src/expressions/ExpressionProcessor';
 
 import {assert} from 'chai';
 
@@ -52,6 +56,16 @@ describe('expressions/ExpressionProcessor', function() {
 		it('No context handling', function() {
 			let result = processExpression('${greeting}');
 			assert.strictEqual(result, '');
+		});
+	});
+
+
+	describe('Link expressions', function() {
+
+		it('Leaves URLs without special parameters alone', function() {
+			let url = '/test';
+			let result = processLinkExpression(`@{${url}}`);
+			assert.strictEqual(result, url);
 		});
 	});
 

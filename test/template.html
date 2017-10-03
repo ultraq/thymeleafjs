@@ -8,7 +8,7 @@
 </head>
 <body>
 	<p thjs:if="${showGreeting}"><span thjs:text="${greeting}">(greeting)</span>
-	You're using Thymeleaf for JavaScript!</p>
+	You're using <a thjs:href="@{http://www.thymeleaf.org/}">Thymeleaf</a> for JavaScript!</p>
 	<p>Count to 10?  Sure:</p>
 	<ul>
 		<li thjs:each="number: ${numbers}" thjs:text="${number}">(number)</li>
