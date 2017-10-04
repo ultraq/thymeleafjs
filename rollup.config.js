@@ -18,26 +18,28 @@
 import alias       from 'rollup-plugin-alias';
 import commonjs    from 'rollup-plugin-commonjs';
 import nodeResolve from 'rollup-plugin-node-resolve';
+import uglify      from 'rollup-plugin-uglify';
+import {minify}    from 'uglify-es';
 
 import path from 'path';
 
-let isBrowser = process.env.NODE_ENV === 'browser';
-let isNode    = process.env.NODE_ENV === 'node';
-
 export default {
-	entry: 'src/Thymeleaf.js',
-	format: isBrowser ? 'iife' : 'cjs',
-	moduleName: 'Thymeleaf',
-	dest: `dist/thymeleaf${isNode ? '.node.' : '.'}js`,
-	external: isNode ? ['fs', 'jsdom'] : [],
+	input: 'src/Thymeleaf.js',
+	output: {
+		file: 'dist/thymeleaf.min.js',
+		format: 'iife',
+		name: 'Thymeleaf'
+	},
 	plugins: [
-		alias(isBrowser ? {
-			'fs':    path.join(__dirname, 'browser/mock-fs'),
-			'jsdom': path.join(__dirname, 'browser/mock-jsdom')
-		} : {}),
+		alias({
+			fs:    path.join(__dirname, 'browser/mock-fs'),
+			jsdom: path.join(__dirname, 'browser/mock-jsdom')
+		}),
 		commonjs(),
 		nodeResolve({
 			jsnext: true
-		})
-	]
+		}),
+		uglify({}, minify)
+	],
+	sourcemap: true
 };

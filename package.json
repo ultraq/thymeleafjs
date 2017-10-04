@@ -16,8 +16,8 @@
 		"test": "npm run lint --silent && nyc mocha",
 		"coverage": "nyc report --reporter=text-lcov | coveralls",
 		"build": "npm run build:browser --silent && npm run build:node --silent",
-		"build:browser": "cross-env NODE_ENV=browser rollup --config && uglifyjs dist/thymeleaf.js --compress --mangle --output dist/thymeleaf.min.js",
-		"build:node": "cross-env NODE_ENV=node rollup --config",
+		"build:browser": "cross-env NODE_ENV=browser rollup --config",
+		"build:node": "babel src --out-dir lib",
 		"watch": "chokidar 'src/**/*.js' 'test/**/*.js' -c 'npm test --silent'",
 		"prepublish": "npm run build"
 	},
@@ -28,12 +28,12 @@
 		"jsdom": "~9.12.0"
 	},
 	"devDependencies": {
+		"babel-cli": "^6.26.0",
 		"babel-plugin-transform-es2015-modules-commonjs": "^6.24.1",
 		"babel-register": "^6.24.1",
 		"chai": "^3.5.0",
 		"chokidar-cli": "^1.2.0",
 		"coveralls": "^2.13.0",
-		"cross-env": "^5.0.0",
 		"eslint": "^3.19.0",
 		"eslint-config-ultraq": "^1.0.1",
 		"hyperscript": "^2.0.2",
@@ -41,11 +41,12 @@
 		"jsdom-global": "^2.1.1",
 		"mocha": "^3.2.0",
 		"nyc": "^10.2.0",
-		"rollup": "^0.41.6",
+		"rollup": "^0.50.0",
 		"rollup-plugin-alias": "^1.3.1",
 		"rollup-plugin-commonjs": "^8.0.2",
 		"rollup-plugin-node-resolve": "^3.0.0",
-		"uglify-js": "https://github.com/mishoo/UglifyJS2.git#harmony"
+		"rollup-plugin-uglify": "^2.0.1",
+		"uglify-es": "^3.1.3"
 	},
 	"engines": {
 		"node": ">=6.5.0"
