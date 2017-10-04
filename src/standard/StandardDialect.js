@@ -19,6 +19,7 @@ import StandardAttrAttributeProcessor  from './processors/StandardAttrAttributeP
 import StandardEachAttributeProcessor  from './processors/StandardEachAttributeProcessor';
 import StandardHrefAttributeProcessor  from './processors/StandardHrefAttributeProcessor';
 import StandardIfAttributeProcessor    from './processors/StandardIfAttributeProcessor';
+import StandardSrcAttributeProcessor   from './processors/StandardSrcAttributeProcessor';
 import StandardTextAttributeProcessor  from './processors/StandardTextAttributeProcessor';
 import StandardUTextAttributeProcessor from './processors/StandardUTextAttributeProcessor';
 
@@ -59,6 +60,7 @@ class StandardDialect extends Dialect {
 			new StandardIfAttributeProcessor(prefix),
 			new StandardAttrAttributeProcessor(prefix),
 			new StandardHrefAttributeProcessor(prefix),
+			new StandardSrcAttributeProcessor(prefix),
 			new StandardTextAttributeProcessor(prefix),
 			new StandardUTextAttributeProcessor(prefix)
 		];
