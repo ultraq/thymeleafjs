@@ -16,7 +16,7 @@
 		"test": "npm run lint --silent && nyc mocha",
 		"coverage": "nyc report --reporter=text-lcov | coveralls",
 		"build": "npm run build:browser --silent && npm run build:node --silent",
-		"build:browser": "cross-env NODE_ENV=browser rollup --config",
+		"build:browser": "rollup --config",
 		"build:node": "babel src --out-dir lib",
 		"watch": "chokidar 'src/**/*.js' 'test/**/*.js' -c 'npm test --silent'",
 		"prepublish": "npm run build"
