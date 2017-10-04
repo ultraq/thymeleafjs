@@ -67,6 +67,27 @@ describe('expressions/ExpressionProcessor', function() {
 			let result = processLinkExpression(`@{${url}}`);
 			assert.strictEqual(result, url);
 		});
+
+		it('Append special parameters', function() {
+			let context = {
+				greeting: 'hello'
+			};
+			let url = '/test';
+			let params = {
+				param1: 'hard-coded-value',
+				param2: '${greeting}'
+			};
+
+			let paramsAsLinkExpressionSyntax = Object.entries(params)
+				.map(([key, value]) => `${key}=${value}`)
+				.join(',');
+			let result = processLinkExpression(`@{${url}(${paramsAsLinkExpressionSyntax})}`, context);
+
+			let paramsAsQuerySyntax = Object.entries(params)
+				.map(([key, value]) => `${key}=${processExpression(value, context)}`)
+				.join('&');
+			assert.strictEqual(result, `${url}?${paramsAsQuerySyntax}`);
+		});
 	});
 
 

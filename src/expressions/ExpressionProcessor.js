@@ -42,7 +42,7 @@ export function processExpression(expression, context = {}) {
 	return expression;
 }
 
-const LINK_EXPRESSION = /@\{(.+)(\(.+\))?\}/;
+const LINK_EXPRESSION = /@\{(.+?)(\(.+\))?\}/;
 
 /**
  * Parses and evaluates a Thymeleaf link expression.
@@ -57,7 +57,7 @@ export function processLinkExpression(expression, context = {}) {
 	if (result) {
 		let [, url, params] = result;
 		if (params) {
-			let paramsList = params.substring(1, -1).split(',').map(param => {
+			let paramsList = params.slice(1, -1).split(',').map(param => {
 				let [lhs, rhs] = param.split('=');
 				return `${lhs}=${processExpression(rhs, context)}`;
 			});
