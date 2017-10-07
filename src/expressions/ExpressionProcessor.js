@@ -22,8 +22,6 @@ import {remove} from '@ultraq/array-utils';
 //       expressions are supported, with separate functions for each of those
 //       best guesses.
 
-const NAVIGATION_EXPRESSION = /\$\{(.+)\}/;
-
 /**
  * Parses and evaluates a Thymeleaf expression.
  * 
@@ -33,7 +31,7 @@ const NAVIGATION_EXPRESSION = /\$\{(.+)\}/;
  */
 export function processExpression(expression, context = {}) {
 
-	let result = NAVIGATION_EXPRESSION.exec(expression);
+	let result = /\$\{(.+)\}/.exec(expression);
 	if (result) {
 		let [, query] = result;
 		return query.split('.')
@@ -44,9 +42,6 @@ export function processExpression(expression, context = {}) {
 	return expression;
 }
 
-const LINK_EXPRESSION = /^@\{(.+?)(\(.+\))?\}$/gm;
-const LINK_EXPRESSION_PLACEHOLDER = /(.*?)\{(.+?)\}(.*)/;
-
 /**
  * Parses and evaluates a Thymeleaf link expression.
  * 
@@ -56,7 +51,7 @@ const LINK_EXPRESSION_PLACEHOLDER = /(.*?)\{(.+?)\}(.*)/;
  */
 export function processLinkExpression(expression, context = {}) {
 
-	let result = LINK_EXPRESSION.exec(expression);
+	let result = /^@\{(.+?)(\(.+\))?\}$/.exec(expression);
 	if (result) {
 		let [, url, params] = result;
 		if (params) {
@@ -67,7 +62,7 @@ export function processLinkExpression(expression, context = {}) {
 
 			// Fill out any placeholders in the URL from the parameters
 			while (true) { // eslint-disable-line
-				let urlTemplate = LINK_EXPRESSION_PLACEHOLDER.exec(url);
+				let urlTemplate = /(.*?)\{(.+?)\}(.*)/.exec(url);
 				if (urlTemplate) {
 					let [, head, placeholder, tail] = urlTemplate;
 					let paramEntry = remove(paramsList, ([lhs]) => lhs === placeholder);
@@ -90,8 +85,6 @@ export function processLinkExpression(expression, context = {}) {
 	return expression;
 }
 
-const ITERATION_EXPRESSION = /(.+)\s*:\s*(\$\{.+\})/;
-
 /**
  * Parses and evaluates a Thymeleaf iteration expression.
  * 
@@ -101,7 +94,7 @@ const ITERATION_EXPRESSION = /(.+)\s*:\s*(\$\{.+\})/;
  */
 export function processIterationExpression(expression, context = {}) {
 
-	let result = ITERATION_EXPRESSION.exec(expression);
+	let result = /(.+)\s*:\s*(\$\{.+\})/.exec(expression);
 	if (result) {
 		let [, localValueName, navigationExpression] = result;
 		return {
