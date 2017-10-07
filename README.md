@@ -96,9 +96,9 @@ passed in to set any of the available options.  These are:
 import {TemplateEngine} from 'thymeleaf';
 
 let templateEngine = new TemplateEngine({
-	dialects: [
-		// Dialect instances here
-	]
+  dialects: [
+    // Dialect instances here
+  ]
 });
 ```
 
@@ -145,9 +145,9 @@ the default of `thjs`, eg:
 import {TemplateEngine, StandardDialect} from 'thymeleaf';
 
 let templateEngine = new TemplateEngine({
-	dialects: [
-		new StandardDialect('th')
-	]
+  dialects: [
+    new StandardDialect('th')
+  ]
 });
 ```
 
