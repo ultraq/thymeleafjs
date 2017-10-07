@@ -63,30 +63,24 @@ describe('expressions/ExpressionProcessor', function() {
 	describe('Link expressions', function() {
 
 		it('Leaves URLs without special parameters alone', function() {
-			let url = '/test';
-			let result = processLinkExpression(`@{${url}}`);
-			assert.strictEqual(result, url);
+			let result = processLinkExpression('@{/test}');
+			assert.strictEqual(result, '/test');
 		});
 
 		it('Append special parameters', function() {
 			let context = {
 				greeting: 'hello'
 			};
-			let url = '/test';
-			let params = {
-				param1: 'hard-coded-value',
-				param2: '${greeting}'
+			let result = processLinkExpression('@{/test(param1=hard-coded-value,param2=${greeting})}', context);
+			assert.strictEqual(result, '/test?param1=hard-coded-value&param2=hello');
+		});
+
+		it('Replace parameters in url', function() {
+			let context = {
+				greeting: 'hello'
 			};
-
-			let paramsAsLinkExpressionSyntax = Object.entries(params)
-				.map(([key, value]) => `${key}=${value}`)
-				.join(',');
-			let result = processLinkExpression(`@{${url}(${paramsAsLinkExpressionSyntax})}`, context);
-
-			let paramsAsQuerySyntax = Object.entries(params)
-				.map(([key, value]) => `${key}=${processExpression(value, context)}`)
-				.join('&');
-			assert.strictEqual(result, `${url}?${paramsAsQuerySyntax}`);
+			let result = processLinkExpression('@{/{part1}/{part2}/(part1=test,part2=${greeting})}', context);
+			assert.strictEqual(result, '/test/hello/');
 		});
 	});
 
