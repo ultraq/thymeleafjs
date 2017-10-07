@@ -61,6 +61,9 @@ describe('expressions/ExpressionProcessor', function() {
 
 
 	describe('Link expressions', function() {
+		const context = {
+			greeting: 'hello'
+		};
 
 		it('Leaves URLs without special parameters alone', function() {
 			let result = processLinkExpression('@{/test}');
@@ -68,19 +71,18 @@ describe('expressions/ExpressionProcessor', function() {
 		});
 
 		it('Append special parameters', function() {
-			let context = {
-				greeting: 'hello'
-			};
 			let result = processLinkExpression('@{/test(param1=hard-coded-value,param2=${greeting})}', context);
 			assert.strictEqual(result, '/test?param1=hard-coded-value&param2=hello');
 		});
 
 		it('Replace parameters in url', function() {
-			let context = {
-				greeting: 'hello'
-			};
 			let result = processLinkExpression('@{/{part1}/{part2}/(part1=test,part2=${greeting})}', context);
 			assert.strictEqual(result, '/test/hello/');
+		});
+
+		it('Mixed template and query parameters', function() {
+			let result = processLinkExpression('@{/test/{template}(template=${greeting},query=next)}', context);
+			assert.strictEqual(result, '/test/hello?query=next');
 		});
 	});
 
