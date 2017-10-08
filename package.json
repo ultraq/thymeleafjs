@@ -22,7 +22,7 @@
 		"prepublish": "npm run build"
 	},
 	"dependencies": {
-		"@ultraq/array-utils": "^1.0.0",
+		"@ultraq/array-utils": "^1.1.0",
 		"@ultraq/object-utils": "^1.1.0",
 		"@ultraq/string-utils": "^1.1.0",
 		"jsdom": "~9.12.0"
