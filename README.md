@@ -180,16 +180,21 @@ is capable, and thus incapable, of doing.
 
 ### Processors
 
+ - `th:attr` (attribute replacement)
+ - `th:each` (iteration)
+ - `th:href` (`href` attribute replacement w/ link expression support)
+ - `th:if` (conditional rendering)
+ - `th:src` (`src` attribute replacement w/ link expression support)
  - `th:text` (text replacement)
  - `th:utext` (text replacement, unescaped)
- - `th:attr` (attribute replacement)
- - `th:if` (conditional rendering)
- - `th:each` (iteration)
 
 ### Expressions
 
  - `${name}`/`${item.name}` (navigation expressions, references any object and
    its properties on the current context)
+ - `@{path{param=${item})}`/`@{path/{placeholder}/(placeholder=${item})}` (url
+   expressions, parameters become either search parameters in the URL, replace
+   placeholders in the URL, or both)
 
 
 Integration
