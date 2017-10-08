@@ -2,6 +2,14 @@
 Changelog
 =========
 
+### 0.7.0
+ - Add initial support for link expression syntax (#9)
+
+### 0.6.0
+ - Use `thjs` as the default prefix for the standard dialect.
+ - Export `Dialect` and `AttributeProcessor`, and `StandardDialect` classes.
+ - Add support for object navigation in expressions.
+
 ### 0.5.0
  - Add support for the `th:each`/`data-th-each` attribute processor.
 
