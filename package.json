@@ -1,6 +1,6 @@
 {
 	"name": "thymeleaf",
-	"version": "0.7.0",
+	"version": "0.7.1",
 	"description": "A basic implementation of the Thymeleaf templating engine in JavaScript",
 	"author": "Emanuel Rabina <emanuelrabina@gmail.com> (http://www.ultraq.net.nz/)",
 	"license": "Apache-2.0",
@@ -8,7 +8,7 @@
 		"type": "git",
 		"url": "https://github.com/ultraq/thymeleaf-js"
 	},
-	"main": "dist/thymeleaf.node.js",
+	"main": "lib/Thymeleaf.js",
 	"browser": "dist/thymeleaf.js",
 	"module": "src/Thymeleaf.js",
 	"scripts": {
