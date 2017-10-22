@@ -14,14 +14,27 @@
  * limitations under the License.
  */
 
+/* global ENVIRONMENT */
+
 /**
- * A mock implementation of Node's `fs` so that uses of it in a browser
- * environment output errors to the console.
+ * Return a promise of the file data at the given path in a node environment, or
+ * an instant rejection in a browser environment.
  * 
- * @author Emanuel Rabina
+ * @param {String} filePath
+ * @return {Promise}
  */
-export default {
-	readFile: function(filePath, callback) {
-		callback('Cannot use fs.readFile inside a browser');
-	}
-};
+export function readFile(filePath) {
+
+	return ENVIRONMENT === 'browser' ?
+		Promise.reject('Cannot use fs.readFile inside a browser') :
+		new Promise((resolve, reject) => {
+			require('fs').readFile(filePath, (error, data) => {
+				if (error) {
+					reject(new Error(error));
+				}
+				else {
+					resolve(data);
+				}
+			});
+		});
+}

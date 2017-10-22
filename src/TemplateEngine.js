@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-import StandardDialect from './standard/StandardDialect';
+import StandardDialect          from './standard/StandardDialect';
+import {deserialize, serialize} from './utilities/Dom';
+import {readFile}               from './utilities/Files';
 
-import {flatten}                  from '@ultraq/array-utils';
-import {merge}                    from '@ultraq/object-utils';
-import fs                         from 'fs';
-import {jsdom, serializeDocument} from 'jsdom';
+import {flatten} from '@ultraq/array-utils';
+import {merge}   from '@ultraq/object-utils';
 
 const DEFAULT_CONFIGURATION = {
 	dialects: [
@@ -125,13 +125,7 @@ export default class TemplateEngine {
 
 		return new Promise((resolve, reject) => {
 			try {
-				let document = jsdom(template, {
-					features: {
-						FetchExternalResources: false,
-						ProcessExternalResources: false
-					}
-				});
-
+				let document = deserialize(template);
 				let htmlElement = document.documentElement;
 				this.processNode(htmlElement, context);
 
@@ -142,7 +136,7 @@ export default class TemplateEngine {
 					htmlElement.removeAttribute(XML_NAMESPACE_ATTRIBUTE);
 				}
 
-				let documentAsString = serializeDocument(document);
+				let documentAsString = serialize(document);
 				resolve(documentAsString);
 			}
 			catch (exception) {
@@ -163,15 +157,9 @@ export default class TemplateEngine {
 	 */
 	processFile(filePath, context = {}) {
 
-		return new Promise((resolve, reject) => {
-			fs.readFile(filePath, (error, data) => {
-				if (error) {
-					reject(new Error(error));
-				}
-				else {
-					resolve(this.process(data, context));
-				}
+		return readFile(filePath)
+			.then(data => {
+				return this.process(data, context);
 			});
-		});
 	}
 }

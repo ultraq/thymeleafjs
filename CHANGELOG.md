@@ -2,8 +2,17 @@
 Changelog
 =========
 
+### 0.8.0
+ - Rework bundles so that they can target browser and node environments
+   separately
+   ([#12](https://github.com/ultraq/thymeleaf-js/issues/12))
+
+### 0.7.1
+ - Fix the `main` entry to point to the new CommonJS bundle.
+
 ### 0.7.0
- - Add initial support for link expression syntax (#9)
+ - Add initial support for link expression syntax
+   ([#9](https://github.com/ultraq/thymeleaf-js/issues/9))
 
 ### 0.6.0
  - Use `thjs` as the default prefix for the standard dialect.

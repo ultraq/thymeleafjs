@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+/* global ENVIRONMENT */
+
 /**
  * Removes all of an element's child nodes.
  * 
@@ -40,3 +42,37 @@ export function createThymeleafAttributeValue(element, attribute, value) {
 	element.setAttribute(attribute, value);
 	return element;
 }
+
+/**
+ * Use either JSDOM or the browser's native DOM parsing to deserialize the HTML
+ * string into a document fragment.
+ * 
+ * @param {String} htmlString
+ * @return {DocumentFragment}
+ */
+export function deserialize(htmlString) {
+
+	return ENVIRONMENT === 'browser' ?
+		document.createRange().createContextualFragment(htmlString) :
+		require('jsdom').jsdom(htmlString, {
+			features: {
+				FetchExternalResources: false,
+				ProcessExternalResources: false
+			}
+		});
+}
+
+/**
+ * Use either JSDOM or the browser's native DOM serialization to serialize a
+ * document fragment into an HTML string.
+ * 
+ * @param {DocumentFragment} documentFragment
+ * @return {String}
+ */
+export function serialize(documentFragment) {
+
+	return ENVIRONMENT === 'browser' ?
+		new XMLSerializer().serializeToString(documentFragment) :
+		require('jsdom').serializeDocument(documentFragment);
+}
+
