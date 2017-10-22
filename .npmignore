@@ -1,5 +1,6 @@
-/browser
+/src
 /test
 *.iml
 .*
-rollup.config.js
+mocha.config.js
+rollup.config.*

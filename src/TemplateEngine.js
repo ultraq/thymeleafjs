@@ -16,7 +16,6 @@
 
 import StandardDialect          from './standard/StandardDialect';
 import {deserialize, serialize} from './utilities/Dom';
-import {readFile}               from './utilities/Files';
 
 import {flatten} from '@ultraq/array-utils';
 import {merge}   from '@ultraq/object-utils';
@@ -126,14 +125,14 @@ export default class TemplateEngine {
 		return new Promise((resolve, reject) => {
 			try {
 				let document = deserialize(template);
-				let htmlElement = document.documentElement;
-				this.processNode(htmlElement, context);
+				let rootElement = document.firstElementChild;
+				this.processNode(rootElement, context);
 
 				// TODO: Special case, remove the xmlns:th namespace from the document.
 				//       This should be handled like in main Thymeleaf where it's just
 				//       another processor that runs on the document.
-				if (htmlElement.hasAttribute(XML_NAMESPACE_ATTRIBUTE)) {
-					htmlElement.removeAttribute(XML_NAMESPACE_ATTRIBUTE);
+				if (rootElement.hasAttribute(XML_NAMESPACE_ATTRIBUTE)) {
+					rootElement.removeAttribute(XML_NAMESPACE_ATTRIBUTE);
 				}
 
 				let documentAsString = serialize(document);
@@ -157,9 +156,18 @@ export default class TemplateEngine {
 	 */
 	processFile(filePath, context = {}) {
 
-		return readFile(filePath)
-			.then(data => {
-				return this.process(data, context);
+		/* global ENVIRONMENT */
+		return ENVIRONMENT === 'browser' ?
+			Promise.reject('Cannot use fs.readFile inside a browser') :
+			new Promise((resolve, reject) => {
+				require('fs').readFile(filePath, (error, data) => {
+					if (error) {
+						reject(new Error(error));
+					}
+					else {
+						resolve(this.process(data, context));
+					}
+				});
 			});
 	}
 }
