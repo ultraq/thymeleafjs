@@ -6,6 +6,7 @@ Changelog
  - Rework bundles so that they can target browser and node environments
    separately
    ([#12](https://github.com/ultraq/thymeleaf-js/issues/12))
+ - Other small changes to work on browsers more effectively
 
 ### 0.7.1
  - Fix the `main` entry to point to the new CommonJS bundle.
