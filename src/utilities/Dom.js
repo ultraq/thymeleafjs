@@ -53,6 +53,7 @@ export function createThymeleafAttributeValue(element, attribute, value) {
 export function deserialize(htmlString) {
 
 	return ENVIRONMENT === 'browser' ?
+		/* istanbul ignore next */
 		document.createRange().createContextualFragment(htmlString) :
 		require('jsdom').jsdom(htmlString, {
 			features: {
@@ -72,6 +73,7 @@ export function deserialize(htmlString) {
 export function serialize(documentFragment) {
 
 	return ENVIRONMENT === 'browser' ?
+		/* istanbul ignore next */
 		new XMLSerializer().serializeToString(documentFragment) :
 		require('jsdom').serializeDocument(documentFragment);
 }

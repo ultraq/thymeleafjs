@@ -57,6 +57,12 @@ describe('expressions/ExpressionProcessor', function() {
 			let result = processExpression('${greeting}');
 			assert.strictEqual(result, '');
 		});
+
+		it('Verbatim expressions (fallback)', function() {
+			let greeting = 'Hello!';
+			let result = processExpression(greeting);
+			assert.strictEqual(result, greeting);
+		});
 	});
 
 
@@ -84,6 +90,12 @@ describe('expressions/ExpressionProcessor', function() {
 			let result = processLinkExpression('@{/test/{template}(template=${greeting},query=next)}', context);
 			assert.strictEqual(result, '/test/hello?query=next');
 		});
+
+		it('Verbatim expressions (fallback)', function() {
+			let greeting = 'Hello!';
+			let result = processLinkExpression(greeting);
+			assert.strictEqual(result, greeting);
+		});
 	});
 
 
@@ -96,12 +108,11 @@ describe('expressions/ExpressionProcessor', function() {
 			assert.strictEqual(result.localValueName, 'item');
 			assert.strictEqual(result.iterable, items);
 		});
+
+		it('null result (fallback)', function() {
+			let result = processIterationExpression('Anything');
+			assert.strictEqual(result, null);
+		});
 	});
 
-
-	it('Verbatim expressions (fallback)', function() {
-		let greeting = 'Hello!';
-		let result = processExpression(greeting);
-		assert.strictEqual(result, greeting);
-	});
 });
