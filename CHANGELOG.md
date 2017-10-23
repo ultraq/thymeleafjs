@@ -2,6 +2,10 @@
 Changelog
 =========
 
+### 0.8.1
+ - Fix double-escaping of `thjs:text`/`data-thjs-text` and single-escaping of
+   `thjs:utext`/`data-thjs-utext` processors
+
 ### 0.8.0
  - Rework bundles so that they can target browser and node environments
    separately

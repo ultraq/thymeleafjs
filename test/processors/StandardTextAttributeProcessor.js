@@ -38,13 +38,13 @@ describe('processors/StandardTextAttributeProcessor', function() {
 		let text = 'Hello!';
 		let element = createThymeleafAttributeValue(div('Goodbye!'), attribute, text);
 		processor.process(element, attribute, text);
-		assert.strictEqual(element.textContent, text);
+		assert.strictEqual(element.innerHTML, text);
 	});
 
 	it('Escapes special HTML characters in the text content', function() {
 		let text = '<script>';
 		let element = createThymeleafAttributeValue(div('HTML stuffs'), attribute, text);
 		processor.process(element, attribute, text);
-		assert.strictEqual(element.textContent, '&lt;script&gt;');
+		assert.strictEqual(element.innerHTML, '&lt;script&gt;');
 	});
 });

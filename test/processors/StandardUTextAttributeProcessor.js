@@ -26,7 +26,7 @@ const {div} = hh(h);
 /**
  * Tests for the `th:utext` attribute processor.
  */
-describe('processors/StandardTextAttributeProcessor', function() {
+describe('processors/StandardUTextAttributeProcessor', function() {
 
 	let processor;
 	let attribute;
@@ -39,14 +39,14 @@ describe('processors/StandardTextAttributeProcessor', function() {
 		let text = 'Hello!';
 		let element = createThymeleafAttributeValue(div('Goodbye'), attribute, text);
 		processor.process(element, attribute, text);
-		assert.strictEqual(element.textContent, text);
+		assert.strictEqual(element.innerHTML, text);
 	});
 
 	it("Doesn't escape special HTML characters in the text content", function() {
-		let text = '<script>';
+		let text = '<script></script>';
 		let element = createThymeleafAttributeValue(div('HTML stuffs'), attribute, text);
 		processor.process(element, attribute, text);
-		assert.strictEqual(element.textContent, text);
+		assert.strictEqual(element.innerHTML, text);
 	});
 
 	it('Cleans up encountered attributes', function() {

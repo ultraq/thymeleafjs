@@ -17,8 +17,6 @@
 import AttributeProcessor  from '../../processors/AttributeProcessor';
 import {processExpression} from '../../expressions/ExpressionProcessor';
 
-import {escapeHtml} from '@ultraq/string-utils';
-
 const NAME = 'text';
 
 /**
@@ -55,7 +53,7 @@ class StandardTextAttributeProcessor extends AttributeProcessor {
 	 */
 	process(element, attribute, attributeValue, context) {
 
-		element.textContent = escapeHtml(processExpression(attributeValue, context));
+		element.textContent = processExpression(attributeValue, context);
 		element.removeAttribute(attribute);
 	}
 }

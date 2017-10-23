@@ -54,7 +54,7 @@ class StandardUTextAttributeProcessor extends AttributeProcessor {
 	 */
 	process(element, attribute, attributeValue, context) {
 
-		element.textContent = processExpression(attributeValue, context);
+		element.innerHTML = processExpression(attributeValue, context);
 		element.removeAttribute(attribute);
 	}
 }
