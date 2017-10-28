@@ -19,15 +19,15 @@ import {processExpression} from '../../expressions/ExpressionProcessor';
 
 import {escapeHtml} from '@ultraq/string-utils';
 
-const NAME = 'attr';
-
 /**
  * JS equivalent of Thymeleaf's `th:attr` attribute processor, modifies or sets
  * a target attribute to whatever its associated expression evaluates to.
  * 
  * @author Emanuel Rabina
  */
-class StandardAttrAttributeProcessor extends AttributeProcessor {
+export default class StandardAttrAttributeProcessor extends AttributeProcessor {
+
+	static NAME = 'attr';
 
 	/**
 	 * Constructor, set this processor to use the `attr` name and supplied prefix.
@@ -36,7 +36,7 @@ class StandardAttrAttributeProcessor extends AttributeProcessor {
 	 */
 	constructor(prefix) {
 
-		super(prefix, NAME);
+		super(prefix, StandardAttrAttributeProcessor.NAME);
 	}
 
 	/**
@@ -66,7 +66,3 @@ class StandardAttrAttributeProcessor extends AttributeProcessor {
 		element.removeAttribute(attribute);
 	}
 }
-
-StandardAttrAttributeProcessor.NAME = NAME;
-
-export default StandardAttrAttributeProcessor;

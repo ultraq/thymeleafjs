@@ -17,8 +17,6 @@
 import AttributeProcessor  from '../../processors/AttributeProcessor';
 import {processExpression} from '../../expressions/ExpressionProcessor';
 
-const NAME = 'utext';
-
 /**
  * JS equivalent of Thymeleaf's `th:utext` attribute processor, applies the
  * expression in the attribute value to the text content of the element being
@@ -26,7 +24,9 @@ const NAME = 'utext';
  * 
  * @author Emanuel Rabina
  */
-class StandardUTextAttributeProcessor extends AttributeProcessor {
+export default class StandardUTextAttributeProcessor extends AttributeProcessor {
+
+	static NAME = 'utext';
 
 	/**
 	 * Constructor, set this processor to use the `utext` name and supplied
@@ -36,7 +36,7 @@ class StandardUTextAttributeProcessor extends AttributeProcessor {
 	 */
 	constructor(prefix) {
 
-		super(prefix, NAME);
+		super(prefix, StandardUTextAttributeProcessor.NAME);
 	}
 
 	/**
@@ -58,7 +58,3 @@ class StandardUTextAttributeProcessor extends AttributeProcessor {
 		element.removeAttribute(attribute);
 	}
 }
-
-StandardUTextAttributeProcessor.NAME = NAME;
-
-export default StandardUTextAttributeProcessor;

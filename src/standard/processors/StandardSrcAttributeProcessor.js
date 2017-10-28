@@ -17,8 +17,6 @@
 import AttributeProcessor      from '../../processors/AttributeProcessor';
 import {processLinkExpression} from '../../expressions/ExpressionProcessor';
 
-export const NAME = 'src';
-
 /**
  * JS equivalent of Thymeleaf's `th:src` attribute processor, applies the
  * expression in the attribute value to the `src` attribute of the element
@@ -28,6 +26,8 @@ export const NAME = 'src';
  */
 export default class StandardSrcAttributeProcessor extends AttributeProcessor {
 
+	static NAME = 'src';
+
 	/**
 	 * Constructor, set this processor to use the `src` name and supplied prefix.
 	 * 
@@ -35,7 +35,7 @@ export default class StandardSrcAttributeProcessor extends AttributeProcessor {
 	 */
 	constructor(prefix) {
 
-		super(prefix, NAME);
+		super(prefix, StandardSrcAttributeProcessor.NAME);
 	}
 
 	/**

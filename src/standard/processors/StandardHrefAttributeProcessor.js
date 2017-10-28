@@ -17,8 +17,6 @@
 import AttributeProcessor      from '../../processors/AttributeProcessor';
 import {processLinkExpression} from '../../expressions/ExpressionProcessor';
 
-export const NAME = 'href';
-
 /**
  * JS equivalent of Thymeleaf's `th:href` attribute processor, applies the
  * expression in the attribute value to the `href` attribute of the element
@@ -28,6 +26,8 @@ export const NAME = 'href';
  */
 export default class StandardHrefAttributeProcessor extends AttributeProcessor {
 
+	static NAME = 'href';
+
 	/**
 	 * Constructor, set this processor to use the `href` name and supplied prefix.
 	 * 
@@ -35,7 +35,7 @@ export default class StandardHrefAttributeProcessor extends AttributeProcessor {
 	 */
 	constructor(prefix) {
 
-		super(prefix, NAME);
+		super(prefix, StandardHrefAttributeProcessor.NAME);
 	}
 
 	/**

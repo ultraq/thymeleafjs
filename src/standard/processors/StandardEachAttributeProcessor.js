@@ -17,8 +17,6 @@
 import AttributeProcessor           from '../../processors/AttributeProcessor';
 import {processIterationExpression} from '../../expressions/ExpressionProcessor';
 
-const NAME = 'each';
-
 /**
  * JS equivalent of Thymeleaf's `th:each` attribute processor, iterates over an
  * [iterable object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols),
@@ -26,7 +24,9 @@ const NAME = 'each';
  * 
  * @author Emanuel Rabina
  */
-class StandardEachAttributeProcessor extends AttributeProcessor {
+export default class StandardEachAttributeProcessor extends AttributeProcessor {
+
+	static NAME = 'each';
 
 	/**
 	 * Constructor, set this processor to use the `each` name and supplied prefix.
@@ -35,7 +35,7 @@ class StandardEachAttributeProcessor extends AttributeProcessor {
 	 */
 	constructor(prefix) {
 
-		super(prefix, NAME);
+		super(prefix, StandardEachAttributeProcessor.NAME);
 	}
 
 	/**
@@ -79,7 +79,3 @@ class StandardEachAttributeProcessor extends AttributeProcessor {
 		return true;
 	}
 }
-
-StandardEachAttributeProcessor.NAME = NAME;
-
-export default StandardEachAttributeProcessor;

@@ -18,8 +18,6 @@ import AttributeProcessor  from '../../processors/AttributeProcessor';
 import {processExpression} from '../../expressions/ExpressionProcessor';
 import {clearChildren}     from '../../utilities/Dom';
 
-const NAME = 'if';
-
 /**
  * JS equivalent of Thymeleaf's `th:if` attribute processor, includes or
  * excludes the current element and its children from rendering, depending on
@@ -27,7 +25,9 @@ const NAME = 'if';
  * 
  * @author Emanuel Rabina
  */
-class StandardIfAttributeProcessor extends AttributeProcessor {
+export default class StandardIfAttributeProcessor extends AttributeProcessor {
+
+	static NAME = 'if';
 
 	/**
 	 * Constructor, set this processor to use the `if` name and supplied prefix.
@@ -36,7 +36,7 @@ class StandardIfAttributeProcessor extends AttributeProcessor {
 	 */
 	constructor(prefix) {
 
-		super(prefix, NAME);
+		super(prefix, StandardIfAttributeProcessor.NAME);
 	}
 
 	/**
@@ -62,7 +62,3 @@ class StandardIfAttributeProcessor extends AttributeProcessor {
 		element.removeAttribute(attribute);
 	}
 }
-
-StandardIfAttributeProcessor.NAME = NAME;
-
-export default StandardIfAttributeProcessor;

@@ -17,8 +17,6 @@
 import AttributeProcessor  from '../../processors/AttributeProcessor';
 import {processExpression} from '../../expressions/ExpressionProcessor';
 
-const NAME = 'text';
-
 /**
  * JS equivalent of Thymeleaf's `th:text` attribute processor, applies the
  * expression in the attribute value to the text content of the element being
@@ -26,7 +24,9 @@ const NAME = 'text';
  * 
  * @author Emanuel Rabina
  */
-class StandardTextAttributeProcessor extends AttributeProcessor {
+export default class StandardTextAttributeProcessor extends AttributeProcessor {
+
+	static NAME = 'text';
 
 	/**
 	 * Constructor, set this processor to use the `text` name and supplied prefix.
@@ -35,7 +35,7 @@ class StandardTextAttributeProcessor extends AttributeProcessor {
 	 */
 	constructor(prefix) {
 
-		super(prefix, NAME);
+		super(prefix, StandardTextAttributeProcessor.NAME);
 	}
 
 	/**
@@ -57,7 +57,3 @@ class StandardTextAttributeProcessor extends AttributeProcessor {
 		element.removeAttribute(attribute);
 	}
 }
-
-StandardTextAttributeProcessor.NAME = NAME;
-
-export default StandardTextAttributeProcessor;
