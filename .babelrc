@@ -1,5 +1,31 @@
 {
 	"plugins": [
-		"transform-es2015-modules-commonjs"
-	]
+		"transform-class-properties",
+		"transform-object-rest-spread"
+	],
+	"env": {
+		"build": {
+			"presets": [
+				["env", {
+					"modules": false,
+					"targets": {
+						"browsers": [
+							"last 5 chrome versions",
+							"last 5 firefox versions"
+						],
+						"node": "6.5.0"
+					}
+				}]
+			]
+		},
+		"test": {
+			"presets": [
+				["env", {
+					"targets": {
+						"node": "6.5.0"
+					}
+				}]
+			]
+		}
+	}
 }
