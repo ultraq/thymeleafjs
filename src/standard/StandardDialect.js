@@ -14,24 +14,25 @@
  * limitations under the License.
  */
 
-import Dialect                         from '../dialects/Dialect';
-import StandardAttrAttributeProcessor  from './processors/StandardAttrAttributeProcessor';
-import StandardEachAttributeProcessor  from './processors/StandardEachAttributeProcessor';
-import StandardHrefAttributeProcessor  from './processors/StandardHrefAttributeProcessor';
-import StandardIfAttributeProcessor    from './processors/StandardIfAttributeProcessor';
-import StandardSrcAttributeProcessor   from './processors/StandardSrcAttributeProcessor';
-import StandardTextAttributeProcessor  from './processors/StandardTextAttributeProcessor';
-import StandardUTextAttributeProcessor from './processors/StandardUTextAttributeProcessor';
-
-const NAME           = 'Standard';
-const DEFAULT_PREFIX = 'thjs';
+import Dialect                            from '../dialects/Dialect';
+import StandardAttrAttributeProcessor     from './processors/StandardAttrAttributeProcessor';
+import StandardEachAttributeProcessor     from './processors/StandardEachAttributeProcessor';
+import StandardFragmentAttributeProcessor from './processors/StandardFragmentAttributeProcessor';
+import StandardHrefAttributeProcessor     from './processors/StandardHrefAttributeProcessor';
+import StandardIfAttributeProcessor       from './processors/StandardIfAttributeProcessor';
+import StandardSrcAttributeProcessor      from './processors/StandardSrcAttributeProcessor';
+import StandardTextAttributeProcessor     from './processors/StandardTextAttributeProcessor';
+import StandardUTextAttributeProcessor    from './processors/StandardUTextAttributeProcessor';
 
 /**
  * The out-of-the-box dialect for Thymeleaf, the "Standard Dialect".
  * 
  * @author Emanuel Rabina
  */
-class StandardDialect extends Dialect {
+export default class StandardDialect extends Dialect {
+
+	static NAME           = 'Standard';
+	static DEFAULT_PREFIX = 'thjs';
 
 	/**
 	 * Create an instance of this dialect with the name "Standard" and
@@ -39,9 +40,9 @@ class StandardDialect extends Dialect {
 	 * 
 	 * @param {String} [prefix='th']
 	 */
-	constructor(prefix = DEFAULT_PREFIX) {
+	constructor(prefix = StandardDialect.DEFAULT_PREFIX) {
 
-		super(NAME, prefix);
+		super(StandardDialect.NAME, prefix);
 	}
 
 	/**
@@ -62,12 +63,8 @@ class StandardDialect extends Dialect {
 			new StandardHrefAttributeProcessor(prefix),
 			new StandardSrcAttributeProcessor(prefix),
 			new StandardTextAttributeProcessor(prefix),
-			new StandardUTextAttributeProcessor(prefix)
+			new StandardUTextAttributeProcessor(prefix),
+			new StandardFragmentAttributeProcessor(prefix)
 		];
 	}
 }
-
-StandardDialect.NAME           = NAME;
-StandardDialect.DEFAULT_PREFIX = DEFAULT_PREFIX;
-
-export default StandardDialect;
