@@ -14,22 +14,12 @@
  * limitations under the License.
  */
 
+import {DEFAULT_CONFIGURATION}  from './Configurations';
 import StandardDialect          from './standard/StandardDialect';
 import {deserialize, serialize} from './utilities/Dom';
 
 import {flatten} from '@ultraq/array-utils';
 import {merge}   from '@ultraq/object-utils';
-
-const DEFAULT_CONFIGURATION = {
-	dialects: [
-		new StandardDialect()
-	]
-};
-export const STANDARD_CONFIGURATION = Object.assign({}, DEFAULT_CONFIGURATION, {
-	dialects: [
-		new StandardDialect('th')
-	]
-});
 
 const XML_NAMESPACE_ATTRIBUTE = `xmlns:${StandardDialect.DEFAULT_PREFIX}`;
 
