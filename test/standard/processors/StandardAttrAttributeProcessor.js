@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import StandardAttrAttributeProcessor  from '../../src/standard/processors/StandardAttrAttributeProcessor';
-import {createThymeleafAttributeValue} from '../../src/utilities/Dom';
+import StandardAttrAttributeProcessor  from '../../../src/standard/processors/StandardAttrAttributeProcessor';
+import {createThymeleafAttributeValue} from '../../../src/utilities/Dom';
 
 import {assert} from 'chai';
 import h        from 'hyperscript';
@@ -26,7 +26,7 @@ const {div} = hh(h);
 /**
  * Tests for the `th:attr` attribute processor.
  */
-describe('processors/StandardAttrAttributeProcessor', function() {
+describe('processors/standard/StandardAttrAttributeProcessor', function() {
 
 	let processor;
 	let attribute;

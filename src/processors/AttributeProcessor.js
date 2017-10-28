@@ -32,4 +32,26 @@ export default class AttributeProcessor {
 		this.prefix = prefix;
 		this.name   = name;
 	}
+
+	/**
+	 * Returns the attribute that was matched on the element.
+	 * 
+	 * @param {Element} element
+	 * @return {String}
+	 *   The attribute that matched processing by this processor, or `null` if no
+	 *   match was found.
+	 */
+	matches(element) {
+
+		let {prefix, name} = this;
+
+		let attribute = `${prefix}:${name}`;
+		if (!element.hasAttribute(attribute)) {
+			attribute = `data-${prefix}-${name}`;
+			if (!element.hasAttribute(attribute)) {
+				return null;
+			}
+		}
+		return attribute;
+	}
 }

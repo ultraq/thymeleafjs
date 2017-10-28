@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import StandardTUextAttributeProcessor from '../../src/standard/processors/StandardUTextAttributeProcessor';
-import {createThymeleafAttributeValue} from '../../src/utilities/Dom';
+import StandardTUextAttributeProcessor from '../../../src/standard/processors/StandardUTextAttributeProcessor';
+import {createThymeleafAttributeValue} from '../../../src/utilities/Dom';
 
 import {assert} from 'chai';
 import h        from 'hyperscript';
@@ -26,7 +26,7 @@ const {div} = hh(h);
 /**
  * Tests for the `th:utext` attribute processor.
  */
-describe('processors/StandardUTextAttributeProcessor', function() {
+describe('processors/standard/StandardUTextAttributeProcessor', function() {
 
 	let processor;
 	let attribute;

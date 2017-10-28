@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import StandardFragmentAttributeProcessor from '../../src/standard/processors/StandardFragmentAttributeProcessor';
-import {createThymeleafAttributeValue}    from '../../src/utilities/Dom';
+import StandardFragmentAttributeProcessor from '../../../src/standard/processors/StandardFragmentAttributeProcessor';
+import {createThymeleafAttributeValue}    from '../../../src/utilities/Dom';
 
 import {assert} from 'chai';
 import h        from 'hyperscript';
@@ -26,7 +26,7 @@ const {div} = hh(h);
 /**
  * Tests for the `th:fragment` attribute processor.
  */
-describe('processors/StandardFragmentAttributeProcessor', function() {
+describe('processors/standard/StandardFragmentAttributeProcessor', function() {
 
 	let processor;
 	let attribute;

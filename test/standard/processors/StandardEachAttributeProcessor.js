@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import StandardEachAttributeProcessor  from '../../src/standard/processors/StandardEachAttributeProcessor';
-import {createThymeleafAttributeValue} from '../../src/utilities/Dom';
+import StandardEachAttributeProcessor  from '../../../src/standard/processors/StandardEachAttributeProcessor';
+import {createThymeleafAttributeValue} from '../../../src/utilities/Dom';
 
 import {range}  from '@ultraq/array-utils';
 import {assert} from 'chai';
@@ -27,7 +27,7 @@ const {ul, li} = hh(h);
 /**
  * Tests for the `th:each` attribute processor.
  */
-describe('processors/StandardEachAttributeProcessor', function() {
+describe('processors/standard/StandardEachAttributeProcessor', function() {
 
 	let processor, attribute;
 	before(function() {
