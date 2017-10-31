@@ -60,7 +60,8 @@ export default class StandardAttrAttributeProcessor extends AttributeProcessor {
 				element.setAttribute(attributeParts[0], escapeHtml(processExpression(attributeParts[1], context)));
 			});
 		}
-		else {
+		/* istanbul ignore next */
+		else if (process.env.NODE_ENV !== 'test') {
 			console.warn(`Value to ${attribute}, ${attributeValue}, doesn't seem to contain an attribute assignment expression.  Ignoring.`);
 		}
 		element.removeAttribute(attribute);
