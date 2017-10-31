@@ -17,9 +17,8 @@
 import StandardSrcAttributeProcessor   from '../../../src/standard/processors/StandardSrcAttributeProcessor';
 import {createThymeleafAttributeValue} from '../../../src/utilities/Dom';
 
-import {assert} from 'chai';
-import h        from 'hyperscript';
-import hh       from 'hyperscript-helpers';
+import h  from 'hyperscript';
+import hh from 'hyperscript-helpers';
 
 const {a} = hh(h);
 
@@ -30,18 +29,18 @@ describe('processors/standard/StandardSrcAttributeProcessor', function() {
 
 	let processor;
 	let attribute;
-	before(function() {
+	beforeAll(function() {
 		processor = new StandardSrcAttributeProcessor('test');
 		attribute = `${processor.name}:${processor.prefix}`;
 	});
 
-	it("Replaces an element's `src` attribute", function() {
+	test("Replaces an element's `src` attribute", function() {
 		let url = '/test';
 		let attributeValue = `@{${url}}`;
 		let element = createThymeleafAttributeValue(a({ src: '/to-be-replaced' }), attribute, attributeValue);
 
 		processor.process(element, attribute, attributeValue);
 
-		assert.strictEqual(element.src, url);
+		expect(element.src).toBe(url);
 	});
 });

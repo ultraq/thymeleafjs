@@ -17,9 +17,8 @@
 import StandardIfAttributeProcessor    from '../../../src/standard/processors/StandardIfAttributeProcessor';
 import {createThymeleafAttributeValue} from '../../../src/utilities/Dom';
 
-import {assert} from 'chai';
-import h        from 'hyperscript';
-import hh       from 'hyperscript-helpers';
+import h  from 'hyperscript';
+import hh from 'hyperscript-helpers';
 
 const {div, p} = hh(h);
 
@@ -29,28 +28,28 @@ const {div, p} = hh(h);
 describe('processors/standard/StandardIfAttributeProcessor', function() {
 
 	let attribute, processor;
-	before(function() {
+	beforeAll(function() {
 		processor = new StandardIfAttributeProcessor('test');
 		attribute = `${processor.name}:${processor.prefix}`;
 	});
 
-	it('Renders the element and children if the expression is truthy', function() {
+	test('Renders the element and children if the expression is truthy', function() {
 		let expression = '${value}';
 		let child = createThymeleafAttributeValue(p('Hello!'), attribute, expression);
 		let parent = div([
 			child
 		]);
 		processor.process(child, attribute, expression, { value: true });
-		assert.strictEqual(parent.childNodes.length, 1);
+		expect(parent.childNodes).toHaveLength(1);
 	});
 
-	it('Removes the element and children if the expression is falsey', function() {
+	test('Removes the element and children if the expression is falsey', function() {
 		let expression = '${value}';
 		let childElement = createThymeleafAttributeValue(p('Hello!'), attribute, expression);
 		let element = div([
 			childElement
 		]);
 		processor.process(childElement, 'th:if', expression, { value: false });
-		assert.strictEqual(element.childNodes.length, 0);
+		expect(element.childNodes).toHaveLength(0);
 	});
 });

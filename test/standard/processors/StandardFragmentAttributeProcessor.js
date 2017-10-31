@@ -17,9 +17,8 @@
 import StandardFragmentAttributeProcessor from '../../../src/standard/processors/StandardFragmentAttributeProcessor';
 import {createThymeleafAttributeValue}    from '../../../src/utilities/Dom';
 
-import {assert} from 'chai';
-import h        from 'hyperscript';
-import hh       from 'hyperscript-helpers';
+import h  from 'hyperscript';
+import hh from 'hyperscript-helpers';
 
 const {div} = hh(h);
 
@@ -30,12 +29,12 @@ describe('processors/standard/StandardFragmentAttributeProcessor', function() {
 
 	let processor;
 	let attribute;
-	before(function() {
+	beforeAll(function() {
 		processor = new StandardFragmentAttributeProcessor('test');
 		attribute = `${processor.name}:${processor.prefix}`;
 	});
 
-	it('Adds encountered fragments to the context (no fragments list)', function() {
+	test('Adds encountered fragments to the context (no fragments list)', function() {
 		let attributeValue = 'my-fragment';
 		let element = createThymeleafAttributeValue(div(), attribute, attributeValue);
 
@@ -43,11 +42,14 @@ describe('processors/standard/StandardFragmentAttributeProcessor', function() {
 		processor.process(element, attribute, attributeValue, context);
 
 		let {fragments} = context;
-		assert.isArray(fragments);
-		assert.include(fragments[0], { name: attributeValue });
+		expect(fragments).toBeArray();
+		expect(fragments[0]).toEqual({
+			name: attributeValue,
+			element
+		});
 	});
 
-	it('Adds encountered fragments to the context (existing fragments list)', function() {
+	test('Adds encountered fragments to the context (existing fragments list)', function() {
 		let attributeValue = 'my-fragment';
 		let element = createThymeleafAttributeValue(div(), attribute, attributeValue);
 
@@ -57,7 +59,10 @@ describe('processors/standard/StandardFragmentAttributeProcessor', function() {
 		processor.process(element, attribute, attributeValue, context);
 
 		let {fragments} = context;
-		assert.isArray(fragments);
-		assert.include(fragments[0], { name: attributeValue });
+		expect(fragments).toBeArray();
+		expect(fragments[0]).toEqual({
+			name: attributeValue,
+			element
+		});
 	});
 });

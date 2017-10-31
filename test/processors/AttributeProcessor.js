@@ -17,9 +17,8 @@
 import AttributeProcessor              from '../../src/processors/AttributeProcessor';
 import {createThymeleafAttributeValue} from '../../src/utilities/Dom';
 
-import {assert} from 'chai';
-import h        from 'hyperscript';
-import hh       from 'hyperscript-helpers';
+import h  from 'hyperscript';
+import hh from 'hyperscript-helpers';
 
 const {div} = hh(h);
 
@@ -32,27 +31,27 @@ describe('processors/AttributeProcessor', function() {
 	const NAME   = 'greeting';
 
 	let processor;
-	before(function() {
+	beforeAll(function() {
 		processor = new AttributeProcessor(PREFIX, NAME);
 	});
 
-	it('Match XML attributes', function() {
+	test('Match XML attributes', function() {
 		let attribute = `${PREFIX}:${NAME}`;
 		let element = createThymeleafAttributeValue(div(), attribute, 'hello');
 		let match = processor.matches(element);
-		assert.strictEqual(match, attribute);
+		expect(match).toBe(attribute);
 	});
 
-	it('Match data- attributes', function() {
+	test('Match data- attributes', function() {
 		let attribute = `data-${PREFIX}-${NAME}`;
 		let element = createThymeleafAttributeValue(div(), attribute, 'hello');
 		let match = processor.matches(element);
-		assert.strictEqual(match, attribute);
+		expect(match).toBe(attribute);
 	});
 
-	it('Return `null` if no match', function() {
+	test('Return `null` if no match', function() {
 		let element = createThymeleafAttributeValue(div(), 'test:something-else', 'hello');
 		let match = processor.matches(element);
-		assert.isNull(match);
+		expect(match).toBeNull();
 	});
 });

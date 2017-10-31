@@ -17,7 +17,6 @@
 import {TemplateEngine} from '../src/Thymeleaf';
 
 import {range}  from '@ultraq/array-utils';
-import {assert} from 'chai';
 import fs       from 'fs';
 import path     from 'path';
 
@@ -26,7 +25,7 @@ import path     from 'path';
  */
 describe('TemplateEngine', function() {
 
-	it('#processFile', function() {
+	test('#processFile', function() {
 		let inputTemplatePath = path.join(__dirname, 'template.html');
 
 		let templateEngine = new TemplateEngine();
@@ -38,7 +37,7 @@ describe('TemplateEngine', function() {
 		})
 			.then(template => {
 				let expectedTemplate = fs.readFileSync(path.join(__dirname, 'template-expected.html')).toString();
-				assert.strictEqual(template.replace(/(\t|\n)/g, ''), expectedTemplate.replace(/(\t|\n)/g, ''));
+				expect(template.replace(/(\t|\n)/g, '')).toBe(expectedTemplate.replace(/(\t|\n)/g, ''));
 			});
 	});
 });

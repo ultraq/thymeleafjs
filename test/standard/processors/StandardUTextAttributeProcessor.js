@@ -17,9 +17,8 @@
 import StandardTUextAttributeProcessor from '../../../src/standard/processors/StandardUTextAttributeProcessor';
 import {createThymeleafAttributeValue} from '../../../src/utilities/Dom';
 
-import {assert} from 'chai';
-import h        from 'hyperscript';
-import hh       from 'hyperscript-helpers';
+import h  from 'hyperscript';
+import hh from 'hyperscript-helpers';
 
 const {div} = hh(h);
 
@@ -30,28 +29,28 @@ describe('processors/standard/StandardUTextAttributeProcessor', function() {
 
 	let processor;
 	let attribute;
-	before(function() {
+	beforeAll(function() {
 		processor = new StandardTUextAttributeProcessor('test');
 		attribute = `${processor.prefix}:${processor.name}`;
 	});
 
-	it("Replaces an element's text content", function() {
+	test("Replaces an element's text content", function() {
 		let text = 'Hello!';
 		let element = createThymeleafAttributeValue(div('Goodbye'), attribute, text);
 		processor.process(element, attribute, text);
-		assert.strictEqual(element.innerHTML, text);
+		expect(element.innerHTML).toBe(text);
 	});
 
-	it("Doesn't escape special HTML characters in the text content", function() {
+	test("Doesn't escape special HTML characters in the text content", function() {
 		let text = '<script></script>';
 		let element = createThymeleafAttributeValue(div('HTML stuffs'), attribute, text);
 		processor.process(element, attribute, text);
-		assert.strictEqual(element.innerHTML, text);
+		expect(element.innerHTML).toBe(text);
 	});
 
-	it('Cleans up encountered attributes', function() {
+	test('Cleans up encountered attributes', function() {
 		let element = createThymeleafAttributeValue(div(), attribute, '');
 		processor.process(element, attribute, '');
-		assert.isFalse(element.hasAttribute(attribute));
+		expect(element.hasAttribute(attribute)).toBeFalse();
 	});
 });

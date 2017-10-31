@@ -20,8 +20,6 @@ import {
 	processLinkExpression
 } from '../../src/expressions/ExpressionProcessor';
 
-import {assert} from 'chai';
-
 /**
  * Tests for the expression processor.
  */
@@ -38,30 +36,30 @@ describe('expressions/ExpressionProcessor', function() {
 			}
 		};
 
-		it('Simple object navigation', function() {
+		test('Simple object navigation', function() {
 			let result = processExpression('${greeting}', context);
-			assert.strictEqual(result, context.greeting);
+			expect(result).toBe(context.greeting);
 		});
 
-		it('Complex object navigation', function() {
+		test('Complex object navigation', function() {
 			let result = processExpression('${greetings.hello}', context);
-			assert.strictEqual(result, context.greetings.hello);
+			expect(result).toBe(context.greetings.hello);
 		});
 
-		it('null/undefined value handling', function() {
+		test('null/undefined value handling', function() {
 			let result = processExpression('${greetings.goodnight}', context);
-			assert.strictEqual(result, '');
+			expect(result).toBe('');
 		});
 
-		it('No context handling', function() {
+		test('No context handling', function() {
 			let result = processExpression('${greeting}');
-			assert.strictEqual(result, '');
+			expect(result).toBe('');
 		});
 
-		it('Verbatim expressions (fallback)', function() {
+		test('Verbatim expressions (fallback)', function() {
 			let greeting = 'Hello!';
 			let result = processExpression(greeting);
-			assert.strictEqual(result, greeting);
+			expect(result).toBe(greeting);
 		});
 	});
 
@@ -71,47 +69,47 @@ describe('expressions/ExpressionProcessor', function() {
 			greeting: 'hello'
 		};
 
-		it('Leaves URLs without special parameters alone', function() {
+		test('Leaves URLs without special parameters alone', function() {
 			let result = processLinkExpression('@{/test}');
-			assert.strictEqual(result, '/test');
+			expect(result).toBe('/test');
 		});
 
-		it('Append special parameters', function() {
+		test('Append special parameters', function() {
 			let result = processLinkExpression('@{/test(param1=hard-coded-value,param2=${greeting})}', context);
-			assert.strictEqual(result, '/test?param1=hard-coded-value&param2=hello');
+			expect(result).toBe('/test?param1=hard-coded-value&param2=hello');
 		});
 
-		it('Replace parameters in url', function() {
+		test('Replace parameters in url', function() {
 			let result = processLinkExpression('@{/{part1}/{part2}/(part1=test,part2=${greeting})}', context);
-			assert.strictEqual(result, '/test/hello/');
+			expect(result).toBe('/test/hello/');
 		});
 
-		it('Mixed template and query parameters', function() {
+		test('Mixed template and query parameters', function() {
 			let result = processLinkExpression('@{/test/{template}(template=${greeting},query=next)}', context);
-			assert.strictEqual(result, '/test/hello?query=next');
+			expect(result).toBe('/test/hello?query=next');
 		});
 
-		it('Verbatim expressions (fallback)', function() {
+		test('Verbatim expressions (fallback)', function() {
 			let greeting = 'Hello!';
 			let result = processLinkExpression(greeting);
-			assert.strictEqual(result, greeting);
+			expect(result).toBe(greeting);
 		});
 	});
 
 
 	describe('Iteration expressions', function() {
 
-		it('Value and local name mapping', function() {
+		test('Value and local name mapping', function() {
 			let items = ['a', 'b', 'c'];
 			let expression = 'item: ${items}';
 			let result = processIterationExpression(expression, { items });
-			assert.strictEqual(result.localValueName, 'item');
-			assert.strictEqual(result.iterable, items);
+			expect(result.localValueName).toBe('item');
+			expect(result.iterable).toBe(items);
 		});
 
-		it('null result (fallback)', function() {
+		test('null result (fallback)', function() {
 			let result = processIterationExpression('Anything');
-			assert.strictEqual(result, null);
+			expect(result).toBe(null);
 		});
 	});
 

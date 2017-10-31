@@ -17,10 +17,9 @@
 import StandardEachAttributeProcessor  from '../../../src/standard/processors/StandardEachAttributeProcessor';
 import {createThymeleafAttributeValue} from '../../../src/utilities/Dom';
 
-import {range}  from '@ultraq/array-utils';
-import {assert} from 'chai';
-import h        from 'hyperscript';
-import hh       from 'hyperscript-helpers';
+import {range} from '@ultraq/array-utils';
+import h       from 'hyperscript';
+import hh      from 'hyperscript-helpers';
 
 const {ul, li} = hh(h);
 
@@ -30,12 +29,12 @@ const {ul, li} = hh(h);
 describe('processors/standard/StandardEachAttributeProcessor', function() {
 
 	let processor, attribute;
-	before(function() {
+	beforeAll(function() {
 		processor = new StandardEachAttributeProcessor('test');
 		attribute = `${processor.name}:${processor.prefix}`;
 	});
 
-	it('Repeats an element for every item in an iterable', function() {
+	test('Repeats an element for every item in an iterable', function() {
 		let iterationExpression = 'items: ${items}';
 		let items = range(1, 10);
 		let child = createThymeleafAttributeValue(li(), attribute, iterationExpression);
@@ -44,7 +43,7 @@ describe('processors/standard/StandardEachAttributeProcessor', function() {
 		]);
 		let result = processor.process(child, attribute, iterationExpression, { items });
 
-		assert.isTrue(result);
-		assert.strictEqual(parent.childElementCount, 9);
+		expect(result).toBeTrue();
+		expect(parent.childElementCount).toBe(9);
 	});
 });

@@ -1,4 +1,0 @@
---require babel-register
---require jsdom-global/register
---require ./mocha.config.js
---recursive

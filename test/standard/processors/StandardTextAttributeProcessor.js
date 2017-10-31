@@ -17,9 +17,8 @@
 import StandardTextAttributeProcessor  from '../../../src/standard/processors/StandardTextAttributeProcessor';
 import {createThymeleafAttributeValue} from '../../../src/utilities/Dom';
 
-import {assert} from 'chai';
-import h        from 'hyperscript';
-import hh       from 'hyperscript-helpers';
+import h  from 'hyperscript';
+import hh from 'hyperscript-helpers';
 
 const {div} = hh(h);
 
@@ -29,22 +28,22 @@ const {div} = hh(h);
 describe('processors/standard/StandardTextAttributeProcessor', function() {
 
 	let attribute, processor;
-	before(function() {
+	beforeAll(function() {
 		processor = new StandardTextAttributeProcessor('test');
 		attribute = `${processor.name}:${processor.prefix}`;
 	});
 
-	it("Replaces an element's text content", function() {
+	test("Replaces an element's text content", function() {
 		let text = 'Hello!';
 		let element = createThymeleafAttributeValue(div('Goodbye!'), attribute, text);
 		processor.process(element, attribute, text);
-		assert.strictEqual(element.innerHTML, text);
+		expect(element.innerHTML).toBe(text);
 	});
 
-	it('Escapes special HTML characters in the text content', function() {
+	test('Escapes special HTML characters in the text content', function() {
 		let text = '<script>';
 		let element = createThymeleafAttributeValue(div('HTML stuffs'), attribute, text);
 		processor.process(element, attribute, text);
-		assert.strictEqual(element.innerHTML, '&lt;script&gt;');
+		expect(element.innerHTML).toBe('&lt;script&gt;');
 	});
 });
