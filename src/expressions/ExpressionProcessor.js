@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 
-import {remove} from '@ultraq/array-utils';
+import {remove}   from '@ultraq/array-utils';
+import {navigate} from '@ultraq/object-utils';
 
 // TODO: This should really be done using a parser generator like PEG.js so that
 //       we can discern between the various expression syntaxes and so execute
@@ -34,10 +35,7 @@ export function processExpression(expression, context = {}) {
 	let result = /\$\{(.+)\}/.exec(expression);
 	if (result) {
 		let [, query] = result;
-		return query.split('.')
-			.reduce((previousValue, queryToken) => {
-				return previousValue && previousValue[queryToken];
-			}, context) || '';
+		return navigate(context, query) || '';
 	}
 	return expression;
 }
