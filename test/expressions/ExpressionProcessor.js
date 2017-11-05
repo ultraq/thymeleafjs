@@ -36,13 +36,13 @@ describe('expressions/ExpressionProcessor', function() {
 			}
 		};
 
-		test('Simple object navigation', function() {
-			let result = processExpression('${greeting}', context);
-			expect(result).toBe(context.greeting);
-		});
+		test('Expressions get passed to underlying function', function() {
+			let result;
 
-		test('Complex object navigation', function() {
-			let result = processExpression('${greetings.hello}', context);
+			result = processExpression('${greeting}', context);
+			expect(result).toBe(context.greeting);
+
+			result = processExpression('${greetings.hello', context);
 			expect(result).toBe(context.greetings.hello);
 		});
 
