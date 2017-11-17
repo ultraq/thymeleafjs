@@ -195,6 +195,8 @@ is capable, and thus incapable, of doing.
  - `@{path{param=${item})}`/`@{path/{placeholder}/(placeholder=${item})}` (url
    expressions, parameters become either search parameters in the URL, replace
    placeholders in the URL, or both)
+ - `~{template::fragment}` (fragment expressions, references an element in
+   another template)
 
 
 Integration

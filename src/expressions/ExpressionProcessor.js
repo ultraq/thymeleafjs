@@ -41,6 +41,47 @@ export function processExpression(expression, context = {}) {
 }
 
 /**
+ * Parses and evaluates a Thymeleaf fragment expression.
+ * 
+ * @param {String} expression
+ * @param {Object} [context={}]
+ * @return {Object} Information about the fragment expression.
+ */
+export function processFragmentExpression(expression, context = {}) {
+
+	let result = /~{ ?(.*?) ?:: ?(.*?)(\(.*\))? ?}/.exec(expression);
+	if (result) {
+		let [, templateName, fragmentName, parameters] = result;
+		return {
+			templateName,
+			fragmentName,
+			parameters
+		};
+	}
+	return null;
+}
+
+/**
+ * Parses and evaluates a Thymeleaf iteration expression.
+ * 
+ * @param {String} expression
+ * @param {Object} [context={}]
+ * @return {Object} Information about the iteration expression.
+ */
+export function processIterationExpression(expression, context = {}) {
+
+	let result = /(.+)\s*:\s*(\$\{.+\})/.exec(expression);
+	if (result) {
+		let [, localValueName, navigationExpression] = result;
+		return {
+			localValueName,
+			iterable: processExpression(navigationExpression, context)
+		};
+	}
+	return null;
+}
+
+/**
  * Parses and evaluates a Thymeleaf link expression.
  * 
  * @param {String} expression
@@ -81,24 +122,4 @@ export function processLinkExpression(expression, context = {}) {
 		return url;
 	}
 	return expression;
-}
-
-/**
- * Parses and evaluates a Thymeleaf iteration expression.
- * 
- * @param {String} expression
- * @param {Object} [context={}]
- * @return {Object} Information about the iteration expression.
- */
-export function processIterationExpression(expression, context = {}) {
-
-	let result = /(.+)\s*:\s*(\$\{.+\})/.exec(expression);
-	if (result) {
-		let [, localValueName, navigationExpression] = result;
-		return {
-			localValueName,
-			iterable: processExpression(navigationExpression, context)
-		};
-	}
-	return null;
 }

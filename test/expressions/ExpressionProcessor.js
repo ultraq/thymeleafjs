@@ -16,6 +16,7 @@
 
 import {
 	processExpression,
+	processFragmentExpression,
 	processIterationExpression,
 	processLinkExpression
 } from '../../src/expressions/ExpressionProcessor';
@@ -42,7 +43,7 @@ describe('expressions/ExpressionProcessor', function() {
 			result = processExpression('${greeting}', context);
 			expect(result).toBe(context.greeting);
 
-			result = processExpression('${greetings.hello', context);
+			result = processExpression('${greetings.hello}', context);
 			expect(result).toBe(context.greetings.hello);
 		});
 
@@ -60,6 +61,40 @@ describe('expressions/ExpressionProcessor', function() {
 			let greeting = 'Hello!';
 			let result = processExpression(greeting);
 			expect(result).toBe(greeting);
+		});
+	});
+
+
+	describe('Fragment expressions', function() {
+
+		test('Extracts the template and fragment name parts', function() {
+			let result = processFragmentExpression('~{template :: fragment}');
+			expect(result).toEqual({
+				templateName: 'template',
+				fragmentName: 'fragment'
+			});
+		});
+
+		test('null result (fallback)', function() {
+			let result = processFragmentExpression('Anything');
+			expect(result).toBe(null);
+		});
+	});
+
+
+	describe('Iteration expressions', function() {
+
+		test('Value and local name mapping', function() {
+			let items = ['a', 'b', 'c'];
+			let expression = 'item: ${items}';
+			let result = processIterationExpression(expression, { items });
+			expect(result.localValueName).toBe('item');
+			expect(result.iterable).toBe(items);
+		});
+
+		test('null result (fallback)', function() {
+			let result = processIterationExpression('Anything');
+			expect(result).toBe(null);
 		});
 	});
 
@@ -93,23 +128,6 @@ describe('expressions/ExpressionProcessor', function() {
 			let greeting = 'Hello!';
 			let result = processLinkExpression(greeting);
 			expect(result).toBe(greeting);
-		});
-	});
-
-
-	describe('Iteration expressions', function() {
-
-		test('Value and local name mapping', function() {
-			let items = ['a', 'b', 'c'];
-			let expression = 'item: ${items}';
-			let result = processIterationExpression(expression, { items });
-			expect(result.localValueName).toBe('item');
-			expect(result.iterable).toBe(items);
-		});
-
-		test('null result (fallback)', function() {
-			let result = processIterationExpression('Anything');
-			expect(result).toBe(null);
 		});
 	});
 
