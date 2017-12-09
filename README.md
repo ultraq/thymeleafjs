@@ -22,6 +22,21 @@ And then, finally, I can use it with a Node server like [Express](http://express
 and achieve my Thymeleaf-in-JS dream :)
 
 
+Current goals
+-------------
+
+This project already works very well as a server-side template renderer, but now
+I'm trying to get it to play nice with the original Thymeleaf, ie: render
+templates on the server with Thymeleaf, then re-render the templates on the
+client using Thymeleaf JS with *the same template code* (I've been calling this
+feature "isomorphic templating", akin to isomorphic JavaScript where the same
+code is run on the client and server).
+
+To help with this, I've written a simple TODO app in Spring Boot w/ Thymeleaf
+and am using ThymeleafJS to test and develop this feature.  The TODO app can be
+found here: https://github.com/ultraq/thymeleafjs-todo
+
+
 Natural Templates
 -----------------
 
