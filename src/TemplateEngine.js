@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-import {DEFAULT_CONFIGURATION}      from './Configurations';
-import {matchingAttributeProcessor} from './processors/Matcher';
-import StandardDialect              from './standard/StandardDialect';
-import {deserialize, serialize}     from './utilities/Dom';
+import {DEFAULT_CONFIGURATION}  from './Configurations';
+import Matcher                  from './processors/Matcher';
+import StandardDialect          from './standard/StandardDialect';
+import {deserialize, serialize} from './utilities/Dom';
 
 import {flatten} from '@ultraq/array-utils';
 import {merge}   from '@ultraq/object-utils';
@@ -47,9 +47,9 @@ export default class TemplateEngine {
 	 */
 	constructor({dialects, isomorphic, templateResolver} = DEFAULT_CONFIGURATION) {
 
-		this.dialects   = dialects;
-		this.isomorphic = isomorphic;
-		this.processors = flatten(dialects.map(dialect => dialect.processors));
+		this.dialects         = dialects;
+		this.isomorphic       = isomorphic;
+		this.processors       = flatten(dialects.map(dialect => dialect.processors));
 		this.templateResolver = templateResolver;
 	}
 
@@ -71,13 +71,13 @@ export default class TemplateEngine {
 		let localVariables = JSON.parse(element.getAttribute('data-thymeleaf-local-variables'));
 		element.removeAttribute('data-thymeleaf-local-variables');
 		let localContext = merge({}, context, localVariables);
+		let matcher = new Matcher(context, this.isomorphic);
 
 		// Process the current element, store whether or not reprocessing of the
 		// parent needs to happen before moving on to this element's children.
 		let requireReprocessing = this.processors
 			.map(processor => {
-				// let attribute = processor.matches(element);
-				let attribute = matchingAttributeProcessor(element, processor, this.isomorphic);
+				let attribute = matcher.matches(element, processor);
 				return attribute ?
 					processor.process(element, attribute, element.getAttribute(attribute), localContext) :
 					false;
@@ -119,7 +119,7 @@ export default class TemplateEngine {
 				let rootElement = document.firstElementChild;
 				this.processNode(rootElement, {
 					...context,
-					dialects: this.dialects,
+					dialects:         this.dialects,
 					templateResolver: this.templateResolver
 				});
 

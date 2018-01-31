@@ -14,34 +14,49 @@
  * limitations under the License.
  */
 
-/**
- * Return the matching attribute of an element that a processor can work over.
- * 
- * @param {Element} element
- * @param {AttributeProcessor} processor
- * @param {Object} isomorphic
- * @return {String}
- *   The attribute that matched processing by this processor, or `null` if no
- *   match was found.
- */
-export function matchingAttributeProcessor(element, processor, isomorphic) {
+export default class Matcher {
 
-	let prefixes = [].concat(
-		isomorphic ? isomorphic.prefix : [],
-		processor.prefix
-	);
-	let {name} = processor;
+	/**
+	 * Create a matcher to work with the current context and isomorphic processing
+	 * settings.
+	 * 
+	 * @param {Object} context
+	 * @param {Object} isomorphic
+	 */
+	constructor(context, isomorphic) {
 
-	for (let prefix of prefixes) {
-		let attribute;
-		attribute = `${prefix}:${name}`;
-		if (element.hasAttribute(attribute)) {
-			return attribute;
-		}
-		attribute = `data-${prefix}-${name}`;
-		if (element.hasAttribute(attribute)) {
-			return attribute;
-		}
+		this.context    = context;
+		this.isomorphic = isomorphic;
 	}
-	return null;
+
+	/**
+	 * Return the matching attribute of an element that a processor can work over.
+	 * 
+	 * @param {Element} element
+	 * @param {AttributeProcessor} processor
+	 * @return {String}
+	 *   The attribute that matched processing by this processor, or `null` if no
+	 *   match was found.
+	 */
+	matches(element, processor) {
+
+		let prefixes = [].concat(
+			this.isomorphic ? this.isomorphic.prefix : [],
+			processor.prefix
+		);
+		let {name} = processor;
+
+		for (let prefix of prefixes) {
+			let attribute;
+			attribute = `${prefix}:${name}`;
+			if (element.hasAttribute(attribute)) {
+				return attribute;
+			}
+			attribute = `data-${prefix}-${name}`;
+			if (element.hasAttribute(attribute)) {
+				return attribute;
+			}
+		}
+		return null;
+	}
 }
