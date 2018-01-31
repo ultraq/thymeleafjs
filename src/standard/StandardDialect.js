@@ -24,6 +24,7 @@ import StandardInsertAttributeProcessor   from './processors/StandardInsertAttri
 import StandardSrcAttributeProcessor      from './processors/StandardSrcAttributeProcessor';
 import StandardTextAttributeProcessor     from './processors/StandardTextAttributeProcessor';
 import StandardUTextAttributeProcessor    from './processors/StandardUTextAttributeProcessor';
+import StandardValueAttributeProcessor    from './processors/StandardValueAttributeProcessor';
 
 /**
  * The out-of-the-box dialect for Thymeleaf, the "Standard Dialect".
@@ -64,6 +65,7 @@ export default class StandardDialect extends Dialect {
 			new StandardAttrAttributeProcessor(prefix),
 			new StandardHrefAttributeProcessor(prefix),
 			new StandardSrcAttributeProcessor(prefix),
+			new StandardValueAttributeProcessor(prefix),
 			new StandardTextAttributeProcessor(prefix),
 			new StandardUTextAttributeProcessor(prefix),
 			new StandardFragmentAttributeProcessor(prefix)
