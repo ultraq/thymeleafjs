@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-import {DEFAULT_CONFIGURATION}  from './Configurations';
-import StandardDialect          from './standard/StandardDialect';
-import {deserialize, serialize} from './utilities/Dom';
+import {DEFAULT_CONFIGURATION}      from './Configurations';
+import {matchingAttributeProcessor} from './processors/Matcher';
+import StandardDialect              from './standard/StandardDialect';
+import {deserialize, serialize}     from './utilities/Dom';
 
 import {flatten} from '@ultraq/array-utils';
 import {merge}   from '@ultraq/object-utils';
@@ -34,15 +35,22 @@ export default class TemplateEngine {
 	/**
 	 * Constructor, set up a new template engine instance.
 	 * 
-	 * @param {Array} dialects
+	 * @param {Object} dialects
 	 *   List of dialects to use in the new template engine.  Defaults to just the
 	 *   standard dialect.
+	 * @param {Object} isomorphic
+	 *   Object for indicating whether this template engine is being used on
+	 *   templates meant for both ThymeleafJS and the original Thymeleaf.  If set,
+	 *   expects an object containing additional options for this special
+	 *   "isomorphic templating" mode.
+	 * @param {Object} templateResolver
 	 */
-	constructor({ dialects } = DEFAULT_CONFIGURATION) {
+	constructor({dialects, isomorphic, templateResolver} = DEFAULT_CONFIGURATION) {
 
-		// Create the engine's instance of processors from all of the configured
-		// dialect processors
+		this.dialects   = dialects;
+		this.isomorphic = isomorphic;
 		this.processors = flatten(dialects.map(dialect => dialect.processors));
+		this.templateResolver = templateResolver;
 	}
 
 	/**
@@ -58,6 +66,8 @@ export default class TemplateEngine {
 		// TODO: Standardize this data attribute somewhere.  Shared const?
 		// element.dataset not yet implemented in JSDOM (https://github.com/tmpvar/jsdom/issues/961),
 		// so until then we're getting data- attributes the old-fashioned way.
+		// Alternatively, some kind of variable stack that pops with each move up
+		// the DOM.
 		let localVariables = JSON.parse(element.getAttribute('data-thymeleaf-local-variables'));
 		element.removeAttribute('data-thymeleaf-local-variables');
 		let localContext = merge({}, context, localVariables);
@@ -66,7 +76,8 @@ export default class TemplateEngine {
 		// parent needs to happen before moving on to this element's children.
 		let requireReprocessing = this.processors
 			.map(processor => {
-				let attribute = processor.matches(element);
+				// let attribute = processor.matches(element);
+				let attribute = matchingAttributeProcessor(element, processor, this.isomorphic);
 				return attribute ?
 					processor.process(element, attribute, element.getAttribute(attribute), localContext) :
 					false;
@@ -106,7 +117,11 @@ export default class TemplateEngine {
 			try {
 				let document = deserialize(template);
 				let rootElement = document.firstElementChild;
-				this.processNode(rootElement, context);
+				this.processNode(rootElement, {
+					...context,
+					dialects: this.dialects,
+					templateResolver: this.templateResolver
+				});
 
 				// TODO: Special case, remove the xmlns:th namespace from the document.
 				//       This should be handled like in main Thymeleaf where it's just

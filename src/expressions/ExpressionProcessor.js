@@ -52,8 +52,10 @@ export function processFragmentExpression(expression, context = {}) {
 	let result = /~{ ?(.*?) ?:: ?(.*?)(\(.*\))? ?}/.exec(expression);
 	if (result) {
 		let [, templateName, fragmentName, parameters] = result;
+		let prefix = navigate(context, 'templateResolver.prefix');
+		let suffix = navigate(context, 'templateResolver.suffix');
 		return {
-			templateName,
+			templateName: (prefix || '') + templateName + (suffix || ''),
 			fragmentName,
 			parameters
 		};

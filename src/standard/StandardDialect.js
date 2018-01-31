@@ -20,6 +20,7 @@ import StandardEachAttributeProcessor     from './processors/StandardEachAttribu
 import StandardFragmentAttributeProcessor from './processors/StandardFragmentAttributeProcessor';
 import StandardHrefAttributeProcessor     from './processors/StandardHrefAttributeProcessor';
 import StandardIfAttributeProcessor       from './processors/StandardIfAttributeProcessor';
+import StandardInsertAttributeProcessor   from './processors/StandardInsertAttributeProcessor';
 import StandardSrcAttributeProcessor      from './processors/StandardSrcAttributeProcessor';
 import StandardTextAttributeProcessor     from './processors/StandardTextAttributeProcessor';
 import StandardUTextAttributeProcessor    from './processors/StandardUTextAttributeProcessor';
@@ -57,6 +58,7 @@ export default class StandardDialect extends Dialect {
 		//       Thymeleaf.  Figure out a 'proper' way to do the ordering.
 		let {prefix} = this;
 		return [
+			new StandardInsertAttributeProcessor(prefix),
 			new StandardEachAttributeProcessor(prefix),
 			new StandardIfAttributeProcessor(prefix),
 			new StandardAttrAttributeProcessor(prefix),

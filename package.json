@@ -18,17 +18,18 @@
 		"lint": "eslint rollup.config.js browser src test",
 		"test": "jest",
 		"coverage": "cat coverage/lcov.info | coveralls",
-		"build": "npm run build:browser --silent && npm run build:node --silent && npm run build:dist --silent",
+		"build": "npm run build:browser && npm run build:node && npm run build:dist",
 		"build:browser": "cross-env BABEL_ENV=build ENVIRONMENT=browser rollup --config",
 		"build:node": "cross-env BABEL_ENV=build ENVIRONMENT=node rollup --config",
 		"build:dist": "cross-env BABEL_ENV=build rollup --config rollup.config.dist.js",
-		"watch": "chokidar 'src/**/*.js' 'test/**/*.js' -c 'npm test --silent'",
+		"watch": "chokidar 'src/**/*.js' 'test/**/*.js' -c 'npm test'",
 		"prepublish": "npm run build"
 	},
 	"dependencies": {
 		"@ultraq/array-utils": "^1.1.0",
 		"@ultraq/object-utils": "^1.2.0",
 		"@ultraq/string-utils": "^1.1.0",
+		"dumb-query-selector": "^3.2.0",
 		"jsdom": "~9.12.0"
 	},
 	"devDependencies": {

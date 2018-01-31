@@ -1,17 +1,28 @@
 <!DOCTYPE html>
+
 <html xmlns:thjs="http://www.thymeleaf.org">
+
 <head>
 	<title>Thymeleaf example template</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" href="local-stylesheet.css" thjs:attr="href=${normalizeCss}">
 </head>
+
 <body>
+
 	<p thjs:if="${showGreeting}"><span thjs:text="${greeting}">(greeting)</span>
 	You're using <a thjs:href="@{http://www.thymeleaf.org/}">Thymeleaf</a> for JavaScript!</p>
+
 	<p>Count to 10?  Sure:</p>
 	<ul>
 		<li thjs:each="number: ${numbers}" thjs:text="${number}">(number)</li>
 	</ul>
+
+	<div thjs:insert="~{template-fragment :: fragment}">
+		Fragment goes here
+	</div>
+
 </body>
+
 </html>

@@ -19,13 +19,24 @@ import StandardDialect from './standard/StandardDialect';
 export const DEFAULT_CONFIGURATION = {
 	dialects: [
 		new StandardDialect()
-	]
+	],
+	isomorphic: false,
+	templateResolver: {
+		prefix: '',
+		suffix: ''
+	}
 };
 
 export const STANDARD_CONFIGURATION = {
 	...DEFAULT_CONFIGURATION,
 	dialects: [
 		new StandardDialect('th')
-	]
+	],
+	isomorphic: {
+		prefix: 'thjs'
+	},
+	templateResolver: {
+		prefix: '',
+		suffix: '.html'
+	}
 };
-
