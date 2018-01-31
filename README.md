@@ -199,6 +199,7 @@ is capable, and thus incapable, of doing.
  - `th:each` (iteration)
  - `th:href` (`href` attribute replacement w/ link expression support)
  - `th:if` (conditional rendering)
+ - `th:insert` (fragment inclusion)
  - `th:src` (`src` attribute replacement w/ link expression support)
  - `th:text` (text replacement)
  - `th:utext` (text replacement, unescaped)
@@ -212,6 +213,22 @@ is capable, and thus incapable, of doing.
    placeholders in the URL, or both)
  - `~{template::fragment}` (fragment expressions, references an element in
    another template)
+
+
+### Caveat on fragment inclusion
+
+The current method of fragment inclusion still requires a decent amount of
+hacking in the consuming app to work.  As seen in the thymeleafjs-todo example
+app, the webpack configuration uses [the HTML loader with attribute parsing
+turned off](https://github.com/ultraq/thymeleafjs-todo/blob/01ebb094bef0eaef168bc084fe3d50657b2a1f10/todo-ui/webpack.config.js#L23-L31),
+plus a special [`templates` alias to point to the location of Thymeleaf
+templates](https://github.com/ultraq/thymeleafjs-todo/blob/01ebb094bef0eaef168bc084fe3d50657b2a1f10/todo-ui/webpack.config.js#L36).
+This matches up with a special [`templates` require directive](https://github.com/ultraq/thymeleafjs/blob/4413cc04a30399d7b18847ef63e1d734ce196fa3/src/utilities/TemplateResolver.js#L42)
+in template resolution.  The reason for all this is because webpack has no way
+of knowing how to include other templates based on Thymeleaf fragment directives.
+
+[A new issue has been raised](https://github.com/ultraq/thymeleafjs/issues/16)
+to address this hack for webpack bundlers.
 
 
 Integration
