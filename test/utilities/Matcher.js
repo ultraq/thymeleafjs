@@ -1,5 +1,5 @@
 /* 
- * Copyright 2017, Emanuel Rabina (http://www.ultraq.net.nz/)
+ * Copyright 2018, Emanuel Rabina (http://www.ultraq.net.nz/)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import AttributeProcessor              from '../../src/processors/AttributeProcessor';
+import Matcher                         from '../../src/processors/Matcher';
 import {createThymeleafAttributeValue} from '../../src/utilities/Dom';
 
 import h  from 'hyperscript';
@@ -23,35 +23,39 @@ import hh from 'hyperscript-helpers';
 const {div} = hh(h);
 
 /**
- * Tests for the base attribute processor.
+ * Tests for the matcher class.
  */
-describe('processors/AttributeProcessor', function() {
+describe('processors/Matcher', function() {
 
-	const PREFIX = 'test';
-	const NAME   = 'greeting';
+	const prefix = 'test';
+	const name   = 'greeting';
+	const mockProcessor = {
+		prefix,
+		name
+	};
 
-	let processor;
+	let matcher;
 	beforeAll(function() {
-		processor = new AttributeProcessor(PREFIX, NAME);
+		matcher = new Matcher({}, false);
 	});
 
 	test('Match XML attributes', function() {
-		let attribute = `${PREFIX}:${NAME}`;
+		let attribute = `${prefix}:${name}`;
 		let element = createThymeleafAttributeValue(div(), attribute, 'hello');
-		let match = processor.matches(element);
+		let match = matcher.matches(element, mockProcessor);
 		expect(match).toBe(attribute);
 	});
 
 	test('Match data- attributes', function() {
-		let attribute = `data-${PREFIX}-${NAME}`;
+		let attribute = `data-${prefix}-${name}`;
 		let element = createThymeleafAttributeValue(div(), attribute, 'hello');
-		let match = processor.matches(element);
+		let match = matcher.matches(element, mockProcessor);
 		expect(match).toBe(attribute);
 	});
 
 	test('Return `null` if no match', function() {
 		let element = createThymeleafAttributeValue(div(), 'test:something-else', 'hello');
-		let match = processor.matches(element);
+		let match = matcher.matches(element, mockProcessor);
 		expect(match).toBeNull();
 	});
 });
