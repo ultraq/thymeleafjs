@@ -5,6 +5,9 @@
 	],
 	"env": {
 		"build": {
+			"plugins": [
+				"external-helpers"
+			],
 			"presets": [
 				["env", {
 					"modules": false,
