@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import Dialect                            from '../dialects/Dialect';
 import StandardAttrAttributeProcessor     from './processors/StandardAttrAttributeProcessor';
 import StandardEachAttributeProcessor     from './processors/StandardEachAttributeProcessor';
 import StandardFragmentAttributeProcessor from './processors/StandardFragmentAttributeProcessor';
@@ -25,6 +24,7 @@ import StandardSrcAttributeProcessor      from './processors/StandardSrcAttribut
 import StandardTextAttributeProcessor     from './processors/StandardTextAttributeProcessor';
 import StandardUTextAttributeProcessor    from './processors/StandardUTextAttributeProcessor';
 import StandardValueAttributeProcessor    from './processors/StandardValueAttributeProcessor';
+import Dialect                            from '../dialects/Dialect';
 
 /**
  * The out-of-the-box dialect for Thymeleaf, the "Standard Dialect".

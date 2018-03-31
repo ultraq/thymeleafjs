@@ -1,6 +1,8 @@
 {
 	"extends": [
 		"eslint:recommended",
+		"plugin:import/errors",
+		"plugin:import/warnings",
 		"ultraq"
 	],
 	"parser": "babel-eslint",
@@ -13,6 +15,16 @@
 		"es6": true
 	},
 	"rules": {
-		"no-console": "off"
+		"no-console": "off",
+		"import/order": ["error", {
+			"groups": [
+				"internal",
+				"index",
+				"sibling",
+				"parent",
+				"external",
+				"builtin"
+			]
+		}]
 	}
 }
