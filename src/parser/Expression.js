@@ -45,16 +45,22 @@ export default class Expression {
 	 * Parses the input against the expression, returning the parse tree for the
 	 * expression that successfully parsed the input.
 	 * 
+	 * @abstract
 	 * @param {Object} parsingContext
 	 * @return {Object} The parse tree that describes the input, or `null` if the
 	 *   expression did not match the input.
 	 */
+	/* istanbul ignore next */
 	parse(parsingContext) {
 
-		return null;
+		throw new Error('Not implemented');
 	}
 
 	/**
+	 * Discern what to do with the given expression and return the appropriate
+	 * result.  An expression can either be a reference to another rule in the
+	 * current grammar, or a regular expression that consumes input.
+	 * 
 	 * @param {Object} parsingContext
 	 * @param {String|RegExp} expression
 	 * @return {Object}
@@ -66,9 +72,7 @@ export default class Expression {
 		// Name of another rule in the grammar
 		if (typeof expression === 'string') {
 			let ruleFromExpression = grammar.findRuleByName(expression);
-			if (ruleFromExpression) {
-				return ruleFromExpression.parse(parsingContext);
-			}
+			return ruleFromExpression ? ruleFromExpression.parse(parsingContext) : null;
 		}
 
 		// A regular expression that must be matched
