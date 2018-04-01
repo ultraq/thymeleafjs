@@ -22,7 +22,16 @@
  */
 export default class InputBuffer {
 
+	/**
+	 * @private
+	 * @type {Number}
+	 */
 	position = 0;
+
+	/**
+	 * @private
+	 * @type {Array<Number>}
+	 */
 	positionStack = [];
 
 	/**
@@ -82,7 +91,7 @@ export default class InputBuffer {
 	reset() {
 
 		let newPosition = this.positionStack.pop();
-		if (!newPosition) {
+		if (newPosition === undefined) {
 			throw new Error('Called reset() but no matching mark()');
 		}
 		this.position = newPosition;
