@@ -17,8 +17,10 @@
 import InputBuffer from './InputBuffer';
 
 /**
- * General purpose parser for creating any kind of parse tree as defined by the
- * rules of the grammar.
+ * A recursive descent parser for any parsing expression grammar defined by the
+ * constructs in this module.
+ * 
+ * TODO: Own module?
  * 
  * @author Emanuel Rabina
  */
@@ -45,7 +47,7 @@ export default class Parser {
 	parse(input) {
 
 		let inputBuffer = new InputBuffer(input);
-		let startingRule = this.grammar.rules[0];
+		let startingRule = this.grammar.startingRule;
 		let parseTree = startingRule.parse({
 			grammar: this.grammar,
 			input: inputBuffer

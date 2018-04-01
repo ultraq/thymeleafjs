@@ -15,20 +15,20 @@
  */
 
 import VariableExpression from './VariableExpression';
-import Grammar            from '../../expressions/Grammar';
-import Rule               from '../../expressions/Rule';
-import SequenceExpression from '../../expressions/SequenceExpression';
-import SingleExpression   from '../../expressions/SingleExpression';
+import Grammar            from '../../parser/Grammar';
+import Rule               from '../../parser/Rule';
+import SequenceExpression from '../../parser/SequenceExpression';
+import SimpleExpression   from '../../parser/SimpleExpression';
 
 export default new Grammar('Thymeleaf Expression Language',
 	new Rule('StartingRule',
-		new SingleExpression('VariableExpression')
+		new SimpleExpression('VariableExpression')
 	),
 	new Rule('VariableExpression',
 		new SequenceExpression(/\${/, 'Identifier', /}/),
 		result => new VariableExpression(result.join(''), result[1])
 	),
 	new Rule('Identifier',
-		new SingleExpression(/[a-zA-Z_][\w\.]*/)
+		new SimpleExpression(/[a-zA-Z_][\w\.]*/)
 	)
 );

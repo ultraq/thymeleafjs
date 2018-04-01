@@ -14,32 +14,34 @@
  * limitations under the License.
  */
 
+import Expression from './Expression';
+
 /**
- * A collection of Rules that describes a language.
+ * An expression that contains a single pattern that must be matched.
  * 
  * @author Emanuel Rabina
  */
-export default class Grammar {
+export default class SimpleExpression extends Expression {
 
 	/**
-	 * @param {String} name
-	 * @param {Rule} startingRule
-	 * @param {...Rule} additionalRules
+	 * @param {String|RegExp} expression
 	 */
-	constructor(name, startingRule, ...additionalRules) {
+	constructor(expression) {
 
-		this.name = name;
-		this.rules = [].concat(startingRule, additionalRules);
+		super();
+		this.expression = expression;
 	}
 
 	/**
-	 * Return the rule that has the given name.
+	 * Attempt to parse the only expression.
 	 * 
-	 * @param {String} name
-	 * @return {Rule}
+	 * @param {Object} parsingContext
+	 * @return {Object}
 	 */
-	findRuleByName(name) {
+	parse(parsingContext) {
 
-		return this.rules.find(rule => rule.name === name);
+		return this.markAndResetOnFailure(parsingContext.input, () => {
+			return this.parseRegularExpressionOrString(parsingContext, this.expression);
+		});
 	}
 }

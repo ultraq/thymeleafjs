@@ -15,7 +15,7 @@
  */
 
 import ThymeleafExpressionLanguage from './ThymeleafExpressionLanguage';
-import Parser from '../../expressions/Parser';
+import Parser from '../../parser/Parser';
 
 /**
  * Parses and executes Thymeleaf expressions.
