@@ -14,15 +14,17 @@
  * limitations under the License.
  */
 
-import VariableExpression from './VariableExpression';
-import Grammar            from '../../parser/Grammar';
-import Rule               from '../../parser/Rule';
-import SequenceExpression from '../../parser/SequenceExpression';
-import SimpleExpression   from '../../parser/SimpleExpression';
+import LiteralExpression       from './LiteralExpression';
+import VariableExpression      from './VariableExpression';
+import Grammar                 from '../../parser/Grammar';
+import OrderedChoiceExpression from '../../parser/OrderedChoiceExpression';
+import Rule                    from '../../parser/Rule';
+import SequenceExpression      from '../../parser/SequenceExpression';
+import SimpleExpression        from '../../parser/SimpleExpression';
 
 export default new Grammar('Thymeleaf Expression Language',
 	new Rule('StartingRule',
-		new SimpleExpression('VariableExpression')
+		new OrderedChoiceExpression('VariableExpression', 'LiteralExpression')
 	),
 	new Rule('VariableExpression',
 		new SequenceExpression(/\${/, 'Identifier', /}/),
@@ -30,5 +32,9 @@ export default new Grammar('Thymeleaf Expression Language',
 	),
 	new Rule('Identifier',
 		new SimpleExpression(/[a-zA-Z_][\w\.]*/)
+	),
+	new Rule('LiteralExpression',
+		new SimpleExpression(/[\w\.!]+/),
+		result => new LiteralExpression(result)
 	)
 );

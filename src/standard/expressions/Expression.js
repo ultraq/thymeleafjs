@@ -32,10 +32,10 @@ export default class Expression {
 	/**
 	 * Execute the expression and return the result for the given context.
 	 * 
-	 * @param {Object} [context={}]
+	 * @param {Object} context
 	 * @return {Object}
 	 */
-	execute(context = {}) {
+	execute(context) {
 
 		console.error(`Not implemented for this expression: ${this.expression}`);
 		return null;
