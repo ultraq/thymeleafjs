@@ -44,11 +44,17 @@ export default class SequenceExpression extends Expression {
 		let {input} = parsingContext;
 
 		return this.markAndResetOnFailure(input, () => {
-			return this.expressions.map(expression => {
-				return this.markAndResetOnFailure(input, () => {
+			let results = [];
+			for (let expression of this.expressions) {
+				let result = this.markAndResetOnFailure(input, () => {
 					return this.parseRegularExpressionOrString(parsingContext, expression);
 				});
-			});
+				if (result === null) {
+					return null;
+				}
+				results.push(result);
+			}
+			return results;
 		});
 	}
 }
