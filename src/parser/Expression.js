@@ -35,6 +35,7 @@ export default class Expression {
 		input.mark();
 		let result = func();
 		if (result !== null) {
+			input.clear();
 			return result;
 		}
 		input.reset();

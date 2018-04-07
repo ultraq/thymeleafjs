@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+// TODO: This is a pretty empty object, and probably not needed in JavaScript (I
+//       was only mirroring what it was like in OG Thymeleaf, so there are a lot
+//       of classes here where they aren't needed).  Should be replaced by the
+//       result of a rule matching being a function that, when executed,
+//       performs what `execute` here did.
+
 /**
  * An expression is any piece of code to be processed in the current context.
  * 

@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
+import ExpressionProcessor from '../expressions/ExpressionProcessor';
 import AttributeProcessor  from '../../processors/AttributeProcessor';
-import {processExpression} from '../../expressions/ExpressionProcessor';
 
 import {escapeHtml} from '@ultraq/string-utils';
 
@@ -57,7 +57,7 @@ export default class StandardAttrAttributeProcessor extends AttributeProcessor {
 		if (/(.+=.+,)*.+=.+/.test(attributeValue)) {
 			attributeValue.split(',').forEach(attribute => {
 				let attributeParts = attribute.split('=');
-				element.setAttribute(attributeParts[0], escapeHtml(processExpression(attributeParts[1], context)));
+				element.setAttribute(attributeParts[0], escapeHtml(new ExpressionProcessor(context).process(attributeParts[1])));
 			});
 		}
 		/* istanbul ignore next */

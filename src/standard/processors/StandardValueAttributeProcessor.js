@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import {processExpression} from '../../expressions/ExpressionProcessor';
+import ExpressionProcessor from '../expressions/ExpressionProcessor';
 import AttributeProcessor  from '../../processors/AttributeProcessor';
 
 import {escapeHtml} from '@ultraq/string-utils';
@@ -53,7 +53,7 @@ export default class StandardValueAttributeProcessor extends AttributeProcessor 
 	 */
 	process(element, attribute, attributeValue, context) {
 
-		element.value = escapeHtml(processExpression(attributeValue, context));
+		element.value = escapeHtml(new ExpressionProcessor(context).process(attributeValue));
 		element.removeAttribute(attribute);
 	}
 }

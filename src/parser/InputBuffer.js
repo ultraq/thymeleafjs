@@ -43,6 +43,14 @@ export default class InputBuffer {
 	}
 
 	/**
+	 * Clear the previously {@link #mark}ed position.
+	 */
+	clear() {
+
+		this.positionStack.pop();
+	}
+
+	/**
 	 * Returns whether or not the current position is at the end of the input,
 	 * meaning we've exhausted the entire input string.
 	 * 

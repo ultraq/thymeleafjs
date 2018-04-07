@@ -15,6 +15,7 @@
  */
 
 import FragmentExpression              from './FragmentExpression';
+import IterationExpression             from './IterationExpression';
 import LinkExpression                  from './LinkExpression';
 import LiteralExpression               from './LiteralExpression';
 import VariableExpression              from './VariableExpression';
@@ -32,6 +33,7 @@ export default new Grammar('Thymeleaf Expression Language',
 			'VariableExpression',
 			'LinkExpression',
 			'FragmentExpression',
+			'IterationExpression',
 			'LiteralExpression'
 		)
 	),
@@ -40,9 +42,6 @@ export default new Grammar('Thymeleaf Expression Language',
 	new Rule('VariableExpression',
 		new SequenceExpression(/\${/, 'Identifier', /}/),
 		result => new VariableExpression(result.join(''), result[1])
-	),
-	new Rule('Identifier',
-		new SimpleExpression(/[a-zA-Z_][\w\.]*/)
 	),
 
 	// Link expressions, @{url(parameters)}
@@ -81,13 +80,28 @@ export default new Grammar('Thymeleaf Expression Language',
 		new OptionalExpression(/\(.+\)/), // TODO: We're not doing anything with these yet
 	),
 
+	// Iteration, localVar : ${collection}
+	new Rule('IterationExpression',
+		new SequenceExpression(
+			'Identifier',
+			'OptionalWhitespace',
+			/:/,
+			'OptionalWhitespace',
+			'VariableExpression'
+		),
+		result => new IterationExpression(result.join(''), result[0], result[4])
+	),
+
 	// This is the fallback, where everything else is returned as is
 	new Rule('LiteralExpression',
-		new SimpleExpression(/.+/),
+		new SimpleExpression(/[^:]*/),
 		result => new LiteralExpression(result)
 	),
 
 	// Common tokens
+	new Rule('Identifier',
+		new SimpleExpression(/[a-zA-Z_][\w\.]*/)
+	),
 	new Rule('OptionalWhitespace',
 		new OptionalExpression(/\s+/)
 	)

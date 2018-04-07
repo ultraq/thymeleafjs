@@ -30,12 +30,10 @@ describe('standard/expressions/ExpressionProcessor', function() {
 				goodnight: null
 			}
 		};
-		let expressionProcessor;
-		beforeEach(function() {
-			expressionProcessor = new ExpressionProcessor(context);
-		});
 
 		test('Expressions get passed to underlying function', function() {
+			let expressionProcessor = new ExpressionProcessor(context);
+
 			let result = expressionProcessor.process('${greeting}');
 			expect(result).toBe(context.greeting);
 
@@ -44,11 +42,13 @@ describe('standard/expressions/ExpressionProcessor', function() {
 		});
 
 		test('null/undefined value handling', function() {
+			let expressionProcessor = new ExpressionProcessor(context);
 			let result = expressionProcessor.process('${greetings.goodnight}');
 			expect(result).toBe('');
 		});
 
 		test('No context handling', function() {
+			let expressionProcessor = new ExpressionProcessor();
 			let result = expressionProcessor.process('${greeting}');
 			expect(result).toBe('');
 		});
@@ -87,22 +87,19 @@ describe('standard/expressions/ExpressionProcessor', function() {
 
 
 	describe('Iteration expressions', function() {
+		const context = {
+			items: ['a', 'b', 'c']
+		};
 		let expressionProcessor;
 		beforeEach(function() {
-			expressionProcessor = new ExpressionProcessor();
+			expressionProcessor = new ExpressionProcessor(context);
 		});
 
 		test('Value and local name mapping', function() {
-			let items = ['a', 'b', 'c'];
 			let expression = 'item: ${items}';
-			let result = expressionProcessor.process(expression, { items });
+			let result = expressionProcessor.process(expression);
 			expect(result.localValueName).toBe('item');
-			expect(result.iterable).toBe(items);
-		});
-
-		test('null result (fallback)', function() {
-			let result = expressionProcessor.process('Anything');
-			expect(result).toBe(null);
+			expect(result.iterable).toBe(context.items);
 		});
 	});
 

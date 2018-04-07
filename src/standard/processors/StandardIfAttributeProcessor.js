@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
+import ExpressionProcessor from '../expressions/ExpressionProcessor';
 import AttributeProcessor  from '../../processors/AttributeProcessor';
-import {processExpression} from '../../expressions/ExpressionProcessor';
 import {clearChildren}     from '../../utilities/Dom';
 
 /**
@@ -54,7 +54,7 @@ export default class StandardIfAttributeProcessor extends AttributeProcessor {
 	 */
 	process(element, attribute, attributeValue, context) {
 
-		let expressionResult = processExpression(attributeValue, context);
+		let expressionResult = new ExpressionProcessor(context).process(attributeValue);
 		if (!expressionResult) {
 			clearChildren(element);
 			element.parentNode.removeChild(element);

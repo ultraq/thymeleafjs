@@ -17,6 +17,8 @@
 import Expression from './Expression';
 import InputBuffer from './InputBuffer';
 
+// TODO: This processor can probably supersede all the other expression types!
+
 /**
  * A special kind of expression that understands matched portions of regular
  * expressions to run processing over, which may lead to additional parsing
