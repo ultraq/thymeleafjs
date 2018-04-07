@@ -25,6 +25,7 @@ describe('parser/Expression', function() {
 	let expression;
 	beforeEach(function() {
 		input = {
+			clear: jest.fn(),
 			mark: jest.fn(),
 			reset: jest.fn()
 		};
