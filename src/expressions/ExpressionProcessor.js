@@ -41,29 +41,6 @@ export function processExpression(expression, context = {}) {
 }
 
 /**
- * Parses and evaluates a Thymeleaf fragment expression.
- * 
- * @param {String} expression
- * @param {Object} [context={}]
- * @return {Object} Information about the fragment expression.
- */
-export function processFragmentExpression(expression, context = {}) {
-
-	let result = /~{ ?(.*?) ?:: ?(.*?)(\(.*\))? ?}/.exec(expression);
-	if (result) {
-		let [, templateName, fragmentName, parameters] = result;
-		let prefix = navigate(context, 'templateResolver.prefix');
-		let suffix = navigate(context, 'templateResolver.suffix');
-		return {
-			templateName: (prefix || '') + templateName + (suffix || ''),
-			fragmentName,
-			parameters
-		};
-	}
-	return null;
-}
-
-/**
  * Parses and evaluates a Thymeleaf iteration expression.
  * 
  * @param {String} expression

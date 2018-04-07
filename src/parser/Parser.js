@@ -46,6 +46,10 @@ export default class Parser {
 	 */
 	parse(input) {
 
+		// TODO: This parser object should be what is passed to the grammar, because
+		//       expressions shouldn't really have a `parse` method on them - you
+		//       don't parse an expression - making it a bit like a visitor pattern.
+
 		let inputBuffer = new InputBuffer(input);
 		let startingRule = this.grammar.startingRule;
 		let parseTree = startingRule.parse({

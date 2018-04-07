@@ -1,12 +1,12 @@
-/*
+/* 
  * Copyright 2018, Emanuel Rabina (http://www.ultraq.net.nz/)
- *
+ * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * 
  *     http://www.apache.org/licenses/LICENSE-2.0
- *
+ * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -14,45 +14,39 @@
  * limitations under the License.
  */
 
-/**
- * Default result -> node converter which returns the result as is.
- * 
- * @template T
- * @param {T} result
- * @return {T}
- */
-function defaultNodeConverter(result) {
-	return result;
-}
+import Expression from './Expression';
 
 /**
- * A rule describes a string in the language.
+ * An optional expression doesn't need to be included to be matched.  Thus,
+ * optional expressions "always" match.
  * 
  * @author Emanuel Rabina
  */
-export default class Rule {
+export default class OptionalExpression extends Expression {
 
 	/**
-	 * @param {String} name
-	 * @param {Object} expression
-	 * @param {Function} [nodeConverter=defaultNodeConverter]
+	 * @param {String|RegExp} expression
 	 */
-	constructor(name, expression, nodeConverter = defaultNodeConverter) {
+	constructor(expression) {
 
-		this.name          = name;
-		this.expression    = expression;
-		this.nodeConverter = nodeConverter;
+		super();
+		this.expression = expression;
 	}
 
 	/**
-	 * Parse the input in the current context through this rule.
+	 * Attempt to match the given expression.  If the expression isn't matched,
+	 * then carry on as normal.
 	 * 
 	 * @param {Object} parsingContext
 	 * @return {Object}
 	 */
 	parse(parsingContext) {
 
-		let nodes = this.expression.parse(parsingContext);
-		return nodes !== null ? this.nodeConverter(nodes) : null;
+		let {input} = parsingContext;
+
+		return this.markAndResetOnFailure(input, () => {
+			let result = this.parseRegularExpressionOrString(parsingContext, this.expression);
+			return result !== null ? result : '';
+		});
 	}
 }

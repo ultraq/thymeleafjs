@@ -25,7 +25,7 @@ import Expression from './Expression';
 export default class SequenceExpression extends Expression {
 
 	/**
-	 * @param {...String|RegExp} expressions
+	 * @param {...Object} expressions
 	 */
 	constructor(...expressions) {
 

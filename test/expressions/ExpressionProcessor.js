@@ -16,7 +16,6 @@
 
 import {
 	processExpression,
-	processFragmentExpression,
 	processIterationExpression,
 	processLinkExpression
 } from '../../src/expressions/ExpressionProcessor';
@@ -61,23 +60,6 @@ describe('expressions/ExpressionProcessor', function() {
 			let greeting = 'Hello!';
 			let result = processExpression(greeting);
 			expect(result).toBe(greeting);
-		});
-	});
-
-
-	describe('Fragment expressions', function() {
-
-		test('Extracts the template and fragment name parts', function() {
-			let result = processFragmentExpression('~{template :: fragment}');
-			expect(result).toEqual({
-				templateName: 'template',
-				fragmentName: 'fragment'
-			});
-		});
-
-		test('null result (fallback)', function() {
-			let result = processFragmentExpression('Anything');
-			expect(result).toBe(null);
 		});
 	});
 

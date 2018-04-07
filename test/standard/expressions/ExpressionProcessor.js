@@ -22,7 +22,6 @@ import ExpressionProcessor from '../../../src/standard/expressions/ExpressionPro
 describe('standard/expressions/ExpressionProcessor', function() {
 
 	describe('Variable expressions', function() {
-
 		const context = {
 			greeting: 'Good morning!',
 			greetings: {
@@ -31,12 +30,13 @@ describe('standard/expressions/ExpressionProcessor', function() {
 				goodnight: null
 			}
 		};
+		let expressionProcessor;
+		beforeEach(function() {
+			expressionProcessor = new ExpressionProcessor(context);
+		});
 
 		test('Expressions get passed to underlying function', function() {
-			let result;
-			let expressionProcessor = new ExpressionProcessor(context);
-
-			result = expressionProcessor.process('${greeting}');
+			let result = expressionProcessor.process('${greeting}');
 			expect(result).toBe(context.greeting);
 
 			result = expressionProcessor.process('${greetings.hello}');
@@ -44,61 +44,64 @@ describe('standard/expressions/ExpressionProcessor', function() {
 		});
 
 		test('null/undefined value handling', function() {
-			let expressionProcessor = new ExpressionProcessor(context);
 			let result = expressionProcessor.process('${greetings.goodnight}');
 			expect(result).toBe('');
 		});
 
 		test('No context handling', function() {
-			let expressionProcessor = new ExpressionProcessor();
 			let result = expressionProcessor.process('${greeting}');
 			expect(result).toBe('');
 		});
-
 	});
 
 
 	describe('Literal tokens', function() {
+		let expressionProcessor;
+		beforeEach(function() {
+			expressionProcessor = new ExpressionProcessor();
+		});
 
 		test('Verbatim expressions (fallback)', function() {
 			let greeting = 'Hello!';
-			let expressionProcessor = new ExpressionProcessor();
 			let result = expressionProcessor.process(greeting);
 			expect(result).toBe(greeting);
 		});
-
 	});
 
 
 	describe('Fragment expressions', function() {
-
-		test('Extracts the template and fragment name parts', function() {
-			let result = processFragmentExpression('~{template :: fragment}');
-			expect(result).toEqual({
-				templateName: 'template',
-				fragmentName: 'fragment'
-			});
+		let expressionProcessor;
+		beforeEach(function() {
+			expressionProcessor = new ExpressionProcessor();
 		});
 
-		test('null result (fallback)', function() {
-			let result = processFragmentExpression('Anything');
-			expect(result).toBe(null);
+		test('Extracts the template, fragment, and parameter parts', function() {
+			let result = expressionProcessor.process('~{template :: fragment(parameters)}');
+			expect(result).toEqual({
+				templateName: 'template',
+				fragmentName: 'fragment',
+				parameters: '(parameters)'
+			});
 		});
 	});
 
 
 	describe('Iteration expressions', function() {
+		let expressionProcessor;
+		beforeEach(function() {
+			expressionProcessor = new ExpressionProcessor();
+		});
 
 		test('Value and local name mapping', function() {
 			let items = ['a', 'b', 'c'];
 			let expression = 'item: ${items}';
-			let result = processIterationExpression(expression, { items });
+			let result = expressionProcessor.process(expression, { items });
 			expect(result.localValueName).toBe('item');
 			expect(result.iterable).toBe(items);
 		});
 
 		test('null result (fallback)', function() {
-			let result = processIterationExpression('Anything');
+			let result = expressionProcessor.process('Anything');
 			expect(result).toBe(null);
 		});
 	});
@@ -108,31 +111,29 @@ describe('standard/expressions/ExpressionProcessor', function() {
 		const context = {
 			greeting: 'hello'
 		};
+		let expressionProcessor;
+		beforeEach(function() {
+			expressionProcessor = new ExpressionProcessor();
+		});
 
 		test('Leaves URLs without special parameters alone', function() {
-			let result = processLinkExpression('@{/test}');
+			let result = expressionProcessor.process('@{/test}');
 			expect(result).toBe('/test');
 		});
 
 		test('Append special parameters', function() {
-			let result = processLinkExpression('@{/test(param1=hard-coded-value,param2=${greeting})}', context);
+			let result = expressionProcessor.process('@{/test(param1=hard-coded-value,param2=${greeting})}', context);
 			expect(result).toBe('/test?param1=hard-coded-value&param2=hello');
 		});
 
 		test('Replace parameters in url', function() {
-			let result = processLinkExpression('@{/{part1}/{part2}/(part1=test,part2=${greeting})}', context);
+			let result = expressionProcessor.process('@{/{part1}/{part2}/(part1=test,part2=${greeting})}', context);
 			expect(result).toBe('/test/hello/');
 		});
 
 		test('Mixed template and query parameters', function() {
-			let result = processLinkExpression('@{/test/{template}(template=${greeting},query=next)}', context);
+			let result = expressionProcessor.process('@{/test/{template}(template=${greeting},query=next)}', context);
 			expect(result).toBe('/test/hello?query=next');
-		});
-
-		test('Verbatim expressions (fallback)', function() {
-			let greeting = 'Hello!';
-			let result = processLinkExpression(greeting);
-			expect(result).toBe(greeting);
 		});
 	});
 

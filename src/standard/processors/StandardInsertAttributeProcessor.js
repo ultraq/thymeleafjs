@@ -16,7 +16,7 @@
 
 import StandardFragmentAttributeProcessor from './StandardFragmentAttributeProcessor';
 import StandardDialect                    from '../StandardDialect';
-import {processFragmentExpression}        from '../../expressions/ExpressionProcessor';
+import ExpressionProcessor                from '../expressions/ExpressionProcessor';
 import AttributeProcessor                 from '../../processors/AttributeProcessor';
 import {resolveTemplate}                  from '../../utilities/TemplateResolver';
 import {clearChildren}                    from '../../utilities/Dom';
@@ -63,7 +63,7 @@ export default class StandardInsertAttributeProcessor extends AttributeProcessor
 		element.removeAttribute(attribute);
 		clearChildren(element);
 
-		let fragmentInfo = processFragmentExpression(attributeValue, context);
+		let fragmentInfo = new ExpressionProcessor(context).process(attributeValue);
 		if (fragmentInfo) {
 			let {templateName, fragmentName} = fragmentInfo;
 			let template = resolveTemplate(templateName);
