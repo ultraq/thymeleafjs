@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import {remove}   from '@ultraq/array-utils';
 import {navigate} from '@ultraq/object-utils';
 
 // TODO: This should really be done using a parser generator like PEG.js so that
@@ -58,47 +57,4 @@ export function processIterationExpression(expression, context = {}) {
 		};
 	}
 	return null;
-}
-
-/**
- * Parses and evaluates a Thymeleaf link expression.
- * 
- * @param {String} expression
- * @param {Object} [context={}]
- * @return {String} The result of evaluating the expression.
- */
-export function processLinkExpression(expression, context = {}) {
-
-	let result = /^@\{(.+?)(\(.+\))?\}$/.exec(expression);
-	if (result) {
-		let [, url, params] = result;
-		if (params) {
-			let paramsList = params.slice(1, -1).split(',').map(param => {
-				let [lhs, rhs] = param.split('=');
-				return [lhs, processExpression(rhs, context)];
-			});
-
-			// Fill out any placeholders in the URL from the parameters
-			while (true) { // eslint-disable-line
-				let urlTemplate = /(.*?)\{(.+?)\}(.*)/.exec(url);
-				if (urlTemplate) {
-					let [, head, placeholder, tail] = urlTemplate;
-					let paramEntry = remove(paramsList, ([lhs]) => lhs === placeholder);
-					if (paramEntry) {
-						url = `${head}${paramEntry[1]}${tail}`;
-					}
-				}
-				else {
-					break;
-				}
-			}
-
-			// Remaining parameters become search query parameters
-			if (paramsList.length) {
-				url += `?${paramsList.map(([key, value]) => `${key}=${value}`).join('&')}`;
-			}
-		}
-		return url;
-	}
-	return expression;
 }

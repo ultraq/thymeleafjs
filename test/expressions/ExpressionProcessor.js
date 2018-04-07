@@ -16,8 +16,7 @@
 
 import {
 	processExpression,
-	processIterationExpression,
-	processLinkExpression
+	processIterationExpression
 } from '../../src/expressions/ExpressionProcessor';
 
 /**
@@ -77,39 +76,6 @@ describe('expressions/ExpressionProcessor', function() {
 		test('null result (fallback)', function() {
 			let result = processIterationExpression('Anything');
 			expect(result).toBe(null);
-		});
-	});
-
-
-	describe('Link expressions', function() {
-		const context = {
-			greeting: 'hello'
-		};
-
-		test('Leaves URLs without special parameters alone', function() {
-			let result = processLinkExpression('@{/test}');
-			expect(result).toBe('/test');
-		});
-
-		test('Append special parameters', function() {
-			let result = processLinkExpression('@{/test(param1=hard-coded-value,param2=${greeting})}', context);
-			expect(result).toBe('/test?param1=hard-coded-value&param2=hello');
-		});
-
-		test('Replace parameters in url', function() {
-			let result = processLinkExpression('@{/{part1}/{part2}/(part1=test,part2=${greeting})}', context);
-			expect(result).toBe('/test/hello/');
-		});
-
-		test('Mixed template and query parameters', function() {
-			let result = processLinkExpression('@{/test/{template}(template=${greeting},query=next)}', context);
-			expect(result).toBe('/test/hello?query=next');
-		});
-
-		test('Verbatim expressions (fallback)', function() {
-			let greeting = 'Hello!';
-			let result = processLinkExpression(greeting);
-			expect(result).toBe(greeting);
 		});
 	});
 

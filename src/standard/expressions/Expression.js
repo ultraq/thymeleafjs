@@ -40,4 +40,14 @@ export default class Expression {
 		console.error(`Not implemented for this expression: ${this.expression}`);
 		return null;
 	}
+
+	/**
+	 * Output the string used to build this expression.
+	 * 
+	 * @return {String}
+	 */
+	toString() {
+
+		return this.expression;
+	}
 }

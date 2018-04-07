@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import AttributeProcessor      from '../../processors/AttributeProcessor';
-import {processLinkExpression} from '../../expressions/ExpressionProcessor';
+import ExpressionProcessor from '../expressions/ExpressionProcessor';
+import AttributeProcessor  from '../../processors/AttributeProcessor';
 
 /**
  * JS equivalent of Thymeleaf's `th:href` attribute processor, applies the
@@ -53,7 +53,8 @@ export default class StandardHrefAttributeProcessor extends AttributeProcessor {
 	 */
 	process(element, attribute, attributeValue, context) {
 
-		element.href = encodeURI(processLinkExpression(attributeValue, context));
+		let url = new ExpressionProcessor(context).process(attributeValue);
+		element.href = encodeURI(url);
 		element.removeAttribute(attribute);
 	}
 }

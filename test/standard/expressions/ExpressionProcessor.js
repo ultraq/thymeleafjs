@@ -113,7 +113,7 @@ describe('standard/expressions/ExpressionProcessor', function() {
 		};
 		let expressionProcessor;
 		beforeEach(function() {
-			expressionProcessor = new ExpressionProcessor();
+			expressionProcessor = new ExpressionProcessor(context);
 		});
 
 		test('Leaves URLs without special parameters alone', function() {
@@ -122,17 +122,17 @@ describe('standard/expressions/ExpressionProcessor', function() {
 		});
 
 		test('Append special parameters', function() {
-			let result = expressionProcessor.process('@{/test(param1=hard-coded-value,param2=${greeting})}', context);
+			let result = expressionProcessor.process('@{/test(param1=hard-coded-value,param2=${greeting})}');
 			expect(result).toBe('/test?param1=hard-coded-value&param2=hello');
 		});
 
 		test('Replace parameters in url', function() {
-			let result = expressionProcessor.process('@{/{part1}/{part2}/(part1=test,part2=${greeting})}', context);
+			let result = expressionProcessor.process('@{/{part1}/{part2}/(part1=test,part2=${greeting})}');
 			expect(result).toBe('/test/hello/');
 		});
 
 		test('Mixed template and query parameters', function() {
-			let result = expressionProcessor.process('@{/test/{template}(template=${greeting},query=next)}', context);
+			let result = expressionProcessor.process('@{/test/{template}(template=${greeting},query=next)}');
 			expect(result).toBe('/test/hello?query=next');
 		});
 	});

@@ -74,7 +74,7 @@ export default class InputBuffer {
 	read(pattern) {
 
 		let remaining = this.input.substring(this.position);
-		let result = pattern.exec(remaining);
+		let result = new RegExp(pattern.source).exec(remaining);
 		if (result) {
 			let [value] = result;
 			if (remaining.startsWith(value)) {
