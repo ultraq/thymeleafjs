@@ -20,7 +20,11 @@ export default {
 	],
 	plugins: [
 		babel(),
-		commonjs(),
+		commonjs({
+			namedExports: {
+				'dumb-query-selector': ['$', '$$']
+			}
+		}),
 		nodeResolve({
 			jsnext: true
 		}),
