@@ -14,46 +14,39 @@
  * limitations under the License.
  */
 
-import Expression          from './Expression';
-import ExpressionProcessor from './ExpressionProcessor';
+import ExpressionProcessor             from './ExpressionProcessor';
+import RegularExpressionMatchProcessor from '../../parser/RegularExpressionMatchProcessor';
+import Rule                            from '../../parser/Rule';
+import SimpleExpression                from '../../parser/SimpleExpression';
 
 import {remove} from '@ultraq/array-utils';
 
+export const Url = new Rule('Url',
+	new SimpleExpression(/.+/)
+);
+
+export const UrlParameters = new Rule('UrlParameters',
+	new SimpleExpression(/\((.+)\)/)
+);
+
 /**
- * A link expression is used for generating URLs out of context parameters.
+ * Link expressions, `@{url(parameters)}`.  Used for generating URLs out of
+ * context parameters.
  * 
  * @author Emanuel Rabina
  */
-export default class LinkExpression extends Expression {
+export const LinkExpression = new Rule('LinkExpression',
+	new RegularExpressionMatchProcessor(/^@\{(.+?)(\(.+\))?\}$/, [Url.name, UrlParameters.name]),
+	result => context => {
 
-	/**
-	 * @param {String} expression
-	 * @param {String} url
-	 * @param {Object} parameters
-	 */
-	constructor(expression, url, parameters) {
+		let url = result[1];
+		let parameters = result[2];
 
-		super(expression);
-		this.url        = url;
-		this.parameters = parameters;
-	}
-
-	/**
-	 * Construct the URL from the link expression, filling in any parameters with
-	 * values from the context.
-	 * 
-	 * @param {Object} context
-	 * @return {String}
-	 */
-	execute(context) {
-
-		let url = this.url;
-
-		if (this.parameters) {
+		if (parameters) {
 
 			// TODO: Push this parsing of the parameters list back into the grammar
 			let expressionProcessor = new ExpressionProcessor(context);
-			let paramsList = this.parameters.slice(1, -1).split(',').map(param => {
+			let paramsList = parameters.slice(1, -1).split(',').map(param => {
 				let [lhs, rhs] = param.split('=');
 				return [lhs, expressionProcessor.process(rhs)];
 			});
@@ -80,4 +73,4 @@ export default class LinkExpression extends Expression {
 		}
 		return url;
 	}
-}
+);

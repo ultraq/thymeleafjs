@@ -14,34 +14,14 @@
  * limitations under the License.
  */
 
-import ThymeleafExpressionLanguage from './ThymeleafExpressionLanguage';
-import Parser                      from '../../parser/Parser';
+import Rule             from '../../parser/Rule';
+import SimpleExpression from '../../parser/SimpleExpression';
 
 /**
- * Parses and executes Thymeleaf expressions.
+ * An identifier is any valid variable name in JavaScript.
  * 
  * @author Emanuel Rabina
  */
-export default class ExpressionProcessor {
-
-	/**
-	 * @param {Object} context
-	 */
-	constructor(context = {}) {
-
-		this.context = context;
-	}
-
-	/**
-	 * Parse and execute the given input as a Thymeleaf expression.
-	 * 
-	 * @param {String} input
-	 * @return {Object}
-	 */
-	process(input) {
-
-		let parser = new Parser(ThymeleafExpressionLanguage);
-		let expressionAction = parser.parse(input);
-		return expressionAction(this.context);
-	}
-}
+export default new Rule('Identifier',
+	new SimpleExpression(/[a-zA-Z_][\w\.]*/)
+);

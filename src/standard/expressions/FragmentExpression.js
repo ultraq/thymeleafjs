@@ -14,49 +14,56 @@
  * limitations under the License.
  */
 
-import Expression from './Expression';
-import {navigate} from '@ultraq/object-utils/object-utils.node';
+import OptionalWhitespace from './OptionalWhitespace';
+import OptionalExpression from '../../parser/OptionalExpression';
+import Rule               from '../../parser/Rule';
+import SimpleExpression   from '../../parser/SimpleExpression';
+import SequenceExpression from '../../parser/SequenceExpression';
+
+import {navigate} from '@ultraq/object-utils';
+
+
+export const TemplateName = new Rule('TemplateName',
+	new SimpleExpression(/[\w-\._]+/)
+);
+
+export const FragmentName = new Rule('FragmentName',
+	new SimpleExpression(/[\w-\._]+/)
+);
+
+// TODO: We're not doing anything with these yet
+export const FragmentParameters = new Rule('FragmentParameters',
+	new OptionalExpression(/\(.+\)/), 
+);
 
 /**
- * A fragment expression describes a piece of HTML in the same or another
- * template.
+ * Fragment expressions, `~{template :: fragment(parameters)}`.  A locator for a
+ * piece of HTML in the same or another template.
  * 
  * @author Emanuel Rabina
  */
-export default class FragmentExpression extends Expression {
+export const FragmentExpression = new Rule('FragmentExpression',
+	new SequenceExpression(
+		/~{/,
+		'TemplateName',
+		OptionalWhitespace.name,
+		/::/,
+		OptionalWhitespace.name,
+		'FragmentName',
+		OptionalWhitespace.name,
+		'FragmentParameters',
+		/}/
+	),
+	([, templateName, , , , fragmentName, , parameters]) => context => {
 
-	/**
-	 * @param {String} expression
-	 * @param {String} templateName
-	 * @param {String} fragmentName
-	 * @param {String} parameters
-	 */
-	constructor(expression, templateName, fragmentName, parameters) {
-
-		super(expression);
-		this.templateName = templateName;
-		this.fragmentName = fragmentName;
-		this.parameters   = parameters; // TODO: Do something with these
-	}
-
-	/**
-	 * Return an object describing the template and fragment parts.
-	 * 
-	 * TODO: Executing a fragment expression should locate and return the fragment
-	 * 
-	 * @param {Object} context
-	 * @return {Object}
-	 */
-	execute(context) {
-
+		// TODO: Executing a fragment expression should locate and return the fragment
 		// TODO: Process parameters
-
 		let prefix = navigate(context, 'templateResolver.prefix');
 		let suffix = navigate(context, 'templateResolver.suffix');
 		return {
-			templateName: (prefix || '') + this.templateName + (suffix || ''),
-			fragmentName: this.fragmentName,
-			parameters:   this.parameters
+			templateName: (prefix || '') + templateName + (suffix || ''),
+			fragmentName,
+			parameters
 		};
 	}
-}
+);

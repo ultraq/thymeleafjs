@@ -14,34 +14,14 @@
  * limitations under the License.
  */
 
-import ThymeleafExpressionLanguage from './ThymeleafExpressionLanguage';
-import Parser                      from '../../parser/Parser';
+import OptionalExpression from '../../parser/OptionalExpression';
+import Rule               from '../../parser/Rule';
 
 /**
- * Parses and executes Thymeleaf expressions.
+ * All whitespace in the Thymeleaf expression language is optional.
  * 
  * @author Emanuel Rabina
  */
-export default class ExpressionProcessor {
-
-	/**
-	 * @param {Object} context
-	 */
-	constructor(context = {}) {
-
-		this.context = context;
-	}
-
-	/**
-	 * Parse and execute the given input as a Thymeleaf expression.
-	 * 
-	 * @param {String} input
-	 * @return {Object}
-	 */
-	process(input) {
-
-		let parser = new Parser(ThymeleafExpressionLanguage);
-		let expressionAction = parser.parse(input);
-		return expressionAction(this.context);
-	}
-}
+export default new Rule('OptionalWhitespace',
+	new OptionalExpression(/\s+/)
+);

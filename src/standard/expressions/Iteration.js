@@ -1,12 +1,12 @@
-/*
+/* 
  * Copyright 2018, Emanuel Rabina (http://www.ultraq.net.nz/)
- *
+ * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * 
  *     http://www.apache.org/licenses/LICENSE-2.0
- *
+ * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,20 +15,29 @@
  */
 
 import Identifier         from './Identifier';
+import OptionalWhitespace from './OptionalWhitespace';
+import VariableExpression from './VariableExpression';
 import Rule               from '../../parser/Rule';
 import SequenceExpression from '../../parser/SequenceExpression';
 
-import {navigate} from '@ultraq/object-utils';
-
 /**
- * Variable expressions, `${variable}`.  Represents a value to be retrieved from
- * the current context.
+ * Iteration, `localVar : ${collection}`.  The name of the variable for each
+ * loop, followed by the collection being iterated over.
  * 
  * @author Emanuel Rabina
  */
-export default new Rule('VariableExpression',
-	new SequenceExpression(/\${/, Identifier.name, /}/),
-	result => context => {
-		return navigate(context, result[1]) || '';
+export default new Rule('IterationExpression',
+	new SequenceExpression(
+		Identifier.name,
+		OptionalWhitespace.name,
+		/:/,
+		OptionalWhitespace.name,
+		VariableExpression.name
+	),
+	([localValueName, , , , collectionExpressionAction]) => context => {
+		return {
+			localValueName,
+			iterable: collectionExpressionAction(context)
+		};
 	}
 );

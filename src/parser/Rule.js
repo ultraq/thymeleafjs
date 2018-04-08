@@ -15,15 +15,15 @@
  */
 
 /**
- * Default result -> node converter which returns the result as is.
+ * Default expression action which is to return the result as is.
  * 
  * @template T
  * @param {T} result
  * @return {T}
  */
-function defaultNodeConverter(result) {
+const defaultExpressionAction = result => {
 	return result;
-}
+};
 
 /**
  * A rule describes a string in the language.
@@ -33,15 +33,25 @@ function defaultNodeConverter(result) {
 export default class Rule {
 
 	/**
+	 * @member {String}
+	 */
+	name;
+
+	/**
+	 * @member {Object
+	 */
+	expression;
+
+	/**
 	 * @param {String} name
 	 * @param {Object} expression
-	 * @param {Function} [nodeConverter=defaultNodeConverter]
+	 * @param {Function} [expressionAction=defaultExpressionAction]
 	 */
-	constructor(name, expression, nodeConverter = defaultNodeConverter) {
+	constructor(name, expression, expressionAction = defaultExpressionAction) {
 
-		this.name          = name;
-		this.expression    = expression;
-		this.nodeConverter = nodeConverter;
+		this.name             = name;
+		this.expression       = expression;
+		this.expressionAction = expressionAction;
 	}
 
 	/**
@@ -52,7 +62,7 @@ export default class Rule {
 	 */
 	parse(parsingContext) {
 
-		let nodes = this.expression.parse(parsingContext);
-		return nodes !== null ? this.nodeConverter(nodes) : null;
+		let parseResult = this.expression.parse(parsingContext);
+		return parseResult !== null ? this.expressionAction(parseResult) : null;
 	}
 }

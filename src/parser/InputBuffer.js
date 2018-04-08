@@ -81,6 +81,8 @@ export default class InputBuffer {
 	 */
 	read(pattern) {
 
+		// TODO: Return the match array instead
+
 		let remaining = this.input.substring(this.position);
 		let result = new RegExp(pattern.source).exec(remaining);
 		if (result) {

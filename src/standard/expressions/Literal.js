@@ -14,31 +14,19 @@
  * limitations under the License.
  */
 
-import Expression from './Expression';
+import Rule             from '../../parser/Rule';
+import SimpleExpression from '../../parser/SimpleExpression';
 
 /**
- * A literal expression returns the value it was given.
+ * A literal returns the value it was given.  This is often used as a fallback
+ * in the expression language so that, for any unknown input, we're still
+ * returning something.
  * 
  * @author Emanuel Rabina
  */
-export default class LiteralExpression extends Expression {
-
-	/**
-	 * @param {String} expression
-	 */
-	constructor(expression) {
-
-		super(expression);
+export default new Rule('Literal',
+	new SimpleExpression(/[^:]*/),
+	result => () => {
+		return result;
 	}
-
-	/**
-	 * Returns the expression as is.
-	 * 
-	 * @param {Object} context
-	 * @return {String}
-	 */
-	execute(context) {
-
-		return this.expression;
-	}
-}
+);
