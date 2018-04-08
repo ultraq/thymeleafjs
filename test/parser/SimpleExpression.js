@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 
-import InputBuffer from '../../src/parser/InputBuffer';
+import InputBuffer      from '../../src/parser/InputBuffer';
+import Parser           from '../../src/parser/Parser';
 import SimpleExpression from '../../src/parser/SimpleExpression';
 
 /**
@@ -27,17 +28,19 @@ describe('parser/SimpleExpression', function() {
 		simpleExpression = new SimpleExpression(/[a-z]+/);
 	});
 
-	test('Returns the matched input for a successful parse', function() {
-		let result = simpleExpression.parse({
-			input: new InputBuffer('abc123')
-		});
+	test('Returns the matched input for a successful match', function() {
+		let result = simpleExpression.match(
+			new InputBuffer('abc123'),
+			new Parser()
+		);
 		expect(result).toBe('abc');
 	});
 
-	test('Returns `null` for a failed parse', function() {
-		let result = simpleExpression.parse({
-			input: new InputBuffer('123')
-		});
+	test('Returns `null` for a failed match', function() {
+		let result = simpleExpression.match(
+			new InputBuffer('123'),
+			new Parser()
+		);
 		expect(result).toBeNull();
 	});
 });

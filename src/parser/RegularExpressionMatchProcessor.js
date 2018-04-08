@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import Expression from './Expression';
 import InputBuffer from './InputBuffer';
 
 // TODO: This processor can probably supersede all the other expression types!
@@ -26,7 +25,7 @@ import InputBuffer from './InputBuffer';
  * 
  * @author Emanuel Rabina
  */
-export default class RegularExpressionMatchProcessor extends Expression {
+export default class RegularExpressionMatchProcessor {
 
 	/**
 	 * Create a new match processor where each function in the list of processors
@@ -38,7 +37,6 @@ export default class RegularExpressionMatchProcessor extends Expression {
 	 */
 	constructor(expression, processors) {
 
-		super();
 		this.expression = expression;
 		this.processors = processors;
 	}
@@ -47,24 +45,20 @@ export default class RegularExpressionMatchProcessor extends Expression {
 	 * Match the regular expression to the current input.  A succesful match is
 	 * only if the entire regular expression matches the remaining input.
 	 * 
-	 * @param {Object} parsingContext
+	 * @param {InputBuffer} input
+	 * @param {Parser} parser
 	 * @return {Object}
 	 */
-	parse(parsingContext) {
+	match(input, parser) {
 
-		let {input} = parsingContext;
-		return this.markAndResetOnFailure(input, () => {
-			let read = input.read(this.expression);
-			if (read) {
-				let results = new RegExp(this.expression.source).exec(read);
-				let parseResults = [read];
-				for (let i = 1; i < results.length; i++) {
-					let result = results[i];
-					if (result !== undefined) {
-						let parseResult = this.parseRegularExpressionOrString({
-							...parsingContext,
-							input: new InputBuffer(result)
-						}, this.processors[i - 1]);
+		return input.markAndClearOrReset(() => {
+			let result = input.read(this.expression);
+			if (result) {
+				let parseResults = [result[0]];
+				for (let i = 1; i < result.length; i++) {
+					let match = result[i];
+					if (match !== undefined) {
+						let parseResult = parser.parseWithExpression(new InputBuffer(match), this.processors[i - 1]);
 						if (parseResult === null) {
 							return null;
 						}

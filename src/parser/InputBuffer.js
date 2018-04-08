@@ -47,7 +47,10 @@ export default class InputBuffer {
 	 */
 	clear() {
 
-		this.positionStack.pop();
+		let lastPosition = this.positionStack.pop();
+		if (lastPosition === undefined) {
+			throw new Error('Called clear() but no matching mark()');
+		}
 	}
 
 	/**
@@ -71,17 +74,36 @@ export default class InputBuffer {
 	}
 
 	/**
+	 * Convenience method for surrounding a function with a call to {@link #mark},
+	 * then {@link #clear} if the result of the function is non-null, or
+	 * {@link #reset} if `null`.
+	 * 
+	 * @template T
+	 * @param {Function<T>} func
+	 * @return {T}
+	 */
+	markAndClearOrReset(func) {
+
+		this.mark();
+		let result = func();
+		if (result !== null) {
+			this.clear();
+			return result;
+		}
+		this.reset();
+		return null;
+	}
+
+	/**
 	 * Reads as many characters from the current position as satisfies the given
 	 * pattern, returning the read characters and advancing the mark by as many
 	 * characters.
 	 * 
 	 * @param {RegExp} pattern
-	 * @return {String} The matched string from the head of the remainder of the
-	 *   input string, or `null` if the pattern didn't match.
+	 * @return {Array} The array of matched strings, or `null` if the pattern
+	 *   didn't match.
 	 */
 	read(pattern) {
-
-		// TODO: Return the match array instead
 
 		let remaining = this.input.substring(this.position);
 		let result = new RegExp(pattern.source).exec(remaining);
@@ -89,7 +111,7 @@ export default class InputBuffer {
 			let [value] = result;
 			if (remaining.startsWith(value)) {
 				this.position += value.length;
-				return value;
+				return result;
 			}
 		}
 		return null;

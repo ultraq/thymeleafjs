@@ -14,34 +14,38 @@
  * limitations under the License.
  */
 
-import Rule from '../../src/parser/Rule';
+import InputBuffer      from '../../src/parser/InputBuffer';
+import Parser           from '../../src/parser/Parser';
+import Rule             from '../../src/parser/Rule';
+import SimpleExpression from '../../src/parser/SimpleExpression';
 
 /**
  * Tests for the rule component of a grammar.
  */
 describe('parser/Rule', function() {
 
-	test('Gets its result from parsing the inner expression', function() {
-		let rule = new Rule('Test', {
-			parse: jest.fn(() => 'Hello!')
-		});
-		let result = rule.parse();
+	test('Gets its result from matching the configured expression', function() {
+		let rule = new Rule('Test',
+			new SimpleExpression(/Hello!/)
+		);
+		let result = rule.match(new InputBuffer('Hello!'), new Parser());
 		expect(result).toBe('Hello!');
 	});
 
-	test('Result is based on the configured node converter', function() {
-		let rule = new Rule('Test', {
-			parse: jest.fn(() => 'Hello!')
-		}, result => ({ result }));
-		let result = rule.parse();
+	test('Result can be processed by a configured processor', function() {
+		let rule = new Rule('Test',
+			new SimpleExpression(/Hello!/),
+			result => ({ result })
+		);
+		let result = rule.match(new InputBuffer('Hello!'), new Parser());
 		expect(result).toEqual({ result: 'Hello!' });
 	});
 
-	test('A failed parse returns `null`', function() {
-		let rule = new Rule('Test', {
-			parse: jest.fn(() => null)
-		});
-		let result = rule.parse();
+	test('A failed match returns `null`', function() {
+		let rule = new Rule('Test',
+			new SimpleExpression(/Hello!/)
+		);
+		let result = rule.match(new InputBuffer('Goodbye'), new Parser());
 		expect(result).toBeNull();
 	});
 });

@@ -15,6 +15,7 @@
  */
 
 import InputBuffer        from '../../src/parser/InputBuffer';
+import Parser             from '../../src/parser/Parser';
 import SequenceExpression from '../../src/parser/SequenceExpression';
 
 /**
@@ -28,30 +29,22 @@ describe('parser/SequenceExpression', function() {
 	});
 
 	test('A successful parse means all expressions in the sequence were successful', function() {
-		let result = sequenceExpression.parse({
-			input: new InputBuffer('abc123')
-		});
+		let result = sequenceExpression.match(new InputBuffer('abc123'), new Parser());
 		expect(result).toEqual(['abc', '123']);
 	});
 
 	test('A failed parse anywhere means the entire sequence has failed', function() {
-		let result;
-
-		result = sequenceExpression.parse({
-			input: new InputBuffer('abcdef')
-		});
+		let result = sequenceExpression.match(new InputBuffer('abcdef'), new Parser());
 		expect(result).toBeNull();
 
-		result = sequenceExpression.parse({
-			input: new InputBuffer('xyz')
-		});
+		result = sequenceExpression.match(new InputBuffer('xyz'), new Parser());
 		expect(result).toBeNull();
 	});
 
 	test("If one expression fails, then don't carry on parsing", function() {
 		let input = new InputBuffer('xyz123');
 		let spy = jest.spyOn(input, 'read');
-		let result = sequenceExpression.parse({ input });
+		let result = sequenceExpression.match(input, new Parser());
 		expect(result).toBeNull();
 		expect(spy).toHaveBeenCalledTimes(1);
 	});

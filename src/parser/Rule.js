@@ -15,15 +15,15 @@
  */
 
 /**
- * Default expression action which is to return the result as is.
+ * Default processor which returns the result as is.
  * 
  * @template T
  * @param {T} result
  * @return {T}
  */
-const defaultExpressionAction = result => {
+function defaultMatchProcessor(result) {
 	return result;
-};
+}
 
 /**
  * A rule describes a string in the language.
@@ -45,24 +45,25 @@ export default class Rule {
 	/**
 	 * @param {String} name
 	 * @param {Object} expression
-	 * @param {Function} [expressionAction=defaultExpressionAction]
+	 * @param {Function} [matchProcessor=defaultExpressionAction]
 	 */
-	constructor(name, expression, expressionAction = defaultExpressionAction) {
+	constructor(name, expression, matchProcessor = defaultMatchProcessor) {
 
-		this.name             = name;
-		this.expression       = expression;
-		this.expressionAction = expressionAction;
+		this.name           = name;
+		this.expression     = expression;
+		this.matchProcessor = matchProcessor;
 	}
 
 	/**
-	 * Parse the input in the current context through this rule.
+	 * Check whether or not the input can be matched by this rule.
 	 * 
-	 * @param {Object} parsingContext
+	 * @param {InputBuffer} input
+	 * @param {Parser} parser
 	 * @return {Object}
 	 */
-	parse(parsingContext) {
+	match(input, parser) {
 
-		let parseResult = this.expression.parse(parsingContext);
-		return parseResult !== null ? this.expressionAction(parseResult) : null;
+		let matchResult = this.expression.match(input, parser);
+		return matchResult !== null ? this.matchProcessor(matchResult) : null;
 	}
 }

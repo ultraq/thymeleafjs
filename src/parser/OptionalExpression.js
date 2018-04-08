@@ -14,22 +14,19 @@
  * limitations under the License.
  */
 
-import Expression from './Expression';
-
 /**
  * An optional expression doesn't need to be included to be matched.  Thus,
  * optional expressions "always" match.
  * 
  * @author Emanuel Rabina
  */
-export default class OptionalExpression extends Expression {
+export default class OptionalExpression {
 
 	/**
 	 * @param {String|RegExp} expression
 	 */
 	constructor(expression) {
 
-		super();
 		this.expression = expression;
 	}
 
@@ -37,15 +34,14 @@ export default class OptionalExpression extends Expression {
 	 * Attempt to match the given expression.  If the expression isn't matched,
 	 * then carry on as normal.
 	 * 
-	 * @param {Object} parsingContext
+	 * @param {InputBuffer} input
+	 * @param {Parser} parser
 	 * @return {Object}
 	 */
-	parse(parsingContext) {
+	match(input, parser) {
 
-		let {input} = parsingContext;
-
-		return this.markAndResetOnFailure(input, () => {
-			let result = this.parseRegularExpressionOrString(parsingContext, this.expression);
+		return input.markAndClearOrReset(() => {
+			let result = parser.parseWithExpression(input, this.expression);
 			return result !== null ? result : '';
 		});
 	}

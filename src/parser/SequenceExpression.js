@@ -14,40 +14,36 @@
  * limitations under the License.
  */
 
-import Expression from './Expression';
-
 /**
  * A sequence expression represents a series of expressions that must be matched
  * in order to consider the entire expression a match.
  * 
  * @author Emanuel Rabina
  */
-export default class SequenceExpression extends Expression {
+export default class SequenceExpression {
 
 	/**
 	 * @param {...Object} expressions
 	 */
 	constructor(...expressions) {
 
-		super();
 		this.expressions = expressions;
 	}
 
 	/**
-	 * Attempts to parse each expression in order.
+	 * Attempts to match each expression in order.
 	 * 
-	 * @param {Object} parsingContext
+	 * @param {InputBuffer} input
+	 * @param {Parser} parser
 	 * @return {Array}
 	 */
-	parse(parsingContext) {
+	match(input, parser) {
 
-		let {input} = parsingContext;
-
-		return this.markAndResetOnFailure(input, () => {
+		return input.markAndClearOrReset(() => {
 			let results = [];
 			for (let expression of this.expressions) {
-				let result = this.markAndResetOnFailure(input, () => {
-					return this.parseRegularExpressionOrString(parsingContext, expression);
+				let result = input.markAndClearOrReset(() => {
+					return parser.parseWithExpression(input, expression);
 				});
 				if (result === null) {
 					return null;

@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
+import InputBuffer             from '../../src/parser/InputBuffer';
 import OrderedChoiceExpression from '../../src/parser/OrderedChoiceExpression';
-import InputBuffer from '../../src/parser/InputBuffer';
+import Parser                  from '../../src/parser/Parser';
 
 /**
  * Tests for ordered choice expressions in a grammar.
@@ -28,30 +29,22 @@ describe('parser/OrderedChoiceExpression', function() {
 	});
 
 	test('A successful parse is one where any of the choices is successful', function() {
-		let result;
-
-		result = orderedChoiceExpression.parse({
-			input: new InputBuffer('abc')
-		});
+		let result = orderedChoiceExpression.match(new InputBuffer('abc'), new Parser());
 		expect(result).toBe('abc');
 
-		result = orderedChoiceExpression.parse({
-			input: new InputBuffer('123')
-		});
+		result = orderedChoiceExpression.match(new InputBuffer('123'), new Parser());
 		expect(result).toBe('123');
 	});
 
 	test('A failed parse is one where none of the choices are successful', function() {
-		let result = orderedChoiceExpression.parse({
-			input: new InputBuffer('xyz')
-		});
+		let result = orderedChoiceExpression.match(new InputBuffer('xyz'), new Parser());
 		expect(result).toBeNull();
 	});
 
 	test('Choices must be run through in order they are declared', function() {
 		let input = new InputBuffer('123');
 		let spy = jest.spyOn(input, 'read');
-		let result = orderedChoiceExpression.parse({ input });
+		let result = orderedChoiceExpression.match(input, new Parser());
 		expect(result).toBe('123');
 		expect(spy.mock.calls[0]).toEqual([/abc/]);
 		expect(spy.mock.calls[1]).toEqual([/123/]);

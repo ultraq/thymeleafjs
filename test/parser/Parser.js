@@ -24,23 +24,51 @@ import SimpleExpression from '../../src/parser/SimpleExpression';
  */
 describe('parser/Parser', function() {
 
+	let grammar;
 	let parser;
 	beforeEach(function() {
-		parser = new Parser(
-			new Grammar('Test',
-				new Rule('StartingRule', new SimpleExpression(/abc/))
-			)
+		grammar = new Grammar('Test',
+			new Rule('StartingRule', new SimpleExpression(/abc/)),
+			new Rule('NumberRule', new SimpleExpression(/123/))
 		);
+		parser = new Parser(grammar);
 	});
 
-	test('Parsing successful when configured grammar returns nodes for all read input', function() {
-		let result = parser.parse('abc');
-		expect(result).toBe('abc');
+	describe('#parse', function() {
+
+		test('Parsing successful when configured grammar returns nodes for all read input', function() {
+			let result = parser.parse('abc');
+			expect(result).toBe('abc');
+		});
+
+		test('Parsing fails if not all input was read', function() {
+			expect(() => {
+				parser.parse('abcd');
+			}).toThrow();
+		});
 	});
 
-	test('Parsing fails if not all input was read', function() {
-		expect(() => {
-			parser.parse('abcd');
-		}).toThrow();
+	describe('#parseRegularExpressionOrString', function() {
+		let input;
+		beforeEach(function() {
+			input = {
+				clear: jest.fn(),
+				mark: jest.fn(),
+				read: jest.fn(),
+				reset: jest.fn()
+			};
+		});
+
+		test('Looks up rules if expression is a string', function() {
+			let findSpy = jest.spyOn(grammar, 'findRuleByName');
+			parser.parseWithExpression(input, 'SomeRule');
+			expect(findSpy).toHaveBeenCalledWith('SomeRule');
+		});
+
+		test('Attempts to read input if expression is a regexp', function() {
+			parser.parseWithExpression(input, /Hello/);
+			expect(input.read).toHaveBeenCalledWith(/Hello/);
+		});
 	});
+
 });

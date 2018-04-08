@@ -14,34 +14,32 @@
  * limitations under the License.
  */
 
-import Expression from './Expression';
-
 /**
  * An expression that contains a single pattern that must be matched.
  * 
  * @author Emanuel Rabina
  */
-export default class SimpleExpression extends Expression {
+export default class SimpleExpression {
 
 	/**
 	 * @param {String|RegExp} expression
 	 */
 	constructor(expression) {
 
-		super();
 		this.expression = expression;
 	}
 
 	/**
-	 * Attempt to parse the only expression.
+	 * Attempt to match the expression with the given input.
 	 * 
-	 * @param {Object} parsingContext
+	 * @param {InputBuffer} input
+	 * @param {Parser} parser
 	 * @return {Object}
 	 */
-	parse(parsingContext) {
+	match(input, parser) {
 
-		return this.markAndResetOnFailure(parsingContext.input, () => {
-			return this.parseRegularExpressionOrString(parsingContext, this.expression);
+		return input.markAndClearOrReset(() => {
+			return parser.parseWithExpression(input, this.expression);
 		});
 	}
 }

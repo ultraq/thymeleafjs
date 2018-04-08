@@ -14,39 +14,35 @@
  * limitations under the License.
  */
 
-import Expression from './Expression';
-
 /**
  * An ordered choice expression contains many expressions, only one of which can
  * match in order to consider the expression a match.
  * 
  * @author Emanuel Rabina
  */
-export default class OrderedChoiceExpression extends Expression {
+export default class OrderedChoiceExpression {
 
 	/**
 	 * @param {...String|RegExp} expressions
 	 */
 	constructor(...expressions) {
 
-		super();
 		this.expressions = expressions;
 	}
 
 	/**
 	 * Go through each expression until a match is found.
 	 * 
-	 * @param {Object} parsingContext
+	 * @param {InputBuffer} input
+	 * @param {Parser} parser
 	 * @return {Object}
 	 */
-	parse(parsingContext) {
+	match(input, parser) {
 
-		let {input} = parsingContext;
-
-		return this.markAndResetOnFailure(input, () => {
+		return input.markAndClearOrReset(() => {
 			for (let expression of this.expressions) {
-				let result = this.markAndResetOnFailure(input, () => {
-					return this.parseRegularExpressionOrString(parsingContext, expression);
+				let result = input.markAndClearOrReset(() => {
+					return parser.parseWithExpression(input, expression);
 				});
 				if (result !== null) {
 					return result;

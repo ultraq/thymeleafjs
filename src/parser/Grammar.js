@@ -33,6 +33,20 @@ export default class Grammar {
 	}
 
 	/**
+	 * Given an input string and a parser, return whether or not the input is
+	 * accepted by this grammar.
+	 * 
+	 * @param {InputBuffer} input
+	 * @param {Parser} parser
+	 * @return {Object} If the input is accepted, this will be the non-null result
+	 *   of matching against the rules of this grammar.
+	 */
+	accept(input, parser) {
+
+		return this.startingRule.match(input, parser);
+	}
+
+	/**
 	 * Return the rule that has the given name.
 	 * 
 	 * @param {String} name

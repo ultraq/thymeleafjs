@@ -39,18 +39,40 @@ describe('parser/InputBuffer', function() {
 		});
 	});
 
-	describe('#mark/#reset', function() {
+	describe('#mark/#clear/#reset', function() {
 
 		test('A mark lets you revert to that position on reset', function() {
 			inputBuffer.mark();
-			expect(inputBuffer.read(/abc/)).toBe('abc');
+			expect(inputBuffer.read(/abc/)).toEqual(expect.arrayContaining(['abc']));
 			expect(inputBuffer.read(/abc/)).toBeNull();
 			inputBuffer.reset();
-			expect(inputBuffer.read(/abc/)).toBe('abc');
+			expect(inputBuffer.read(/abc/)).toEqual(expect.arrayContaining(['abc']));
 		});
 
 		test('Calling reset without a matching mark throws an error', function() {
 			expect(() => inputBuffer.reset()).toThrow();
+		});
+
+		test('Marks and clears for non-null results', function() {
+			let markSpy = jest.spyOn(inputBuffer, 'mark');
+			let clearSpy = jest.spyOn(inputBuffer, 'clear');
+			let resetSpy = jest.spyOn(inputBuffer, 'reset');
+			let result = inputBuffer.markAndClearOrReset(jest.fn(() => 'Hello!'));
+			expect(result).not.toBeNull();
+			expect(markSpy).toHaveBeenCalled();
+			expect(clearSpy).toHaveBeenCalled();
+			expect(resetSpy).not.toHaveBeenCalled();
+		});
+
+		test('Marks and resets for null results', function() {
+			let markSpy = jest.spyOn(inputBuffer, 'mark');
+			let clearSpy = jest.spyOn(inputBuffer, 'clear');
+			let resetSpy = jest.spyOn(inputBuffer, 'reset');
+			let result = inputBuffer.markAndClearOrReset(jest.fn(() => null));
+			expect(result).toBeNull();
+			expect(markSpy).toHaveBeenCalled();
+			expect(clearSpy).not.toHaveBeenCalled();
+			expect(resetSpy).toHaveBeenCalled();
 		});
 	});
 
@@ -58,13 +80,13 @@ describe('parser/InputBuffer', function() {
 
 		test('Returns consumed input that matches a given pattern', function() {
 			let read = inputBuffer.read(/\w+/);
-			expect(read).toBe('abc123');
+			expect(read).toEqual(expect.arrayContaining(['abc123']));
 		});
 
 		test('Input is only consumed from the beginning of the current read position', function() {
 			expect(inputBuffer.read(/\d+/)).toBeNull();
-			expect(inputBuffer.read(/[a-z]+/)).toBe('abc');
-			expect(inputBuffer.read(/\d+/)).toBe('123');
+			expect(inputBuffer.read(/[a-z]+/)).toEqual(expect.arrayContaining(['abc']));
+			expect(inputBuffer.read(/\d+/)).toEqual(expect.arrayContaining(['123']));
 		});
 
 		test("Patterns that don't match return null", function() {

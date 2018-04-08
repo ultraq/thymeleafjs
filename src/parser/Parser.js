@@ -46,20 +46,39 @@ export default class Parser {
 	 */
 	parse(input) {
 
-		// TODO: This parser object should be what is passed to the grammar, because
-		//       expressions shouldn't really have a `parse` method on them - you
-		//       don't parse an expression - making it a bit like a visitor pattern.
-
 		let inputBuffer = new InputBuffer(input);
-		let startingRule = this.grammar.startingRule;
-		let parseTree = startingRule.parse({
-			grammar: this.grammar,
-			input: inputBuffer
-		});
-
-		if (!parseTree || !inputBuffer.exhausted()) {
+		let matchResult = this.grammar.accept(inputBuffer, this);
+		if (!matchResult || !inputBuffer.exhausted()) {
 			throw new Error(`Failed to parse "${input}"`);
 		}
-		return parseTree;
+		return matchResult;
+	}
+
+	/**
+	 * Parse the input against the given expression.  An expression can either be
+	 * a reference to another rule in the current grammar, or a regular expression
+	 * that consumes input.
+	 * 
+	 * @param {InputBuffer} input
+	 * @param {String|RegExp} expression
+	 * @return {Object}
+	 */
+	parseWithExpression(input, expression) {
+
+		// Name of another rule in the grammar
+		if (typeof expression === 'string') {
+			let ruleFromExpression = this.grammar.findRuleByName(expression);
+			return ruleFromExpression ? ruleFromExpression.match(input, this) : null;
+		}
+
+		// A regular expression that must be matched
+		else {
+			let result = input.read(expression);
+			if (result) {
+				return result[0];
+			}
+		}
+
+		return null;
 	}
 }
