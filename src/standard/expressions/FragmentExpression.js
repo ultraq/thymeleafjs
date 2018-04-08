@@ -42,7 +42,7 @@ export const FragmentParameters = new Rule('FragmentParameters',
  * 
  * @author Emanuel Rabina
  */
-export const FragmentExpression = new Rule('FragmentExpression',
+export default new Rule('FragmentExpression',
 	new SequenceExpression(
 		/~{/,
 		'TemplateName',

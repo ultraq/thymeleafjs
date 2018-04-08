@@ -14,19 +14,21 @@
  * limitations under the License.
  */
 
-import {FragmentExpression,
+import FragmentExpression, {
 	FragmentName,
 	FragmentParameters,
 	TemplateName
 } from './FragmentExpression';
 import Identifier              from './Identifier';
+import IfThenCondition, {
+	VariableOrLiteral
+} from './IfThenCondition';
 import Iteration               from './Iteration';
-import {
-	LinkExpression,
+import LinkExpression, {
 	Url,
 	UrlParameters
 } from './LinkExpression';
-import Literal                 from './Literal';
+import {TextLiteral, TokenLiteral} from './Literal';
 import OptionalWhitespace      from './OptionalWhitespace';
 import VariableExpression      from './VariableExpression';
 import Grammar                 from '../../parser/Grammar';
@@ -47,7 +49,8 @@ export default new Grammar('Thymeleaf Expression Language',
 			LinkExpression.name,
 			FragmentExpression.name,
 			Iteration.name,
-			Literal.name
+			TextLiteral.name,
+			TokenLiteral.name
 		)
 	),
 
@@ -68,8 +71,13 @@ export default new Grammar('Thymeleaf Expression Language',
 	// Iteration, localVar : ${collection}
 	Iteration,
 
-	// This is the fallback, where everything else is returned as is
-	Literal,
+	// Conditionals
+	IfThenCondition,
+	VariableOrLiteral,
+
+	// Literals
+	TextLiteral,
+	TokenLiteral,
 
 	// Common tokens
 	Identifier,

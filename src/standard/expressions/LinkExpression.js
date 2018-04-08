@@ -35,12 +35,9 @@ export const UrlParameters = new Rule('UrlParameters',
  * 
  * @author Emanuel Rabina
  */
-export const LinkExpression = new Rule('LinkExpression',
+export default new Rule('LinkExpression',
 	new RegularExpressionMatchProcessor(/^@\{(.+?)(\(.+\))?\}$/, [Url.name, UrlParameters.name]),
-	result => context => {
-
-		let url = result[1];
-		let parameters = result[2];
+	([, url, parameters]) => context => {
 
 		if (parameters) {
 

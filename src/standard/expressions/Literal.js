@@ -18,14 +18,24 @@ import Rule             from '../../parser/Rule';
 import SimpleExpression from '../../parser/SimpleExpression';
 
 /**
- * A literal returns the value it was given.  This is often used as a fallback
- * in the expression language so that, for any unknown input, we're still
- * returning something.
- * 
- * @author Emanuel Rabina
+ * A text literal, anything that is surrounded by single-quotes (double-quotes
+ * are used in HTML, so single-quotes are used).
  */
-export default new Rule('Literal',
-	new SimpleExpression(/[^:]*/),
+export const TextLiteral = new Rule('TextLiteral',
+	new SimpleExpression(/^'.*'$/),
+	result => () => {
+		return result.slice(1, -1);
+	}
+);
+
+/**
+ * A token literal, which is pretty much anything else that can't be categorized
+ * by the other literal types.  This is often used as a fallback in the
+ * expression language so that, for any unknown input, we're still returning
+ * something.
+ */
+export const TokenLiteral = new Rule('Literal',
+	new SimpleExpression(/[^: ]*/),
 	result => () => {
 		return result;
 	}

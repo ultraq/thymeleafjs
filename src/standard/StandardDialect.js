@@ -14,17 +14,18 @@
  * limitations under the License.
  */
 
-import StandardAttrAttributeProcessor     from './processors/StandardAttrAttributeProcessor';
-import StandardEachAttributeProcessor     from './processors/StandardEachAttributeProcessor';
-import StandardFragmentAttributeProcessor from './processors/StandardFragmentAttributeProcessor';
-import StandardHrefAttributeProcessor     from './processors/StandardHrefAttributeProcessor';
-import StandardIfAttributeProcessor       from './processors/StandardIfAttributeProcessor';
-import StandardInsertAttributeProcessor   from './processors/StandardInsertAttributeProcessor';
-import StandardSrcAttributeProcessor      from './processors/StandardSrcAttributeProcessor';
-import StandardTextAttributeProcessor     from './processors/StandardTextAttributeProcessor';
-import StandardUTextAttributeProcessor    from './processors/StandardUTextAttributeProcessor';
-import StandardValueAttributeProcessor    from './processors/StandardValueAttributeProcessor';
-import Dialect                            from '../dialects/Dialect';
+import StandardAttrAttributeProcessor        from './processors/StandardAttrAttributeProcessor';
+import StandardClassAppendAttributeProcessor from './processors/StandardClassAppendAttributeProcessor';
+import StandardEachAttributeProcessor        from './processors/StandardEachAttributeProcessor';
+import StandardFragmentAttributeProcessor    from './processors/StandardFragmentAttributeProcessor';
+import StandardHrefAttributeProcessor        from './processors/StandardHrefAttributeProcessor';
+import StandardIfAttributeProcessor          from './processors/StandardIfAttributeProcessor';
+import StandardInsertAttributeProcessor      from './processors/StandardInsertAttributeProcessor';
+import StandardSrcAttributeProcessor         from './processors/StandardSrcAttributeProcessor';
+import StandardTextAttributeProcessor        from './processors/StandardTextAttributeProcessor';
+import StandardUTextAttributeProcessor       from './processors/StandardUTextAttributeProcessor';
+import StandardValueAttributeProcessor       from './processors/StandardValueAttributeProcessor';
+import Dialect                               from '../dialects/Dialect';
 
 /**
  * The out-of-the-box dialect for Thymeleaf, the "Standard Dialect".
@@ -57,18 +58,36 @@ export default class StandardDialect extends Dialect {
 		// TODO: This is a very basic way of imposing the order of attribute
 		//       processors.  It's currently ordered in the same way as OG
 		//       Thymeleaf.  Figure out a 'proper' way to do the ordering.
+
+		// Order taken from https://www.thymeleaf.org/doc/tutorials/3.0/usingthymeleaf.html#attribute-precedence
 		let {prefix} = this;
 		return [
+			// Fragment inclusion
 			new StandardInsertAttributeProcessor(prefix),
+
+			// Fragment iteration
 			new StandardEachAttributeProcessor(prefix),
+
+			// Conditional evaluation
 			new StandardIfAttributeProcessor(prefix),
+
+			// Local variable definition
 			new StandardAttrAttributeProcessor(prefix),
+			new StandardClassAppendAttributeProcessor(prefix),
+
+			// General attribute modification
 			new StandardHrefAttributeProcessor(prefix),
 			new StandardSrcAttributeProcessor(prefix),
 			new StandardValueAttributeProcessor(prefix),
+
+			// Text
 			new StandardTextAttributeProcessor(prefix),
 			new StandardUTextAttributeProcessor(prefix),
+
+			// Fragment specification
 			new StandardFragmentAttributeProcessor(prefix)
+
+			// Fragment removal
 		];
 	}
 }
