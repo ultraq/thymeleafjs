@@ -31,7 +31,7 @@ describe('processors/standard/StandardAttrAttributeProcessor', function() {
 	let attribute;
 	beforeAll(function() {
 		processor = new StandardAttrAttributeProcessor('test');
-		attribute = `${processor.name}:${processor.prefix}`;
+		attribute = `${processor.prefix}:${processor.name}`;
 	});
 
 	test('Set the value of the target attribute', function() {

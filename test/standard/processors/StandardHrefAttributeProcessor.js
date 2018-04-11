@@ -31,7 +31,7 @@ describe('processors/standard/StandardHrefAttributeProcessor', function() {
 	let attribute;
 	beforeAll(function() {
 		processor = new StandardHrefAttributeProcessor('test');
-		attribute = `${processor.name}:${processor.prefix}`;
+		attribute = `${processor.prefix}:${processor.name}`;
 	});
 
 	test("Replaces an element's `href` attribute", function() {

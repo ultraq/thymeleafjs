@@ -31,7 +31,7 @@ describe('processors/standard/StandardEachAttributeProcessor', function() {
 	let processor, attribute;
 	beforeAll(function() {
 		processor = new StandardEachAttributeProcessor('test');
-		attribute = `${processor.name}:${processor.prefix}`;
+		attribute = `${processor.prefix}:${processor.name}`;
 	});
 
 	test('Repeats an element for every item in an iterable', function() {

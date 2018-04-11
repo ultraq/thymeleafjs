@@ -30,7 +30,7 @@ describe('processors/standard/StandardIfAttributeProcessor', function() {
 	let attribute, processor;
 	beforeAll(function() {
 		processor = new StandardIfAttributeProcessor('test');
-		attribute = `${processor.name}:${processor.prefix}`;
+		attribute = `${processor.prefix}:${processor.name}`;
 	});
 
 	test('Renders the element and children if the expression is truthy', function() {

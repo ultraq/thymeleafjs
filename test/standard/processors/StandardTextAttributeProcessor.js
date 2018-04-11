@@ -30,7 +30,7 @@ describe('processors/standard/StandardTextAttributeProcessor', function() {
 	let attribute, processor;
 	beforeAll(function() {
 		processor = new StandardTextAttributeProcessor('test');
-		attribute = `${processor.name}:${processor.prefix}`;
+		attribute = `${processor.prefix}:${processor.name}`;
 	});
 
 	test("Replaces an element's text content", function() {

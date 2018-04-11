@@ -31,7 +31,7 @@ describe('processors/standard/StandardFragmentAttributeProcessor', function() {
 	let attribute;
 	beforeAll(function() {
 		processor = new StandardFragmentAttributeProcessor('test');
-		attribute = `${processor.name}:${processor.prefix}`;
+		attribute = `${processor.prefix}:${processor.name}`;
 	});
 
 	test('Adds encountered fragments to the context (no fragments list)', function() {

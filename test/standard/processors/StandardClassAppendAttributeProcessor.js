@@ -31,7 +31,7 @@ describe('standard/processors/StandardClassAppendAttributeProcessor', function()
 	let attribute;
 	beforeAll(function() {
 		processor = new StandardClassAppendAttributeProcessor('test');
-		attribute = `${processor.name}:${processor.prefix}`;
+		attribute = `${processor.prefix}:${processor.name}`;
 	});
 
 

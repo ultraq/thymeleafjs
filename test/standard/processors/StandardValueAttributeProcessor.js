@@ -31,7 +31,7 @@ describe('standard/processors/StandardValueAttributeProcessor', function() {
 	let attribute;
 	beforeAll(function() {
 		processor = new StandardValueAttributeProcessor('test');
-		attribute = `${processor.name}:${processor.prefix}`;
+		attribute = `${processor.prefix}:${processor.name}`;
 	});
 
 	test("Replaces an element's `value` attribute", function() {
