@@ -33,7 +33,7 @@ export const FragmentName = new Rule('FragmentName',
 
 // TODO: We're not doing anything with these yet
 export const FragmentParameters = new Rule('FragmentParameters',
-	new OptionalExpression(/\(.+\)/), 
+	new OptionalExpression(/\(.+\)/)
 );
 
 /**

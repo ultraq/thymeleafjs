@@ -20,6 +20,10 @@ import Rule               from '../../parser/Rule';
 /**
  * All whitespace in the Thymeleaf expression language is optional.
  * 
+ * TODO: Improve the parser and expressions so that they ignore whitespace
+ *       between tokens, then I don't need special things like this and I may be
+ *       able to get rid of the rigidity of the regular expression matcher.
+ * 
  * @author Emanuel Rabina
  */
 export default new Rule('OptionalWhitespace',

@@ -28,10 +28,13 @@ import LinkExpression, {
 	Url,
 	UrlParameters
 } from './LinkExpression';
-import {
+import Literal, {
+	BooleanLiteral,
+	NullLiteral,
+	NumberLiteral,
 	TextLiteral,
 	TokenLiteral
-} from './Literal';
+} from './Literals';
 import OptionalWhitespace      from './OptionalWhitespace';
 import VariableExpression      from './VariableExpression';
 import Grammar                 from '../../parser/Grammar';
@@ -53,8 +56,7 @@ export default new Grammar('Thymeleaf Expression Language',
 			FragmentExpression.name,
 			Iteration.name,
 			IfThenCondition.name,
-			TextLiteral.name,
-			TokenLiteral.name
+			Literal.name
 		)
 	),
 
@@ -80,7 +82,11 @@ export default new Grammar('Thymeleaf Expression Language',
 	VariableOrLiteral,
 
 	// Literals
+	Literal,
 	TextLiteral,
+	NumberLiteral,
+	BooleanLiteral,
+	NullLiteral,
 	TokenLiteral,
 
 	// Common tokens

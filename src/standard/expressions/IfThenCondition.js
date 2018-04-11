@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import {TextLiteral, TokenLiteral}     from './Literal';
+import Literal                         from './Literals';
 import VariableExpression              from './VariableExpression';
 import OrderedChoiceExpression         from '../../parser/OrderedChoiceExpression';
 import RegularExpressionMatchProcessor from '../../parser/RegularExpressionMatchProcessor';
@@ -23,8 +23,7 @@ import Rule                            from '../../parser/Rule';
 export const VariableOrLiteral = new Rule('VariableOrLiteral',
 	new OrderedChoiceExpression(
 		VariableExpression.name,
-		TextLiteral.name,
-		TokenLiteral.name
+		Literal.name
 	)
 );
 
