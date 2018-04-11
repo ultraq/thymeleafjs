@@ -196,6 +196,7 @@ is capable, and thus incapable, of doing.
 ### Processors
 
  - `th:attr` (attribute replacement)
+ - `th:checked` (`checked` boolean attribute inclusion/removal)
  - `th:each` (iteration)
  - `th:href` (`href` attribute replacement w/ link expression support)
  - `th:if` (conditional rendering)
@@ -203,6 +204,7 @@ is capable, and thus incapable, of doing.
  - `th:src` (`src` attribute replacement w/ link expression support)
  - `th:text` (text replacement)
  - `th:utext` (text replacement, unescaped)
+ - `th:value` (set an input field value)
 
 ### Expressions
 
@@ -213,6 +215,9 @@ is capable, and thus incapable, of doing.
    placeholders in the URL, or both)
  - `~{template::fragment}` (fragment expressions, references an element in
    another template)
+ - `localValue : ${iterable}` (basic iteration expressions)
+ - `(condition) ? (truthy branch)` (if-then expressions)
+ - Text, number, boolean, and literal tokens
 
 
 ### Caveat on fragment inclusion

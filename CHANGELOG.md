@@ -2,6 +2,21 @@
 Changelog
 =========
 
+### 0.10.0
+ - Add a `th:value`/`data-th-value` processor
+ - Add support for if-then expressions (`(condition) ? (true branch)`)
+ - Add support for a literals (text, number, boolean, and tokens)
+ - Add a `th:checked`/`data-th-checked` processor
+
+### 0.9.0
+ - Fix `th:attr`/`data-th-attr` where re-using the regex in the processor would
+   cause subsequent uses to fail.
+ - First attempt at support for the fragment syntax and `th:insert`/`data-th-insert`
+   to include other templates/fragments (still a hack that's documented in the
+   README).
+ - Include Node 8 in CI builds/tests as it's now entered LTS.
+ - Testing frameworks simplified: mocha + chai + nyc + jsdom -> jest
+
 ### 0.8.1
  - Fix double-escaping of `thjs:text`/`data-thjs-text` and single-escaping of
    `thjs:utext`/`data-thjs-utext` processors
