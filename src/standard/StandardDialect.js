@@ -15,6 +15,7 @@
  */
 
 import StandardAttrAttributeProcessor        from './processors/StandardAttrAttributeProcessor';
+import StandardCheckedAttributeProcessor     from './processors/StandardCheckedAttributeProcessor';
 import StandardClassAppendAttributeProcessor from './processors/StandardClassAppendAttributeProcessor';
 import StandardEachAttributeProcessor        from './processors/StandardEachAttributeProcessor';
 import StandardFragmentAttributeProcessor    from './processors/StandardFragmentAttributeProcessor';
@@ -79,6 +80,9 @@ export default class StandardDialect extends Dialect {
 			new StandardHrefAttributeProcessor(prefix),
 			new StandardSrcAttributeProcessor(prefix),
 			new StandardValueAttributeProcessor(prefix),
+
+			// Specific attribute modification
+			new StandardCheckedAttributeProcessor(prefix),
 
 			// Text
 			new StandardTextAttributeProcessor(prefix),

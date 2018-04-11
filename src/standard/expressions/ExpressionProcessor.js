@@ -20,6 +20,9 @@ import Parser                      from '../../parser/Parser';
 /**
  * Parses and executes Thymeleaf expressions.
  * 
+ * TODO: Create a shared instance of this for a processing context so that it
+ *       doesn't need to be recreated over and over.
+ * 
  * @author Emanuel Rabina
  */
 export default class ExpressionProcessor {
@@ -40,6 +43,7 @@ export default class ExpressionProcessor {
 	 */
 	process(input) {
 
+		// TODO: Probably don't need to create a new parser every time?
 		let parser = new Parser(ThymeleafExpressionLanguage);
 		let expressionAction = parser.parse(input);
 		return expressionAction(this.context);

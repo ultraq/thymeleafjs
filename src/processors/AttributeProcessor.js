@@ -17,6 +17,10 @@
 /**
  * Common class for attribute processors.
  * 
+ * TODO: Do we even need a class for processors?  So far they all seem to be
+ *       functions that execute based on a name match, which for all intents can
+ *       be as simple as an object name/function pair!
+ * 
  * @author Emanuel Rabina
  */
 export default class AttributeProcessor {

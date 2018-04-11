@@ -54,6 +54,8 @@ export default class StandardAttrAttributeProcessor extends AttributeProcessor {
 	 */
 	process(element, attribute, attributeValue, context) {
 
+		// TODO: This regex, is this some kind of value list that needs to be
+		//       turned into an expression?
 		if (/(.+=.+,)*.+=.+/.test(attributeValue)) {
 			attributeValue.split(',').forEach(attribute => {
 				let attributeParts = attribute.split('=');
