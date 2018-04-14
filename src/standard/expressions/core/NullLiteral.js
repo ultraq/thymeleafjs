@@ -14,8 +14,7 @@
  * limitations under the License.
  */
 
-import Rule             from '../../../parser/Rule';
-import SimpleExpression from '../../../parser/SimpleExpression';
+import Rule from '../../../parser/Rule';
 
 /**
  * The word `null` to represent the null value.
@@ -23,7 +22,7 @@ import SimpleExpression from '../../../parser/SimpleExpression';
  * @author Emanuel Rabina
  */
 export default new Rule('NullLiteral',
-	new SimpleExpression(/null/),
+	/null/,
 	() => () => {
 		return null; // TODO: The parser uses null to mean 'failed parse', so this might not work?
 	}

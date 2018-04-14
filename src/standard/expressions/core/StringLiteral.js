@@ -14,8 +14,7 @@
  * limitations under the License.
  */
 
-import Rule             from '../../../parser/Rule';
-import SimpleExpression from '../../../parser/SimpleExpression';
+import Rule from '../../../parser/Rule';
 
 /**
  * String literal, characters surrounded by `'` (single quotes).
@@ -23,7 +22,7 @@ import SimpleExpression from '../../../parser/SimpleExpression';
  * @author Emanuel Rabina
  */
 export default new Rule('StringLiteral',
-	new SimpleExpression(/^'.*?'$/),
+	/^'.*?'$/,
 	result => () => {
 		return result.slice(1, -1);
 	}

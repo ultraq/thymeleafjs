@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 
-import Grammar          from '../../src/parser/Grammar';
-import Rule             from '../../src/parser/Rule';
-import SimpleExpression from '../../src/parser/SimpleExpression';
+import Grammar from '../../src/parser/Grammar';
+import Rule    from '../../src/parser/Rule';
 
 /**
  * Tests for the Grammar to describe a language.
@@ -24,22 +23,16 @@ import SimpleExpression from '../../src/parser/SimpleExpression';
 describe('parser/Grammar', function() {
 
 	test('#findRuleByName', function() {
-		let randomRule = new Rule('RandomRule',
-			new SimpleExpression(/Hello/)
-		);
+		let randomRule = new Rule('RandomRule', /Hello/);
 		let grammar = new Grammar('Test',
-			new Rule('StartingRule',
-				new SimpleExpression(/Start/)
-			),
+			new Rule('StartingRule', /Start/),
 			randomRule
 		);
 		expect(grammar.findRuleByName('RandomRule')).toBe(randomRule);
 	});
 
 	test('#startingRule', function() {
-		let startingRule = new Rule('StartingRule',
-			new SimpleExpression(/Hi/)
-		);
+		let startingRule = new Rule('StartingRule', /Hi/);
 		let grammar = new Grammar('Test', startingRule);
 		expect(grammar.startingRule).toBe(startingRule);
 	});

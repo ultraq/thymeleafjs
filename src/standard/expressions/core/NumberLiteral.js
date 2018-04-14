@@ -14,8 +14,7 @@
  * limitations under the License.
  */
 
-import Rule             from '../../../parser/Rule';
-import SimpleExpression from '../../../parser/SimpleExpression';
+import Rule from '../../../parser/Rule';
 
 /**
  * A number.
@@ -23,7 +22,7 @@ import SimpleExpression from '../../../parser/SimpleExpression';
  * @author Emanuel Rabina
  */
 export default new Rule('NumberLiteral',
-	new SimpleExpression(/\d+(\.\d+)?/),
+	/\d+(\.\d+)?/,
 	result => () => {
 		return parseFloat(result);
 	}

@@ -14,8 +14,7 @@
  * limitations under the License.
  */
 
-import Rule             from '../../parser/Rule';
-import SimpleExpression from '../../parser/SimpleExpression';
+import Rule from '../../parser/Rule';
 
 /**
  * An identifier is any valid variable name in JavaScript.
@@ -23,5 +22,5 @@ import SimpleExpression from '../../parser/SimpleExpression';
  * @author Emanuel Rabina
  */
 export default new Rule('Identifier',
-	new SimpleExpression(/[a-zA-Z_][\w\.]*/)
+	/[a-zA-Z_][\w\.]*/
 );

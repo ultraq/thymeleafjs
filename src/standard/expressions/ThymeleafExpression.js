@@ -24,14 +24,13 @@ import IfThenCondition         from './conditionals/IfThenCondition';
 import Literal                 from './core/Literal';
 import OrderedChoiceExpression from '../../parser/OrderedChoiceExpression';
 import Rule                    from '../../parser/Rule';
-import SimpleExpression        from '../../parser/SimpleExpression';
 
 /**
  * Wraps an existing rule and requires that all input be consumed to match.
  */
 class AllInputRule extends Rule {
 	constructor(ruleName) {
-		super(`${ruleName}-AllInput`, new SimpleExpression(ruleName));
+		super(`${ruleName}-AllInput`, ruleName);
 	}
 	match(input, parser) {
 		let matchResult = super.match(input, parser);

@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 
-import Grammar          from '../../src/parser/Grammar';
-import Parser           from '../../src/parser/Parser';
-import Rule             from '../../src/parser/Rule';
-import SimpleExpression from '../../src/parser/SimpleExpression';
+import Grammar from '../../src/parser/Grammar';
+import Parser  from '../../src/parser/Parser';
+import Rule    from '../../src/parser/Rule';
 
 /**
  * Tests for the main parser component.
@@ -28,8 +27,8 @@ describe('parser/Parser', function() {
 	let parser;
 	beforeEach(function() {
 		grammar = new Grammar('Test',
-			new Rule('StartingRule', new SimpleExpression(/abc/)),
-			new Rule('NumberRule', new SimpleExpression(/123/))
+			new Rule('StartingRule', /abc/),
+			new Rule('NumberRule', /123/)
 		);
 		parser = new Parser(grammar);
 	});

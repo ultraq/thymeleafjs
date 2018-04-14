@@ -16,18 +16,17 @@
 
 import OptionalExpression from '../../parser/OptionalExpression';
 import Rule               from '../../parser/Rule';
-import SimpleExpression   from '../../parser/SimpleExpression';
 import SequenceExpression from '../../parser/SequenceExpression';
 
 import {navigate} from '@ultraq/object-utils';
 
 
 export const TemplateName = new Rule('TemplateName',
-	new SimpleExpression(/[\w-\._]+/)
+	/[\w-\._]+/
 );
 
 export const FragmentName = new Rule('FragmentName',
-	new SimpleExpression(/[\w-\._]+/)
+	/[\w-\._]+/
 );
 
 // TODO: We're not doing anything with these yet

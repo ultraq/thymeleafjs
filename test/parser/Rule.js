@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 
-import InputBuffer      from '../../src/parser/InputBuffer';
-import Parser           from '../../src/parser/Parser';
-import Rule             from '../../src/parser/Rule';
-import SimpleExpression from '../../src/parser/SimpleExpression';
+import InputBuffer from '../../src/parser/InputBuffer';
+import Parser      from '../../src/parser/Parser';
+import Rule        from '../../src/parser/Rule';
 
 /**
  * Tests for the rule component of a grammar.
@@ -25,16 +24,14 @@ import SimpleExpression from '../../src/parser/SimpleExpression';
 describe('parser/Rule', function() {
 
 	test('Gets its result from matching the configured expression', function() {
-		let rule = new Rule('Test',
-			new SimpleExpression(/Hello!/)
-		);
+		let rule = new Rule('Test', /Hello!/);
 		let result = rule.match(new InputBuffer('Hello!'), new Parser());
 		expect(result).toBe('Hello!');
 	});
 
 	test('Result can be processed by a configured processor', function() {
 		let rule = new Rule('Test',
-			new SimpleExpression(/Hello!/),
+			/Hello!/,
 			result => ({ result })
 		);
 		let result = rule.match(new InputBuffer('Hello!'), new Parser());
@@ -42,9 +39,7 @@ describe('parser/Rule', function() {
 	});
 
 	test('A failed match returns `null`', function() {
-		let rule = new Rule('Test',
-			new SimpleExpression(/Hello!/)
-		);
+		let rule = new Rule('Test', /Hello!/);
 		let result = rule.match(new InputBuffer('Goodbye'), new Parser());
 		expect(result).toBeNull();
 	});

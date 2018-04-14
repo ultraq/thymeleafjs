@@ -15,7 +15,6 @@
  */
 
 import InputBuffer from './InputBuffer';
-import Rule        from './Rule';
 
 /**
  * A recursive descent parser for any parsing expression grammar defined by the
@@ -75,23 +74,23 @@ export default class Parser {
 	 */
 	parseWithExpression(input, expression) {
 
-		// Reference to another rule
-		if (expression instanceof Rule) {
-			return expression.match(input, this);
-		}
-
 		// Name of another rule in the grammar
-		else if (typeof expression === 'string') {
+		if (typeof expression === 'string') {
 			let ruleFromExpression = this.grammar.findRuleByName(expression);
 			return ruleFromExpression ? ruleFromExpression.match(input, this) : null;
 		}
 
 		// A regular expression that must be matched
-		else {
+		else if (expression instanceof RegExp) {
 			let result = input.read(expression);
 			if (result) {
 				return result[0];
 			}
+		}
+
+		// One of our expression objects that has a `match` method
+		else if (typeof expression === 'object' && typeof expression.match === 'function') {
+			return expression.match(input, this);
 		}
 
 		return null;

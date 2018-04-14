@@ -14,8 +14,7 @@
  * limitations under the License.
  */
 
-import Rule             from '../../../parser/Rule';
-import SimpleExpression from '../../../parser/SimpleExpression';
+import Rule from '../../../parser/Rule';
 
 /**
  * A token literal, which is pretty much anything else that can't be categorized
@@ -28,7 +27,7 @@ import SimpleExpression from '../../../parser/SimpleExpression';
  * @author Emanuel Rabina
  */
 export default new Rule('TokenLiteral',
-	new SimpleExpression(/[^: $\{\}]+/),
+	/[^: $\{\}]+/,
 	result => () => {
 		return result;
 	}

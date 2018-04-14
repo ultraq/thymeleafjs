@@ -14,8 +14,7 @@
  * limitations under the License.
  */
 
-import Rule             from '../../../parser/Rule';
-import SimpleExpression from '../../../parser/SimpleExpression';
+import Rule from '../../../parser/Rule';
 
 /**
  * One of `true` or `false`.
@@ -23,7 +22,7 @@ import SimpleExpression from '../../../parser/SimpleExpression';
  * @author Emanuel Rabina
  */
 export default new Rule('BooleanLiteral',
-	new SimpleExpression(/(true|false)/),
+	/(true|false)/,
 	result => () => {
 		return result === 'true';
 	}

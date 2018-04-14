@@ -14,8 +14,7 @@
  * limitations under the License.
  */
 
-import Rule             from '../../parser/Rule';
-import SimpleExpression from '../../parser/SimpleExpression';
+import Rule from '../../parser/Rule';
 
 /**
  * An expression that matches the empty string.
@@ -23,5 +22,5 @@ import SimpleExpression from '../../parser/SimpleExpression';
  * @author Emanuel Rabina
  */
 export default new Rule('Nothing',
-	new SimpleExpression(/^$/)
+	/^$/
 );

@@ -17,16 +17,15 @@
 import ExpressionProcessor             from './ExpressionProcessor';
 import RegularExpressionMatchProcessor from '../../parser/RegularExpressionMatchProcessor';
 import Rule                            from '../../parser/Rule';
-import SimpleExpression                from '../../parser/SimpleExpression';
 
 import {remove} from '@ultraq/array-utils';
 
 export const Url = new Rule('Url',
-	new SimpleExpression(/.+/)
+	/.+/
 );
 
 export const UrlParameters = new Rule('UrlParameters',
-	new SimpleExpression(/\((.+)\)/)
+	/\((.+)\)/
 );
 
 /**
