@@ -17,6 +17,8 @@
 import InputBuffer from './InputBuffer';
 
 // TODO: This processor can probably supersede all the other expression types!
+//       However, it makes parsing a lot harder as things like whitespace
+//       between tokens need to be included in the regex.
 
 /**
  * A special kind of expression that understands matched portions of regular
