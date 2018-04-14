@@ -14,17 +14,10 @@
  * limitations under the License.
  */
 
-import UnaryExpression         from './UnaryExpression';
+import Operand                 from './core/Operand';
 import Rule                    from '../../parser/Rule';
 import SequenceExpression      from '../../parser/SequenceExpression';
 import OrderedChoiceExpression from '../../parser/OrderedChoiceExpression';
-import SimpleExpression        from '../../parser/SimpleExpression';
-
-export const Operand = new Rule('Operand',
-	new SimpleExpression(
-		UnaryExpression.name
-	)
-);
 
 export const Comparator = new Rule('Comparator',
 	new OrderedChoiceExpression([

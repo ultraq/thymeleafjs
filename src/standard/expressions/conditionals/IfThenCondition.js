@@ -14,18 +14,10 @@
  * limitations under the License.
  */
 
-import LogicalExpression               from './LogicalExpression';
-import UnaryExpression                 from './UnaryExpression';
-import OrderedChoiceExpression         from '../../parser/OrderedChoiceExpression';
-import RegularExpressionMatchProcessor from '../../parser/RegularExpressionMatchProcessor';
-import Rule                            from '../../parser/Rule';
-
-export const Condition = new Rule('Condition',
-	new OrderedChoiceExpression([
-		UnaryExpression.name,
-		LogicalExpression.name
-	])
-);
+import Condition                       from './Condition';
+import Operand                         from '../core/Operand';
+import RegularExpressionMatchProcessor from '../../../parser/RegularExpressionMatchProcessor';
+import Rule                            from '../../../parser/Rule';
 
 /**
  * If-then condition, `if ? then`.  This is the truthy branch only of the
@@ -36,7 +28,7 @@ export const Condition = new Rule('Condition',
 export default new Rule('IfThenCondition',
 	new RegularExpressionMatchProcessor(
 		/^(.+)\s*\?\s*(.+)$/,
-		[Condition.name, UnaryExpression.name]
+		[Condition.name, Operand.name]
 	),
 	([, condition, truthyBranch]) => context => {
 		return condition(context) ? truthyBranch(context) : undefined;

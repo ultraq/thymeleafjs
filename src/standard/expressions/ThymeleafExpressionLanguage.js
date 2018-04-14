@@ -19,22 +19,23 @@ import FragmentExpression, {
 	FragmentParameters,
 	TemplateName}                from './FragmentExpression';
 import Identifier              from './Identifier';
-import IfThenCondition, {
-	Condition}                   from './IfThenCondition';
 import Iteration               from './Iteration';
 import LinkExpression, {
 	Url, UrlParameters}          from './LinkExpression';
-import Literal, {
-	BooleanLiteral,
-	NullLiteral,
-	NumberLiteral,
-	TextLiteral,
-	TokenLiteral}                from './Literals';
 import LogicalExpression, {
-	Comparator, Operand}         from './LogicalExpression';
+	Comparator}                  from './LogicalExpression';
 import Nothing                 from './Nothing';
-import UnaryExpression         from './UnaryExpression';
 import VariableExpression      from './VariableExpression';
+import Condition               from './conditionals/Condition';
+import IfThenCondition         from './conditionals/IfThenCondition';
+import IfThenElseCondition     from './conditionals/IfThenElseCondition';
+import BooleanLiteral          from './core/BooleanLiteral';
+import Literal                 from './core/Literal';
+import NullLiteral             from './core/NullLiteral';
+import NumberLiteral           from './core/NumberLiteral';
+import Operand                 from './core/Operand';
+import StringLiteral           from './core/StringLiteral';
+import TokenLiteral            from './core/TokenLiteral';
 import Grammar                 from '../../parser/Grammar';
 import OrderedChoiceExpression from '../../parser/OrderedChoiceExpression';
 import Rule                    from '../../parser/Rule';
@@ -78,7 +79,7 @@ export default new Grammar('Thymeleaf Expression Language',
 
 	// Literals
 	Literal,
-		TextLiteral,
+		StringLiteral,
 		NumberLiteral,
 		BooleanLiteral,
 		NullLiteral,
@@ -97,6 +98,7 @@ export default new Grammar('Thymeleaf Expression Language',
 
 	// Conditional operators
 	IfThenCondition,
+	IfThenElseCondition,
 		Condition,
 
 	// Special tokens
@@ -104,5 +106,5 @@ export default new Grammar('Thymeleaf Expression Language',
 
 	// Common language basics
 	Identifier,
-	UnaryExpression
+	Operand
 );
