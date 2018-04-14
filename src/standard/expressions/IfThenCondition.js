@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
-import Literal                         from './Literals';
-import VariableExpression              from './VariableExpression';
+import LogicalExpression               from './LogicalExpression';
+import UnaryExpression                 from './UnaryExpression';
 import OrderedChoiceExpression         from '../../parser/OrderedChoiceExpression';
 import RegularExpressionMatchProcessor from '../../parser/RegularExpressionMatchProcessor';
 import Rule                            from '../../parser/Rule';
 
-export const VariableOrLiteral = new Rule('VariableOrLiteral',
-	new OrderedChoiceExpression(
-		VariableExpression.name,
-		Literal.name
-	)
+export const Condition = new Rule('Condition',
+	new OrderedChoiceExpression([
+		UnaryExpression.name,
+		LogicalExpression.name
+	])
 );
 
 /**
@@ -35,8 +35,8 @@ export const VariableOrLiteral = new Rule('VariableOrLiteral',
  */
 export default new Rule('IfThenCondition',
 	new RegularExpressionMatchProcessor(
-		/^([^ ]+)\s*\?\s*(.+)$/,
-		[VariableExpression.name, VariableOrLiteral.name]
+		/^(.+)\s*\?\s*(.+)$/,
+		[Condition.name, UnaryExpression.name]
 	),
 	([, condition, truthyBranch]) => context => {
 		return condition(context) ? truthyBranch(context) : undefined;

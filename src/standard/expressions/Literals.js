@@ -66,7 +66,7 @@ export const NullLiteral = new Rule('NullLiteral',
  * something.
  */
 export const TokenLiteral = new Rule('TokenLiteral',
-	new SimpleExpression(/[^: ]*/),
+	new SimpleExpression(/[^: $\{\}]+/),
 	result => () => {
 		return result;
 	}
@@ -78,11 +78,11 @@ export const TokenLiteral = new Rule('TokenLiteral',
  * need to include all of the proper literals.
  */
 export default new Rule('Literal',
-	new OrderedChoiceExpression(
+	new OrderedChoiceExpression([
 		TextLiteral.name,
 		NumberLiteral.name,
 		BooleanLiteral.name,
 		NullLiteral.name,
 		TokenLiteral.name
-	)
+	])
 );

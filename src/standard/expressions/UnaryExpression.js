@@ -14,21 +14,19 @@
  * limitations under the License.
  */
 
-import Identifier                      from './Identifier';
-import RegularExpressionMatchProcessor from '../../parser/RegularExpressionMatchProcessor';
-import Rule                            from '../../parser/Rule';
-
-import {navigate} from '@ultraq/object-utils';
+import Literal                 from './Literals';
+import VariableExpression      from './VariableExpression';
+import OrderedChoiceExpression from '../../parser/OrderedChoiceExpression';
+import Rule                    from '../../parser/Rule';
 
 /**
- * Variable expressions, `${variable}`.  Represents a value to be retrieved from
- * the current context.
+ * An expression that contains a single item that can resolve to a value.
  * 
  * @author Emanuel Rabina
  */
-export default new Rule('VariableExpression',
-	new RegularExpressionMatchProcessor(/\${(.+)\}/, [Identifier.name]),
-	([, identifier]) => context => {
-		return navigate(context, identifier) || '';
-	}
+export default new Rule('UnaryExpression',
+	new OrderedChoiceExpression([
+		VariableExpression.name,
+		Literal.name
+	])
 );

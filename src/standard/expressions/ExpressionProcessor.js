@@ -39,13 +39,13 @@ export default class ExpressionProcessor {
 	 * Parse and execute the given input as a Thymeleaf expression.
 	 * 
 	 * @param {String} input
-	 * @return {Object}
+	 * @return {*}
 	 */
 	process(input) {
 
 		// TODO: Probably don't need to create a new parser every time?
 		let parser = new Parser(ThymeleafExpressionLanguage);
 		let expressionAction = parser.parse(input);
-		return expressionAction(this.context);
+		return expressionAction ? expressionAction(this.context) : null;
 	}
 }
