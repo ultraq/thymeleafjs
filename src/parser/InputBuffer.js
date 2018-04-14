@@ -106,11 +106,16 @@ export default class InputBuffer {
 	read(pattern) {
 
 		let remaining = this.input.substring(this.position);
+		let leadingWhitespace = remaining.match(/^\s+/);
+		if (leadingWhitespace) {
+			leadingWhitespace = leadingWhitespace[0];
+			remaining = remaining.substring(leadingWhitespace.length);
+		}
 		let result = new RegExp(pattern.source).exec(remaining);
 		if (result) {
 			let [value] = result;
 			if (remaining.startsWith(value)) {
-				this.position += value.length;
+				this.position += (value.length + (leadingWhitespace ? leadingWhitespace.length : 0));
 				return result;
 			}
 		}
