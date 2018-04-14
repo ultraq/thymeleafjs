@@ -25,7 +25,7 @@ describe('parser/OrderedChoiceExpression', function() {
 
 	let orderedChoiceExpression;
 	beforeEach(function() {
-		orderedChoiceExpression = new OrderedChoiceExpression(/abc/, /123/);
+		orderedChoiceExpression = new OrderedChoiceExpression([/abc/, /123/]);
 	});
 
 	test('A successful parse is one where any of the choices is successful', function() {
