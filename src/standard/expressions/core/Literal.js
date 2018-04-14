@@ -28,11 +28,11 @@ import Rule                    from '../../../parser/Rule';
  * need to include all of the proper literals.
  */
 export default new Rule('Literal',
-	new OrderedChoiceExpression([
+	new OrderedChoiceExpression(
 		StringLiteral.name,
 		NumberLiteral.name,
 		BooleanLiteral.name,
 		NullLiteral.name,
 		TokenLiteral.name
-	])
+	)
 );

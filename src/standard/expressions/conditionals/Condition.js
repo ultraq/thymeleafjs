@@ -25,8 +25,8 @@ import Rule                    from '../../../parser/Rule';
  * @author Emanuel Rabina
  */
 export default new Rule('Condition',
-	new OrderedChoiceExpression([
+	new OrderedChoiceExpression(
 		Operand.name,
 		LogicalExpression.name
-	])
+	)
 );

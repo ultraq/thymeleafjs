@@ -17,28 +17,27 @@
 import FragmentExpression, {
 	FragmentName,
 	FragmentParameters,
-	TemplateName}                from './FragmentExpression';
-import Identifier              from './Identifier';
-import Iteration               from './Iteration';
+	TemplateName}            from './FragmentExpression';
+import Identifier          from './Identifier';
+import Iteration           from './Iteration';
 import LinkExpression, {
-	Url, UrlParameters}          from './LinkExpression';
+	Url, UrlParameters}      from './LinkExpression';
 import LogicalExpression, {
-	Comparator}                  from './LogicalExpression';
-import Nothing                 from './Nothing';
-import VariableExpression      from './VariableExpression';
-import Condition               from './conditionals/Condition';
-import IfThenCondition         from './conditionals/IfThenCondition';
-import IfThenElseCondition     from './conditionals/IfThenElseCondition';
-import BooleanLiteral          from './core/BooleanLiteral';
-import Literal                 from './core/Literal';
-import NullLiteral             from './core/NullLiteral';
-import NumberLiteral           from './core/NumberLiteral';
-import Operand                 from './core/Operand';
-import StringLiteral           from './core/StringLiteral';
-import TokenLiteral            from './core/TokenLiteral';
-import Grammar                 from '../../parser/Grammar';
-import OrderedChoiceExpression from '../../parser/OrderedChoiceExpression';
-import Rule                    from '../../parser/Rule';
+	Comparator}              from './LogicalExpression';
+import Nothing             from './Nothing';
+import ThymeleafExpression from './ThymeleafExpression';
+import VariableExpression  from './VariableExpression';
+import Condition           from './conditionals/Condition';
+import IfThenCondition     from './conditionals/IfThenCondition';
+import IfThenElseCondition from './conditionals/IfThenElseCondition';
+import BooleanLiteral      from './core/BooleanLiteral';
+import Literal             from './core/Literal';
+import NullLiteral         from './core/NullLiteral';
+import NumberLiteral       from './core/NumberLiteral';
+import Operand             from './core/Operand';
+import StringLiteral       from './core/StringLiteral';
+import TokenLiteral        from './core/TokenLiteral';
+import Grammar             from '../../parser/Grammar';
 
 /**
  * Grammar for the Thymeleaf expression language.  Describes the language and
@@ -47,20 +46,7 @@ import Rule                    from '../../parser/Rule';
  * @author Emanuel Rabina
  */
 export default new Grammar('Thymeleaf Expression Language',
-
-	new Rule('StartingRule',
-		new OrderedChoiceExpression([
-			VariableExpression.name,
-			LinkExpression.name,
-			FragmentExpression.name,
-			Iteration.name,
-			IfThenCondition.name,
-			Literal.name,
-			LogicalExpression.name,
-			IfThenCondition.name,
-			Nothing.name
-		], true)
-	),
+	ThymeleafExpression,
 
 	// Ordered as at https://www.thymeleaf.org/doc/tutorials/3.0/usingthymeleaf.html#standard-expression-syntax
 

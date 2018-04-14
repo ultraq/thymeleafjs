@@ -20,9 +20,9 @@ import SequenceExpression      from '../../parser/SequenceExpression';
 import OrderedChoiceExpression from '../../parser/OrderedChoiceExpression';
 
 export const Comparator = new Rule('Comparator',
-	new OrderedChoiceExpression([
+	new OrderedChoiceExpression(
 		/===?/
-	])
+	)
 );
 
 /**

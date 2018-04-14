@@ -21,10 +21,10 @@
 		"no-console": "off",
 		"import/order": ["error", {
 			"groups": [
-				"internal",
 				"index",
 				"sibling",
 				"parent",
+				"internal",
 				"external",
 				"builtin"
 			]

@@ -23,13 +23,11 @@
 export default class OrderedChoiceExpression {
 
 	/**
-	 * @param {Array<String|RegExp>} expressions
-	 * @param {Boolean} [fullInputMatch=false]
+	 * @param {...Rule|String|RegExp} expressions
 	 */
-	constructor(expressions, fullInputMatch = false) {
+	constructor(...expressions) {
 
-		this.expressions    = expressions;
-		this.fullInputMatch = fullInputMatch;
+		this.expressions = expressions;
 	}
 
 	/**
@@ -44,8 +42,7 @@ export default class OrderedChoiceExpression {
 		return input.markAndClearOrReset(() => {
 			for (let expression of this.expressions) {
 				let result = input.markAndClearOrReset(() => {
-					let result = parser.parseWithExpression(input, expression);
-					return result !== null && this.fullInputMatch && !input.exhausted() ? null : result;
+					return parser.parseWithExpression(input, expression);
 				});
 				if (result !== null) {
 					return result;
