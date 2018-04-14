@@ -61,8 +61,13 @@ describe('parser/Parser', function() {
 
 		test('Looks up rules if expression is a string', function() {
 			let findSpy = jest.spyOn(grammar, 'findRuleByName');
-			parser.parseWithExpression(input, 'SomeRule');
-			expect(findSpy).toHaveBeenCalledWith('SomeRule');
+			expect.assertions(1);
+			try {
+				parser.parseWithExpression(input, 'SomeRule');
+			}
+			catch (ex) {
+				expect(findSpy).toHaveBeenCalledWith('SomeRule');
+			}
 		});
 
 		test('Attempts to read input if expression is a regexp', function() {

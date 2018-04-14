@@ -54,7 +54,11 @@ export default class Grammar {
 	 */
 	findRuleByName(name) {
 
-		return this.rules.find(rule => rule.name === name);
+		let rule = this.rules.find(rule => rule.name === name);
+		if (!rule) {
+			throw new Error(`Failed to find a rule named "${name}" in the grammar`);
+		}
+		return rule;
 	}
 
 	/**
