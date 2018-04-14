@@ -33,7 +33,6 @@ import Literal, {
 import LogicalExpression, {
 	Comparator, Operand}         from './LogicalExpression';
 import Nothing                 from './Nothing';
-import OptionalWhitespace      from './OptionalWhitespace';
 import UnaryExpression         from './UnaryExpression';
 import VariableExpression      from './VariableExpression';
 import Grammar                 from '../../parser/Grammar';
@@ -105,6 +104,5 @@ export default new Grammar('Thymeleaf Expression Language',
 
 	// Common language basics
 	Identifier,
-	OptionalWhitespace,
 	UnaryExpression
 );

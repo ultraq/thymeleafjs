@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import OptionalWhitespace from './OptionalWhitespace';
 import OptionalExpression from '../../parser/OptionalExpression';
 import Rule               from '../../parser/Rule';
 import SimpleExpression   from '../../parser/SimpleExpression';
@@ -46,15 +45,12 @@ export default new Rule('FragmentExpression',
 	new SequenceExpression(
 		/~{/,
 		'TemplateName',
-		OptionalWhitespace.name,
 		/::/,
-		OptionalWhitespace.name,
 		'FragmentName',
-		OptionalWhitespace.name,
 		'FragmentParameters',
 		/}/
 	),
-	([, templateName, , , , fragmentName, , parameters]) => context => {
+	([, templateName, , fragmentName, parameters]) => context => {
 
 		// TODO: Executing a fragment expression should locate and return the fragment
 		// TODO: Process parameters

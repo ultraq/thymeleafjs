@@ -15,7 +15,6 @@
  */
 
 import Identifier         from './Identifier';
-import OptionalWhitespace from './OptionalWhitespace';
 import VariableExpression from './VariableExpression';
 import Rule               from '../../parser/Rule';
 import SequenceExpression from '../../parser/SequenceExpression';
@@ -29,12 +28,10 @@ import SequenceExpression from '../../parser/SequenceExpression';
 export default new Rule('IterationExpression',
 	new SequenceExpression(
 		Identifier.name,
-		OptionalWhitespace.name,
 		/:/,
-		OptionalWhitespace.name,
 		VariableExpression.name
 	),
-	([localValueName, , , , collectionExpressionAction]) => context => {
+	([localValueName, , collectionExpressionAction]) => context => {
 		return {
 			localValueName,
 			iterable: collectionExpressionAction(context)
