@@ -48,8 +48,17 @@ export default class Parser {
 
 		let inputBuffer = new InputBuffer(input);
 		let matchResult = this.grammar.accept(inputBuffer, this);
-		if (!matchResult || !inputBuffer.exhausted()) {
-			throw new Error(`Failed to parse "${input}"`);
+		if (matchResult === null || !inputBuffer.exhausted()) {
+			let errorMessage = `Failed to parse "${input}"`;
+
+			// Don't bring down the thread if we can't parse
+			if (process.env.NODE_ENV === 'production') {
+				console.error(errorMessage);
+				return null;
+			}
+			else {
+				throw new Error(errorMessage);
+			}
 		}
 		return matchResult;
 	}
