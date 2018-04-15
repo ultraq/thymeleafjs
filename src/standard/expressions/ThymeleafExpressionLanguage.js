@@ -80,7 +80,6 @@ export default new Grammar('Thymeleaf Expression Language',
 	// Comparisons and equality
 	LogicalExpression,
 		Comparator,
-		Operand,
 
 	// Conditional operators
 	IfThenCondition,
