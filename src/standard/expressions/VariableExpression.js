@@ -33,6 +33,7 @@ export default new Rule('VariableExpression',
 		/\}/
 	),
 	([, identifier]) => context => {
-		return navigate(context, identifier) || '';
+		let result = navigate(context, identifier);
+		return result !== null && result !== undefined ? result : '';
 	}
 );
