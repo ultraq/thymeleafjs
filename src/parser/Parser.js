@@ -18,7 +18,7 @@ import InputBuffer from './InputBuffer';
 
 /**
  * Any one of the objects that can be matched:
- *  - a rule or expression
+ *  - an expression
  *  - a string that references another rule
  *  - a regular expression
  * 
@@ -86,8 +86,8 @@ export default class Parser {
 
 		// Name of another rule in the grammar
 		if (typeof expression === 'string') {
-			let ruleFromExpression = this.grammar.findRuleByName(expression);
-			return ruleFromExpression ? ruleFromExpression.match(input, this) : null;
+			let rule = this.grammar.findRuleByName(expression);
+			return rule ? rule.accept(input, this) : null;
 		}
 
 		// A regular expression that must be matched

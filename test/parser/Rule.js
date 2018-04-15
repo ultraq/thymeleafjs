@@ -25,7 +25,7 @@ describe('parser/Rule', function() {
 
 	test('Gets its result from matching the configured expression', function() {
 		let rule = new Rule('Test', /Hello!/);
-		let result = rule.match(new InputBuffer('Hello!'), new Parser());
+		let result = rule.accept(new InputBuffer('Hello!'), new Parser());
 		expect(result).toBe('Hello!');
 	});
 
@@ -34,13 +34,13 @@ describe('parser/Rule', function() {
 			/Hello!/,
 			result => ({ result })
 		);
-		let result = rule.match(new InputBuffer('Hello!'), new Parser());
+		let result = rule.accept(new InputBuffer('Hello!'), new Parser());
 		expect(result).toEqual({ result: 'Hello!' });
 	});
 
 	test('A failed match returns `null`', function() {
 		let rule = new Rule('Test', /Hello!/);
-		let result = rule.match(new InputBuffer('Goodbye'), new Parser());
+		let result = rule.accept(new InputBuffer('Goodbye'), new Parser());
 		expect(result).toBeNull();
 	});
 });

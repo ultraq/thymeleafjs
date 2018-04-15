@@ -27,7 +27,7 @@ describe('standard/expressions/IfThenCondition', function() {
 	const parser = new Parser(ThymeleafExpressionLanguage);
 
 	test('Executes the true branch', function() {
-		let ifThenProcessor = IfThenCondition.match(
+		let ifThenProcessor = IfThenCondition.accept(
 			new InputBuffer("${condition} ? 'Hello!'"),
 			parser
 		);

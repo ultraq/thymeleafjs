@@ -55,13 +55,15 @@ export default class Rule {
 	}
 
 	/**
-	 * Check whether or not the input can be matched by this rule.
+	 * Given an input string and a parser, return whether or not the input is
+	 * accepted by this rule.
 	 * 
 	 * @param {InputBuffer} input
 	 * @param {Parser} parser
-	 * @return {Object}
+	 * @return {Object} If the input is accepted, this will be the non-null result
+	 *   of matching against the rule.
 	 */
-	match(input, parser) {
+	accept(input, parser) {
 
 		let matchResult = parser.parseWithExpression(input, this.expression);
 		return matchResult !== null ? this.matchProcessor(matchResult) : null;

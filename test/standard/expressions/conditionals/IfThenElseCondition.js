@@ -27,7 +27,7 @@ describe('standard/expressions/IfThenElseCondition', function() {
 	const parser = new Parser(ThymeleafExpressionLanguage);
 
 	test('Executes the true branch', function() {
-		let ifThenElseProcessor = IfThenElseCondition.match(
+		let ifThenElseProcessor = IfThenElseCondition.accept(
 			new InputBuffer("${condition} ? 'Hello!' : 'Goodbye :('"),
 			parser
 		);
@@ -38,7 +38,7 @@ describe('standard/expressions/IfThenElseCondition', function() {
 	});
 
 	test('Executes the false branch', function() {
-		let ifThenElseProcessor = IfThenElseCondition.match(
+		let ifThenElseProcessor = IfThenElseCondition.accept(
 			new InputBuffer("${condition} ? 'Hello!' : 'Goodbye :('"),
 			parser
 		);

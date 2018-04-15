@@ -23,7 +23,7 @@
 export default class OrderedChoiceExpression {
 
 	/**
-	 * @param {...Rule|String|RegExp} expressions
+	 * @param {...Matchable} expressions
 	 */
 	constructor(...expressions) {
 

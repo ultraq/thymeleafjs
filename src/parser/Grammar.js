@@ -43,7 +43,7 @@ export default class Grammar {
 	 */
 	accept(input, parser) {
 
-		return this.startingRule.match(input, parser);
+		return this.startingRule.accept(input, parser);
 	}
 
 	/**

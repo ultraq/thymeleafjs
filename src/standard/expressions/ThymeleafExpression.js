@@ -27,17 +27,15 @@ import OrderedChoiceExpression from '../../parser/OrderedChoiceExpression';
 import Rule                    from '../../parser/Rule';
 
 /**
- * Wraps an existing rule and requires that all input be consumed to match.
- * 
- * TODO: I'm still iffy about this approach, letting Rule objects be passed into
- *       rules.  Should be some kind of special expression instead.
+ * A special kind of expression that requires the referenced rule consume all
+ * available input.
  */
-class AllInputRule extends Rule {
+class AllInputExpression {
 	constructor(ruleName) {
-		super(`${ruleName}-AllInput`, ruleName);
+		this.ruleName = ruleName;
 	}
 	match(input, parser) {
-		let matchResult = super.match(input, parser);
+		let matchResult = parser.parseWithExpression(input, this.ruleName);
 		return matchResult !== null && input.exhausted() ? matchResult : null;
 	}
 }
@@ -50,15 +48,15 @@ class AllInputRule extends Rule {
  */
 export default new Rule('ThymeleafExpression',
 	new OrderedChoiceExpression(
-		new AllInputRule(VariableExpression.name),
-		new AllInputRule(LinkExpression.name),
-		new AllInputRule(FragmentExpression.name),
-		new AllInputRule(Iteration.name),
-		new AllInputRule(IfThenCondition.name),
-		new AllInputRule(Literal.name),
-		new AllInputRule(LogicalExpression.name),
-		new AllInputRule(IfThenCondition.name),
-		new AllInputRule(IfThenElseCondition.name),
-		new AllInputRule(Nothing.name)
+		new AllInputExpression(VariableExpression.name),
+		new AllInputExpression(LinkExpression.name),
+		new AllInputExpression(FragmentExpression.name),
+		new AllInputExpression(Iteration.name),
+		new AllInputExpression(IfThenCondition.name),
+		new AllInputExpression(Literal.name),
+		new AllInputExpression(LogicalExpression.name),
+		new AllInputExpression(IfThenCondition.name),
+		new AllInputExpression(IfThenElseCondition.name),
+		new AllInputExpression(Nothing.name)
 	)
 );
