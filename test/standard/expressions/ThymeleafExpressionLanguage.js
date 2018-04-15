@@ -14,19 +14,20 @@
  * limitations under the License.
  */
 
-import LogicalExpression       from '../LogicalExpression';
-import Operand                 from '../core/Operand';
-import OrderedChoiceExpression from '../../../parser/OrderedChoiceExpression';
-import Rule                    from '../../../parser/Rule';
+import ExpressionProcessor from '../../../src/standard/expressions/ExpressionProcessor';
 
 /**
- * A condition is some expression or value that resolves to a true/false value.
- * 
- * @author Emanuel Rabina
+ * Other tests for the expression language that don't seem to fit elsewhere.
  */
-export default new Rule('Condition',
-	new OrderedChoiceExpression(
-		LogicalExpression.name,
-		Operand.name
-	)
-);
+describe('standard/expressions/ThymeleafExpressionLanguage', function() {
+
+	test('Ternary expression', function() {
+		let expressionProcessor = new ExpressionProcessor({
+			items: [
+				'Item 1'
+			]
+		});
+		let result = expressionProcessor.process("${items.length} === 1 ? 'Hello!' : 'Goodbye :('");
+		expect(result).toBe('Hello!');
+	});
+});

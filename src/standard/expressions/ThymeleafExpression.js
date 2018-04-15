@@ -28,6 +28,9 @@ import Rule                    from '../../parser/Rule';
 
 /**
  * Wraps an existing rule and requires that all input be consumed to match.
+ * 
+ * TODO: I'm still iffy about this approach, letting Rule objects be passed into
+ *       rules.  Should be some kind of special expression instead.
  */
 class AllInputRule extends Rule {
 	constructor(ruleName) {
