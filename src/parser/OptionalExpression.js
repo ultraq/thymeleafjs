@@ -23,7 +23,7 @@
 export default class OptionalExpression {
 
 	/**
-	 * @param {String|RegExp} expression
+	 * @param {Matchable} expression
 	 */
 	constructor(expression) {
 

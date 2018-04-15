@@ -22,7 +22,7 @@ import Rule from '../../../parser/Rule';
  * @author Emanuel Rabina
  */
 export default new Rule('StringLiteral',
-	/^'.*?'$/,
+	/'.*?'/,
 	result => () => {
 		return result.slice(1, -1);
 	}

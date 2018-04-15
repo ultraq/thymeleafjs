@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-import Condition                       from './Condition';
-import Operand                         from '../core/Operand';
-import RegularExpressionMatchProcessor from '../../../parser/RegularExpressionMatchProcessor';
-import Rule                            from '../../../parser/Rule';
+import Condition          from './Condition';
+import Operand            from '../core/Operand';
+import Rule               from '../../../parser/Rule';
+import SequenceExpression from '../../../parser/SequenceExpression';
 
 /**
  * If-then-else condition, `if ? then : else`, the classic ternary operator.
@@ -25,11 +25,14 @@ import Rule                            from '../../../parser/Rule';
  * @author Emanuel Rabina
  */
 export default new Rule('IfThenElseCondition',
-	new RegularExpressionMatchProcessor(
-		/^(.+)\s*\?\s*(.+)\s*:\s*(.+)\s*$/,
-		[Condition.name, Operand.name, Operand.name]
+	new SequenceExpression(
+		Condition.name,
+		/\?/,
+		Operand.name,
+		/:/,
+		Operand.name
 	),
-	([, condition, truthyExpression, falseyExpression]) => context => {
+	([condition, , truthyExpression, , falseyExpression]) => context => {
 		return condition(context) ? truthyExpression(context) : falseyExpression(context);
 	}
 );

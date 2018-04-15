@@ -23,7 +23,7 @@
 export default class SequenceExpression {
 
 	/**
-	 * @param {...Object} expressions
+	 * @param {...Matchable} expressions
 	 */
 	constructor(...expressions) {
 

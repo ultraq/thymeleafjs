@@ -21,6 +21,7 @@ import LogicalExpression       from './LogicalExpression';
 import Nothing                 from './Nothing';
 import VariableExpression      from './VariableExpression';
 import IfThenCondition         from './conditionals/IfThenCondition';
+import IfThenElseCondition     from './conditionals/IfThenElseCondition';
 import Literal                 from './core/Literal';
 import OrderedChoiceExpression from '../../parser/OrderedChoiceExpression';
 import Rule                    from '../../parser/Rule';
@@ -54,6 +55,7 @@ export default new Rule('ThymeleafExpression',
 		new AllInputRule(Literal.name),
 		new AllInputRule(LogicalExpression.name),
 		new AllInputRule(IfThenCondition.name),
+		new AllInputRule(IfThenElseCondition.name),
 		new AllInputRule(Nothing.name)
 	)
 );

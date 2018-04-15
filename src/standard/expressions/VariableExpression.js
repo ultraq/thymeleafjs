@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-import Identifier                      from './Identifier';
-import RegularExpressionMatchProcessor from '../../parser/RegularExpressionMatchProcessor';
-import Rule                            from '../../parser/Rule';
+import Identifier         from './Identifier';
+import Rule               from '../../parser/Rule';
+import SequenceExpression from '../../parser/SequenceExpression';
 
 import {navigate} from '@ultraq/object-utils';
 
@@ -27,7 +27,11 @@ import {navigate} from '@ultraq/object-utils';
  * @author Emanuel Rabina
  */
 export default new Rule('VariableExpression',
-	new RegularExpressionMatchProcessor(/\${(.+)\}/, [Identifier.name]),
+	new SequenceExpression(
+		/\${/,
+		Identifier.name,
+		/\}/
+	),
 	([, identifier]) => context => {
 		return navigate(context, identifier) || '';
 	}

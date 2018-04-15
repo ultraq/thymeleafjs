@@ -16,14 +16,13 @@
 
 import InputBuffer from './InputBuffer';
 
-// TODO: This processor can probably supersede all the other expression types!
-//       However, it makes parsing a lot harder as things like whitespace
-//       between tokens need to be included in the regex.
-
 /**
  * A special kind of expression that understands matched portions of regular
  * expressions to run processing over, which may lead to additional parsing
  * expressions.
+ * 
+ * This expression should be used sparingly as the regexes within need to take
+ * care of whitespace between tokens themselves, which can be annoying.
  * 
  * @author Emanuel Rabina
  */
@@ -35,12 +34,12 @@ export default class RegularExpressionMatchProcessor {
 	 * Expression matching group 0 executes processors[0].
 	 * 
 	 * @param {RegExp} expression
-	 * @param {Array<Function>} processors
+	 * @param {Array<Matchable>} matchers
 	 */
-	constructor(expression, processors) {
+	constructor(expression, matchers) {
 
 		this.expression = expression;
-		this.processors = processors;
+		this.matchers   = matchers;
 	}
 
 	/**
@@ -60,7 +59,7 @@ export default class RegularExpressionMatchProcessor {
 				for (let i = 1; i < result.length; i++) {
 					let match = result[i];
 					if (match !== undefined) {
-						let parseResult = parser.parseWithExpression(new InputBuffer(match), this.processors[i - 1]);
+						let parseResult = parser.parseWithExpression(new InputBuffer(match), this.matchers[i - 1]);
 						if (parseResult === null) {
 							return null;
 						}

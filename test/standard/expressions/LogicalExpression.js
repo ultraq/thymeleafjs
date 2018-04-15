@@ -17,9 +17,9 @@
 import ExpressionProcessor from '../../../src/standard/expressions/ExpressionProcessor';
 
 /**
- * Tests for various expressions in the Thymeleaf expression language.
+ * Tests for logical expressions.
  */
-describe('standard/expressions/ThymeleafExpressionLanguage', function() {
+describe('standard/expressions/LogicalExpression', function() {
 
 	describe('Equality comparisons', function() {
 

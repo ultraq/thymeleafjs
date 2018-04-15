@@ -17,6 +17,16 @@
 import InputBuffer from './InputBuffer';
 
 /**
+ * Any one of the objects that can be matched:
+ *  - a rule or expression
+ *  - a string that references another rule
+ *  - a regular expression
+ * 
+ * @typedef {Object} Matchable
+ * @function match
+ */
+
+/**
  * A recursive descent parser for any parsing expression grammar defined by the
  * constructs in this module.
  * 
@@ -69,7 +79,7 @@ export default class Parser {
 	 * that consumes input.
 	 * 
 	 * @param {InputBuffer} input
-	 * @param {Rule|String|RegExp} expression
+	 * @param {Matchable} expression
 	 * @return {Object}
 	 */
 	parseWithExpression(input, expression) {

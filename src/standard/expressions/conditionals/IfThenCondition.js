@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-import Condition                       from './Condition';
-import Operand                         from '../core/Operand';
-import RegularExpressionMatchProcessor from '../../../parser/RegularExpressionMatchProcessor';
-import Rule                            from '../../../parser/Rule';
+import Condition          from './Condition';
+import Operand            from '../core/Operand';
+import Rule               from '../../../parser/Rule';
+import SequenceExpression from '../../../parser/SequenceExpression';
 
 /**
  * If-then condition, `if ? then`.  This is the truthy branch only of the
@@ -26,11 +26,12 @@ import Rule                            from '../../../parser/Rule';
  * @author Emanuel Rabina
  */
 export default new Rule('IfThenCondition',
-	new RegularExpressionMatchProcessor(
-		/^(.+)\s*\?\s*(.+)$/,
-		[Condition.name, Operand.name]
+	new SequenceExpression(
+		Condition.name,
+		/\?/,
+		Operand.name
 	),
-	([, condition, truthyBranch]) => context => {
-		return condition(context) ? truthyBranch(context) : undefined;
+	([condition, , truthyExpression]) => context => {
+		return condition(context) ? truthyExpression(context) : undefined;
 	}
 );

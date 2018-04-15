@@ -1,12 +1,12 @@
-/* 
+/*
  * Copyright 2018, Emanuel Rabina (http://www.ultraq.net.nz/)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -16,24 +16,35 @@
 
 import InputBuffer                 from '../../../../src/parser/InputBuffer';
 import Parser                      from '../../../../src/parser/Parser';
-import IfThenCondition             from '../../../../src/standard/expressions/conditionals/IfThenCondition';
+import IfThenElseCondition         from '../../../../src/standard/expressions/conditionals/IfThenElseCondition';
 import ThymeleafExpressionLanguage from '../../../../src/standard/expressions/ThymeleafExpressionLanguage';
 
 /**
- * Tests for the shortened if-then syntax.
+ * Tests for the ternary if-then-else syntax.
  */
-describe('standard/expressions/IfThenCondition', function() {
+describe('standard/expressions/IfThenElseCondition', function() {
 
 	const parser = new Parser(ThymeleafExpressionLanguage);
 
 	test('Executes the true branch', function() {
-		let ifThenProcessor = IfThenCondition.match(
-			new InputBuffer("${condition} ? 'Hello!'"),
+		let ifThenElseProcessor = IfThenElseCondition.match(
+			new InputBuffer("${condition} ? 'Hello!' : 'Goodbye :('"),
 			parser
 		);
-		let result = ifThenProcessor({
+		let result = ifThenElseProcessor({
 			condition: true
 		});
 		expect(result).toBe('Hello!');
+	});
+
+	test('Executes the false branch', function() {
+		let ifThenElseProcessor = IfThenElseCondition.match(
+			new InputBuffer("${condition} ? 'Hello!' : 'Goodbye :('"),
+			parser
+		);
+		let result = ifThenElseProcessor({
+			condition: false
+		});
+		expect(result).toBe('Goodbye :(');
 	});
 });
