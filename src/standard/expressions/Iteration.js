@@ -25,7 +25,7 @@ import SequenceExpression from '../../parser/SequenceExpression';
  * 
  * @author Emanuel Rabina
  */
-export default new Rule('IterationExpression',
+export default new Rule('Iteration',
 	new SequenceExpression(
 		Identifier.name,
 		/:/,

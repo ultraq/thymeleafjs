@@ -19,13 +19,12 @@ import StandardCheckedAttributeProcessor     from './processors/StandardCheckedA
 import StandardClassAppendAttributeProcessor from './processors/StandardClassAppendAttributeProcessor';
 import StandardEachAttributeProcessor        from './processors/StandardEachAttributeProcessor';
 import StandardFragmentAttributeProcessor    from './processors/StandardFragmentAttributeProcessor';
-import StandardHrefAttributeProcessor        from './processors/StandardHrefAttributeProcessor';
 import StandardIfAttributeProcessor          from './processors/StandardIfAttributeProcessor';
 import StandardInsertAttributeProcessor      from './processors/StandardInsertAttributeProcessor';
-import StandardSrcAttributeProcessor         from './processors/StandardSrcAttributeProcessor';
+import StandardRemovableAttributeProcessor,
+	{REMOVABLE_ATTRIBUTE_NAMES}                from './processors/StandardRemovableAttributeProcessor';
 import StandardTextAttributeProcessor        from './processors/StandardTextAttributeProcessor';
 import StandardUTextAttributeProcessor       from './processors/StandardUTextAttributeProcessor';
-import StandardValueAttributeProcessor       from './processors/StandardValueAttributeProcessor';
 import Dialect                               from '../dialects/Dialect';
 
 /**
@@ -62,7 +61,7 @@ export default class StandardDialect extends Dialect {
 
 		// Order taken from https://www.thymeleaf.org/doc/tutorials/3.0/usingthymeleaf.html#attribute-precedence
 		let {prefix} = this;
-		return [
+		return [].concat(
 			// Fragment inclusion
 			new StandardInsertAttributeProcessor(prefix),
 
@@ -77,9 +76,9 @@ export default class StandardDialect extends Dialect {
 			new StandardClassAppendAttributeProcessor(prefix),
 
 			// General attribute modification
-			new StandardHrefAttributeProcessor(prefix),
-			new StandardSrcAttributeProcessor(prefix),
-			new StandardValueAttributeProcessor(prefix),
+			REMOVABLE_ATTRIBUTE_NAMES.map(attributeName => {
+				return new StandardRemovableAttributeProcessor(prefix, attributeName);
+			}),
 
 			// Specific attribute modification
 			new StandardCheckedAttributeProcessor(prefix),
@@ -92,6 +91,6 @@ export default class StandardDialect extends Dialect {
 			new StandardFragmentAttributeProcessor(prefix)
 
 			// Fragment removal
-		];
+		);
 	}
 }
