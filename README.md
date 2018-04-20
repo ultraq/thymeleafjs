@@ -188,36 +188,9 @@ for now it only serves this 1 purpose.
 Supported features (so far)
 ---------------------------
 
-Given that Thymeleaf JS has only a subset of Thymeleaf's features, and that most
-people familiar with Thymeleaf are from the Java side who have used the full
-feature set, it might help those coming here to let them know what this project
-is capable, and thus incapable, of doing.
+See here for supported processors: https://github.com/ultraq/thymeleafjs/issues/21
 
-### Processors
-
- - `th:attr` (attribute replacement)
- - `th:checked` (`checked` boolean attribute inclusion/removal)
- - `th:each` (iteration)
- - `th:href` (`href` attribute replacement w/ link expression support)
- - `th:if` (conditional rendering)
- - `th:insert` (fragment inclusion)
- - `th:src` (`src` attribute replacement w/ link expression support)
- - `th:text` (text replacement)
- - `th:utext` (text replacement, unescaped)
- - `th:value` (set an input field value)
-
-### Expressions
-
- - `${name}`/`${item.name}` (navigation expressions, references any object and
-   its properties on the current context)
- - `@{path{param=${item})}`/`@{path/{placeholder}/(placeholder=${item})}` (url
-   expressions, parameters become either search parameters in the URL, replace
-   placeholders in the URL, or both)
- - `~{template::fragment}` (fragment expressions, references an element in
-   another template)
- - `localValue : ${iterable}` (basic iteration expressions)
- - `(condition) ? (truthy branch)` (if-then expressions)
- - Text, number, boolean, and literal tokens
+See here for supported expression syntaxes: https://github.com/ultraq/thymeleafjs/issues/20
 
 
 ### Caveat on fragment inclusion
