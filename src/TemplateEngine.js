@@ -54,55 +54,6 @@ export default class TemplateEngine {
 	}
 
 	/**
-	 * Process a DOM element.
-	 * 
-	 * @private
-	 * @param {Element} element
-	 * @param {Object} [context={}]
-	 * @return {Boolean} Whether or not the parent node needs reprocessing.
-	 */
-	processNode(element, context = {}) {
-
-		// TODO: Standardize this data attribute somewhere.  Shared const?
-		// element.dataset not yet implemented in JSDOM (https://github.com/tmpvar/jsdom/issues/961),
-		// so until then we're getting data- attributes the old-fashioned way.
-		// Alternatively, some kind of variable stack that pops with each move up
-		// the DOM.
-		let localVariables = JSON.parse(element.getAttribute('data-thymeleaf-local-variables'));
-		element.removeAttribute('data-thymeleaf-local-variables');
-		let localContext = merge({}, context, localVariables);
-		let matcher = new Matcher(context, this.isomorphic);
-
-		// Process the current element, store whether or not reprocessing of the
-		// parent needs to happen before moving on to this element's children.
-		let requireReprocessing = this.processors
-			.map(processor => {
-				let attribute = matcher.matches(element, processor);
-				return attribute ?
-					processor.process(element, attribute, element.getAttribute(attribute), localContext) :
-					false;
-			})
-			.reduce((accumulator, processorResult) => accumulator || processorResult, false);
-
-		if (requireReprocessing) {
-			return true;
-		}
-
-		// Process this element's children
-		let reprocess;
-		do {
-			reprocess = false;
-			for (let child of element.children) {
-				reprocess = this.processNode(child, localContext);
-				if (reprocess) {
-					break;
-				}
-			}
-		}
-		while (reprocess);
-	}
-
-	/**
 	 * Process the Thymeleaf template data, returning the processed template.
 	 * 
 	 * @param {String} template
@@ -164,5 +115,54 @@ export default class TemplateEngine {
 					}
 				});
 			});
+	}
+
+	/**
+	 * Process a DOM element.
+	 * 
+	 * @private
+	 * @param {Element} element
+	 * @param {Object} [context={}]
+	 * @return {Boolean} Whether or not the parent node needs reprocessing.
+	 */
+	processNode(element, context = {}) {
+
+		// TODO: Standardize this data attribute somewhere.  Shared const?
+		// element.dataset not yet implemented in JSDOM (https://github.com/tmpvar/jsdom/issues/961),
+		// so until then we're getting data- attributes the old-fashioned way.
+		// Alternatively, some kind of variable stack that pops with each move up
+		// the DOM.
+		let localVariables = JSON.parse(element.getAttribute('data-thymeleaf-local-variables'));
+		element.removeAttribute('data-thymeleaf-local-variables');
+		let localContext = merge({}, context, localVariables);
+		let matcher = new Matcher(context, this.isomorphic);
+
+		// Process the current element, store whether or not reprocessing of the
+		// parent needs to happen before moving on to this element's children.
+		let requireReprocessing = this.processors
+			.map(processor => {
+				let attribute = matcher.matches(element, processor);
+				return attribute ?
+					processor.process(element, attribute, element.getAttribute(attribute), localContext) :
+					false;
+			})
+			.reduce((accumulator, processorResult) => accumulator || processorResult, false);
+
+		if (requireReprocessing) {
+			return true;
+		}
+
+		// Process this element's children
+		let reprocess;
+		do {
+			reprocess = false;
+			for (let child of element.children) {
+				reprocess = this.processNode(child, localContext);
+				if (reprocess) {
+					break;
+				}
+			}
+		}
+		while (reprocess);
 	}
 }
