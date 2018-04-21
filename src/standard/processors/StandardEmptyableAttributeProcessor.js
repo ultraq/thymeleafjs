@@ -20,12 +20,12 @@ import AttributeProcessor  from '../../processors/AttributeProcessor';
 import {escapeHtml} from '@ultraq/string-utils';
 
 /**
- * Configurable attribute processor that sets or removes an attribute on an
- * element if the result of its expression is truthy or falsey respectively.
+ * Configurable attribute processor that sets or empties an attribute value on
+ * an element if the result of its expression is truthy or falsey respectively.
  * 
  * @author Emanuel Rabina
  */
-export default class StandardRemovableAttributeProcessor extends AttributeProcessor {
+export default class StandardEmptyableAttributeProcessor extends AttributeProcessor {
 
 	/**
 	 * Constructor, set the name of the attribute this processor will operate on.
@@ -54,17 +54,13 @@ export default class StandardRemovableAttributeProcessor extends AttributeProces
 	process(element, attribute, attributeValue, context) {
 
 		let value = new ExpressionProcessor(context).process(attributeValue);
-		if (value) {
-			element.setAttribute(this.name, escapeHtml(value.toString()));
-		}
-		else {
-			element.removeAttribute(this.name);
-		}
-
+		element.setAttribute(this.name, value ? escapeHtml(value.toString()) : '');
 		element.removeAttribute(attribute);
 	}
 }
 
-export const REMOVABLE_ATTRIBUTE_NAMES = [
-	'class'
+export const EMPTYABLE_ATTRIBUTE_NAMES = [
+	'href',
+	'src',
+	'value'
 ];

@@ -18,6 +18,8 @@ import StandardAttrAttributeProcessor        from './processors/StandardAttrAttr
 import StandardCheckedAttributeProcessor     from './processors/StandardCheckedAttributeProcessor';
 import StandardClassAppendAttributeProcessor from './processors/StandardClassAppendAttributeProcessor';
 import StandardEachAttributeProcessor        from './processors/StandardEachAttributeProcessor';
+import StandardEmptyableAttributeProcessor,
+	{EMPTYABLE_ATTRIBUTE_NAMES}                from './processors/StandardEmptyableAttributeProcessor';
 import StandardFragmentAttributeProcessor    from './processors/StandardFragmentAttributeProcessor';
 import StandardIfAttributeProcessor          from './processors/StandardIfAttributeProcessor';
 import StandardInsertAttributeProcessor      from './processors/StandardInsertAttributeProcessor';
@@ -76,6 +78,9 @@ export default class StandardDialect extends Dialect {
 			new StandardClassAppendAttributeProcessor(prefix),
 
 			// General attribute modification
+			EMPTYABLE_ATTRIBUTE_NAMES.map(attributeName => {
+				return new StandardEmptyableAttributeProcessor(prefix, attributeName);
+			}),
 			REMOVABLE_ATTRIBUTE_NAMES.map(attributeName => {
 				return new StandardRemovableAttributeProcessor(prefix, attributeName);
 			}),
