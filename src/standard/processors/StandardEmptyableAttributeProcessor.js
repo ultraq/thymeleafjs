@@ -17,8 +17,6 @@
 import ExpressionProcessor from '../expressions/ExpressionProcessor';
 import AttributeProcessor  from '../../processors/AttributeProcessor';
 
-import {escapeHtml} from '@ultraq/string-utils';
-
 /**
  * Configurable attribute processor that sets or empties an attribute value on
  * an element if the result of its expression is truthy or falsey respectively.
@@ -54,7 +52,7 @@ export default class StandardEmptyableAttributeProcessor extends AttributeProces
 	process(element, attribute, attributeValue, context) {
 
 		let value = new ExpressionProcessor(context).process(attributeValue);
-		element.setAttribute(this.name, value ? escapeHtml(value.toString()) : '');
+		element.setAttribute(this.name, value ? value.toString() : '');
 		element.removeAttribute(attribute);
 	}
 }
