@@ -53,7 +53,9 @@ export default class StandardClassAppendAttributeProcessor extends AttributeProc
 	process(element, attribute, attributeValue, context) {
 
 		let classes = new ExpressionProcessor(context).process(attributeValue);
-		element.className += ` ${classes}`;
+		if (classes) {
+			element.className += ` ${classes}`;
+		}
 		element.removeAttribute(attribute);
 	}
 }

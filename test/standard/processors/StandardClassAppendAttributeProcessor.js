@@ -45,4 +45,15 @@ describe('standard/processors/StandardClassAppendAttributeProcessor', function()
 		expect(element.classList.contains(extraClass)).toBeTrue();
 	});
 
+	test('But not if the expression is falsey', function() {
+		let context = {
+			extraClass: null
+		};
+		let attributeValue = '${extraClass}';
+		let element = createThymeleafAttributeValue(div('.existing-class'), attribute, attributeValue);
+
+		processor.process(element, attribute, attributeValue, context);
+
+		expect(element.className).toBe('existing-class');
+	});
 });
