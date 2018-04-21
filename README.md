@@ -1,6 +1,6 @@
 
-Thymeleaf JS
-============
+ThymeleafJS
+===========
 
 [![Build Status](https://travis-ci.org/ultraq/thymeleafjs.svg?branch=master)](https://travis-ci.org/ultraq/thymeleafjs)
 [![Coverage Status](https://coveralls.io/repos/github/ultraq/thymeleafjs/badge.svg?branch=master)](https://coveralls.io/github/ultraq/thymeleafjs?branch=master)
@@ -28,7 +28,7 @@ Current goals
 This project already works very well as a server-side template renderer, but now
 I'm trying to get it to play nice with the original Thymeleaf, ie: render
 templates on the server with Thymeleaf, then re-render the templates on the
-client using Thymeleaf JS with *the same template code* (I've been calling this
+client using ThymeleafJS with *the same template code* (I've been calling this
 feature "isomorphic templating", akin to isomorphic JavaScript where the same
 code is run on the client and server).
 
@@ -72,7 +72,7 @@ npm install thymeleaf --save
 API
 ---
 
-> thymeleaf-js is still under development, denoted by the 0.x semver, so expect
+> thymeleafjs is still under development, denoted by the 0.x semver, so expect
 > anything below to change.
 
 Create a new instance of a Thymeleaf `TemplateEngine`, then use one of its
