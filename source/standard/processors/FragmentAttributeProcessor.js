@@ -14,37 +14,35 @@
  * limitations under the License.
  */
 
-import ExpressionProcessor from '../expressions/ExpressionProcessor';
-import AttributeProcessor  from '../../processors/AttributeProcessor';
-import {clearChildren}     from '../../utilities/Dom';
+import AttributeProcessor from '../../processors/AttributeProcessor';
 
 /**
- * JS equivalent of Thymeleaf's `th:if` attribute processor, includes or
- * excludes the current element and its children from rendering, depending on
- * the evaluation of the expression in the attribute value.
+ * JS equivalent of Thymeleaf's `th:fragment` attribute processor, marks an
+ * element as a template fragment that can be imported by other processors like
+ * `th:insert`.
  * 
  * @author Emanuel Rabina
  */
-export default class StandardIfAttributeProcessor extends AttributeProcessor {
+export default class FragmentAttributeProcessor extends AttributeProcessor {
 
-	static NAME = 'if';
+	static NAME = 'fragment';
 
 	/**
-	 * Constructor, set this processor to use the `if` name and supplied prefix.
+	 * Constructor, set this processor to use the `fragment` name and supplied
+	 * prefix.
 	 * 
 	 * @param {String} prefix
 	 */
 	constructor(prefix) {
 
-		super(prefix, StandardIfAttributeProcessor.NAME);
+		super(prefix, FragmentAttributeProcessor.NAME);
 	}
 
 	/**
-	 * Processes an element that contains a `th:if` or `data-th-if` attribute
-	 * on it, evaluating the expression for truthy/falsey, rendering/excluding the
-	 * element and its children based on the result.
+	 * Processes an element that contains a `th:fragment` or `data-th-fragment`
+	 * attribute on it.
 	 * 
-	 * @param {Element} element 
+	 * @param {Element} element
 	 *   Element being processed.
 	 * @param {String} attribute
 	 *   The attribute that was encountered to invoke this processor.
@@ -54,11 +52,15 @@ export default class StandardIfAttributeProcessor extends AttributeProcessor {
 	 */
 	process(element, attribute, attributeValue, context) {
 
-		let expressionResult = new ExpressionProcessor(context).process(attributeValue);
-		if (!expressionResult) {
-			clearChildren(element);
-			element.parentNode.removeChild(element);
-		}
 		element.removeAttribute(attribute);
+
+		// TODO: Some off-context mechanism for encountered fragments?
+		if (!context.fragments) {
+			context.fragments = [];
+		}
+		context.fragments.push({
+			name:    attributeValue,
+			element: element.cloneNode(true)
+		});
 	}
 }

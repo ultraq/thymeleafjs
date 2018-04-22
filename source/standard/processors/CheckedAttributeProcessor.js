@@ -29,7 +29,7 @@ import AttributeProcessor  from '../../processors/AttributeProcessor';
  * 
  * @author Emanuel Rabina
  */
-export default class StandardCheckedAttributeProcessor extends AttributeProcessor {
+export default class CheckedAttributeProcessor extends AttributeProcessor {
 
 	static NAME = 'checked';
 
@@ -41,7 +41,7 @@ export default class StandardCheckedAttributeProcessor extends AttributeProcesso
 	 */
 	constructor(prefix) {
 
-		super(prefix, StandardCheckedAttributeProcessor.NAME);
+		super(prefix, CheckedAttributeProcessor.NAME);
 	}
 
 	/**

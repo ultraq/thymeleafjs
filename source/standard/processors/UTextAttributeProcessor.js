@@ -17,33 +17,33 @@
 import ExpressionProcessor from '../expressions/ExpressionProcessor';
 import AttributeProcessor  from '../../processors/AttributeProcessor';
 
-import {escapeHtml} from '@ultraq/string-utils';
-
 /**
- * JS equivalent of Thymeleaf's `th:attr` attribute processor, modifies or sets
- * a target attribute to whatever its associated expression evaluates to.
+ * JS equivalent of Thymeleaf's `th:utext` attribute processor, applies the
+ * expression in the attribute value to the text content of the element being
+ * processed.
  * 
  * @author Emanuel Rabina
  */
-export default class StandardAttrAttributeProcessor extends AttributeProcessor {
+export default class UTextAttributeProcessor extends AttributeProcessor {
 
-	static NAME = 'attr';
+	static NAME = 'utext';
 
 	/**
-	 * Constructor, set this processor to use the `attr` name and supplied prefix.
+	 * Constructor, set this processor to use the `utext` name and supplied
+	 * prefix.
 	 * 
 	 * @param {String} prefix
 	 */
 	constructor(prefix) {
 
-		super(prefix, StandardAttrAttributeProcessor.NAME);
+		super(prefix, UTextAttributeProcessor.NAME);
 	}
 
 	/**
-	 * Processes an element that contains a `th:attr` or `data-th-attr` attribute
-	 * on it, picking out the target attributes and setting them to whatever their
-	 * expressions evaluate to.
-	 * 
+	 * Processes an element that contains a `th:utext` or `data-th-utext`
+	 * attribute on it, taking the text expression in the value and applying it to
+	 * the text content of the element.
+	 *
 	 * @param {Element} element
 	 *   Element being processed.
 	 * @param {String} attribute
@@ -54,18 +54,7 @@ export default class StandardAttrAttributeProcessor extends AttributeProcessor {
 	 */
 	process(element, attribute, attributeValue, context) {
 
-		// TODO: This regex, is this some kind of value list that needs to be
-		//       turned into an expression?
-		if (/(.+=.+,)*.+=.+/.test(attributeValue)) {
-			attributeValue.split(',').forEach(attribute => {
-				let attributeParts = attribute.split('=');
-				element.setAttribute(attributeParts[0], escapeHtml(new ExpressionProcessor(context).process(attributeParts[1])));
-			});
-		}
-		/* istanbul ignore next */
-		else if (process.env.NODE_ENV !== 'test') {
-			console.warn(`Value to ${attribute}, ${attributeValue}, doesn't seem to contain an attribute assignment expression.  Ignoring.`);
-		}
+		element.innerHTML = new ExpressionProcessor(context).process(attributeValue);
 		element.removeAttribute(attribute);
 	}
 }

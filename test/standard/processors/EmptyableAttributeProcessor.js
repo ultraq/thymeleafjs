@@ -1,12 +1,12 @@
-/*
- * Copyright 2017, Emanuel Rabina (http://www.ultraq.net.nz/)
- *
+/* 
+ * Copyright 2018, Emanuel Rabina (http://www.ultraq.net.nz/)
+ * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * 
  *     http://www.apache.org/licenses/LICENSE-2.0
- *
+ * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import StandardRemovableAttributeProcessor from '../../../source/standard/processors/StandardRemovableAttributeProcessor';
-import {createThymeleafAttributeValue}     from '../../../source/utilities/Dom';
+import EmptyableAttributeProcessor     from '../../../source/standard/processors/EmptyableAttributeProcessor';
+import {createThymeleafAttributeValue} from '../../../source/utilities/Dom';
 
 import h  from 'hyperscript';
 import hh from 'hyperscript-helpers';
@@ -23,18 +23,18 @@ import hh from 'hyperscript-helpers';
 const {div} = hh(h);
 
 /**
- * Tests for the configurable removable attribute processor.
+ * Tests for the configurable emptyable attribute processor.
  */
-describe('processors/standard/StandardRemovableAttributeProcessor', function() {
+describe('processors/standard/EmptyableAttributeProcessor', function() {
 
 	const context = {
 		greeting: 'Hello!'
 	};
-	const attributeNames = ['class', 'title'];
+	const attributeNames = ['href', 'value'];
 
 	test('Replaces the configured value', function() {
 		attributeNames.forEach(attributeName => {
-			let processor = new StandardRemovableAttributeProcessor('test', attributeName);
+			let processor = new EmptyableAttributeProcessor('test', attributeName);
 			let attribute = `test:${attributeName}`;
 			let attributeValue = '${greeting}';
 			let element = createThymeleafAttributeValue(
@@ -47,9 +47,9 @@ describe('processors/standard/StandardRemovableAttributeProcessor', function() {
 		});
 	});
 
-	test('Removes the configured attribute', function() {
+	test('Empties the configured value', function() {
 		attributeNames.forEach(attributeName => {
-			let processor = new StandardRemovableAttributeProcessor('test', attributeName);
+			let processor = new EmptyableAttributeProcessor('test', attributeName);
 			let attribute = `test:${attributeName}`;
 			let attributeValue = '${nothing}';
 			let element = createThymeleafAttributeValue(
@@ -58,7 +58,7 @@ describe('processors/standard/StandardRemovableAttributeProcessor', function() {
 				attributeValue
 			);
 			processor.process(element, attribute, attributeValue, context);
-			expect(element.hasAttribute(attributeName)).toBeFalse();
+			expect(element.getAttribute(attributeName)).toBe('');
 		});
 	});
 

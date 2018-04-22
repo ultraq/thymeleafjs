@@ -24,7 +24,7 @@ import AttributeProcessor  from '../../processors/AttributeProcessor';
  * 
  * @author Emanuel Rabina
  */
-export default class StandardEachAttributeProcessor extends AttributeProcessor {
+export default class EachAttributeProcessor extends AttributeProcessor {
 
 	static NAME = 'each';
 
@@ -35,7 +35,7 @@ export default class StandardEachAttributeProcessor extends AttributeProcessor {
 	 */
 	constructor(prefix) {
 
-		super(prefix, StandardEachAttributeProcessor.NAME);
+		super(prefix, EachAttributeProcessor.NAME);
 	}
 
 	/**

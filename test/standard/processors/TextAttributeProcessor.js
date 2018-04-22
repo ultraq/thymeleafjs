@@ -1,12 +1,12 @@
-/*
+/* 
  * Copyright 2017, Emanuel Rabina (http://www.ultraq.net.nz/)
- *
+ * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * 
  *     http://www.apache.org/licenses/LICENSE-2.0
- *
+ * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import StandardTUextAttributeProcessor from '../../../source/standard/processors/StandardUTextAttributeProcessor';
+import TextAttributeProcessor          from '../../../source/standard/processors/TextAttributeProcessor';
 import {createThymeleafAttributeValue} from '../../../source/utilities/Dom';
 
 import h  from 'hyperscript';
@@ -23,34 +23,27 @@ import hh from 'hyperscript-helpers';
 const {div} = hh(h);
 
 /**
- * Tests for the `th:utext` attribute processor.
+ * Tests for the `th:text` attribute processor.
  */
-describe('processors/standard/StandardUTextAttributeProcessor', function() {
+describe('processors/standard/TextAttributeProcessor', function() {
 
-	let processor;
-	let attribute;
+	let attribute, processor;
 	beforeAll(function() {
-		processor = new StandardTUextAttributeProcessor('test');
+		processor = new TextAttributeProcessor('test');
 		attribute = `${processor.prefix}:${processor.name}`;
 	});
 
 	test("Replaces an element's text content", function() {
 		let text = 'Hello!';
-		let element = createThymeleafAttributeValue(div('Goodbye'), attribute, text);
+		let element = createThymeleafAttributeValue(div('Goodbye!'), attribute, text);
 		processor.process(element, attribute, text);
 		expect(element.innerHTML).toBe(text);
 	});
 
-	test("Doesn't escape special HTML characters in the text content", function() {
-		let text = '<script></script>';
+	test('Escapes special HTML characters in the text content', function() {
+		let text = '<script>';
 		let element = createThymeleafAttributeValue(div('HTML stuffs'), attribute, text);
 		processor.process(element, attribute, text);
-		expect(element.innerHTML).toBe(text);
-	});
-
-	test('Cleans up encountered attributes', function() {
-		let element = createThymeleafAttributeValue(div(), attribute, '');
-		processor.process(element, attribute, '');
-		expect(element.hasAttribute(attribute)).toBeFalse();
+		expect(element.innerHTML).toBe('&lt;script&gt;');
 	});
 });

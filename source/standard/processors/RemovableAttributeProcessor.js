@@ -1,5 +1,5 @@
 /* 
- * Copyright 2017, Emanuel Rabina (http://www.ultraq.net.nz/)
+ * Copyright 2018, Emanuel Rabina (http://www.ultraq.net.nz/)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,33 +18,30 @@ import ExpressionProcessor from '../expressions/ExpressionProcessor';
 import AttributeProcessor  from '../../processors/AttributeProcessor';
 
 /**
- * JS equivalent of Thymeleaf's `th:utext` attribute processor, applies the
- * expression in the attribute value to the text content of the element being
- * processed.
+ * Configurable attribute processor that sets or removes an attribute on an
+ * element if the result of its expression is truthy or falsey respectively.
  * 
  * @author Emanuel Rabina
  */
-export default class StandardUTextAttributeProcessor extends AttributeProcessor {
-
-	static NAME = 'utext';
+export default class RemovableAttributeProcessor extends AttributeProcessor {
 
 	/**
-	 * Constructor, set this processor to use the `utext` name and supplied
-	 * prefix.
+	 * Constructor, set the name of the attribute this processor will operate on.
 	 * 
 	 * @param {String} prefix
+	 * @param {String} name
 	 */
-	constructor(prefix) {
+	constructor(prefix, name) {
 
-		super(prefix, StandardUTextAttributeProcessor.NAME);
+		super(prefix, name);
 	}
 
 	/**
-	 * Processes an element that contains a `th:utext` or `data-th-utext`
-	 * attribute on it, taking the text expression in the value and applying it to
-	 * the text content of the element.
-	 *
-	 * @param {Element} element
+	 * Processes an element that contains the configured attribute to be worked
+	 * on, setting it if the expression resolves to a truthy value, or removing it
+	 * if it resolves to a falsey value.
+	 * 
+	 * @param {Element} element 
 	 *   Element being processed.
 	 * @param {String} attribute
 	 *   The attribute that was encountered to invoke this processor.
@@ -54,7 +51,18 @@ export default class StandardUTextAttributeProcessor extends AttributeProcessor 
 	 */
 	process(element, attribute, attributeValue, context) {
 
-		element.innerHTML = new ExpressionProcessor(context).process(attributeValue);
+		let value = new ExpressionProcessor(context).process(attributeValue);
+		if (value) {
+			element.setAttribute(this.name, value.toString());
+		}
+		else {
+			element.removeAttribute(this.name);
+		}
+
 		element.removeAttribute(attribute);
 	}
 }
+
+export const REMOVABLE_ATTRIBUTE_NAMES = [
+	'class'
+];

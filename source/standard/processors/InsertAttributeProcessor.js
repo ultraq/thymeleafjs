@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import StandardFragmentAttributeProcessor from './StandardFragmentAttributeProcessor';
+import FragmentAttributeProcessor from './FragmentAttributeProcessor';
 import StandardDialect                    from '../StandardDialect';
 import ExpressionProcessor                from '../expressions/ExpressionProcessor';
 import AttributeProcessor                 from '../../processors/AttributeProcessor';
@@ -28,7 +28,7 @@ import {$} from 'dumb-query-selector';
  * 
  * @author Emanuel Rabina
  */
-export default class StandardInsertAttributeProcessor extends AttributeProcessor {
+export default class InsertAttributeProcessor extends AttributeProcessor {
 
 	static NAME = 'insert';
 
@@ -39,7 +39,7 @@ export default class StandardInsertAttributeProcessor extends AttributeProcessor
 	 */
 	constructor(prefix) {
 
-		super(prefix, StandardInsertAttributeProcessor.NAME);
+		super(prefix, InsertAttributeProcessor.NAME);
 	}
 
 	/**
@@ -71,7 +71,7 @@ export default class StandardInsertAttributeProcessor extends AttributeProcessor
 
 				let standardDialect = context.dialects.find(dialect => dialect.name === StandardDialect.NAME);
 				let dialectPrefix = standardDialect.prefix;
-				let fragmentProcessorName = StandardFragmentAttributeProcessor.NAME;
+				let fragmentProcessorName = FragmentAttributeProcessor.NAME;
 				let fragment =
 					$(`[${dialectPrefix}\\:${fragmentProcessorName}^="${fragmentName}"]`, template) ||
 					$(`[data-${dialectPrefix}-${fragmentProcessorName}^="${fragmentName}"`, template);

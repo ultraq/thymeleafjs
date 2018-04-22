@@ -1,5 +1,5 @@
 /* 
- * Copyright 2017, Emanuel Rabina (http://www.ultraq.net.nz/)
+ * Copyright 2018, Emanuel Rabina (http://www.ultraq.net.nz/)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,32 +18,31 @@ import ExpressionProcessor from '../expressions/ExpressionProcessor';
 import AttributeProcessor  from '../../processors/AttributeProcessor';
 
 /**
- * JS equivalent of Thymeleaf's `th:text` attribute processor, applies the
- * expression in the attribute value to the text content of the element being
- * processed, escaping any unsafe input.
+ * The `th:classappend` is a special attribute that applies the expression to
+ * any existing classes already on an element.
  * 
  * @author Emanuel Rabina
  */
-export default class StandardTextAttributeProcessor extends AttributeProcessor {
+export default class ClassAppendAttributeProcessor extends AttributeProcessor {
 
-	static NAME = 'text';
+	static NAME = 'classappend';
 
 	/**
-	 * Constructor, set this processor to use the `text` name and supplied prefix.
+	 * Constructor, set this processor to use the `attr` name and supplied prefix.
 	 * 
 	 * @param {String} prefix
 	 */
 	constructor(prefix) {
 
-		super(prefix, StandardTextAttributeProcessor.NAME);
+		super(prefix, ClassAppendAttributeProcessor.NAME);
 	}
 
 	/**
-	 * Processes an element that contains a `th:text` or `data-th-text` attribute
-	 * on it, taking the text expression in the value and applying it to the text
-	 * content of the element.
+	 * Processes an element that contains a `th:classappend` or `data-th-classappend`
+	 * attribute on it, adding the resulting classes to any existing classes on
+	 * the current element.
 	 * 
-	 * @param {Element} element 
+	 * @param {Element} element
 	 *   Element being processed.
 	 * @param {String} attribute
 	 *   The attribute that was encountered to invoke this processor.
@@ -53,7 +52,10 @@ export default class StandardTextAttributeProcessor extends AttributeProcessor {
 	 */
 	process(element, attribute, attributeValue, context) {
 
-		element.textContent = new ExpressionProcessor(context).process(attributeValue);
+		let classes = new ExpressionProcessor(context).process(attributeValue);
+		if (classes) {
+			element.className += ` ${classes}`;
+		}
 		element.removeAttribute(attribute);
 	}
 }

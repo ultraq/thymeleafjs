@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import StandardClassAppendAttributeProcessor from '../../../source/standard/processors/StandardClassAppendAttributeProcessor';
-import {createThymeleafAttributeValue}       from '../../../source/utilities/Dom';
+import ClassAppendAttributeProcessor   from '../../../source/standard/processors/ClassAppendAttributeProcessor';
+import {createThymeleafAttributeValue} from '../../../source/utilities/Dom';
 
 import h  from 'hyperscript';
 import hh from 'hyperscript-helpers';
@@ -25,12 +25,12 @@ const {div} = hh(h);
 /**
  * Tests for the `th:classappend` processor.
  */
-describe('standard/processors/StandardClassAppendAttributeProcessor', function() {
+describe('standard/processors/ClassAppendAttributeProcessor', function() {
 
 	let processor;
 	let attribute;
 	beforeAll(function() {
-		processor = new StandardClassAppendAttributeProcessor('test');
+		processor = new ClassAppendAttributeProcessor('test');
 		attribute = `${processor.prefix}:${processor.name}`;
 	});
 

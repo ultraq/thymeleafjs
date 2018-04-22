@@ -23,7 +23,7 @@ import AttributeProcessor  from '../../processors/AttributeProcessor';
  * 
  * @author Emanuel Rabina
  */
-export default class StandardEmptyableAttributeProcessor extends AttributeProcessor {
+export default class EmptyableAttributeProcessor extends AttributeProcessor {
 
 	/**
 	 * Constructor, set the name of the attribute this processor will operate on.

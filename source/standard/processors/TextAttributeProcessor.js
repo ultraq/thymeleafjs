@@ -14,35 +14,36 @@
  * limitations under the License.
  */
 
-import AttributeProcessor from '../../processors/AttributeProcessor';
+import ExpressionProcessor from '../expressions/ExpressionProcessor';
+import AttributeProcessor  from '../../processors/AttributeProcessor';
 
 /**
- * JS equivalent of Thymeleaf's `th:fragment` attribute processor, marks an
- * element as a template fragment that can be imported by other processors like
- * `th:insert`.
+ * JS equivalent of Thymeleaf's `th:text` attribute processor, applies the
+ * expression in the attribute value to the text content of the element being
+ * processed, escaping any unsafe input.
  * 
  * @author Emanuel Rabina
  */
-export default class StandardFragmentAttributeProcessor extends AttributeProcessor {
+export default class TextAttributeProcessor extends AttributeProcessor {
 
-	static NAME = 'fragment';
+	static NAME = 'text';
 
 	/**
-	 * Constructor, set this processor to use the `fragment` name and supplied
-	 * prefix.
+	 * Constructor, set this processor to use the `text` name and supplied prefix.
 	 * 
 	 * @param {String} prefix
 	 */
 	constructor(prefix) {
 
-		super(prefix, StandardFragmentAttributeProcessor.NAME);
+		super(prefix, TextAttributeProcessor.NAME);
 	}
 
 	/**
-	 * Processes an element that contains a `th:fragment` or `data-th-fragment`
-	 * attribute on it.
+	 * Processes an element that contains a `th:text` or `data-th-text` attribute
+	 * on it, taking the text expression in the value and applying it to the text
+	 * content of the element.
 	 * 
-	 * @param {Element} element
+	 * @param {Element} element 
 	 *   Element being processed.
 	 * @param {String} attribute
 	 *   The attribute that was encountered to invoke this processor.
@@ -52,15 +53,7 @@ export default class StandardFragmentAttributeProcessor extends AttributeProcess
 	 */
 	process(element, attribute, attributeValue, context) {
 
+		element.textContent = new ExpressionProcessor(context).process(attributeValue);
 		element.removeAttribute(attribute);
-
-		// TODO: Some off-context mechanism for encountered fragments?
-		if (!context.fragments) {
-			context.fragments = [];
-		}
-		context.fragments.push({
-			name:    attributeValue,
-			element: element.cloneNode(true)
-		});
 	}
 }

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import StandardIfAttributeProcessor    from '../../../source/standard/processors/StandardIfAttributeProcessor';
+import IfAttributeProcessor            from '../../../source/standard/processors/IfAttributeProcessor';
 import {createThymeleafAttributeValue} from '../../../source/utilities/Dom';
 
 import h  from 'hyperscript';
@@ -25,11 +25,11 @@ const {div, p} = hh(h);
 /**
  * Tests for the `th:if` attribute processor.
  */
-describe('processors/standard/StandardIfAttributeProcessor', function() {
+describe('processors/standard/IfAttributeProcessor', function() {
 
 	let attribute, processor;
 	beforeAll(function() {
-		processor = new StandardIfAttributeProcessor('test');
+		processor = new IfAttributeProcessor('test');
 		attribute = `${processor.prefix}:${processor.name}`;
 	});
 

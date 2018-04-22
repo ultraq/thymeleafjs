@@ -14,20 +14,20 @@
  * limitations under the License.
  */
 
-import StandardAttrAttributeProcessor        from './processors/StandardAttrAttributeProcessor';
-import StandardCheckedAttributeProcessor     from './processors/StandardCheckedAttributeProcessor';
-import StandardClassAppendAttributeProcessor from './processors/StandardClassAppendAttributeProcessor';
-import StandardEachAttributeProcessor        from './processors/StandardEachAttributeProcessor';
-import StandardEmptyableAttributeProcessor,
-	{EMPTYABLE_ATTRIBUTE_NAMES}                from './processors/StandardEmptyableAttributeProcessor';
-import StandardFragmentAttributeProcessor    from './processors/StandardFragmentAttributeProcessor';
-import StandardIfAttributeProcessor          from './processors/StandardIfAttributeProcessor';
-import StandardInsertAttributeProcessor      from './processors/StandardInsertAttributeProcessor';
-import StandardRemovableAttributeProcessor,
-	{REMOVABLE_ATTRIBUTE_NAMES}                from './processors/StandardRemovableAttributeProcessor';
-import StandardTextAttributeProcessor        from './processors/StandardTextAttributeProcessor';
-import StandardUTextAttributeProcessor       from './processors/StandardUTextAttributeProcessor';
-import Dialect                               from '../dialects/Dialect';
+import AttrAttributeProcessor        from './processors/AttrAttributeProcessor';
+import CheckedAttributeProcessor     from './processors/CheckedAttributeProcessor';
+import ClassAppendAttributeProcessor from './processors/ClassAppendAttributeProcessor';
+import EachAttributeProcessor        from './processors/EachAttributeProcessor';
+import EmptyableAttributeProcessor,
+	{EMPTYABLE_ATTRIBUTE_NAMES}        from './processors/EmptyableAttributeProcessor';
+import FragmentAttributeProcessor    from './processors/FragmentAttributeProcessor';
+import IfAttributeProcessor          from './processors/IfAttributeProcessor';
+import InsertAttributeProcessor      from './processors/InsertAttributeProcessor';
+import RemovableAttributeProcessor,
+	{REMOVABLE_ATTRIBUTE_NAMES}        from './processors/RemovableAttributeProcessor';
+import TextAttributeProcessor        from './processors/TextAttributeProcessor';
+import UTextAttributeProcessor       from './processors/UTextAttributeProcessor';
+import Dialect                       from '../dialects/Dialect';
 
 /**
  * The out-of-the-box dialect for Thymeleaf, the "Standard Dialect".
@@ -43,7 +43,7 @@ export default class StandardDialect extends Dialect {
 	 * Create an instance of this dialect with the name "Standard" and
 	 * given prefix, defaulting to "th" if not supplied.
 	 * 
-	 * @param {String} [prefix='th']
+	 * @param {String} [prefix='thjs']
 	 */
 	constructor(prefix = StandardDialect.DEFAULT_PREFIX) {
 
@@ -65,35 +65,35 @@ export default class StandardDialect extends Dialect {
 		let {prefix} = this;
 		return [].concat(
 			// Fragment inclusion
-			new StandardInsertAttributeProcessor(prefix),
+			new InsertAttributeProcessor(prefix),
 
 			// Fragment iteration
-			new StandardEachAttributeProcessor(prefix),
+			new EachAttributeProcessor(prefix),
 
 			// Conditional evaluation
-			new StandardIfAttributeProcessor(prefix),
+			new IfAttributeProcessor(prefix),
 
 			// Local variable definition
-			new StandardAttrAttributeProcessor(prefix),
-			new StandardClassAppendAttributeProcessor(prefix),
+			new AttrAttributeProcessor(prefix),
+			new ClassAppendAttributeProcessor(prefix),
 
 			// General attribute modification
 			EMPTYABLE_ATTRIBUTE_NAMES.map(attributeName => {
-				return new StandardEmptyableAttributeProcessor(prefix, attributeName);
+				return new EmptyableAttributeProcessor(prefix, attributeName);
 			}),
 			REMOVABLE_ATTRIBUTE_NAMES.map(attributeName => {
-				return new StandardRemovableAttributeProcessor(prefix, attributeName);
+				return new RemovableAttributeProcessor(prefix, attributeName);
 			}),
 
 			// Specific attribute modification
-			new StandardCheckedAttributeProcessor(prefix),
+			new CheckedAttributeProcessor(prefix),
 
 			// Text
-			new StandardTextAttributeProcessor(prefix),
-			new StandardUTextAttributeProcessor(prefix),
+			new TextAttributeProcessor(prefix),
+			new UTextAttributeProcessor(prefix),
 
 			// Fragment specification
-			new StandardFragmentAttributeProcessor(prefix)
+			new FragmentAttributeProcessor(prefix)
 
 			// Fragment removal
 		);
