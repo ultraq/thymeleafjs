@@ -14,17 +14,15 @@
  * limitations under the License.
  */
 
-import StandardDialect from './standard/StandardDialect';
+import StandardDialect             from './standard/StandardDialect';
+import LocalModuleTemplateResolver from './templateresolver/LocalModuleTemplateResolver';
 
 export const DEFAULT_CONFIGURATION = {
 	dialects: [
 		new StandardDialect()
 	],
 	isomorphic: false,
-	templateResolver: {
-		prefix: '',
-		suffix: ''
-	}
+	templateResolver: new LocalModuleTemplateResolver('templates', '.html')
 };
 
 export const STANDARD_CONFIGURATION = {
@@ -34,9 +32,5 @@ export const STANDARD_CONFIGURATION = {
 	],
 	isomorphic: {
 		prefix: 'thjs'
-	},
-	templateResolver: {
-		prefix: '',
-		suffix: '.html'
 	}
 };

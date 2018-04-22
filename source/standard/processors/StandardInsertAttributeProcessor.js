@@ -18,7 +18,6 @@ import StandardFragmentAttributeProcessor from './StandardFragmentAttributeProce
 import StandardDialect                    from '../StandardDialect';
 import ExpressionProcessor                from '../expressions/ExpressionProcessor';
 import AttributeProcessor                 from '../../processors/AttributeProcessor';
-import {resolveTemplate}                  from '../../utilities/TemplateResolver';
 import {clearChildren}                    from '../../utilities/Dom';
 
 import {$} from 'dumb-query-selector';
@@ -55,10 +54,10 @@ export default class StandardInsertAttributeProcessor extends AttributeProcessor
 	 * @param {String} attributeValue
 	 *   The value given by the attribute.
 	 * @param {Object} context
-	 * @return {Boolean} Whether or not the parent element needs to do a second
-	 *   pass as its children have been modified by this processor.
+	 * @return {Promise<Boolean>} Whether or not the parent element needs to do a
+	 *   second pass as its children have been modified by this processor.
 	 */
-	process(element, attribute, attributeValue, context) {
+	async process(element, attribute, attributeValue, context) {
 
 		element.removeAttribute(attribute);
 		clearChildren(element);
@@ -66,7 +65,7 @@ export default class StandardInsertAttributeProcessor extends AttributeProcessor
 		let fragmentInfo = new ExpressionProcessor(context).process(attributeValue);
 		if (fragmentInfo) {
 			let {templateName, fragmentName} = fragmentInfo;
-			let template = resolveTemplate(templateName);
+			let template = await context.templateResolver.resolve(templateName);
 
 			let standardDialect = context.dialects.find(dialect => dialect.name === StandardDialect.NAME);
 			let dialectPrefix = standardDialect.prefix;
@@ -76,10 +75,9 @@ export default class StandardInsertAttributeProcessor extends AttributeProcessor
 				$(`[data-${dialectPrefix}-${fragmentProcessorName}^="${fragmentName}"`, template);
 
 			element.appendChild(fragment);
+			return true;
 		}
 
-		// TODO: Processors should be returning promises because this processor can
-		//       have an asynchronous result.
-		return true;
+		return false;
 	}
 }

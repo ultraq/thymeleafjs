@@ -58,22 +58,20 @@ export default class TemplateEngine {
 	 * 
 	 * @param {String} template
 	 * @param {Object} [context={}]
-	 * @return {Promise}
+	 * @return {Promise<String>}
 	 *   A promise resolved with the processed template, or rejected with an error
 	 *   message.
 	 */
 	process(template, context = {}) {
 
-		return new Promise((resolve, reject) => {
-			try {
-				let document = deserialize(template);
-				let rootElement = document.firstElementChild;
-				this.processNode(rootElement, {
-					...context,
-					dialects:         this.dialects,
-					templateResolver: this.templateResolver
-				});
-
+		let document = deserialize(template);
+		let rootElement = document.firstElementChild;
+		return this.processNode(rootElement, {
+			...context,
+			dialects:         this.dialects,
+			templateResolver: this.templateResolver
+		})
+			.then(() => {
 				// TODO: Special case, remove the xmlns:th namespace from the document.
 				//       This should be handled like in main Thymeleaf where it's just
 				//       another processor that runs on the document.
@@ -81,13 +79,8 @@ export default class TemplateEngine {
 					rootElement.removeAttribute(XML_NAMESPACE_ATTRIBUTE);
 				}
 
-				let documentAsString = serialize(document);
-				resolve(documentAsString);
-			}
-			catch (exception) {
-				reject(exception);
-			}
-		});
+				return Promise.resolve(serialize(document));
+			});
 	}
 
 	/**
@@ -96,25 +89,26 @@ export default class TemplateEngine {
 	 * 
 	 * @param {String} filePath
 	 * @param {Object} [context={}]
-	 * @return {Promise}
+	 * @return {Promise<String>}
 	 *   A promise resolved with the processed template, or rejected with an error
 	 *   message.
 	 */
 	processFile(filePath, context = {}) {
 
-		/* global ENVIRONMENT */
-		return ENVIRONMENT === 'browser' ?
-			Promise.reject('Cannot use fs.readFile inside a browser') :
-			new Promise((resolve, reject) => {
-				require('fs').readFile(filePath, (error, data) => {
-					if (error) {
-						reject(new Error(error));
-					}
-					else {
-						resolve(this.process(data, context));
-					}
-				});
+		return new Promise((resolve, reject) => {
+			/* global ENVIRONMENT */
+			if (ENVIRONMENT === 'browser') {
+				reject(new Error('Cannot use fs.readFile inside a browser'));
+			}
+			require('fs').readFile(filePath, (error, data) => {
+				if (error) {
+					reject(new Error(error));
+				}
+				else {
+					resolve(this.process(data, context));
+				}
 			});
+		});
 	}
 
 	/**
@@ -123,9 +117,9 @@ export default class TemplateEngine {
 	 * @private
 	 * @param {Element} element
 	 * @param {Object} [context={}]
-	 * @return {Boolean} Whether or not the parent node needs reprocessing.
+	 * @return {Promise<Boolean>} Whether or not the parent node needs reprocessing.
 	 */
-	processNode(element, context = {}) {
+	async processNode(element, context = {}) {
 
 		// TODO: Standardize this data attribute somewhere.  Shared const?
 		// element.dataset not yet implemented in JSDOM (https://github.com/tmpvar/jsdom/issues/961),
@@ -139,14 +133,14 @@ export default class TemplateEngine {
 
 		// Process the current element, store whether or not reprocessing of the
 		// parent needs to happen before moving on to this element's children.
-		let requireReprocessing = this.processors
-			.map(processor => {
-				let attribute = matcher.matches(element, processor);
-				return attribute ?
-					processor.process(element, attribute, element.getAttribute(attribute), localContext) :
-					false;
-			})
-			.reduce((accumulator, processorResult) => accumulator || processorResult, false);
+		let requireReprocessing = false;
+		for (let processor of this.processors) {
+			let attribute = matcher.matches(element, processor);
+			let processorResult = attribute ?
+				await processor.process(element, attribute, element.getAttribute(attribute), localContext) :
+				false;
+			requireReprocessing = requireReprocessing || processorResult;
+		}
 
 		if (requireReprocessing) {
 			return true;
@@ -157,7 +151,7 @@ export default class TemplateEngine {
 		do {
 			reprocess = false;
 			for (let child of element.children) {
-				reprocess = this.processNode(child, localContext);
+				reprocess = await this.processNode(child, localContext);
 				if (reprocess) {
 					break;
 				}

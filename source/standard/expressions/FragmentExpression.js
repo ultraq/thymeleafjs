@@ -18,8 +18,6 @@ import OptionalExpression from '../../parser/OptionalExpression';
 import Rule               from '../../parser/Rule';
 import SequenceExpression from '../../parser/SequenceExpression';
 
-import {navigate} from '@ultraq/object-utils';
-
 
 export const TemplateName = new Rule('TemplateName',
 	/[\w-\._]+/
@@ -51,12 +49,11 @@ export default new Rule('FragmentExpression',
 	),
 	([, templateName, , fragmentName, parameters]) => context => {
 
-		// TODO: Executing a fragment expression should locate and return the fragment
-		// TODO: Process parameters
-		let prefix = navigate(context, 'templateResolver.prefix');
-		let suffix = navigate(context, 'templateResolver.suffix');
+		// TODO: Should executing a fragment expression should locate and return the
+		//       fragment?  If so, then it'll make expression execution
+		//       asynchronous!
 		return {
-			templateName: (prefix || '') + templateName + (suffix || ''),
+			templateName,
 			fragmentName,
 			parameters
 		};

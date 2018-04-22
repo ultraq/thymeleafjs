@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-import {TemplateEngine}        from '../source/Thymeleaf';
-import {DEFAULT_CONFIGURATION} from '../source/Configurations';
+import {DEFAULT_CONFIGURATION}     from '../source/Configurations';
+import TemplateEngine              from '../source/TemplateEngine';
+import LocalModuleTemplateResolver from '../source/templateresolver/LocalModuleTemplateResolver';
 
 import {range}  from '@ultraq/array-utils';
 import fs       from 'fs';
@@ -31,10 +32,7 @@ describe('TemplateEngine', function() {
 
 		let templateEngine = new TemplateEngine({
 			...DEFAULT_CONFIGURATION,
-			templateResolver: {
-				prefix: './test/',
-				suffix: '.html'
-			}
+			templateResolver: new LocalModuleTemplateResolver('./test/', '.html')
 		});
 		return templateEngine.processFile(inputTemplatePath, {
 			normalizeCss: 'https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.css',
