@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-import InputBuffer from '../../src/parser/InputBuffer';
-import Parser      from '../../src/parser/Parser';
-import Rule        from '../../src/parser/Rule';
+import InputBuffer from '../../source/parser/InputBuffer';
+import Parser      from '../../source/parser/Parser';
+import Rule        from '../../source/parser/Rule';
 
 /**
  * Tests for the rule component of a grammar.

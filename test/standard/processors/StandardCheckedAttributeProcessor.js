@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import StandardCheckedAttributeProcessor from '../../../src/standard/processors/StandardCheckedAttributeProcessor';
-import {createThymeleafAttributeValue}   from '../../../src/utilities/Dom';
+import StandardCheckedAttributeProcessor from '../../../source/standard/processors/StandardCheckedAttributeProcessor';
+import {createThymeleafAttributeValue}   from '../../../source/utilities/Dom';
 
 import h  from 'hyperscript';
 import hh from 'hyperscript-helpers';

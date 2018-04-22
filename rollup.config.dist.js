@@ -7,7 +7,7 @@ import uglify      from 'rollup-plugin-uglify';
 import {minify}    from 'uglify-es';
 
 export default {
-	input: 'src/Thymeleaf.js',
+	input: 'source/Thymeleaf.js',
 	output: {
 		file: 'dist/thymeleaf.min.js',
 		format: 'iife',

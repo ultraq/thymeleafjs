@@ -7,7 +7,7 @@ import replace     from 'rollup-plugin-replace';
 const {ENVIRONMENT} = process.env;
 
 export default {
-	input: 'src/Thymeleaf.js',
+	input: 'source/Thymeleaf.js',
 	output: [
 		{
 			file: `lib/thymeleaf.${ENVIRONMENT}.cjs.js`,

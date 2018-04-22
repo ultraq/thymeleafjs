@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import Grammar from '../../src/parser/Grammar';
-import Rule    from '../../src/parser/Rule';
+import Grammar from '../../source/parser/Grammar';
+import Rule    from '../../source/parser/Rule';
 
 /**
  * Tests for the Grammar to describe a language.

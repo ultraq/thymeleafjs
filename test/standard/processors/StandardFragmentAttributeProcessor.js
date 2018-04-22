@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import StandardFragmentAttributeProcessor from '../../../src/standard/processors/StandardFragmentAttributeProcessor';
-import {createThymeleafAttributeValue}    from '../../../src/utilities/Dom';
+import StandardFragmentAttributeProcessor from '../../../source/standard/processors/StandardFragmentAttributeProcessor';
+import {createThymeleafAttributeValue}    from '../../../source/utilities/Dom';
 
 import h  from 'hyperscript';
 import hh from 'hyperscript-helpers';

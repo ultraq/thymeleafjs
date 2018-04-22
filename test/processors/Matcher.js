@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import Matcher                         from '../../src/processors/Matcher';
-import {createThymeleafAttributeValue} from '../../src/utilities/Dom';
+import Matcher                         from '../../source/processors/Matcher';
+import {createThymeleafAttributeValue} from '../../source/utilities/Dom';
 
 import h  from 'hyperscript';
 import hh from 'hyperscript-helpers';

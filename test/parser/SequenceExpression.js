@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-import InputBuffer        from '../../src/parser/InputBuffer';
-import Parser             from '../../src/parser/Parser';
-import SequenceExpression from '../../src/parser/SequenceExpression';
+import InputBuffer        from '../../source/parser/InputBuffer';
+import Parser             from '../../source/parser/Parser';
+import SequenceExpression from '../../source/parser/SequenceExpression';
 
 /**
  * Tests for sequence expressions in a grammar.

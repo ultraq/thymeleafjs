@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import InputBuffer from '../../src/parser/InputBuffer';
+import InputBuffer from '../../source/parser/InputBuffer';
 
 /**
  * Tests for the mark/reset-wrapped string.

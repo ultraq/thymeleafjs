@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import StandardTUextAttributeProcessor from '../../../src/standard/processors/StandardUTextAttributeProcessor';
-import {createThymeleafAttributeValue} from '../../../src/utilities/Dom';
+import StandardTUextAttributeProcessor from '../../../source/standard/processors/StandardUTextAttributeProcessor';
+import {createThymeleafAttributeValue} from '../../../source/utilities/Dom';
 
 import h  from 'hyperscript';
 import hh from 'hyperscript-helpers';

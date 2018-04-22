@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import ExpressionProcessor from '../../../src/standard/expressions/ExpressionProcessor';
+import ExpressionProcessor from '../../../source/standard/expressions/ExpressionProcessor';
 
 /**
  * Other tests for the expression language that don't seem to fit elsewhere.

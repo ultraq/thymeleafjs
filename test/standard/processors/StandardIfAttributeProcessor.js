@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import StandardIfAttributeProcessor    from '../../../src/standard/processors/StandardIfAttributeProcessor';
-import {createThymeleafAttributeValue} from '../../../src/utilities/Dom';
+import StandardIfAttributeProcessor    from '../../../source/standard/processors/StandardIfAttributeProcessor';
+import {createThymeleafAttributeValue} from '../../../source/utilities/Dom';
 
 import h  from 'hyperscript';
 import hh from 'hyperscript-helpers';

@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-import InputBuffer                 from '../../../../src/parser/InputBuffer';
-import Parser                      from '../../../../src/parser/Parser';
-import IfThenElseCondition         from '../../../../src/standard/expressions/conditionals/IfThenElseCondition';
-import ThymeleafExpressionLanguage from '../../../../src/standard/expressions/ThymeleafExpressionLanguage';
+import InputBuffer                 from '../../../../source/parser/InputBuffer';
+import Parser                      from '../../../../source/parser/Parser';
+import IfThenElseCondition         from '../../../../source/standard/expressions/conditionals/IfThenElseCondition';
+import ThymeleafExpressionLanguage from '../../../../source/standard/expressions/ThymeleafExpressionLanguage';
 
 /**
  * Tests for the ternary if-then-else syntax.

@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import StandardEmptyableAttributeProcessor from '../../../src/standard/processors/StandardEmptyableAttributeProcessor';
-import {createThymeleafAttributeValue}     from '../../../src/utilities/Dom';
+import StandardEmptyableAttributeProcessor from '../../../source/standard/processors/StandardEmptyableAttributeProcessor';
+import {createThymeleafAttributeValue}     from '../../../source/utilities/Dom';
 
 import h  from 'hyperscript';
 import hh from 'hyperscript-helpers';

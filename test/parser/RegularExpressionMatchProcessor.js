@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-import InputBuffer                     from '../../src/parser/InputBuffer';
-import Parser                          from '../../src/parser/Parser';
-import RegularExpressionMatchProcessor from '../../src/parser/RegularExpressionMatchProcessor';
+import InputBuffer                     from '../../source/parser/InputBuffer';
+import Parser                          from '../../source/parser/Parser';
+import RegularExpressionMatchProcessor from '../../source/parser/RegularExpressionMatchProcessor';
 
 /**
  * Tests for the special regex matcher.

@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-import InputBuffer             from '../../src/parser/InputBuffer';
-import OrderedChoiceExpression from '../../src/parser/OrderedChoiceExpression';
-import Parser                  from '../../src/parser/Parser';
+import InputBuffer             from '../../source/parser/InputBuffer';
+import OrderedChoiceExpression from '../../source/parser/OrderedChoiceExpression';
+import Parser                  from '../../source/parser/Parser';
 
 /**
  * Tests for ordered choice expressions in a grammar.

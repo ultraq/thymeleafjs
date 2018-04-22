@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import {TemplateEngine}        from '../src/Thymeleaf';
-import {DEFAULT_CONFIGURATION} from '../src/Configurations';
+import {TemplateEngine}        from '../source/Thymeleaf';
+import {DEFAULT_CONFIGURATION} from '../source/Configurations';
 
 import {range}  from '@ultraq/array-utils';
 import fs       from 'fs';

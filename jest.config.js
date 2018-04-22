@@ -3,7 +3,7 @@
 module.exports = {
 	collectCoverage: true,
 	collectCoverageFrom: [
-		'src/**/*.js'
+		'source/**/*.js'
 	],
 	coverageReporters: [
 		'html',

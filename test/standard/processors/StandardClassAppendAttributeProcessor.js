@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import StandardClassAppendAttributeProcessor from '../../../src/standard/processors/StandardClassAppendAttributeProcessor';
-import {createThymeleafAttributeValue}       from '../../../src/utilities/Dom';
+import StandardClassAppendAttributeProcessor from '../../../source/standard/processors/StandardClassAppendAttributeProcessor';
+import {createThymeleafAttributeValue}       from '../../../source/utilities/Dom';
 
 import h  from 'hyperscript';
 import hh from 'hyperscript-helpers';

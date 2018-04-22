@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import StandardEachAttributeProcessor  from '../../../src/standard/processors/StandardEachAttributeProcessor';
-import {createThymeleafAttributeValue} from '../../../src/utilities/Dom';
+import StandardEachAttributeProcessor  from '../../../source/standard/processors/StandardEachAttributeProcessor';
+import {createThymeleafAttributeValue} from '../../../source/utilities/Dom';
 
 import {range} from '@ultraq/array-utils';
 import h       from 'hyperscript';
