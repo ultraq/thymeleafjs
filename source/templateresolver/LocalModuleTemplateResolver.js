@@ -15,6 +15,7 @@
  */
 
 import {deserialize} from '../utilities/Dom';
+import {promisify}   from '../utilities/Functions';
 
 /**
  * A Thymeleaf template resolver for locating templates within the current
@@ -46,24 +47,14 @@ export default class LocalModuleTemplateResolver {
 	 * @param {String} templateName
 	 * @return {Promise<DocumentFragment>}
 	 */
-	resolve(templateName) {
+	async resolve(templateName) {
 
 		let templatePath = this.prefix + templateName + this.suffix;
-		return new Promise((resolve, reject) => {
+		return deserialize(
 			/* global ENVIRONMENT */
-			if (ENVIRONMENT === 'browser') {
-				resolve(deserialize(require(templatePath)));
-			}
-			else {
-				require('fs').readFile(require('path').resolve(process.cwd(), templatePath), (error, data) => {
-					if (error) {
-						reject(new Error(error));
-					}
-					else {
-						resolve(deserialize(data));
-					}
-				});
-			}
-		});
+			ENVIRONMENT === 'browser' ?
+				require(templatePath) :
+				await promisify(require('fs').readFile)(require('path').resolve(process.cwd(), templatePath))
+		);
 	}
 }

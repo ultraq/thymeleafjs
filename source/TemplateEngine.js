@@ -17,6 +17,7 @@
 import {DEFAULT_CONFIGURATION}  from './Configurations';
 import Matcher                  from './processors/Matcher';
 import StandardDialect          from './standard/StandardDialect';
+import {promisify}              from './utilities/Functions';
 import {deserialize, serialize} from './utilities/Dom';
 
 import {flatten} from '@ultraq/array-utils';
@@ -71,7 +72,7 @@ export default class TemplateEngine {
 			dialects:         this.dialects,
 			templateResolver: this.templateResolver
 		})
-			.then(() => {
+			.then(async () => {
 				// TODO: Special case, remove the xmlns:th namespace from the document.
 				//       This should be handled like in main Thymeleaf where it's just
 				//       another processor that runs on the document.
@@ -79,7 +80,7 @@ export default class TemplateEngine {
 					rootElement.removeAttribute(XML_NAMESPACE_ATTRIBUTE);
 				}
 
-				return Promise.resolve(serialize(document));
+				return serialize(document);
 			});
 	}
 
@@ -95,20 +96,13 @@ export default class TemplateEngine {
 	 */
 	processFile(filePath, context = {}) {
 
-		return new Promise((resolve, reject) => {
-			/* global ENVIRONMENT */
-			if (ENVIRONMENT === 'browser') {
-				reject(new Error('Cannot use fs.readFile inside a browser'));
-			}
-			require('fs').readFile(filePath, (error, data) => {
-				if (error) {
-					reject(new Error(error));
-				}
-				else {
-					resolve(this.process(data, context));
-				}
-			});
-		});
+		/* global ENVIRONMENT */
+		return ENVIRONMENT === 'browser' ?
+			Promise.reject(new Error('Cannot use fs.readFile inside a browser')) :
+			promisify(require('fs').readFile)(filePath)
+				.then(data => {
+					return this.process(data, context);
+				});
 	}
 
 	/**
