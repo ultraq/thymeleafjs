@@ -22,7 +22,7 @@ export const DEFAULT_CONFIGURATION = {
 		new StandardDialect()
 	],
 	isomorphic: false,
-	templateResolver: new LocalModuleTemplateResolver('templates', '.html')
+	templateResolver: new LocalModuleTemplateResolver()
 };
 
 export const STANDARD_CONFIGURATION = {
@@ -32,5 +32,6 @@ export const STANDARD_CONFIGURATION = {
 	],
 	isomorphic: {
 		prefix: 'thjs'
-	}
+	},
+	templateResolver: new LocalModuleTemplateResolver('templates/', '.html')
 };

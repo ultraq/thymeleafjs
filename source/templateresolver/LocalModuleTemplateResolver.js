@@ -30,10 +30,10 @@ export default class LocalModuleTemplateResolver {
 	/**
 	 * Create a new module template resolver for the given prefix and suffix.
 	 * 
-	 * @param {String} prefix
-	 * @param {String} suffix
+	 * @param {String} [prefix='']
+	 * @param {String} [suffix='']
 	 */
-	constructor(prefix, suffix) {
+	constructor(prefix = '', suffix = '') {
 
 		this.prefix = prefix;
 		this.suffix = suffix;
