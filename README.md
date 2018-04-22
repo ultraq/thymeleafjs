@@ -106,14 +106,26 @@ When constructing a new instance of the template engine, a config object can be
 passed in to set any of the available options.  These are:
 
  - **dialects**: array of [Dialect](#dialect) instances to use in processing
+ - **isomorphic**: enables the ability to run standard Thymeleaf processors with
+   priority given to `thjs` processors of the same name.
+ - **templateResolver**: a function supplied the template name which should then
+   return a `Promise` resolving to the text of the template being requested.
+   Required if you want to make use of template fragment processors like
+   `th:insert`.
 
 ```javascript
 import {TemplateEngine} from 'thymeleaf';
 
 let templateEngine = new TemplateEngine({
   dialects: [
-    // Dialect instances here
-  ]
+    // ...
+  ],
+  isomorphic: {
+  	prefix: 'thjs'
+  },
+  templateResolver: templateName => {
+  	// ...
+  }
 });
 ```
 
@@ -173,16 +185,16 @@ succinctly.
 ### STANDARD_CONFIGURATION
 
 A configuration object used to set the prefix to the `th` that many of us will
-be used to from the original Thymeleaf.
+be used to from the original Thymeleaf.  It also enables the experimental
+"isomorphic mode", in which ThymeleafJS can also process original Thymeleaf
+processing instructions, unless a `thjs` one is specified for the same name, in
+which case that will take precedence.
 
 ```javascript
 import {TemplateEngine, STANDARD_CONFIGURATION} from 'thymeleaf';
 
 let templateEngine = new TemplateEngine(STANDARD_CONFIGURATION);
 ```
-
-This configuration object may contain more default options in the future, but
-for now it only serves this 1 purpose.
 
 
 Supported features (so far)
@@ -191,22 +203,6 @@ Supported features (so far)
 See here for supported processors: https://github.com/ultraq/thymeleafjs/issues/21
 
 See here for supported expression syntaxes: https://github.com/ultraq/thymeleafjs/issues/20
-
-
-### Caveat on fragment inclusion
-
-The current method of fragment inclusion still requires a decent amount of
-hacking in the consuming app to work.  As seen in the thymeleafjs-todo example
-app, the webpack configuration uses [the HTML loader with attribute parsing
-turned off](https://github.com/ultraq/thymeleafjs-todo/blob/01ebb094bef0eaef168bc084fe3d50657b2a1f10/todo-ui/webpack.config.js#L23-L31),
-plus a special [`templates` alias to point to the location of Thymeleaf
-templates](https://github.com/ultraq/thymeleafjs-todo/blob/01ebb094bef0eaef168bc084fe3d50657b2a1f10/todo-ui/webpack.config.js#L36).
-This matches up with a special [`templates` require directive](https://github.com/ultraq/thymeleafjs/blob/4413cc04a30399d7b18847ef63e1d734ce196fa3/src/utilities/TemplateResolver.js#L42)
-in template resolution.  The reason for all this is because webpack has no way
-of knowing how to include other templates based on Thymeleaf fragment directives.
-
-[A new issue has been raised](https://github.com/ultraq/thymeleafjs/issues/16)
-to address this hack for webpack bundlers.
 
 
 Integration

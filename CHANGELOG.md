@@ -2,6 +2,18 @@
 Changelog
 =========
 
+### 0.12.0
+ - The template resolver is now a dev-specified function, meaning no more
+   special hacks required to get template insertion working!
+
+### 0.11.1
+ - Restoring `href`/`src`/`value` processors lost in the last update
+
+### 0.11.0
+ - Whitespace no longer significant in parsing most expression types
+ - Parsing errors are output to the log in built mode and no longer thrown so
+   that they don't bring down the whole thread
+
 ### 0.10.0
  - Add a `th:value`/`data-th-value` processor
  - Add support for if-then expressions (`(condition) ? (true branch)`)
