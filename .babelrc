@@ -6,7 +6,11 @@
 	"env": {
 		"build": {
 			"plugins": [
-				"external-helpers"
+				"external-helpers",
+				["transform-runtime", {
+					"helpers": false,
+					"polyfill": false
+				}]
 			],
 			"presets": [
 				["env", {

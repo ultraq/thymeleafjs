@@ -19,7 +19,9 @@ export default {
 		}
 	],
 	plugins: [
-		babel(),
+		babel({
+			runtimeHelpers: true
+		}),
 		commonjs({
 			namedExports: {
 				'dumb-query-selector': ['$', '$$']

@@ -14,7 +14,9 @@ export default {
 		name: 'Thymeleaf'
 	},
 	plugins: [
-		babel(),
+		babel({
+			runtimeHelpers: true
+		}),
 		commonjs({
 			namedExports: {
 				'dumb-query-selector': ['$', '$$']
