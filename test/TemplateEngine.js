@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 
-import {DEFAULT_CONFIGURATION}     from '../source/Configurations';
-import TemplateEngine              from '../source/TemplateEngine';
-import LocalModuleTemplateResolver from '../source/templateresolver/LocalModuleTemplateResolver';
-import {promisify}                 from '../source/utilities/Functions';
+import {DEFAULT_CONFIGURATION} from '../source/Configurations';
+import TemplateEngine          from '../source/TemplateEngine';
+import {promisify}             from '../source/utilities/Functions';
 
 import {range}  from '@ultraq/array-utils';
 import fs       from 'fs';
@@ -33,14 +32,16 @@ describe('TemplateEngine', function() {
 	}
 
 	test('#processFile', function() {
-		let inputTemplatePath = path.join(__dirname, 'template.html');
-
 		let templateEngine = new TemplateEngine({
 			...DEFAULT_CONFIGURATION,
-			templateResolver: new LocalModuleTemplateResolver('./test/', '.html')
+			templateResolver: templateName => {
+				return promisify(require('fs').readFile)(
+					require('path').resolve(process.cwd(), `./test/${templateName}.html`)
+				);
+			}
 		});
 		return Promise.all([
-			templateEngine.processFile(inputTemplatePath, {
+			templateEngine.processFile(path.join(__dirname, 'template.html'), {
 				normalizeCss: 'https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.css',
 				greeting: 'Hello!',
 				showGreeting: true,

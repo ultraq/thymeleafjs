@@ -14,17 +14,42 @@
  * limitations under the License.
  */
 
-import StandardDialect             from './standard/StandardDialect';
-import LocalModuleTemplateResolver from './templateresolver/LocalModuleTemplateResolver';
+import StandardDialect from './standard/StandardDialect';
 
+/**
+ * Configuration object for the template engine.
+ * 
+ * @typedef {Object} Configuration
+ * @property {Array<Dialect>} dialects
+ *   A list of dialects to include with this instance of the template engine.
+ * @property {Object} [isomorphic]
+ *   An object which configures the isomorphic capabilities of the template
+ *   engine.
+ * @property {Function} templateResolver
+ *   A function for returning the text of templates named by fragment
+ *   expressions in templates.  Is given only 1 argument, the template name from
+ *   a fragment expression, and should return a Promise of the template text.
+ */
+
+/**
+ * Default configuration for the template engine, configures the standard
+ * dialect with no options (uses `thjs` as the prefix).
+ * 
+ * @type {Configuration}
+ */
 export const DEFAULT_CONFIGURATION = {
 	dialects: [
 		new StandardDialect()
-	],
-	isomorphic: false,
-	templateResolver: new LocalModuleTemplateResolver()
+	]
 };
 
+/**
+ * Standard configuration, configures the standard dialect with the `th` prefix
+ * and enables isomorphic mode which enables the ability to use much of the same
+ * processors across original Thymeleaf and ThymeleafJS.
+ * 
+ * @type {Configuration}
+ */
 export const STANDARD_CONFIGURATION = {
 	...DEFAULT_CONFIGURATION,
 	dialects: [
@@ -32,6 +57,5 @@ export const STANDARD_CONFIGURATION = {
 	],
 	isomorphic: {
 		prefix: 'thjs'
-	},
-	templateResolver: new LocalModuleTemplateResolver('templates/', '.html')
+	}
 };

@@ -36,15 +36,7 @@ export default class TemplateEngine {
 	/**
 	 * Constructor, set up a new template engine instance.
 	 * 
-	 * @param {Object} dialects
-	 *   List of dialects to use in the new template engine.  Defaults to just the
-	 *   standard dialect.
-	 * @param {Object} isomorphic
-	 *   Object for indicating whether this template engine is being used on
-	 *   templates meant for both ThymeleafJS and the original Thymeleaf.  If set,
-	 *   expects an object containing additional options for this special
-	 *   "isomorphic templating" mode.
-	 * @param {Object} templateResolver
+	 * @param {Object} config
 	 */
 	constructor({dialects, isomorphic, templateResolver} = DEFAULT_CONFIGURATION) {
 

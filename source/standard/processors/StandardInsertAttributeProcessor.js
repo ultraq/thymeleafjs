@@ -18,7 +18,7 @@ import StandardFragmentAttributeProcessor from './StandardFragmentAttributeProce
 import StandardDialect                    from '../StandardDialect';
 import ExpressionProcessor                from '../expressions/ExpressionProcessor';
 import AttributeProcessor                 from '../../processors/AttributeProcessor';
-import {clearChildren}                    from '../../utilities/Dom';
+import {clearChildren, deserialize}       from '../../utilities/Dom';
 
 import {$} from 'dumb-query-selector';
 
@@ -62,20 +62,26 @@ export default class StandardInsertAttributeProcessor extends AttributeProcessor
 		element.removeAttribute(attribute);
 		clearChildren(element);
 
-		let fragmentInfo = new ExpressionProcessor(context).process(attributeValue);
-		if (fragmentInfo) {
-			let {templateName, fragmentName} = fragmentInfo;
-			let template = await context.templateResolver.resolve(templateName);
+		let {templateResolver} = context;
+		if (templateResolver) {
+			let fragmentInfo = new ExpressionProcessor(context).process(attributeValue);
+			if (fragmentInfo) {
+				let {templateName, fragmentName} = fragmentInfo;
+				let template = deserialize(await templateResolver(templateName));
 
-			let standardDialect = context.dialects.find(dialect => dialect.name === StandardDialect.NAME);
-			let dialectPrefix = standardDialect.prefix;
-			let fragmentProcessorName = StandardFragmentAttributeProcessor.NAME;
-			let fragment =
-				$(`[${dialectPrefix}\\:${fragmentProcessorName}^="${fragmentName}"]`, template) ||
-				$(`[data-${dialectPrefix}-${fragmentProcessorName}^="${fragmentName}"`, template);
+				let standardDialect = context.dialects.find(dialect => dialect.name === StandardDialect.NAME);
+				let dialectPrefix = standardDialect.prefix;
+				let fragmentProcessorName = StandardFragmentAttributeProcessor.NAME;
+				let fragment =
+					$(`[${dialectPrefix}\\:${fragmentProcessorName}^="${fragmentName}"]`, template) ||
+					$(`[data-${dialectPrefix}-${fragmentProcessorName}^="${fragmentName}"`, template);
 
-			element.appendChild(fragment);
-			return true;
+				element.appendChild(fragment);
+				return true;
+			}
+		}
+		else {
+			console.log(`No template resolver configured, unable to locate fragment via ${attributeValue} processor`);
 		}
 
 		return false;
