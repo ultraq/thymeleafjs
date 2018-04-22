@@ -72,14 +72,13 @@ export default class TemplateEngine {
 			dialects:         this.dialects,
 			templateResolver: this.templateResolver
 		})
-			.then(async () => {
+			.then(() => {
 				// TODO: Special case, remove the xmlns:th namespace from the document.
 				//       This should be handled like in main Thymeleaf where it's just
 				//       another processor that runs on the document.
 				if (rootElement.hasAttribute(XML_NAMESPACE_ATTRIBUTE)) {
 					rootElement.removeAttribute(XML_NAMESPACE_ATTRIBUTE);
 				}
-
 				return serialize(document);
 			});
 	}

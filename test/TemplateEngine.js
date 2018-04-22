@@ -47,9 +47,10 @@ describe('TemplateEngine', function() {
 				numbers: range(1, 10)
 			}),
 			promisify(fs.readFile)(path.join(__dirname, 'template-expected.html'))
+				.then(expectedTemplateData => expectedTemplateData.toString())
 		])
 			.then(([processedTemplate, expectedTemplate]) => {
-				expect(removeWhitespace(processedTemplate)).toBe(removeWhitespace(expectedTemplate.toString()));
+				expect(removeWhitespace(processedTemplate)).toBe(removeWhitespace(expectedTemplate));
 			});
 	});
 });

@@ -47,14 +47,19 @@ export default class LocalModuleTemplateResolver {
 	 * @param {String} templateName
 	 * @return {Promise<DocumentFragment>}
 	 */
-	async resolve(templateName) {
+	resolve(templateName) {
+
+		// NOTE: Can't use async/await here otherwise the generated file `require`s
+		//       the node modules, which won't work for a browser environment.
 
 		let templatePath = this.prefix + templateName + this.suffix;
-		return deserialize(
-			/* global ENVIRONMENT */
-			ENVIRONMENT === 'browser' ?
-				require(templatePath) :
-				await promisify(require('fs').readFile)(require('path').resolve(process.cwd(), templatePath))
-		);
+
+		/* global ENVIRONMENT */
+		return ENVIRONMENT === 'browser' ?
+			Promise.resolve(deserialize(require(templatePath))) :
+			promisify(require('fs').readFile)(require('path').resolve(process.cwd(), templatePath))
+				.then(templateData => {
+					return deserialize(templateData);
+				});
 	}
 }
