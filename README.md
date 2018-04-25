@@ -109,9 +109,9 @@ passed in to set any of the available options.  These are:
  - **isomorphic**: enables the ability to run standard Thymeleaf processors with
    priority given to `thjs` processors of the same name.
  - **templateResolver**: a function supplied the template name which should then
-   return a `Promise` resolving to the text of the template being requested.
-   Required if you want to make use of template fragment processors like
-   `th:insert`.
+   return the text or a `Promise` that will resolve with the text of the
+   template being requested.  Required if you want to make use of template
+   fragment processors like `th:insert`.
 
 ```javascript
 import {TemplateEngine} from 'thymeleaf';

@@ -35,9 +35,7 @@ describe('TemplateEngine', function() {
 		let templateEngine = new TemplateEngine({
 			...DEFAULT_CONFIGURATION,
 			templateResolver: templateName => {
-				return promisify(require('fs').readFile)(
-					require('path').resolve(process.cwd(), `./test/${templateName}.html`)
-				);
+				return fs.readFileSync(path.resolve(process.cwd(), `./test/${templateName}.html`));
 			}
 		});
 		return Promise.all([
