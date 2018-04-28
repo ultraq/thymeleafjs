@@ -33,16 +33,6 @@ function defaultMatchProcessor(result) {
 export default class Rule {
 
 	/**
-	 * @member {String}
-	 */
-	name;
-
-	/**
-	 * @member {Object
-	 */
-	expression;
-
-	/**
 	 * @param {String} name
 	 * @param {Object} expression
 	 * @param {Function} [matchProcessor=defaultExpressionAction]
