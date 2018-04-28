@@ -34,5 +34,12 @@ export default {
 			ENVIRONMENT: JSON.stringify(ENVIRONMENT)
 		})
 	],
+	external: [
+		'@ultraq/array-utils',
+		'@ultraq/object-utils',
+		'@ultraq/string-utils',
+		'dumb-query-selector',
+		'jsdom'
+	],
 	sourcemap: true
 };
