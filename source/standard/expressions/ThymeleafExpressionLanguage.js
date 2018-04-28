@@ -14,30 +14,17 @@
  * limitations under the License.
  */
 
-import FragmentExpression, {
-	FragmentName,
-	FragmentParameters,
-	TemplateName}            from './FragmentExpression';
-import Identifier          from './Identifier';
-import Iteration           from './Iteration';
-import LinkExpression, {
-	Url, UrlParameters}      from './LinkExpression';
-import LogicalExpression, {
-	Comparator}              from './LogicalExpression';
-import Nothing             from './Nothing';
-import ThymeleafExpression from './ThymeleafExpression';
-import VariableExpression  from './VariableExpression';
-import Condition           from './conditionals/Condition';
-import IfThenCondition     from './conditionals/IfThenCondition';
-import IfThenElseCondition from './conditionals/IfThenElseCondition';
-import BooleanLiteral      from './core/BooleanLiteral';
-import Literal             from './core/Literal';
-import NullLiteral         from './core/NullLiteral';
-import NumberLiteral       from './core/NumberLiteral';
-import Operand             from './core/Operand';
-import StringLiteral       from './core/StringLiteral';
-import TokenLiteral        from './core/TokenLiteral';
-import Grammar             from '../../parser/Grammar';
+import AllInputExpression              from './AllInputExpression';
+import ExpressionProcessor             from './ExpressionProcessor';
+import Grammar                         from '../../parser/Grammar';
+import OptionalExpression              from '../../parser/OptionalExpression';
+import OrderedChoiceExpression         from '../../parser/OrderedChoiceExpression';
+import RegularExpressionMatchProcessor from '../../parser/RegularExpressionMatchProcessor';
+import Rule                            from '../../parser/Rule';
+import SequenceExpression              from '../../parser/SequenceExpression';
+
+import {remove}   from '@ultraq/array-utils';
+import {navigate} from '@ultraq/object-utils';
 
 /**
  * Grammar for the Thymeleaf expression language.  Describes the language and
@@ -46,50 +33,264 @@ import Grammar             from '../../parser/Grammar';
  * @author Emanuel Rabina
  */
 export default new Grammar('Thymeleaf Expression Language',
-	ThymeleafExpression,
 
 	// Ordered as at https://www.thymeleaf.org/doc/tutorials/3.0/usingthymeleaf.html#standard-expression-syntax
+	new Rule('ThymeleafExpression',
+		new OrderedChoiceExpression(
+			new AllInputExpression('VariableExpression'),
+			new AllInputExpression('LinkExpression'),
+			new AllInputExpression('FragmentExpression'),
+			new AllInputExpression('Iteration'),
+			new AllInputExpression('Literal'),
+			new AllInputExpression('LogicalExpression'),
+			new AllInputExpression('IfThenCondition'),
+			new AllInputExpression('IfThenElseCondition'),
+			new AllInputExpression('Nothing')
+		)
+	),
+
 
 	// Simple expressions
-	VariableExpression,
-	LinkExpression,
-		Url,
-		UrlParameters,
-	FragmentExpression,
-		TemplateName,
-		FragmentName,
-		FragmentParameters,
+	// ==================
+
+	/**
+	 * Variable expressions, `${variable}`.  Represents a value to be retrieved
+	 * from the current context.
+	 */
+	new Rule('VariableExpression',
+		new SequenceExpression(/\${/, 'Identifier', /\}/),
+		([, identifier]) => context => {
+			let result = navigate(context, identifier);
+			return result !== null && result !== undefined ? result : '';
+		}
+	),
+
+	/**
+	 * Link expressions, `@{url(parameters)}`.  Used for generating URLs out of
+	 * context parameters.
+	 */
+	new Rule('LinkExpression',
+		new RegularExpressionMatchProcessor(/^@\{(.+?)(\(.+\))?\}$/, ['Url', 'UrlParameters']),
+		([, url, parameters]) => context => {
+
+			if (parameters) {
+
+				// TODO: Push this parsing of the parameters list back into the grammar
+				let expressionProcessor = new ExpressionProcessor(context);
+				let paramsList = parameters.slice(1, -1).split(',').map(param => {
+					let [lhs, rhs] = param.split('=');
+					return [lhs, expressionProcessor.process(rhs)];
+				});
+
+				// Fill out any placeholders in the URL from the parameters
+				while (true) { // eslint-disable-line
+					let urlTemplate = /(.*?)\{(.+?)\}(.*)/.exec(url);
+					if (urlTemplate) {
+						let [, head, placeholder, tail] = urlTemplate;
+						let paramEntry = remove(paramsList, ([lhs]) => lhs === placeholder);
+						if (paramEntry) {
+							url = `${head}${paramEntry[1]}${tail}`;
+						}
+					}
+					else {
+						break;
+					}
+				}
+
+				// Remaining parameters become search query parameters
+				if (paramsList.length) {
+					url += `?${paramsList.map(([key, value]) => `${key}=${value}`).join('&')}`;
+				}
+			}
+			return url;
+		}
+	),
+	new Rule('Url', /.+/),
+	new Rule('UrlParameters', /\((.+)\)/),
+
+	/**
+	 * Fragment expressions, `~{template :: fragment(parameters)}`.  A locator for
+	 * a piece of HTML in the same or another template.
+	 */
+	new Rule('FragmentExpression',
+		new SequenceExpression(/~{/, 'TemplateName', /::/, 'FragmentName', 'FragmentParameters', /}/),
+		([, templateName, , fragmentName, parameters]) => () => {
+
+			// TODO: Should executing a fragment expression should locate and return the
+			//       fragment?  If so, then it'll make expression execution
+			//       asynchronous!
+			return {
+				templateName,
+				fragmentName,
+				parameters
+			};
+		}
+	),
+	new Rule('TemplateName', /[\w-\._]+/),
+	new Rule('FragmentName', /[\w-\._]+/),
+
+	// TODO: We're not doing anything with these yet
+	new Rule('FragmentParameters',
+		new OptionalExpression(/\(.+\)/)
+	),
+
 
 	// Complex expressions
-	Iteration,
+	// ===================
+
+	/**
+	 * Iteration, `localVar : ${collection}`.  The name of the variable for each
+	 * loop, followed by the collection being iterated over.
+	 */
+	new Rule('Iteration',
+		new SequenceExpression('Identifier', /:/, 'VariableExpression'),
+		([localValueName, , collectionExpressionAction]) => context => ({
+			localValueName,
+			iterable: collectionExpressionAction(context)
+		})
+	),
+
 
 	// Literals
-	Literal,
-		StringLiteral,
-		NumberLiteral,
-		BooleanLiteral,
-		NullLiteral,
-		TokenLiteral,
+	// ========
+
+	new Rule('Literal',
+		new OrderedChoiceExpression(
+			'StringLiteral',
+			'NumberLiteral',
+			'BooleanLiteral',
+			'NullLiteral',
+			'TokenLiteral'
+		)
+	),
+
+	/**
+	 * String literal, characters surrounded by `'` (single quotes).
+	 */
+	new Rule('StringLiteral', /'.*?'/, result => () => result.slice(1, -1)),
+
+	/**
+	 * A number.
+	 */
+	new Rule('NumberLiteral', /\d+(\.\d+)?/, result => () => parseFloat(result)),
+
+	/**
+	 * One of `true` or `false`.
+	 */
+	new Rule('BooleanLiteral', /(true|false)/, result => () => result === 'true'),
+
+	/**
+	 * The word `null` to represent the null value.
+	 */
+	// TODO: The parser uses null to mean 'failed parse', so this might not work?
+	new Rule('NullLiteral', /null/, () => () => null),
+
+	/**
+	 * A token literal, which is pretty much anything else that can't be categorized
+	 * by the other literal types.  This is often used as a fallback in the
+	 * expression language so that, for any unknown input, we're still returning
+	 * something.
+	 */
+	// TODO: Is this the same as an Identifier?
+	new Rule('TokenLiteral', /[^: $\{\}]+/, result => () => result),
+
 
 	// Text operations
+	// ===============
+
 
 	// Arithmetic operations
+	// =====================
+
 
 	// Boolean operations
+	// ==================
+
 
 	// Comparisons and equality
-	LogicalExpression,
-		Comparator,
+	// ========================
+
+	/**
+	 * A logical expression is any expression that resolves in a `true`/`false`
+	 * value.
+	 */
+	new Rule('LogicalExpression',
+		new SequenceExpression('Operand', 'Comparator', 'Operand'),
+		([leftOperand, comparator, rightOperand]) => context => {
+			let lhs = leftOperand(context);
+			let rhs = rightOperand(context);
+			switch (comparator) {
+				case '==':  return lhs == rhs;
+				case '===': return lhs === rhs;
+			}
+			return false;
+		}
+	),
+
+	new Rule('Comparator',
+		new OrderedChoiceExpression(
+			/===?/
+		)
+	),
+
 
 	// Conditional operators
-	IfThenCondition,
-	IfThenElseCondition,
-		Condition,
+	// =====================
+
+	/**
+	 * If-then condition, `if ? then`.  This is the truthy branch only of the
+	 * classic ternary operator.  The falsey branch is a no-op.
+	 */
+	new Rule('IfThenCondition',
+		new SequenceExpression('Condition', /\?/, 'Operand'),
+		([condition, , truthyExpression]) => context => {
+			return condition(context) ? truthyExpression(context) : undefined;
+		}
+	),
+
+	/**
+	 * If-then-else condition, `if ? then : else`, the classic ternary operator.
+	 */
+	new Rule('IfThenElseCondition',
+		new SequenceExpression('Condition', /\?/, 'Operand', /:/, 'Operand'),
+		([condition, , truthyExpression, , falseyExpression]) => context => {
+			return condition(context) ? truthyExpression(context) : falseyExpression(context);
+		}
+	),
+
+	/**
+	 * A condition is some expression or value that resolves to a true/false
+	 * value.
+	 */
+	new Rule('Condition',
+		new OrderedChoiceExpression(
+			'LogicalExpression',
+			'Operand'
+		)
+	),
+
 
 	// Special tokens
-	Nothing,
+	// ==============
+
+	/**
+	 * An expression that matches the empty string.
+	 */
+	new Rule('Nothing', /^$/),
+
 
 	// Common language basics
-	Identifier,
-	Operand
+	// ======================
+
+	new Rule('Identifier', /[a-zA-Z_][\w\.]*/),
+
+	/**
+	 * An operand is either a variable or a literal.
+	 */
+	new Rule('Operand',
+		new OrderedChoiceExpression(
+			'VariableExpression',
+			'Literal'
+		)
+	)
 );
