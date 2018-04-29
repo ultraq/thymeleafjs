@@ -18,12 +18,11 @@ import InputBuffer from './InputBuffer';
 
 /**
  * Any one of the objects that can be matched:
- *  - an expression
+ *  - an expression function
  *  - a string that references another rule
  *  - a regular expression
  * 
- * @typedef {Object} Matchable
- * @function match
+ * @typedef {String|RegExp|Function} Matchable
  */
 
 /**
@@ -98,9 +97,9 @@ export default class Parser {
 			}
 		}
 
-		// One of our expression objects that has a `match` method
-		else if (typeof expression === 'object' && typeof expression.match === 'function') {
-			return expression.match(input, this);
+		// An expression function to be executed
+		else if (typeof expression === 'function') {
+			return expression(input, this);
 		}
 
 		return null;

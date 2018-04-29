@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-import AllInputExpression              from './AllInputExpression';
-import ExpressionProcessor             from './ExpressionProcessor';
-import Grammar                         from '../../parser/Grammar';
-import OptionalExpression              from '../../parser/OptionalExpression';
-import OrderedChoiceExpression         from '../../parser/OrderedChoiceExpression';
-import RegularExpressionMatchProcessor from '../../parser/RegularExpressionMatchProcessor';
-import Rule                            from '../../parser/Rule';
-import SequenceExpression              from '../../parser/SequenceExpression';
+import {AllInput}          from './AllInput';
+import ExpressionProcessor from './ExpressionProcessor';
+import Grammar             from '../../parser/Grammar';
+import {Optional,
+	OrderedChoice,
+	Sequence}                from '../../parser/Operators';
+import {RegularExpression} from '../../parser/RegularExpression';
+import Rule                from '../../parser/Rule';
 
 import {remove}   from '@ultraq/array-utils';
 import {navigate} from '@ultraq/object-utils';
@@ -36,16 +36,16 @@ export default new Grammar('Thymeleaf Expression Language',
 
 	// Ordered as at https://www.thymeleaf.org/doc/tutorials/3.0/usingthymeleaf.html#standard-expression-syntax
 	new Rule('ThymeleafExpression',
-		new OrderedChoiceExpression(
-			new AllInputExpression('VariableExpression'),
-			new AllInputExpression('LinkExpression'),
-			new AllInputExpression('FragmentExpression'),
-			new AllInputExpression('Iteration'),
-			new AllInputExpression('Literal'),
-			new AllInputExpression('LogicalExpression'),
-			new AllInputExpression('IfThenCondition'),
-			new AllInputExpression('IfThenElseCondition'),
-			new AllInputExpression('Nothing')
+		OrderedChoice(
+			AllInput('VariableExpression'),
+			AllInput('LinkExpression'),
+			AllInput('FragmentExpression'),
+			AllInput('Iteration'),
+			AllInput('Literal'),
+			AllInput('LogicalExpression'),
+			AllInput('IfThenCondition'),
+			AllInput('IfThenElseCondition'),
+			AllInput('Nothing')
 		)
 	),
 
@@ -58,7 +58,7 @@ export default new Grammar('Thymeleaf Expression Language',
 	 * from the current context.
 	 */
 	new Rule('VariableExpression',
-		new SequenceExpression(/\${/, 'Identifier', /\}/),
+		Sequence(/\${/, 'Identifier', /\}/),
 		([, identifier]) => context => {
 			let result = navigate(context, identifier);
 			return result !== null && result !== undefined ? result : '';
@@ -70,7 +70,7 @@ export default new Grammar('Thymeleaf Expression Language',
 	 * context parameters.
 	 */
 	new Rule('LinkExpression',
-		new RegularExpressionMatchProcessor(/^@\{(.+?)(\(.+\))?\}$/, ['Url', 'UrlParameters']),
+		RegularExpression(/^@\{(.+?)(\(.+\))?\}$/, ['Url', 'UrlParameters']),
 		([, url, parameters]) => context => {
 
 			if (parameters) {
@@ -113,7 +113,7 @@ export default new Grammar('Thymeleaf Expression Language',
 	 * a piece of HTML in the same or another template.
 	 */
 	new Rule('FragmentExpression',
-		new SequenceExpression(/~{/, 'TemplateName', /::/, 'FragmentName', 'FragmentParameters', /}/),
+		Sequence(/~{/, 'TemplateName', /::/, 'FragmentName', 'FragmentParameters', /}/),
 		([, templateName, , fragmentName, parameters]) => () => {
 
 			// TODO: Should executing a fragment expression should locate and return the
@@ -131,7 +131,7 @@ export default new Grammar('Thymeleaf Expression Language',
 
 	// TODO: We're not doing anything with these yet
 	new Rule('FragmentParameters',
-		new OptionalExpression(/\(.+\)/)
+		Optional(/\(.+\)/)
 	),
 
 
@@ -143,7 +143,7 @@ export default new Grammar('Thymeleaf Expression Language',
 	 * loop, followed by the collection being iterated over.
 	 */
 	new Rule('Iteration',
-		new SequenceExpression('Identifier', /:/, 'VariableExpression'),
+		Sequence('Identifier', /:/, 'VariableExpression'),
 		([localValueName, , collectionExpressionAction]) => context => ({
 			localValueName,
 			iterable: collectionExpressionAction(context)
@@ -155,7 +155,7 @@ export default new Grammar('Thymeleaf Expression Language',
 	// ========
 
 	new Rule('Literal',
-		new OrderedChoiceExpression(
+		OrderedChoice(
 			'StringLiteral',
 			'NumberLiteral',
 			'BooleanLiteral',
@@ -215,7 +215,7 @@ export default new Grammar('Thymeleaf Expression Language',
 	 * value.
 	 */
 	new Rule('LogicalExpression',
-		new SequenceExpression('Operand', 'Comparator', 'Operand'),
+		Sequence('Operand', 'Comparator', 'Operand'),
 		([leftOperand, comparator, rightOperand]) => context => {
 			let lhs = leftOperand(context);
 			let rhs = rightOperand(context);
@@ -228,7 +228,7 @@ export default new Grammar('Thymeleaf Expression Language',
 	),
 
 	new Rule('Comparator',
-		new OrderedChoiceExpression(
+		OrderedChoice(
 			/===?/
 		)
 	),
@@ -242,7 +242,7 @@ export default new Grammar('Thymeleaf Expression Language',
 	 * classic ternary operator.  The falsey branch is a no-op.
 	 */
 	new Rule('IfThenCondition',
-		new SequenceExpression('Condition', /\?/, 'Operand'),
+		Sequence('Condition', /\?/, 'Operand'),
 		([condition, , truthyExpression]) => context => {
 			return condition(context) ? truthyExpression(context) : undefined;
 		}
@@ -252,7 +252,7 @@ export default new Grammar('Thymeleaf Expression Language',
 	 * If-then-else condition, `if ? then : else`, the classic ternary operator.
 	 */
 	new Rule('IfThenElseCondition',
-		new SequenceExpression('Condition', /\?/, 'Operand', /:/, 'Operand'),
+		Sequence('Condition', /\?/, 'Operand', /:/, 'Operand'),
 		([condition, , truthyExpression, , falseyExpression]) => context => {
 			return condition(context) ? truthyExpression(context) : falseyExpression(context);
 		}
@@ -263,7 +263,7 @@ export default new Grammar('Thymeleaf Expression Language',
 	 * value.
 	 */
 	new Rule('Condition',
-		new OrderedChoiceExpression(
+		OrderedChoice(
 			'LogicalExpression',
 			'Operand'
 		)
@@ -288,7 +288,7 @@ export default new Grammar('Thymeleaf Expression Language',
 	 * An operand is either a variable or a literal.
 	 */
 	new Rule('Operand',
-		new OrderedChoiceExpression(
+		OrderedChoice(
 			'VariableExpression',
 			'Literal'
 		)

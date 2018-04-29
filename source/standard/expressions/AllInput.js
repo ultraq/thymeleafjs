@@ -18,28 +18,10 @@
  * A special kind of expression that requires the referenced rule consume all
  * available input.
  * 
- * @author Emanuel Rabina
+ * @param {String} ruleName
+ * @return {Matchable}
  */
-export default class AllInputExpression {
-
-	/**
-	 * @param {String} ruleName
-	 */
-	constructor(ruleName) {
-
-		this.ruleName = ruleName;
-	}
-
-	/**
-	 * Matches the input only if all input is consumed afterwards.
-	 * 
-	 * @param {InputBuffer} input
-	 * @param {Parser} parser
-	 * @return {Object}
-	 */
-	match(input, parser) {
-
-		let matchResult = parser.parseWithExpression(input, this.ruleName);
-		return matchResult !== null && input.exhausted() ? matchResult : null;
-	}
-}
+export const AllInput = ruleName => (input, parser) => {
+	let matchResult = parser.parseWithExpression(input, ruleName);
+	return matchResult !== null && input.exhausted() ? matchResult : null;
+};

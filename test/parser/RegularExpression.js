@@ -14,26 +14,26 @@
  * limitations under the License.
  */
 
-import InputBuffer                     from '../../source/parser/InputBuffer';
-import Parser                          from '../../source/parser/Parser';
-import RegularExpressionMatchProcessor from '../../source/parser/RegularExpressionMatchProcessor';
+import InputBuffer         from '../../source/parser/InputBuffer';
+import Parser              from '../../source/parser/Parser';
+import {RegularExpression} from '../../source/parser/RegularExpression';
 
 /**
  * Tests for the special regex matcher.
  */
-describe('parser/RegularExpressionMatchProcessor', function() {
+describe('parser/RegularExpression', function() {
 
 	test('Matching groups execute their corresponding processors', function() {
-		let processor = new RegularExpressionMatchProcessor(/([a-z]*)?([0-9]*)?/, [/abc/, /123/]);
+		let processor = RegularExpression(/([a-z]*)?([0-9]*)?/, [/abc/, /123/]);
 		let parser = new Parser();
 		let parseSpy = jest.spyOn(parser, 'parseWithExpression');
-		let result = processor.match(new InputBuffer('abc'), parser);
+		let result = processor(new InputBuffer('abc'), parser);
 		expect(result[0]).toBe('abc');
 		expect(parseSpy).toHaveBeenCalledWith(expect.objectContaining({ input: 'abc' }), /abc/);
 
 		parser = new Parser();
 		parseSpy = jest.spyOn(parser, 'parseWithExpression');
-		result = processor.match(new InputBuffer('123'), parser);
+		result = processor(new InputBuffer('123'), parser);
 		expect(result[0]).toBe('123');
 		expect(parseSpy).toHaveBeenCalledWith(expect.objectContaining({ input: '123' }), /123/);
 	});
