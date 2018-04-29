@@ -14,20 +14,68 @@
  * limitations under the License.
  */
 
-import ExpressionProcessor from '../../../source/standard/expressions/ExpressionProcessor';
+import InputBuffer                 from '../../../source/parser/InputBuffer';
+import Parser                      from '../../../source/parser/Parser';
+import ThymeleafExpressionLanguage from '../../../source/standard/expressions/ThymeleafExpressionLanguage';
 
 /**
- * Other tests for the expression language that don't seem to fit elsewhere.
+ * Tests for the Thymeleaf expression language.
  */
 describe('standard/expressions/ThymeleafExpressionLanguage', function() {
 
-	test('Ternary expression', function() {
-		let expressionProcessor = new ExpressionProcessor({
-			items: [
-				'Item 1'
-			]
+	const parser = new Parser(ThymeleafExpressionLanguage);
+
+	describe('#LogicalExpression', function() {
+
+		test('${var} === literal', function() {
+			let logicalExpressionProcessor = ThymeleafExpressionLanguage.accept(
+				new InputBuffer('${number} === 3'),
+				parser
+			);
+			let result = logicalExpressionProcessor({
+				number: 3
+			});
+			expect(result).toBeTrue();
 		});
-		let result = expressionProcessor.process("${items.length} === 1 ? 'Hello!' : 'Goodbye :('");
-		expect(result).toBe('Hello!');
 	});
+
+	describe('#IfThenCondition', function() {
+
+		test('Executes the true branch', function() {
+			let ifThenProcessor = ThymeleafExpressionLanguage.accept(
+				new InputBuffer("${condition} ? 'Hello!'"),
+				parser
+			);
+			let result = ifThenProcessor({
+				condition: true
+			});
+			expect(result).toBe('Hello!');
+		});
+	});
+
+	describe('#IfThenElseCondition', function() {
+
+		test('Executes the true branch', function() {
+			let ifThenElseProcessor = ThymeleafExpressionLanguage.accept(
+				new InputBuffer("${condition} ? 'Hello!' : 'Goodbye :('"),
+				parser
+			);
+			let result = ifThenElseProcessor({
+				condition: true
+			});
+			expect(result).toBe('Hello!');
+		});
+
+		test('Executes the false branch', function() {
+			let ifThenElseProcessor = ThymeleafExpressionLanguage.accept(
+				new InputBuffer("${condition} ? 'Hello!' : 'Goodbye :('"),
+				parser
+			);
+			let result = ifThenElseProcessor({
+				condition: false
+			});
+			expect(result).toBe('Goodbye :(');
+		});
+	});
+
 });
