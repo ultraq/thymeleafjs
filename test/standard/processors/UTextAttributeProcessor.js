@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import StandardTUextAttributeProcessor from '../../../source/standard/processors/UTextAttributeProcessor';
+import UTextAttributeProcessor         from '../../../source/standard/processors/UTextAttributeProcessor';
 import {createThymeleafAttributeValue} from '../../../source/utilities/Dom';
 
 import h  from 'hyperscript';
@@ -30,7 +30,7 @@ describe('processors/standard/UTextAttributeProcessor', function() {
 	let processor;
 	let attribute;
 	beforeAll(function() {
-		processor = new StandardTUextAttributeProcessor('test');
+		processor = new UTextAttributeProcessor('test');
 		attribute = `${processor.prefix}:${processor.name}`;
 	});
 
