@@ -143,10 +143,11 @@ export default new Grammar('Thymeleaf Expression Language',
 	 * loop, followed by the collection being iterated over.
 	 */
 	new Rule('Iteration',
-		Sequence('Identifier', /:/, 'VariableExpression'),
-		([localValueName, , collectionExpressionAction]) => context => ({
+		Sequence('Identifier', Optional(Sequence(/,/, 'Identifier')), /:/, 'VariableExpression'),
+		([localValueName, [, iterationStatusVariable], , collectionExpressionAction]) => context => ({
 			localValueName,
-			iterable: collectionExpressionAction(context)
+			iterable: collectionExpressionAction(context),
+			iterationStatusVariable
 		})
 	),
 

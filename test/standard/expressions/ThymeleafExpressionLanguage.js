@@ -87,6 +87,14 @@ describe('standard/expressions/ThymeleafExpressionLanguage', function() {
 			expect(result.localValueName).toBe('item');
 			expect(result.iterable).toBe(context.items);
 		});
+
+		test('Iteration statuses', function() {
+			let expresion = 'item,i: ${items}';
+			let result = expressionProcessor.process(expresion);
+			expect(result.localValueName).toBe('item');
+			expect(result.iterable).toBe(context.items);
+			expect(result.iterationStatusVariable).toBe('i');
+		});
 	});
 
 

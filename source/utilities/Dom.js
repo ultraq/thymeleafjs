@@ -77,4 +77,3 @@ export function serialize(documentFragment) {
 		new XMLSerializer().serializeToString(documentFragment) :
 		require('jsdom').serializeDocument(documentFragment);
 }
-
