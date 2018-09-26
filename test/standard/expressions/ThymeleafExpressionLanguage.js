@@ -98,6 +98,42 @@ describe('standard/expressions/ThymeleafExpressionLanguage', function() {
 	});
 
 
+	describe('#StringConcatenation', function() {
+		const firstString = 'First string ';
+		const secondString = 'second string';
+		const firstLine = 'Hey I just met you ';
+		const thirdLine = 'But here\'s my number ';
+		const context = {
+			firstLine,
+			firstString,
+			thirdLine,
+			secondString
+		};
+		let expressionProcessor;
+		beforeEach(function() {
+			expressionProcessor = new ExpressionProcessor(context);
+		});
+
+		test('Join 2 strings', function() {
+			let result = expressionProcessor.process(`'${firstString}' + '${secondString}'`);
+			expect(result).toBe(`${firstString}${secondString}`);
+		});
+
+		test('Join 2 expressions', function() {
+			let result = expressionProcessor.process(`\${firstString} + \${secondString}`);
+			expect(result).toBe(`${firstString}${secondString}`);
+		});
+
+		test('Join multiple strings or expressions', function() {
+			const secondLine = 'And this is crazy ';
+			const fourthLine = 'So call me maybe?';
+			let expression = `\${firstLine} + '${secondLine}' + \${thirdLine} + '${fourthLine}'`;
+			let result = expressionProcessor.process(expression);
+			expect(result).toBe(`${firstLine}${secondLine}${thirdLine}${fourthLine}`);
+		});
+	});
+
+
 	describe('#LinkExpression', function() {
 		const context = {
 			greeting: 'hello'

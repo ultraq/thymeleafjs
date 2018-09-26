@@ -22,7 +22,6 @@
  * @param {Element} element
  */
 export function clearChildren(element) {
-
 	while (element.firstChild) {
 		element.removeChild(element.firstChild);
 	}
@@ -38,7 +37,6 @@ export function clearChildren(element) {
  * @return {Element} The same element but with the attribute and value set on it.
  */
 export function createThymeleafAttributeValue(element, attribute, value) {
-
 	element.setAttribute(attribute, value);
 	return element;
 }
@@ -51,7 +49,6 @@ export function createThymeleafAttributeValue(element, attribute, value) {
  * @return {DocumentFragment}
  */
 export function deserialize(htmlString) {
-
 	return ENVIRONMENT === 'browser' ?
 		/* istanbul ignore next */
 		document.createRange().createContextualFragment(htmlString) :
@@ -71,7 +68,6 @@ export function deserialize(htmlString) {
  * @return {String}
  */
 export function serialize(documentFragment) {
-
 	return ENVIRONMENT === 'browser' ?
 		/* istanbul ignore next */
 		new XMLSerializer().serializeToString(documentFragment) :

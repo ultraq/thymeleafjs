@@ -18,6 +18,7 @@ import {AllInput}          from './AllInput';
 import ExpressionProcessor from './ExpressionProcessor';
 import Grammar             from '../../parser/Grammar';
 import {Optional,
+	OneOrMore,
 	OrderedChoice,
 	Sequence}                from '../../parser/Operators';
 import {RegularExpression} from '../../parser/RegularExpression';
@@ -41,6 +42,7 @@ export default new Grammar('Thymeleaf Expression Language',
 			AllInput('LinkExpression'),
 			AllInput('FragmentExpression'),
 			AllInput('Iteration'),
+			AllInput('StringConcatenation'),
 			AllInput('Literal'),
 			AllInput('LogicalExpression'),
 			AllInput('IfThenCondition'),
@@ -116,7 +118,7 @@ export default new Grammar('Thymeleaf Expression Language',
 		Sequence(/~{/, 'TemplateName', /::/, 'FragmentName', 'FragmentParameters', /}/),
 		([, templateName, , fragmentName, parameters]) => () => {
 
-			// TODO: Should executing a fragment expression should locate and return the
+			// TODO: Should executing a fragment expression locate and return the
 			//       fragment?  If so, then it'll make expression execution
 			//       asynchronous!
 			return {
@@ -126,8 +128,8 @@ export default new Grammar('Thymeleaf Expression Language',
 			};
 		}
 	),
-	new Rule('TemplateName', /[\w-\._]+/),
-	new Rule('FragmentName', /[\w-\._]+/),
+	new Rule('TemplateName', /[\w-._]+/),
+	new Rule('FragmentName', /[\w-._]+/),
 
 	// TODO: We're not doing anything with these yet
 	new Rule('FragmentParameters',
@@ -149,6 +151,24 @@ export default new Grammar('Thymeleaf Expression Language',
 			iterable: collectionExpressionAction(context),
 			iterationStatusVariable
 		})
+	),
+
+	/**
+	 * String concatenation, `'...' + '...'` or even `${...} + ${...}`, the
+	 * joining of 2 expressions by way of the `+` operator.
+	 */
+	new Rule('StringConcatenation',
+		Sequence('Concatenatable', OneOrMore(Sequence(/\+/, 'Concatenatable'))),
+		([first, [...rest]]) => context => {
+			const coerce = value => typeof value === 'function' ? value(context) : value.toString();
+			return coerce(first) + rest.reduce((result, [, item]) => result + coerce(item), '');
+		}
+	),
+	new Rule('Concatenatable',
+		OrderedChoice(
+			'StringLiteral',
+			'VariableExpression'
+		)
 	),
 
 
@@ -193,7 +213,7 @@ export default new Grammar('Thymeleaf Expression Language',
 	 * something.
 	 */
 	// TODO: Is this the same as an Identifier?
-	new Rule('TokenLiteral', /[^: $\{\}]+/, result => () => result),
+	new Rule('TokenLiteral', /[^: ${}]+/, result => () => result),
 
 
 	// Text operations
@@ -283,7 +303,7 @@ export default new Grammar('Thymeleaf Expression Language',
 	// Common language basics
 	// ======================
 
-	new Rule('Identifier', /[a-zA-Z_][\w\.]*/),
+	new Rule('Identifier', /[a-zA-Z_][\w.]*/),
 
 	/**
 	 * An operand is either a variable or a literal.

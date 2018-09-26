@@ -18,13 +18,38 @@
  * Returns an expression function where the underlying expression doesn't need
  * to be matched.  Thus, optional expressions "always" match.
  * 
- * @param {...Matchable} expression
+ * @param {Matchable} expression
  * @return {Matchable}
  */
 export const Optional = expression => (input, parser) => {
 	return input.markAndClearOrReset(() => {
 		let result = parser.parseWithExpression(input, expression);
 		return result !== null ? result : '';
+	});
+};
+
+/**
+ * Returns an expression function where the expression must be matched against
+ * at least once to be considered a match.
+ * 
+ * @param {Matchable} expression
+ * @return {Matchable}
+ */
+export const OneOrMore = (expression) => (input, parser) => {
+	return input.markAndClearOrReset(() => {
+		let results = [];
+		while (true) {
+			let result = input.markAndClearOrReset(() => {
+				return parser.parseWithExpression(input, expression);
+			});
+			if (result) {
+				results.push(result);
+			}
+			else {
+				break;
+			}
+		}
+		return results.length > 0 ? results : null;
 	});
 };
 

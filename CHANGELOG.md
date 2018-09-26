@@ -2,6 +2,15 @@
 Changelog
 =========
 
+### 0.13.0
+ - Add support for string concatenation (string literals or expressions that
+   return strings and any combination of the 2)
+
+### 0.12.1
+ - Add support for parsing the iteration status variable (though nothing is done
+   with it) to round out support for the iteration expression
+ - Added testing against Node 10 on TravisCI
+
 ### 0.12.0
  - The template resolver is now a dev-specified function, meaning no more
    special hacks required to get template insertion working!
