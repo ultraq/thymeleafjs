@@ -6,7 +6,7 @@
 	"license": "Apache-2.0",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/ultraq/thymeleaf-js"
+		"url": "https://github.com/ultraq/thymeleafjs"
 	},
 	"main": "lib/thymeleaf.node.cjs.js",
 	"module": "lib/thymeleaf.node.es.js",
