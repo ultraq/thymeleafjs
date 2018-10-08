@@ -2,6 +2,10 @@
 Changelog
 =========
 
+### 0.13.1
+ - template names in fragment expressions can have `/` in their name (as they
+   are often paths to a file)
+
 ### 0.13.0
  - Add support for string concatenation (string literals or expressions that
    return strings and any combination of the 2)

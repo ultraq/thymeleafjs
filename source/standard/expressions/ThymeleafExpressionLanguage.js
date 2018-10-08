@@ -128,7 +128,7 @@ export default new Grammar('Thymeleaf Expression Language',
 			};
 		}
 	),
-	new Rule('TemplateName', /[\w-._]+/),
+	new Rule('TemplateName', /[\w-._/]+/),
 	new Rule('FragmentName', /[\w-._]+/),
 
 	// TODO: We're not doing anything with these yet
