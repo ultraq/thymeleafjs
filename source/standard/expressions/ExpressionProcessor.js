@@ -45,7 +45,7 @@ export default class ExpressionProcessor {
 
 		// TODO: Probably don't need to create a new parser every time?
 		let parser = new Parser(ThymeleafExpressionLanguage);
-		let expressionAction = parser.parse(input);
-		return expressionAction ? expressionAction(this.context) : null;
+		let expression = parser.parse(input);
+		return expression ? expression(this.context) : null;
 	}
 }

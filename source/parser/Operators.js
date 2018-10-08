@@ -96,3 +96,28 @@ export const Sequence = (...expressions) => (input, parser) => {
 		return results;
 	});
 };
+
+/**
+ * Returns an expression function where the expression can be matched a repeated
+ * number of times or none at all to be considered a match.
+ * 
+ * @param {Matchable} expression
+ * @return {Matchable}
+ */
+export const ZeroOrMore = (expression) => (input, parser) => {
+	return input.markAndClearOrReset(() => {
+		let results = [];
+		while (true) {
+			let result = input.markAndClearOrReset(() => {
+				return parser.parseWithExpression(input, expression);
+			});
+			if (result) {
+				results.push(result);
+			}
+			else {
+				break;
+			}
+		}
+		return results;
+	});
+};

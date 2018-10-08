@@ -17,14 +17,17 @@
 import {AllInput}          from './AllInput';
 import ExpressionProcessor from './ExpressionProcessor';
 import Grammar             from '../../parser/Grammar';
-import {Optional,
+import {
+	Optional,
 	OneOrMore,
 	OrderedChoice,
-	Sequence}                from '../../parser/Operators';
+	Sequence,
+	ZeroOrMore
+} from '../../parser/Operators';
 import {RegularExpression} from '../../parser/RegularExpression';
 import Rule                from '../../parser/Rule';
 
-import {remove}   from '@ultraq/array-utils';
+import {flatten, remove}   from '@ultraq/array-utils';
 import {navigate} from '@ultraq/object-utils';
 
 /**
@@ -57,13 +60,31 @@ export default new Grammar('Thymeleaf Expression Language',
 
 	/**
 	 * Variable expressions, `${variable}`.  Represents a value to be retrieved
-	 * from the current context.
+	 * from the current context.  Also is an entry into the underlying expression
+	 * language, so this part often extends to do what OGNL (and thus SpEL) can
+	 * do.
 	 */
 	new Rule('VariableExpression',
-		Sequence(/\${/, 'Identifier', /\}/),
-		([, identifier]) => context => {
+		Sequence(/\${/, OrderedChoice('Variable', 'ExpressionObject'), /\}/),
+		([, variableOrExpressionObject]) => context => variableOrExpressionObject(context)
+	),
+	new Rule('Variable',
+		'Identifier',
+		(identifier => context => {
 			let result = navigate(context, identifier);
 			return result !== null && result !== undefined ? result : '';
+		})
+	),
+	new Rule('ExpressionObject',
+		Sequence(/#/, 'MethodCall'),
+		([, methodDetails]) => context => {
+			let target = navigate(context, methodDetails.methodName);
+			if (target) {
+				// TODO: We probably need the method class instance at some point so
+				//       that `this` works within the context of the function call.
+				return target.apply(null, methodDetails.parameters(context));
+			}
+			return '';
 		}
 	),
 
@@ -304,6 +325,22 @@ export default new Grammar('Thymeleaf Expression Language',
 	// ======================
 
 	new Rule('Identifier', /[a-zA-Z_][\w.]*/),
+	new Rule('MethodCall',
+		Sequence('MethodName', /\(/, 'MethodParameters', /\)/),
+		([methodName, , parameters]) => ({
+			methodName,
+			parameters
+		})
+	),
+	// TODO: We probably need the method class instance at some point so that we
+	//       can make `this` work within the context of the function call.
+	new Rule('MethodName', 'Identifier'),
+	new Rule('MethodParameters',
+		Optional(Sequence('Literal', ZeroOrMore(Sequence(/,/, 'Literal')))),
+		(parametersAndSeparators) => context => parametersAndSeparators ?
+			flatten(parametersAndSeparators).filter(item => item !== ',').map(parameter => parameter(context)) :
+			[]
+	),
 
 	/**
 	 * An operand is either a variable or a literal.

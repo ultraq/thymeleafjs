@@ -14,10 +14,12 @@
  * limitations under the License.
  */
 
-import InputBuffer     from '../../source/parser/InputBuffer';
-import {OrderedChoice,
-	Sequence}            from '../../source/parser/Operators';
-import Parser          from '../../source/parser/Parser';
+import InputBuffer from '../../source/parser/InputBuffer';
+import {
+	OrderedChoice,
+	Sequence,
+	ZeroOrMore}      from '../../source/parser/Operators';
+import Parser      from '../../source/parser/Parser';
 
 /**
  * Tests for the expression composition operators.
@@ -72,6 +74,18 @@ describe('parser/Operators', function() {
 			let result = sequenceExpression(input, new Parser());
 			expect(result).toBeNull();
 			expect(spy).toHaveBeenCalledTimes(1);
+		});
+	});
+
+	describe('#ZeroOrMore', function() {
+		let zeroOrMoreExpression = ZeroOrMore(/abc/);
+
+		test('A successful parse means no input, or the input repeating', function() {
+			let result = zeroOrMoreExpression(new InputBuffer(''), new Parser());
+			expect(result).toEqual([]);
+
+			result = zeroOrMoreExpression(new InputBuffer('abcabc'), new Parser());
+			expect(result).toEqual(['abc', 'abc']);
 		});
 	});
 

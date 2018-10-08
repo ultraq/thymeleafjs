@@ -52,6 +52,15 @@ describe('standard/expressions/ThymeleafExpressionLanguage', function() {
 			let result = expressionProcessor.process('${greeting}');
 			expect(result).toBe('');
 		});
+
+		test('Method calls', function() {
+			let sum = (a, b) => a + b;
+			let expressionProcessor = new ExpressionProcessor({
+				sum
+			});
+			let result = expressionProcessor.process('${#sum(1, 2)}');
+			expect(result).toBe(sum(1, 2));
+		});
 	});
 
 
