@@ -28,7 +28,11 @@ import {RegularExpression} from '../../parser/RegularExpression';
 import Rule                from '../../parser/Rule';
 
 import {flatten, remove}   from '@ultraq/array-utils';
-import {navigate} from '@ultraq/object-utils';
+
+// For helping identify rules that return objects
+const METADATA_FRAGMENT  = 'fragment';
+const METADATA_ITERATION = 'iteration';
+const METADATA_METHOD    = 'method';
 
 /**
  * Grammar for the Thymeleaf expression language.  Describes the language and
@@ -65,27 +69,37 @@ export default new Grammar('Thymeleaf Expression Language',
 	 * do.
 	 */
 	new Rule('VariableExpression',
-		Sequence(/\${/, OrderedChoice('Variable', 'ExpressionObject'), /\}/),
-		([, variableOrExpressionObject]) => context => variableOrExpressionObject(context)
+		Sequence(/\${/, 'Chain', /\}/),
+		([, chain]) => context => chain(context) || ''
 	),
-	new Rule('Variable',
-		'Identifier',
-		(identifier => context => {
-			let result = navigate(context, identifier);
-			return result !== null && result !== undefined ? result : '';
-		})
+	new Rule('Chain',
+		Sequence('ChainLink', ZeroOrMore(Sequence(/\./, 'ChainLink'))),
+		(chain) => context => {
+			return flatten(chain).filter(link => link !== '.').reduce((previousLink, nextLinkRule) => {
+				let nextLink = nextLinkRule(context);
+				if (previousLink && nextLink !== null && nextLink !== undefined) {
+					if (typeof nextLink === 'object') {
+						if (nextLink.type === METADATA_METHOD) {
+							return previousLink[nextLink.name].apply(previousLink, nextLink.parameters(context));
+						}
+						else {
+							// Any other metadata objects in a chain?
+						}
+					}
+					else {
+						return previousLink[nextLink];
+					}
+				}
+				return previousLink;
+			}, context);
+		}
+	),
+	new Rule('ChainLink',
+		OrderedChoice('ExpressionObject', 'MethodCall', 'PropertyName', 'Literal')
 	),
 	new Rule('ExpressionObject',
-		Sequence(/#/, 'MethodCall'),
-		([, methodDetails]) => context => {
-			let target = navigate(context, methodDetails.methodName);
-			if (target) {
-				// TODO: We probably need the method class instance at some point so
-				//       that `this` works within the context of the function call.
-				return target.apply(null, methodDetails.parameters(context));
-			}
-			return '';
-		}
+		Sequence(/#/, OrderedChoice('MethodCall', 'PropertyName')),
+		([, object]) => () => object
 	),
 
 	/**
@@ -143,6 +157,7 @@ export default new Grammar('Thymeleaf Expression Language',
 			//       fragment?  If so, then it'll make expression execution
 			//       asynchronous!
 			return {
+				type: METADATA_FRAGMENT,
 				templateName,
 				fragmentName,
 				parameters
@@ -168,6 +183,7 @@ export default new Grammar('Thymeleaf Expression Language',
 	new Rule('Iteration',
 		Sequence('Identifier', Optional(Sequence(/,/, 'Identifier')), /:/, 'VariableExpression'),
 		([localValueName, [, iterationStatusVariable], , collectionExpressionAction]) => context => ({
+			type: METADATA_ITERATION,
 			localValueName,
 			iterable: collectionExpressionAction(context),
 			iterationStatusVariable
@@ -253,11 +269,11 @@ export default new Grammar('Thymeleaf Expression Language',
 	// ========================
 
 	/**
-	 * A logical expression is any expression that resolves in a `true`/`false`
+	 * A logical expression is any expression that resolves to a `true`/`false`
 	 * value.
 	 */
 	new Rule('LogicalExpression',
-		Sequence('Operand', 'Comparator', 'Operand'),
+		Sequence('Expression', 'Comparator', 'Expression'),
 		([leftOperand, comparator, rightOperand]) => context => {
 			let lhs = leftOperand(context);
 			let rhs = rightOperand(context);
@@ -268,7 +284,6 @@ export default new Grammar('Thymeleaf Expression Language',
 			return false;
 		}
 	),
-
 	new Rule('Comparator',
 		OrderedChoice(
 			/===?/
@@ -284,7 +299,7 @@ export default new Grammar('Thymeleaf Expression Language',
 	 * classic ternary operator.  The falsey branch is a no-op.
 	 */
 	new Rule('IfThenCondition',
-		Sequence('Condition', /\?/, 'Operand'),
+		Sequence('Condition', /\?/, 'Expression'),
 		([condition, , truthyExpression]) => context => {
 			return condition(context) ? truthyExpression(context) : undefined;
 		}
@@ -294,7 +309,7 @@ export default new Grammar('Thymeleaf Expression Language',
 	 * If-then-else condition, `if ? then : else`, the classic ternary operator.
 	 */
 	new Rule('IfThenElseCondition',
-		Sequence('Condition', /\?/, 'Operand', /:/, 'Operand'),
+		Sequence('Condition', /\?/, 'Expression', /:/, 'Expression'),
 		([condition, , truthyExpression, , falseyExpression]) => context => {
 			return condition(context) ? truthyExpression(context) : falseyExpression(context);
 		}
@@ -307,7 +322,7 @@ export default new Grammar('Thymeleaf Expression Language',
 	new Rule('Condition',
 		OrderedChoice(
 			'LogicalExpression',
-			'Operand'
+			'Expression'
 		)
 	),
 
@@ -324,28 +339,28 @@ export default new Grammar('Thymeleaf Expression Language',
 	// Common language basics
 	// ======================
 
-	new Rule('Identifier', /[a-zA-Z_][\w.]*/),
+	new Rule('Identifier', /[a-zA-Z_][\w]*/),
+	new Rule('PropertyName', 'Identifier', propertyName => () => propertyName),
 	new Rule('MethodCall',
 		Sequence('MethodName', /\(/, 'MethodParameters', /\)/),
-		([methodName, , parameters]) => ({
-			methodName,
+		([name, , parameters]) => ({
+			type: METADATA_METHOD,
+			name,
 			parameters
 		})
 	),
-	// TODO: We probably need the method class instance at some point so that we
-	//       can make `this` work within the context of the function call.
 	new Rule('MethodName', 'Identifier'),
 	new Rule('MethodParameters',
-		Optional(Sequence('Literal', ZeroOrMore(Sequence(/,/, 'Literal')))),
+		Optional(Sequence('Expression', ZeroOrMore(Sequence(/,/, 'Expression')))),
 		(parametersAndSeparators) => context => parametersAndSeparators ?
 			flatten(parametersAndSeparators).filter(item => item !== ',').map(parameter => parameter(context)) :
 			[]
 	),
 
 	/**
-	 * An operand is either a variable or a literal.
+	 * Any valid unit of code that resolves to some value.
 	 */
-	new Rule('Operand',
+	new Rule('Expression',
 		OrderedChoice(
 			'VariableExpression',
 			'Literal'

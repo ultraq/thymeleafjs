@@ -21,9 +21,7 @@
  * @param {T} result
  * @return {T}
  */
-function defaultMatchProcessor(result) {
-	return result;
-}
+const defaultMatchProcessor = result => result;
 
 /**
  * A rule describes a string in the language.
@@ -35,7 +33,7 @@ export default class Rule {
 	/**
 	 * @param {String} name
 	 * @param {Object} expression
-	 * @param {Function} [matchProcessor=defaultExpressionAction]
+	 * @param {Function} [matchProcessor=defaultMatchProcessor]
 	 */
 	constructor(name, expression, matchProcessor = defaultMatchProcessor) {
 

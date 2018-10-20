@@ -73,6 +73,7 @@ describe('standard/expressions/ThymeleafExpressionLanguage', function() {
 		test('Extracts the template, fragment, and parameter parts', function() {
 			let result = expressionProcessor.process('~{template :: fragment(parameters)}');
 			expect(result).toEqual({
+				type: 'fragment',
 				templateName: 'template',
 				fragmentName: 'fragment',
 				parameters: '(parameters)'
