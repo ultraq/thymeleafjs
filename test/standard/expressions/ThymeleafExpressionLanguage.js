@@ -58,8 +58,24 @@ describe('standard/expressions/ThymeleafExpressionLanguage', function() {
 			let expressionProcessor = new ExpressionProcessor({
 				sum
 			});
-			let result = expressionProcessor.process('${#sum(1, 2)}');
+			let result = expressionProcessor.process('${sum(1, 2)}');
 			expect(result).toBe(sum(1, 2));
+		});
+
+		test('Test', function() {
+			const date = new Date();
+			const format = (date, format) => '' + date + format;
+			let expressionProcessor = new ExpressionProcessor({
+				'#joda': {
+					format
+				},
+				'#dateFormat': {
+					HUMAN: 'human'
+				},
+				date
+			});
+			let result = expressionProcessor.process('${#joda.format(date, #dateFormat.HUMAN)}');
+			expect(result).toBe(format(date, 'human'));
 		});
 	});
 

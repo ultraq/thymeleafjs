@@ -36,7 +36,7 @@ export const RegularExpression = (expression, matchers) => (input, parser) => {
 			for (let i = 1; i < result.length; i++) {
 				let match = result[i];
 				if (match !== undefined) {
-					let parseResult = parser.parseWithExpression(new InputBuffer(match), matchers[i - 1]);
+					let parseResult = parser.parseWithExpression(new InputBuffer(match), matchers[i - 1], 'RegularExpression');
 					if (parseResult === null) {
 						return null;
 					}

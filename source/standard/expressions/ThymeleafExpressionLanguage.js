@@ -16,6 +16,7 @@
 
 import {AllInput}          from './AllInput';
 import ExpressionProcessor from './ExpressionProcessor';
+import ThymeleafRule       from './ThymeleafRule.js';
 import Grammar             from '../../parser/Grammar';
 import {
 	Optional,
@@ -25,14 +26,12 @@ import {
 	ZeroOrMore
 } from '../../parser/Operators';
 import {RegularExpression} from '../../parser/RegularExpression';
-import Rule                from '../../parser/Rule';
 
-import {flatten, remove}   from '@ultraq/array-utils';
+import {flatten, remove} from '@ultraq/array-utils';
 
 // For helping identify rules that return objects
 const METADATA_FRAGMENT  = 'fragment';
 const METADATA_ITERATION = 'iteration';
-const METADATA_METHOD    = 'method';
 
 /**
  * Grammar for the Thymeleaf expression language.  Describes the language and
@@ -43,7 +42,7 @@ const METADATA_METHOD    = 'method';
 export default new Grammar('Thymeleaf Expression Language',
 
 	// Ordered as at https://www.thymeleaf.org/doc/tutorials/3.0/usingthymeleaf.html#standard-expression-syntax
-	new Rule('ThymeleafExpression',
+	new ThymeleafRule('ThymeleafExpression',
 		OrderedChoice(
 			AllInput('VariableExpression'),
 			AllInput('LinkExpression'),
@@ -54,6 +53,7 @@ export default new Grammar('Thymeleaf Expression Language',
 			AllInput('LogicalExpression'),
 			AllInput('IfThenCondition'),
 			AllInput('IfThenElseCondition'),
+			AllInput('TokenLiteral'),
 			AllInput('Nothing')
 		)
 	),
@@ -68,45 +68,30 @@ export default new Grammar('Thymeleaf Expression Language',
 	 * language, so this part often extends to do what OGNL (and thus SpEL) can
 	 * do.
 	 */
-	new Rule('VariableExpression',
+	new ThymeleafRule('VariableExpression',
 		Sequence(/\${/, 'Chain', /\}/),
 		([, chain]) => context => chain(context) || ''
 	),
-	new Rule('Chain',
+	new ThymeleafRule('Chain',
 		Sequence('ChainLink', ZeroOrMore(Sequence(/\./, 'ChainLink'))),
 		(chain) => context => {
-			return flatten(chain).filter(link => link !== '.').reduce((previousLink, nextLinkRule) => {
-				let nextLink = nextLinkRule(context);
-				if (previousLink && nextLink !== null && nextLink !== undefined) {
-					if (typeof nextLink === 'object') {
-						if (nextLink.type === METADATA_METHOD) {
-							return previousLink[nextLink.name].apply(previousLink, nextLink.parameters(context));
-						}
-						else {
-							// Any other metadata objects in a chain?
-						}
-					}
-					else {
-						return previousLink[nextLink];
-					}
-				}
-				return previousLink;
+			return flatten(chain).filter(link => link !== '.').reduce((accumulator, nextLink) => {
+				return accumulator === null || accumulator === undefined ? accumulator : nextLink({
+					...context,
+					...accumulator
+				});
 			}, context);
 		}
 	),
-	new Rule('ChainLink',
-		OrderedChoice('ExpressionObject', 'MethodCall', 'PropertyName', 'Literal')
-	),
-	new Rule('ExpressionObject',
-		Sequence(/#/, OrderedChoice('MethodCall', 'PropertyName')),
-		([, object]) => () => object
+	new ThymeleafRule('ChainLink',
+		OrderedChoice('MethodCall', 'PropertyName', 'Literal')
 	),
 
 	/**
 	 * Link expressions, `@{url(parameters)}`.  Used for generating URLs out of
 	 * context parameters.
 	 */
-	new Rule('LinkExpression',
+	new ThymeleafRule('LinkExpression',
 		RegularExpression(/^@\{(.+?)(\(.+\))?\}$/, ['Url', 'UrlParameters']),
 		([, url, parameters]) => context => {
 
@@ -142,14 +127,14 @@ export default new Grammar('Thymeleaf Expression Language',
 			return url;
 		}
 	),
-	new Rule('Url', /.+/),
-	new Rule('UrlParameters', /\((.+)\)/),
+	new ThymeleafRule('Url', /.+/),
+	new ThymeleafRule('UrlParameters', /\((.+)\)/),
 
 	/**
 	 * Fragment expressions, `~{template :: fragment(parameters)}`.  A locator for
 	 * a piece of HTML in the same or another template.
 	 */
-	new Rule('FragmentExpression',
+	new ThymeleafRule('FragmentExpression',
 		Sequence(/~{/, 'TemplateName', /::/, 'FragmentName', 'FragmentParameters', /}/),
 		([, templateName, , fragmentName, parameters]) => () => {
 
@@ -164,11 +149,11 @@ export default new Grammar('Thymeleaf Expression Language',
 			};
 		}
 	),
-	new Rule('TemplateName', /[\w-._/]+/),
-	new Rule('FragmentName', /[\w-._]+/),
+	new ThymeleafRule('TemplateName', /[\w-._/]+/),
+	new ThymeleafRule('FragmentName', /[\w-._]+/),
 
 	// TODO: We're not doing anything with these yet
-	new Rule('FragmentParameters',
+	new ThymeleafRule('FragmentParameters',
 		Optional(/\(.+\)/)
 	),
 
@@ -180,7 +165,7 @@ export default new Grammar('Thymeleaf Expression Language',
 	 * Iteration, `localVar : ${collection}`.  The name of the variable for each
 	 * loop, followed by the collection being iterated over.
 	 */
-	new Rule('Iteration',
+	new ThymeleafRule('Iteration',
 		Sequence('Identifier', Optional(Sequence(/,/, 'Identifier')), /:/, 'VariableExpression'),
 		([localValueName, [, iterationStatusVariable], , collectionExpressionAction]) => context => ({
 			type: METADATA_ITERATION,
@@ -194,14 +179,15 @@ export default new Grammar('Thymeleaf Expression Language',
 	 * String concatenation, `'...' + '...'` or even `${...} + ${...}`, the
 	 * joining of 2 expressions by way of the `+` operator.
 	 */
-	new Rule('StringConcatenation',
+	new ThymeleafRule('StringConcatenation',
 		Sequence('Concatenatable', OneOrMore(Sequence(/\+/, 'Concatenatable'))),
-		([first, [...rest]]) => context => {
-			const coerce = value => typeof value === 'function' ? value(context) : value.toString();
-			return coerce(first) + rest.reduce((result, [, item]) => result + coerce(item), '');
+		(values) => context => {
+			return flatten(values).filter(item => item !== '+').reduce((result, value) => {
+				return result + (typeof value === 'function' ? value(context) : value);
+			}, '');
 		}
 	),
-	new Rule('Concatenatable',
+	new ThymeleafRule('Concatenatable',
 		OrderedChoice(
 			'StringLiteral',
 			'VariableExpression'
@@ -212,36 +198,35 @@ export default new Grammar('Thymeleaf Expression Language',
 	// Literals
 	// ========
 
-	new Rule('Literal',
+	new ThymeleafRule('Literal',
 		OrderedChoice(
 			'StringLiteral',
 			'NumberLiteral',
 			'BooleanLiteral',
-			'NullLiteral',
-			'TokenLiteral'
+			'NullLiteral'
 		)
 	),
 
 	/**
 	 * String literal, characters surrounded by `'` (single quotes).
 	 */
-	new Rule('StringLiteral', /'.*?'/, result => () => result.slice(1, -1)),
+	new ThymeleafRule('StringLiteral', /'.*?'/, result => () => result.slice(1, -1)),
 
 	/**
 	 * A number.
 	 */
-	new Rule('NumberLiteral', /\d+(\.\d+)?/, result => () => parseFloat(result)),
+	new ThymeleafRule('NumberLiteral', /\d+(\.\d+)?/, result => () => parseFloat(result)),
 
 	/**
 	 * One of `true` or `false`.
 	 */
-	new Rule('BooleanLiteral', /(true|false)/, result => () => result === 'true'),
+	new ThymeleafRule('BooleanLiteral', /(true|false)/, result => () => result === 'true'),
 
 	/**
 	 * The word `null` to represent the null value.
 	 */
 	// TODO: The parser uses null to mean 'failed parse', so this might not work?
-	new Rule('NullLiteral', /null/, () => () => null),
+	new ThymeleafRule('NullLiteral', /null/, () => () => null),
 
 	/**
 	 * A token literal, which is pretty much anything else that can't be categorized
@@ -249,8 +234,7 @@ export default new Grammar('Thymeleaf Expression Language',
 	 * expression language so that, for any unknown input, we're still returning
 	 * something.
 	 */
-	// TODO: Is this the same as an Identifier?
-	new Rule('TokenLiteral', /[^: ${}]+/, result => () => result),
+	new ThymeleafRule('TokenLiteral', /[^: ${}]+/, result => () => result),
 
 
 	// Text operations
@@ -272,19 +256,25 @@ export default new Grammar('Thymeleaf Expression Language',
 	 * A logical expression is any expression that resolves to a `true`/`false`
 	 * value.
 	 */
-	new Rule('LogicalExpression',
-		Sequence('Expression', 'Comparator', 'Expression'),
+	new ThymeleafRule('LogicalExpression',
+		Sequence('Operand', 'Comparator', 'Operand'),
 		([leftOperand, comparator, rightOperand]) => context => {
 			let lhs = leftOperand(context);
 			let rhs = rightOperand(context);
-			switch (comparator) {
-				case '==':  return lhs == rhs;
+			switch (comparator(context)) {
+				case '==':  return lhs == rhs; // eslint-disable-line
 				case '===': return lhs === rhs;
 			}
 			return false;
 		}
 	),
-	new Rule('Comparator',
+	new ThymeleafRule('Operand',
+		OrderedChoice(
+			'VariableExpression',
+			'Literal'
+		)
+	),
+	new ThymeleafRule('Comparator',
 		OrderedChoice(
 			/===?/
 		)
@@ -298,7 +288,7 @@ export default new Grammar('Thymeleaf Expression Language',
 	 * If-then condition, `if ? then`.  This is the truthy branch only of the
 	 * classic ternary operator.  The falsey branch is a no-op.
 	 */
-	new Rule('IfThenCondition',
+	new ThymeleafRule('IfThenCondition',
 		Sequence('Condition', /\?/, 'Expression'),
 		([condition, , truthyExpression]) => context => {
 			return condition(context) ? truthyExpression(context) : undefined;
@@ -308,7 +298,7 @@ export default new Grammar('Thymeleaf Expression Language',
 	/**
 	 * If-then-else condition, `if ? then : else`, the classic ternary operator.
 	 */
-	new Rule('IfThenElseCondition',
+	new ThymeleafRule('IfThenElseCondition',
 		Sequence('Condition', /\?/, 'Expression', /:/, 'Expression'),
 		([condition, , truthyExpression, , falseyExpression]) => context => {
 			return condition(context) ? truthyExpression(context) : falseyExpression(context);
@@ -319,7 +309,7 @@ export default new Grammar('Thymeleaf Expression Language',
 	 * A condition is some expression or value that resolves to a true/false
 	 * value.
 	 */
-	new Rule('Condition',
+	new ThymeleafRule('Condition',
 		OrderedChoice(
 			'LogicalExpression',
 			'Expression'
@@ -333,37 +323,39 @@ export default new Grammar('Thymeleaf Expression Language',
 	/**
 	 * An expression that matches the empty string.
 	 */
-	new Rule('Nothing', /^$/),
+	new ThymeleafRule('Nothing', /^$/),
 
 
 	// Common language basics
 	// ======================
 
-	new Rule('Identifier', /[a-zA-Z_][\w]*/),
-	new Rule('PropertyName', 'Identifier', propertyName => () => propertyName),
-	new Rule('MethodCall',
-		Sequence('MethodName', /\(/, 'MethodParameters', /\)/),
-		([name, , parameters]) => ({
-			type: METADATA_METHOD,
-			name,
-			parameters
-		})
+	new ThymeleafRule('Identifier', /[#a-zA-Z_][\w]*/),
+	new ThymeleafRule('PropertyName', 'Identifier',
+		(propertyName) => context => {
+			let property = propertyName(context);
+			return context.hasOwnProperty(property) ? context[property] : '';
+		}
 	),
-	new Rule('MethodName', 'Identifier'),
-	new Rule('MethodParameters',
+	new ThymeleafRule('MethodCall',
+		Sequence('MethodName', /\(/, 'MethodParameters', /\)/),
+		([name, , parameters]) => context => {
+			return context[name(context)].apply(context, parameters(context));
+		}
+	),
+	new ThymeleafRule('MethodName', 'Identifier'),
+	new ThymeleafRule('MethodParameters',
 		Optional(Sequence('Expression', ZeroOrMore(Sequence(/,/, 'Expression')))),
-		(parametersAndSeparators) => context => parametersAndSeparators ?
-			flatten(parametersAndSeparators).filter(item => item !== ',').map(parameter => parameter(context)) :
-			[]
+		(parametersAndSeparators) => context => {
+			return parametersAndSeparators ?
+				flatten(parametersAndSeparators)
+					.filter(item => item !== ',')
+					.map(parameter => parameter(context)) :
+				[];
+		}
 	),
 
 	/**
 	 * Any valid unit of code that resolves to some value.
 	 */
-	new Rule('Expression',
-		OrderedChoice(
-			'VariableExpression',
-			'Literal'
-		)
-	)
+	new ThymeleafRule('Expression', 'Chain')
 );

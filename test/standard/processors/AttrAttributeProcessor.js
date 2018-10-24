@@ -47,7 +47,7 @@ describe('processors/standard/AttrAttributeProcessor', function() {
 	test('Set multiple attributes', function() {
 		let valueId = 'test-id';
 		let valueClass = 'test-class';
-		let attributeValue = `id=\${valueId},class=${valueClass}`;
+		let attributeValue = `id=\${valueId},class='${valueClass}'`;
 		let element = createThymeleafAttributeValue(div(), attribute, attributeValue);
 
 		processor.process(element, attribute, attributeValue, { valueId });

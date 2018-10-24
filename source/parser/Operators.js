@@ -23,7 +23,7 @@
  */
 export const Optional = expression => (input, parser) => {
 	return input.markAndClearOrReset(() => {
-		let result = parser.parseWithExpression(input, expression);
+		let result = parser.parseWithExpression(input, expression, 'Optional');
 		return result !== null ? result : '';
 	});
 };
@@ -40,7 +40,7 @@ export const OneOrMore = (expression) => (input, parser) => {
 		let results = [];
 		while (true) {
 			let result = input.markAndClearOrReset(() => {
-				return parser.parseWithExpression(input, expression);
+				return parser.parseWithExpression(input, expression, 'OneOrMore');
 			});
 			if (result) {
 				results.push(result);
@@ -64,7 +64,7 @@ export const OrderedChoice = (...expressions) => (input, parser) => {
 	return input.markAndClearOrReset(() => {
 		for (let expression of expressions) {
 			let result = input.markAndClearOrReset(() => {
-				return parser.parseWithExpression(input, expression);
+				return parser.parseWithExpression(input, expression, 'OrderedChoice');
 			});
 			if (result !== null) {
 				return result;
@@ -86,7 +86,7 @@ export const Sequence = (...expressions) => (input, parser) => {
 		let results = [];
 		for (let expression of expressions) {
 			let result = input.markAndClearOrReset(() => {
-				return parser.parseWithExpression(input, expression);
+				return parser.parseWithExpression(input, expression, 'Sequence');
 			});
 			if (result === null) {
 				return null;
@@ -109,7 +109,7 @@ export const ZeroOrMore = (expression) => (input, parser) => {
 		let results = [];
 		while (true) {
 			let result = input.markAndClearOrReset(() => {
-				return parser.parseWithExpression(input, expression);
+				return parser.parseWithExpression(input, expression, 'ZeroOrMore');
 			});
 			if (result) {
 				results.push(result);

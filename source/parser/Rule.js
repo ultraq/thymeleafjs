@@ -53,7 +53,7 @@ export default class Rule {
 	 */
 	accept(input, parser) {
 
-		let matchResult = parser.parseWithExpression(input, this.expression);
+		let matchResult = parser.parseWithExpression(input, this.expression, this.name);
 		return matchResult !== null ? this.matchProcessor(matchResult) : null;
 	}
 }
