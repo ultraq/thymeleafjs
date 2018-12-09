@@ -62,7 +62,7 @@ describe('standard/expressions/ThymeleafExpressionLanguage', function() {
 			expect(result).toBe(sum(1, 2));
 		});
 
-		test('Test', function() {
+		test('Utility function calls', function() {
 			const date = new Date();
 			const format = (date, format) => '' + date + format;
 			let expressionProcessor = new ExpressionProcessor({

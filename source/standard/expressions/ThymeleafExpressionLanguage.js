@@ -93,13 +93,14 @@ export default new Grammar('Thymeleaf Expression Language',
 	 */
 	new ThymeleafRule('LinkExpression',
 		RegularExpression(/^@\{(.+?)(\(.+\))?\}$/, ['Url', 'UrlParameters']),
-		([, url, parameters]) => context => {
+		([, urlFunc, parameters]) => context => {
 
+			let url = urlFunc(context);
 			if (parameters) {
 
 				// TODO: Push this parsing of the parameters list back into the grammar
 				let expressionProcessor = new ExpressionProcessor(context);
-				let paramsList = parameters.slice(1, -1).split(',').map(param => {
+				let paramsList = parameters(context).slice(1, -1).split(',').map(param => {
 					let [lhs, rhs] = param.split('=');
 					return [lhs, expressionProcessor.process(rhs)];
 				});
@@ -136,16 +137,16 @@ export default new Grammar('Thymeleaf Expression Language',
 	 */
 	new ThymeleafRule('FragmentExpression',
 		Sequence(/~{/, 'TemplateName', /::/, 'FragmentName', 'FragmentParameters', /}/),
-		([, templateName, , fragmentName, parameters]) => () => {
+		([, templateName, , fragmentName, parameters]) => context => {
 
 			// TODO: Should executing a fragment expression locate and return the
 			//       fragment?  If so, then it'll make expression execution
 			//       asynchronous!
 			return {
 				type: METADATA_FRAGMENT,
-				templateName,
-				fragmentName,
-				parameters
+				templateName: templateName(context),
+				fragmentName: fragmentName(context),
+				parameters: parameters(context)
 			};
 		}
 	),
@@ -169,9 +170,9 @@ export default new Grammar('Thymeleaf Expression Language',
 		Sequence('Identifier', Optional(Sequence(/,/, 'Identifier')), /:/, 'VariableExpression'),
 		([localValueName, [, iterationStatusVariable], , collectionExpressionAction]) => context => ({
 			type: METADATA_ITERATION,
-			localValueName,
+			localValueName: localValueName(context),
 			iterable: collectionExpressionAction(context),
-			iterationStatusVariable
+			iterationStatusVariable: iterationStatusVariable ? iterationStatusVariable(context) : null
 		})
 	),
 
@@ -257,7 +258,7 @@ export default new Grammar('Thymeleaf Expression Language',
 	 * value.
 	 */
 	new ThymeleafRule('LogicalExpression',
-		Sequence('Operand', 'Comparator', 'Operand'),
+		Sequence('Expression', 'Comparator', 'Expression'),
 		([leftOperand, comparator, rightOperand]) => context => {
 			let lhs = leftOperand(context);
 			let rhs = rightOperand(context);
@@ -267,12 +268,6 @@ export default new Grammar('Thymeleaf Expression Language',
 			}
 			return false;
 		}
-	),
-	new ThymeleafRule('Operand',
-		OrderedChoice(
-			'VariableExpression',
-			'Literal'
-		)
 	),
 	new ThymeleafRule('Comparator',
 		OrderedChoice(
@@ -337,14 +332,14 @@ export default new Grammar('Thymeleaf Expression Language',
 		}
 	),
 	new ThymeleafRule('MethodCall',
-		Sequence('MethodName', /\(/, 'MethodParameters', /\)/),
+		Sequence('MethodName', /\(/, Optional('MethodParameters'), /\)/),
 		([name, , parameters]) => context => {
 			return context[name(context)].apply(context, parameters(context));
 		}
 	),
 	new ThymeleafRule('MethodName', 'Identifier'),
 	new ThymeleafRule('MethodParameters',
-		Optional(Sequence('Expression', ZeroOrMore(Sequence(/,/, 'Expression')))),
+		Sequence('Chain', ZeroOrMore(Sequence(/,/, 'Chain'))),
 		(parametersAndSeparators) => context => {
 			return parametersAndSeparators ?
 				flatten(parametersAndSeparators)
@@ -357,5 +352,10 @@ export default new Grammar('Thymeleaf Expression Language',
 	/**
 	 * Any valid unit of code that resolves to some value.
 	 */
-	new ThymeleafRule('Expression', 'Chain')
+	new ThymeleafRule('Expression',
+		OrderedChoice(
+			'VariableExpression',
+			'Literal'
+		)
+	)
 );

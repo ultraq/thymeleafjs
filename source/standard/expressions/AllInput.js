@@ -22,6 +22,6 @@
  * @return {Matchable}
  */
 export const AllInput = ruleName => (input, parser) => {
-	let matchResult = parser.parseWithExpression(input, ruleName, 'AllInput');
+	let matchResult = parser.parseWithExpression(input, ruleName);
 	return matchResult !== null && input.exhausted() ? matchResult : null;
 };

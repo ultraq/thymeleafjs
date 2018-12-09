@@ -81,34 +81,30 @@ export default class Parser {
 	 * 
 	 * @param {InputBuffer} input
 	 * @param {Matchable} expression
-	 * @param {String} name
 	 * @return {Object}
 	 */
-	parseWithExpression(input, expression, name) {
+	parseWithExpression(input, expression) {
 
-		return this.trackExpression(input, expression, name, () => {
+		// Name of another rule in the grammar
+		if (typeof expression === 'string') {
+			let rule = this.grammar.findRuleByName(expression);
+			return rule ? rule.accept(input, this) : null;
+		}
 
-			// Name of another rule in the grammar
-			if (typeof expression === 'string') {
-				let rule = this.grammar.findRuleByName(expression);
-				return rule ? rule.accept(input, this) : null;
+		// A regular expression that must be matched
+		else if (expression instanceof RegExp) {
+			let result = input.read(expression);
+			if (result) {
+				return result[0];
 			}
+		}
 
-			// A regular expression that must be matched
-			else if (expression instanceof RegExp) {
-				let result = input.read(expression);
-				if (result) {
-					return result[0];
-				}
-			}
+		// An expression function to be executed
+		else if (typeof expression === 'function') {
+			return expression(input, this);
+		}
 
-			// An expression function to be executed
-			else if (typeof expression === 'function') {
-				return expression(input, this);
-			}
-
-			return null;
-		});
+		return null;
 	}
 
 	/**
@@ -116,7 +112,6 @@ export default class Parser {
 	 * the current stack.  Useful for knowing how the current expression was
 	 * arrived at through the grammar's rules.
 	 * 
-	 * @private
 	 * @template T
 	 * @param {InputBuffer} input
 	 * @param {Matchable} expression
@@ -126,7 +121,7 @@ export default class Parser {
 	 */
 	trackExpression(input, expression, name, func) {
 
-		this.expressionStack.push({
+		let stackSize = this.expressionStack.push({
 			name,
 			expression: typeof expression !== 'function' ? expression.toString() : null,
 			input: input.input.substring(input.position)
@@ -135,7 +130,7 @@ export default class Parser {
 		if (result !== null) {
 			return result;
 		}
-		this.expressionStack.pop();
+		this.expressionStack.splice(stackSize - 1);
 		return null;
 	}
 }
