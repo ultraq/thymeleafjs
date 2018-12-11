@@ -334,7 +334,8 @@ export default new Grammar('Thymeleaf Expression Language',
 	new ThymeleafRule('MethodCall',
 		Sequence('MethodName', /\(/, Optional('MethodParameters'), /\)/),
 		([name, , parameters]) => context => {
-			return context[name(context)].apply(context, parameters(context));
+			let method = context[name(context)];
+			return method ? method.apply(context, parameters(context)) : '';
 		}
 	),
 	new ThymeleafRule('MethodName', 'Identifier'),
