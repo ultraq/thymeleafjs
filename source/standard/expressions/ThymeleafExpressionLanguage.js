@@ -334,8 +334,14 @@ export default new Grammar('Thymeleaf Expression Language',
 	new ThymeleafRule('MethodCall',
 		Sequence('MethodName', /\(/, Optional('MethodParameters'), /\)/),
 		([name, , parameters]) => context => {
-			let method = context[name(context)];
-			return method ? method.apply(context, parameters(context)) : '';
+			let methodName = name(context);
+			let method = context[methodName];
+			if (!method) {
+				console.warn(`No method '${methodName}' present on the current context:`);
+				console.warn(context);
+				return '';
+			}
+			return method.apply(context, parameters(context));
 		}
 	),
 	new ThymeleafRule('MethodName', 'Identifier'),
@@ -356,6 +362,7 @@ export default new Grammar('Thymeleaf Expression Language',
 	new ThymeleafRule('Expression',
 		OrderedChoice(
 			'VariableExpression',
+			'StringConcatenation',
 			'Literal'
 		)
 	)
