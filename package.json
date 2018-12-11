@@ -15,14 +15,14 @@
 		"./lib/thymeleaf.node.es.js": "./lib/thymeleaf.browser.es.js"
 	},
 	"scripts": {
-		"lint": "eslint '**/*.js'",
+		"lint": "eslint \"**/*.js\"",
 		"test": "jest",
 		"coverage": "cat coverage/lcov.info | coveralls",
 		"build": "npm run build:browser && npm run build:node && npm run build:dist",
 		"build:browser": "cross-env BABEL_ENV=build ENVIRONMENT=browser rollup --config",
 		"build:node": "cross-env BABEL_ENV=build ENVIRONMENT=node rollup --config",
 		"build:dist": "cross-env BABEL_ENV=build rollup --config rollup.config.dist.js",
-		"watch": "chokidar 'source/**/*.js' 'test/**/*.js' -c 'npm run lint && npm test'",
+		"watch": "chokidar \"source/**/*.js\" \"test/**/*.js\" -c \"npm run lint && npm test && npm run build\"",
 		"prepublish": "npm run build"
 	},
 	"dependencies": {
