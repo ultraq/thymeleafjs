@@ -3,12 +3,13 @@ Changelog
 =========
 
 ### 0.14.0
- - method calls (`#...` in variable expressions) supported, though they don't
+ - Method calls (`#...` in variable expressions) supported, though they don't
    really do anything as their are no expression objects in the Thymeleaf
    context just yet
+ - Updated minimum supported Node version to 8
 
 ### 0.13.1
- - template names in fragment expressions can have `/` in their name (as they
+ - Template names in fragment expressions can have `/` in their name (as they
    are often paths to a file)
 
 ### 0.13.0

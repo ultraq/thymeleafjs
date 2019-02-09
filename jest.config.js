@@ -21,7 +21,7 @@ module.exports = {
 	globals: {
 		ENVIRONMENT: 'node'
 	},
-	setupTestFrameworkScriptFile: 'jest-extended',
+	// setupTestFrameworkScriptFile: 'jest-extended',
 	testMatch: [
 		'**/test/**/*.js'
 	]

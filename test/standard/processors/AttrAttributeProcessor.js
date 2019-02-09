@@ -41,7 +41,7 @@ describe('processors/standard/AttrAttributeProcessor', function() {
 
 		processor.process(element, attribute, attributeValue, { value });
 
-		expect(element.classList.contains(value)).toBeTrue();
+		expect(element.classList.contains(value)).toBe(true);
 	});
 
 	test('Set multiple attributes', function() {
@@ -53,7 +53,7 @@ describe('processors/standard/AttrAttributeProcessor', function() {
 		processor.process(element, attribute, attributeValue, { valueId });
 
 		expect(element.id).toBe(valueId);
-		expect(element.classList.contains(valueClass)).toBeTrue();
+		expect(element.classList.contains(valueClass)).toBe(true);
 	});
 
 	test("Do nothing if an expression doesn't match the attribute expression pattern", function() {

@@ -90,6 +90,9 @@ export default new Grammar('Thymeleaf Expression Language',
 	/**
 	 * Link expressions, `@{url(parameters)}`.  Used for generating URLs out of
 	 * context parameters.
+	 * 
+	 * TODO: Change this to use the other expression types as it causes a circular
+	 *       dependency in the build.
 	 */
 	new ThymeleafRule('LinkExpression',
 		RegularExpression(/^@\{(.+?)(\(.+\))?\}$/, ['Url', 'UrlParameters']),

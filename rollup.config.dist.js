@@ -3,15 +3,15 @@ import babel       from 'rollup-plugin-babel';
 import commonjs    from 'rollup-plugin-commonjs';
 import nodeResolve from 'rollup-plugin-node-resolve';
 import replace     from 'rollup-plugin-replace';
-import uglify      from 'rollup-plugin-uglify';
-import {minify}    from 'uglify-es';
+import {terser}    from 'rollup-plugin-terser';
 
 export default {
 	input: 'source/Thymeleaf.js',
 	output: {
 		file: 'dist/thymeleaf.min.js',
 		format: 'iife',
-		name: 'Thymeleaf'
+		name: 'Thymeleaf',
+		sourcemap: true
 	},
 	plugins: [
 		babel({
@@ -28,7 +28,6 @@ export default {
 		replace({
 			ENVIRONMENT: JSON.stringify('browser')
 		}),
-		uglify({}, minify)
-	],
-	sourcemap: true
+		terser()
+	]
 };

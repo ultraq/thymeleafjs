@@ -42,7 +42,7 @@ describe('processors/standard/FragmentAttributeProcessor', function() {
 		processor.process(element, attribute, attributeValue, context);
 
 		let {fragments} = context;
-		expect(fragments).toBeArray();
+		expect(Array.isArray(fragments)).toBe(true);
 		expect(fragments[0]).toEqual({
 			name: attributeValue,
 			element
@@ -59,7 +59,7 @@ describe('processors/standard/FragmentAttributeProcessor', function() {
 		processor.process(element, attribute, attributeValue, context);
 
 		let {fragments} = context;
-		expect(fragments).toBeArray();
+		expect(Array.isArray(fragments)).toBe(true);
 		expect(fragments[0]).toEqual({
 			name: attributeValue,
 			element

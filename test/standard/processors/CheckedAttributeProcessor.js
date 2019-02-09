@@ -41,7 +41,7 @@ describe('processors/standard/CheckedAttributeProcessor', function() {
 		['checked', '${greeting}'].forEach(value => {
 			let element = createThymeleafAttributeValue(div(), attribute, value);
 			processor.process(element, attribute, value, context);
-			expect(element.hasAttribute('checked')).toBeTrue();
+			expect(element.hasAttribute('checked')).toBe(true);
 		});
 	});
 
@@ -52,7 +52,7 @@ describe('processors/standard/CheckedAttributeProcessor', function() {
 		['', '${greeting}'].forEach(value => {
 			let element = createThymeleafAttributeValue(div(), attribute, value);
 			processor.process(element, attribute, value, context);
-			expect(element.hasAttribute('checked')).toBeFalse();
+			expect(element.hasAttribute('checked')).toBe(false);
 		});
 	});
 

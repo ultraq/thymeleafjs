@@ -42,7 +42,7 @@ describe('standard/processors/ClassAppendAttributeProcessor', function() {
 
 		processor.process(element, attribute, attributeValue);
 
-		expect(element.classList.contains(extraClass)).toBeTrue();
+		expect(element.classList.contains(extraClass)).toBe(true);
 	});
 
 	test('But not if the expression is falsey', function() {

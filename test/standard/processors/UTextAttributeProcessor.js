@@ -51,6 +51,6 @@ describe('processors/standard/UTextAttributeProcessor', function() {
 	test('Cleans up encountered attributes', function() {
 		let element = createThymeleafAttributeValue(div(), attribute, '');
 		processor.process(element, attribute, '');
-		expect(element.hasAttribute(attribute)).toBeFalse();
+		expect(element.hasAttribute(attribute)).toBe(false);
 	});
 });

@@ -30,12 +30,12 @@ describe('parser/InputBuffer', function() {
 
 		test('Buffer is exhausted once all input has been read', function() {
 			inputBuffer.read(/\w+/);
-			expect(inputBuffer.exhausted()).toBeTrue();
+			expect(inputBuffer.exhausted()).toBe(true);
 		});
 
 		test('Buffer not exhausted if not all input has been read', function() {
 			inputBuffer.read(/[a-z]+/);
-			expect(inputBuffer.exhausted()).toBeFalse();
+			expect(inputBuffer.exhausted()).toBe(false);
 		});
 	});
 

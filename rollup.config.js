@@ -11,17 +11,17 @@ export default {
 	output: [
 		{
 			file: `lib/thymeleaf.${ENVIRONMENT}.cjs.js`,
-			format: 'cjs'
+			format: 'cjs',
+			sourcemap: true
 		},
 		{
 			file: `lib/thymeleaf.${ENVIRONMENT}.es.js`,
-			format: 'es'
+			format: 'es',
+			sourcemap: true
 		}
 	],
 	plugins: [
-		babel({
-			runtimeHelpers: true
-		}),
+		babel(),
 		commonjs({
 			namedExports: {
 				'dumb-query-selector': ['$', '$$']
@@ -40,6 +40,5 @@ export default {
 		'@ultraq/string-utils',
 		'dumb-query-selector',
 		'jsdom'
-	],
-	sourcemap: true
+	]
 };

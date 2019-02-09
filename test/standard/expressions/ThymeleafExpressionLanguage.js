@@ -198,7 +198,7 @@ describe('standard/expressions/ThymeleafExpressionLanguage', function() {
 				number: 3
 			});
 			let result = processor.process('${number} === 3');
-			expect(result).toBeTrue();
+			expect(result).toBe(true);
 		});
 	});
 

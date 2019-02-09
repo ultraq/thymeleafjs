@@ -58,7 +58,7 @@ describe('processors/standard/RemovableAttributeProcessor', function() {
 				attributeValue
 			);
 			processor.process(element, attribute, attributeValue, context);
-			expect(element.hasAttribute(attributeName)).toBeFalse();
+			expect(element.hasAttribute(attributeName)).toBe(false);
 		});
 	});
 

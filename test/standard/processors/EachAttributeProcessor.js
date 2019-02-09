@@ -43,7 +43,7 @@ describe('processors/standard/EachAttributeProcessor', function() {
 		]);
 		let result = processor.process(child, attribute, iterationExpression, { items });
 
-		expect(result).toBeTrue();
+		expect(result).toBe(true);
 		expect(parent.childElementCount).toBe(9);
 	});
 });
