@@ -1,6 +1,4 @@
 /coverage
-/src
-/test
 *.iml
 .*
 jest.config.js

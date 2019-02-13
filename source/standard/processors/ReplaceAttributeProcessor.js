@@ -1,12 +1,12 @@
-/* 
- * Copyright 2017, Emanuel Rabina (http://www.ultraq.net.nz/)
- * 
+/*
+ * Copyright 2019, Emanuel Rabina (http://www.ultraq.net.nz/)
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -19,29 +19,29 @@ import {extractFragment}  from '../../utilities/Fragments.js';
 import AttributeProcessor from '../../processors/AttributeProcessor';
 
 /**
- * JS equivalent of Thymeleaf's `th:insert` attribute processor, inserts the
- * referenced template fragment as a child of the current element.
+ * JS equivalent of Thymeleaf's `th:relace` attribute processor, replaces the
+ * current element with the fragment referenced by the processor.
  * 
  * @author Emanuel Rabina
  */
-export default class InsertAttributeProcessor extends AttributeProcessor {
+export default class ReplaceAttributeProcessor extends AttributeProcessor {
 
-	static NAME = 'insert';
+	static NAME = 'replace';
 
 	/**
-	 * Constructor, set this processor to use the `insert` name and supplied
+	 * Constructor, set this processor to use the `replace` name and supplied
 	 * prefix.
 	 * 
 	 * @param {String} prefix
 	 */
 	constructor(prefix) {
 
-		super(prefix, InsertAttributeProcessor.NAME);
+		super(prefix, ReplaceAttributeProcessor.NAME);
 	}
 
 	/**
-	 * Processes an element that contains a `th:insert`/`data-th-insert` attribute,
-	 * replacing the current element's children with the DOM in the referenced
+	 * Processes an element that contains a `th:replace`/`data-th-replace`
+	 * attribute, replacing the current element with the DOM in the referenced
 	 * fragment.
 	 * 
 	 * @param {Element} element
@@ -61,10 +61,14 @@ export default class InsertAttributeProcessor extends AttributeProcessor {
 
 		let fragment = await extractFragment(attributeValue, context);
 		if (fragment) {
-			element.appendChild(fragment);
+			// TODO: Can simplify this with insertAdjacent*(), but need to upgrade
+			//       JSDOM first.
+			element.parentElement.insertBefore(fragment, element);
+			element.remove();
 			return true;
 		}
 
+		element.remove();
 		return false;
 	}
 }

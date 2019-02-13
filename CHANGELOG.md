@@ -7,6 +7,8 @@ Changelog
    really do anything as their are no expression objects in the Thymeleaf
    context just yet
  - Updated minimum supported Node version to 8
+ - Added a `thjs:replace/data-thjs-replace` processor
+   ([#24](https://github.com/ultraq/thymeleafjs/issues/24))
 
 ### 0.13.1
  - Template names in fragment expressions can have `/` in their name (as they

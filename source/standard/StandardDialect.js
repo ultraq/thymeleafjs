@@ -18,13 +18,16 @@ import AttrAttributeProcessor        from './processors/AttrAttributeProcessor';
 import CheckedAttributeProcessor     from './processors/CheckedAttributeProcessor';
 import ClassAppendAttributeProcessor from './processors/ClassAppendAttributeProcessor';
 import EachAttributeProcessor        from './processors/EachAttributeProcessor';
-import EmptyableAttributeProcessor,
-	{EMPTYABLE_ATTRIBUTE_NAMES}        from './processors/EmptyableAttributeProcessor';
+import EmptyableAttributeProcessor, {
+	EMPTYABLE_ATTRIBUTE_NAMES
+}                                    from './processors/EmptyableAttributeProcessor';
 import FragmentAttributeProcessor    from './processors/FragmentAttributeProcessor';
 import IfAttributeProcessor          from './processors/IfAttributeProcessor';
 import InsertAttributeProcessor      from './processors/InsertAttributeProcessor';
-import RemovableAttributeProcessor,
-	{REMOVABLE_ATTRIBUTE_NAMES}        from './processors/RemovableAttributeProcessor';
+import RemovableAttributeProcessor, {
+	REMOVABLE_ATTRIBUTE_NAMES
+}                                    from './processors/RemovableAttributeProcessor';
+import ReplaceAttributeProcessor     from './processors/ReplaceAttributeProcessor.js';
 import TextAttributeProcessor        from './processors/TextAttributeProcessor';
 import UTextAttributeProcessor       from './processors/UTextAttributeProcessor';
 import Dialect                       from '../dialects/Dialect';
@@ -66,6 +69,7 @@ export default class StandardDialect extends Dialect {
 		return [].concat(
 			// Fragment inclusion
 			new InsertAttributeProcessor(prefix),
+			new ReplaceAttributeProcessor(prefix),
 
 			// Fragment iteration
 			new EachAttributeProcessor(prefix),
