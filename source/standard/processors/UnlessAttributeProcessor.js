@@ -41,7 +41,7 @@ export default class UnlessAttributeProcessor extends AttributeProcessor {
 
   /**
    * Processes an element that contains a `th:unless` or `data-th-unless` attribute
-   * on it, evaluating the expression for truthy/falsey, rendering/excluding the
+   * on it, evaluating the expression for falsey/truthy, excluding/rendering the
    * element and its children based on the result.
    *
    * @param {Element} element
