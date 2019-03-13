@@ -38,7 +38,7 @@ describe('processors/standard/UnlessAttributeProcessor', function() {
     let child = createThymeleafAttributeValue(p('Hello!'), attribute, expression);
     let parent = div([child]);
     processor.process(child, attribute, expression, { value: false });
-    expect(parent.childNodes).toHaveLength(0);
+    expect(parent.childNodes).toHaveLength(1);
   });
 
   test('Removes the element and children if the expression is truthy', function() {
@@ -46,6 +46,6 @@ describe('processors/standard/UnlessAttributeProcessor', function() {
     let child = createThymeleafAttributeValue(p('Hello!'), attribute, expression);
     let parent = div([child]);
     processor.process(child, attribute, expression, { value: true });
-    expect(parent.childNodes).toHaveLength(1);
+    expect(parent.childNodes).toHaveLength(0);
   });
 });
