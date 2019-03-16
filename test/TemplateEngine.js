@@ -18,9 +18,9 @@ import {DEFAULT_CONFIGURATION} from '../source/Configurations';
 import TemplateEngine          from '../source/TemplateEngine';
 import {promisify}             from '../source/utilities/Functions';
 
-import {range}  from '@ultraq/array-utils';
-import fs       from 'fs';
-import path     from 'path';
+import {range} from '@ultraq/array-utils';
+import fs      from 'fs';
+import path    from 'path';
 
 /**
  * Tests for the Thymeleaf processing functions.

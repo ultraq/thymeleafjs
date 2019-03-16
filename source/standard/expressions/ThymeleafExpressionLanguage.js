@@ -340,8 +340,7 @@ export default new Grammar('Thymeleaf Expression Language',
 			let methodName = name(context);
 			let method = context[methodName];
 			if (!method) {
-				console.warn(`No method '${methodName}' present on the current context:`);
-				console.warn(context);
+				console.warn(`No method '${methodName}' present on the current context.  Expression: ${context.expression}`);
 				return '';
 			}
 			return method.apply(context, parameters(context));
