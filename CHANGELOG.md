@@ -9,6 +9,7 @@ Changelog
  - Updated minimum supported Node version to 8
  - Added a `thjs:replace/data-thjs-replace` processor
    ([#24](https://github.com/ultraq/thymeleafjs/issues/24))
+ - Added a `thjs:with/data-thjs-with` processor
 
 ### 0.13.1
  - Template names in fragment expressions can have `/` in their name (as they

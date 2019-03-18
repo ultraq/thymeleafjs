@@ -27,15 +27,17 @@ import InsertAttributeProcessor      from './processors/InsertAttributeProcessor
 import RemovableAttributeProcessor, {
 	REMOVABLE_ATTRIBUTE_NAMES
 }                                    from './processors/RemovableAttributeProcessor';
+import RemoveAttributeProcessor      from './processors/RemoveAttributeProcessor.js';
 import ReplaceAttributeProcessor     from './processors/ReplaceAttributeProcessor.js';
 import TextAttributeProcessor        from './processors/TextAttributeProcessor';
 import UnlessAttributeProcessor      from './processors/UnlessAttributeProcessor';
 import UTextAttributeProcessor       from './processors/UTextAttributeProcessor';
+import WithAttributeProcessor        from './processors/WithAttributeProcessor.js';
 import Dialect                       from '../dialects/Dialect';
 
 /**
  * The out-of-the-box dialect for Thymeleaf, the "Standard Dialect".
- *
+ * 
  * @author Emanuel Rabina
  */
 export default class StandardDialect extends Dialect {
@@ -80,10 +82,11 @@ export default class StandardDialect extends Dialect {
 			new UnlessAttributeProcessor(prefix),
 
 			// Local variable definition
-			new AttrAttributeProcessor(prefix),
-			new ClassAppendAttributeProcessor(prefix),
+			new WithAttributeProcessor(prefix),
 
 			// General attribute modification
+			new AttrAttributeProcessor(prefix),
+			new ClassAppendAttributeProcessor(prefix),
 			EMPTYABLE_ATTRIBUTE_NAMES.map(attributeName => {
 				return new EmptyableAttributeProcessor(prefix, attributeName);
 			}),
@@ -99,9 +102,10 @@ export default class StandardDialect extends Dialect {
 			new UTextAttributeProcessor(prefix),
 
 			// Fragment specification
-			new FragmentAttributeProcessor(prefix)
+			new FragmentAttributeProcessor(prefix),
 
 			// Fragment removal
+			new RemoveAttributeProcessor(prefix)
 		);
 	}
 }

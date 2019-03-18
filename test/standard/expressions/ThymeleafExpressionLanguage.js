@@ -160,6 +160,25 @@ describe('standard/expressions/ThymeleafExpressionLanguage', function() {
 	});
 
 
+	describe('#ScopedVariables', function() {
+
+		test('Returns information about the scoped variable', function() {
+			let aliasName = 'someKey';
+			let aliasValue = 'Hello!';
+			let expressionProcessor = new ExpressionProcessor({
+				someValue: aliasValue
+			});
+			let result = expressionProcessor.process(`${aliasName}=\${someValue}`);
+			expect(result).toEqual(expect.arrayContaining([
+				expect.objectContaining({
+					name: aliasName,
+					value: aliasValue
+				})
+			]));
+		});
+	});
+
+
 	describe('#LinkExpression', function() {
 		const context = {
 			greeting: 'hello'

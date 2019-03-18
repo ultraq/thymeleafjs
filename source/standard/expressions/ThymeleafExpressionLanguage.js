@@ -49,6 +49,7 @@ export default new Grammar('Thymeleaf Expression Language',
 			AllInput('FragmentExpression'),
 			AllInput('Iteration'),
 			AllInput('StringConcatenation'),
+			AllInput('ScopedVariables'),
 			AllInput('Literal'),
 			AllInput('LogicalExpression'),
 			AllInput('IfThenCondition'),
@@ -198,6 +199,23 @@ export default new Grammar('Thymeleaf Expression Language',
 		)
 	),
 
+	/**
+	 * Scoped variable aliases, `key=${expression},...`, describes one or more
+	 * names for scoped variables with the expressions that can be their values.
+	 */
+	new ThymeleafRule('ScopedVariables',
+		Sequence('ScopedVariable', ZeroOrMore(Sequence(/,/, 'ScopedVariable'))),
+		(aliases) => context => {
+			return flatten(aliases).map(alias => alias(context));
+		}
+	),
+	new ThymeleafRule('ScopedVariable',
+		Sequence('Identifier', /=/, 'Expression'),
+		([name, , expression]) => context => ({
+			name: name(context),
+			value: expression(context)
+		})
+	),
 
 	// Literals
 	// ========
