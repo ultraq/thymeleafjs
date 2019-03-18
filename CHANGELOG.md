@@ -2,6 +2,11 @@
 Changelog
 =========
 
+### 0.15.0
+ - Added a `thjs:unless/data-thjs-unless` processor
+   ([#25](https://github.com/ultraq/thymeleafjs/pull/25))
+ - Added a `thjs:with/data-thjs-with` processor
+
 ### 0.14.0
  - Method calls (`#...` in variable expressions) supported, though they don't
    really do anything as their are no expression objects in the Thymeleaf
@@ -9,7 +14,6 @@ Changelog
  - Updated minimum supported Node version to 8
  - Added a `thjs:replace/data-thjs-replace` processor
    ([#24](https://github.com/ultraq/thymeleafjs/issues/24))
- - Added a `thjs:with/data-thjs-with` processor
 
 ### 0.13.1
  - Template names in fragment expressions can have `/` in their name (as they
