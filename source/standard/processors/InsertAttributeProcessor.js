@@ -76,15 +76,12 @@ export default class InsertAttributeProcessor extends AttributeProcessor {
 				if (parameterNames) {
 					let {parameters} = fragmentInfo;
 
-					// TODO: This is setting up a local context using those special data
-					//       attributes that the template engine looks for.  Need a better
-					//       mechanism for scoped variables than this.
 					let localContext = {};
 					parameterNames.forEach((parameterName, index) => {
 						localContext[parameterName] = parameters[parameterName] || parameters[index] || null;
 					});
 
-					fragment.setAttribute('data-thymeleaf-local-variables', JSON.stringify(localContext));
+					fragment.__thymeleafLocalVariables = localContext;
 				}
 
 				element.appendChild(fragment);

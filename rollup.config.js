@@ -36,7 +36,6 @@ export default {
 	],
 	external: [
 		'@ultraq/array-utils',
-		'@ultraq/object-utils',
 		'@ultraq/string-utils',
 		'dumb-query-selector',
 		'jsdom'

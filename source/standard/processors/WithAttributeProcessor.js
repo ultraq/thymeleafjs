@@ -55,17 +55,12 @@ export default class WithAttributeProcessor extends AttributeProcessor {
 
 		element.removeAttribute(attribute);
 
-		// TODO: This is placing values in a data attribute much like how th:each
-		//       currently works, but this is very inneficient as it requires
-		//       re-processing of the node.  Really need to develop that "context
-		//       stack" data structure for scoping values to elements more
-		//       efficiently.
 		let localVariables = {};
 		let aliases = new ExpressionProcessor().process(attributeValue, context);
 		aliases.forEach(({name, value}) => {
 			localVariables[name] = value;
 		});
-		element.setAttribute('data-thymeleaf-local-variables', JSON.stringify(localVariables));
+		element.__thymeleafLocalVariables = localVariables;
 
 		return true;
 	}

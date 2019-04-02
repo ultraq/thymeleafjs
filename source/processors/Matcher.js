@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * Class for determining if an element contains a processor on it.
+ */
 export default class Matcher {
 
 	/**

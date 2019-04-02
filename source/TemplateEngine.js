@@ -14,14 +14,13 @@
  * limitations under the License.
  */
 
-import {DEFAULT_CONFIGURATION}  from './Configurations';
-import Matcher                  from './processors/Matcher';
-import StandardDialect          from './standard/StandardDialect';
-import {promisify}              from './utilities/Functions';
-import {deserialize, serialize} from './utilities/Dom';
+import {DEFAULT_CONFIGURATION}  from './Configurations.js';
+import Matcher                  from './processors/Matcher.js';
+import StandardDialect          from './standard/StandardDialect.js';
+import {promisify}              from './utilities/Functions.js';
+import {deserialize, serialize} from './utilities/Dom.js';
 
 import {flatten} from '@ultraq/array-utils';
-import {merge}   from '@ultraq/object-utils';
 
 const XML_NAMESPACE_ATTRIBUTE = `xmlns:${StandardDialect.DEFAULT_PREFIX}`;
 
@@ -102,19 +101,21 @@ export default class TemplateEngine {
 	 * @private
 	 * @param {Element} element
 	 * @param {Object} [context={}]
-	 * @return {Promise<Boolean>} Whether or not the parent node needs reprocessing.
+	 * @return {Promise<Boolean>} Whether or not the parent node needs
+	 *   reprocessing.
 	 */
 	async processNode(element, context = {}) {
 
-		// TODO: Standardize this data attribute somewhere.  Shared const?
-		// element.dataset not yet implemented in JSDOM (https://github.com/tmpvar/jsdom/issues/961),
-		// so until then we're getting data- attributes the old-fashioned way.
-		// Alternatively, some kind of variable stack that pops with each move up
-		// the DOM.
-		let localVariables = JSON.parse(element.getAttribute('data-thymeleaf-local-variables'));
-		element.removeAttribute('data-thymeleaf-local-variables');
-		let localContext = merge({}, context, localVariables);
-		let matcher = new Matcher(context, this.isomorphic);
+		let localVariables = {};
+		if (element.__thymeleafLocalVariables) {
+			localVariables = element.__thymeleafLocalVariables;
+			delete element.__thymeleafLocalVariables;
+		}
+		let localContext = {
+			...context,
+			...localVariables
+		};
+		let matcher = new Matcher(localContext, this.isomorphic);
 
 		// Process the current element, store whether or not reprocessing of the
 		// parent needs to happen before moving on to this element's children.
@@ -132,6 +133,10 @@ export default class TemplateEngine {
 		}
 
 		// Process this element's children
+		// TODO: This reprocessing mechanism causes double-handling of elements, eg:
+		//       child n sends the reprocessing signal, then children 1...n-1 are
+		//       all reprocessed.  This needs to be addressed for performance
+		//       reasons.
 		let reprocess;
 		do {
 			reprocess = false;

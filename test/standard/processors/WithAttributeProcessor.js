@@ -42,7 +42,7 @@ describe('processors/standard/WithAttributeProcessor', function() {
 
 		processor.process(element, attribute, attributeValue, context);
 
-		let localVariables = JSON.parse(element.getAttribute('data-thymeleaf-local-variables'));
+		let localVariables = element.__thymeleafLocalVariables;
 		expect(localVariables).toEqual(expect.objectContaining({
 			'someKey': context.someValue
 		}));

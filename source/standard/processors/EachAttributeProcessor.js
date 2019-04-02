@@ -63,14 +63,9 @@ export default class EachAttributeProcessor extends AttributeProcessor {
 
 			for (let value of iterable) {
 				let localClone = templateNode.cloneNode(true);
-				let localVariable = {};
-				localVariable[localValueName] = value;
-
-				// TODO: Standardize this data attribute somewhere.  Shared const?
-				// element.dataset not yet implemented in JSDOM (https://github.com/tmpvar/jsdom/issues/961),
-				// so until then we're setting data- attributes the old-fashioned way.
-				localClone.setAttribute('data-thymeleaf-local-variables', JSON.stringify(localVariable));
-
+				localClone.__thymeleafLocalVariables = {
+					[localValueName]: value
+				};
 				element.parentElement.appendChild(localClone);
 			}
 		}
