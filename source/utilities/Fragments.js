@@ -15,7 +15,6 @@
  */
 
 import {deserialize}              from './Dom.js';
-import ExpressionProcessor        from '../standard/expressions/ExpressionProcessor.js';
 import FragmentAttributeProcessor from '../standard/processors/FragmentAttributeProcessor.js';
 import StandardDialect            from '../standard/StandardDialect.js';
 
@@ -24,26 +23,23 @@ import {$} from 'dumb-query-selector';
 /**
  * Extract HTML from the target identified by the given fragment information.
  * 
- * @param {String} fragmentExpression
+ * @param {String} fragmentInfo
  * @param {Object} context
  * @return {Promise<Element>}
  */
-export async function extractFragment(fragmentExpression, context) {
+export async function extractFragment(fragmentInfo, context) {
 
 	let {templateResolver} = context;
 	if (templateResolver) {
-		let fragmentInfo = new ExpressionProcessor(context).process(fragmentExpression);
-		if (fragmentInfo) {
-			let {templateName, fragmentName} = fragmentInfo;
-			let template = deserialize(await templateResolver(templateName));
+		let {templateName, fragmentName} = fragmentInfo;
+		let template = deserialize(await templateResolver(templateName));
 
-			let standardDialect = context.dialects.find(dialect => dialect.name === StandardDialect.NAME);
-			let dialectPrefix = standardDialect.prefix;
-			let fragmentProcessorName = FragmentAttributeProcessor.NAME;
+		let standardDialect = context.dialects.find(dialect => dialect.name === StandardDialect.NAME);
+		let dialectPrefix = standardDialect.prefix;
+		let fragmentProcessorName = FragmentAttributeProcessor.NAME;
 
-			return $(`[${dialectPrefix}\\:${fragmentProcessorName}^="${fragmentName}"]`, template) ||
-			       $(`[data-${dialectPrefix}-${fragmentProcessorName}^="${fragmentName}"`, template);
-		}
+		return $(`[${dialectPrefix}\\:${fragmentProcessorName}^="${fragmentName}"]`, template) ||
+					 $(`[data-${dialectPrefix}-${fragmentProcessorName}^="${fragmentName}"`, template);
 	}
 	else {
 		console.log('No template resolver configured');

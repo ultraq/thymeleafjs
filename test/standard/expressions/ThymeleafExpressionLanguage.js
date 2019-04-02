@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import ExpressionProcessor from '../../../source/standard/expressions/ExpressionProcessor';
+import ExpressionProcessor from '../../../source/standard/expressions/ExpressionProcessor.js';
 
 /**
  * Tests for the Thymeleaf expression language.
@@ -81,18 +81,18 @@ describe('standard/expressions/ThymeleafExpressionLanguage', function() {
 
 
 	describe('#FragmentExpression', function() {
-		let expressionProcessor;
-		beforeEach(function() {
-			expressionProcessor = new ExpressionProcessor();
-		});
 
 		test('Extracts the template, fragment, and parameter parts', function() {
-			let result = expressionProcessor.process('~{template :: fragment(parameters)}');
+			const context = {
+				parameter: '1234'
+			};
+			let expressionProcessor = new ExpressionProcessor(context);
+			let result = expressionProcessor.process('~{template :: fragment(${parameter})}');
 			expect(result).toEqual({
 				type: 'fragment',
 				templateName: 'template',
 				fragmentName: 'fragment',
-				parameters: '(parameters)'
+				parameters: [context.parameter]
 			});
 		});
 	});

@@ -42,6 +42,20 @@ export function createThymeleafAttributeValue(element, attribute, value) {
 }
 
 /**
+ * Returns the value of a Thymeleaf attribute processor.
+ * 
+ * @param {Element} element
+ * @param {String} prefix
+ * @param {String} processorName
+ * @return {String} The value of the Thymeleaf attribute processor, or `null`
+ *   if the attribute processor wasn't present.
+ */
+export function getThymeleafAttributeValue(element, prefix, processorName) {
+	return element.getAttribute(`${prefix}:${processorName}`) ||
+	       element.getAttribute(`data-${prefix}-${processorName}`);
+}
+
+/**
  * Use either JSDOM or the browser's native DOM parsing to deserialize the HTML
  * string into a document fragment.
  * 

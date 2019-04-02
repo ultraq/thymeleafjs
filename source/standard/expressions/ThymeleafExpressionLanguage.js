@@ -140,7 +140,7 @@ export default new Grammar('Thymeleaf Expression Language',
 	 * a piece of HTML in the same or another template.
 	 */
 	new ThymeleafRule('FragmentExpression',
-		Sequence(/~{/, 'TemplateName', /::/, 'FragmentName', 'FragmentParameters', /}/),
+		Sequence(/~{/, 'TemplateName', /::/, 'FragmentName', Optional('FragmentParametersSection'), /}/),
 		([, templateName, , fragmentName, parameters]) => context => {
 
 			// TODO: Should executing a fragment expression locate and return the
@@ -150,16 +150,27 @@ export default new Grammar('Thymeleaf Expression Language',
 				type: METADATA_FRAGMENT,
 				templateName: templateName(context),
 				fragmentName: fragmentName(context),
-				parameters: parameters(context)
+				parameters: parameters ? parameters(context) : null
 			};
 		}
 	),
 	new ThymeleafRule('TemplateName', /[\w-._/]+/),
 	new ThymeleafRule('FragmentName', /[\w-._]+/),
-
-	// TODO: We're not doing anything with these yet
+	new ThymeleafRule('FragmentParametersSection',
+		Sequence(/\(/, Optional('FragmentParameters'), /\)/),
+		([, parameters]) => context => {
+			return parameters(context);
+		}
+	),
 	new ThymeleafRule('FragmentParameters',
-		Optional(/\(.+\)/)
+		Sequence('Expression', ZeroOrMore(Sequence(/,/, 'Expression'))),
+		(expressionsAndSeparators) => context => {
+			return expressionsAndSeparators ?
+				flatten(expressionsAndSeparators)
+					.filter(item => item !== ',')
+					.map(expressions => expressions(context)) :
+				[];
+		}
 	),
 
 

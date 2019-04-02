@@ -14,9 +14,13 @@
  * limitations under the License.
  */
 
-import {clearChildren}    from '../../utilities/Dom';
-import {extractFragment}  from '../../utilities/Fragments.js';
-import AttributeProcessor from '../../processors/AttributeProcessor';
+import FragmentAttributeProcessor                  from './FragmentAttributeProcessor.js';
+import StandardDialect                             from '../StandardDialect.js';
+import ExpressionProcessor                         from '../expressions/ExpressionProcessor.js';
+import FragmentSignatureGrammar                    from '../expressions/FragmentSignatureGrammar.js';
+import AttributeProcessor                          from '../../processors/AttributeProcessor.js';
+import {clearChildren, getThymeleafAttributeValue} from '../../utilities/Dom.js';
+import {extractFragment}                           from '../../utilities/Fragments.js';
 
 /**
  * JS equivalent of Thymeleaf's `th:relace` attribute processor, replaces the
@@ -59,13 +63,37 @@ export default class ReplaceAttributeProcessor extends AttributeProcessor {
 		element.removeAttribute(attribute);
 		clearChildren(element);
 
-		let fragment = await extractFragment(attributeValue, context);
-		if (fragment) {
-			// TODO: Can simplify this with insertAdjacent*(), but need to upgrade
-			//       JSDOM first.
-			element.parentElement.insertBefore(fragment, element);
-			element.remove();
-			return true;
+		let fragmentInfo = new ExpressionProcessor(context).process(attributeValue);
+		if (fragmentInfo) {
+			let fragment = await extractFragment(fragmentInfo, context);
+			if (fragment) {
+
+				let standardDialect = context.dialects.find(dialect => dialect.name === StandardDialect.NAME);
+				let dialectPrefix = standardDialect.prefix;
+				let fragmentProcessorName = FragmentAttributeProcessor.NAME;
+
+				let fragmentSignature = getThymeleafAttributeValue(fragment, dialectPrefix, fragmentProcessorName);
+				let {parameterNames} = new ExpressionProcessor(context, FragmentSignatureGrammar).process(fragmentSignature);
+				if (parameterNames) {
+					let {parameters} = fragmentInfo;
+
+					// TODO: This is setting up a local context using those special data
+					//       attributes that the template engine looks for.  Need a better
+					//       mechanism for scoped variables than this.
+					let localContext = {};
+					parameterNames.forEach((parameterName, index) => {
+						localContext[parameterName] = parameters[parameterName] || parameters[index] || null;
+					});
+
+					fragment.setAttribute('data-thymeleaf-local-variables', JSON.stringify(localContext));
+				}
+
+				// TODO: Can simplify this with insertAdjacent*(), but need to upgrade
+				//       JSDOM first.
+				element.parentElement.insertBefore(fragment, element);
+				element.remove();
+				return true;
+			}
 		}
 
 		element.remove();
