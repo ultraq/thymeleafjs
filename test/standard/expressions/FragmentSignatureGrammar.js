@@ -25,7 +25,7 @@ describe('standard/expressions/FragmentSignatureGrammar', function() {
 	describe('#FragmentSignature', function() {
 
 		test('Extracts the fragment and parameter names', function() {
-			let expressionProcessor = new ExpressionProcessor({}, FragmentSignatureGrammar);
+			let expressionProcessor = new ExpressionProcessor(FragmentSignatureGrammar);
 			let result = expressionProcessor.process('fragment(parameter)');
 			expect(result).toEqual({
 				fragmentName: 'fragment',

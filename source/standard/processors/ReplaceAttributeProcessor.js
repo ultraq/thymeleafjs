@@ -63,7 +63,7 @@ export default class ReplaceAttributeProcessor extends AttributeProcessor {
 		element.removeAttribute(attribute);
 		clearChildren(element);
 
-		let fragmentInfo = new ExpressionProcessor(context).process(attributeValue);
+		let fragmentInfo = new ExpressionProcessor().process(attributeValue, context);
 		if (fragmentInfo) {
 			let fragment = await extractFragment(fragmentInfo, context);
 			if (fragment) {
@@ -73,7 +73,7 @@ export default class ReplaceAttributeProcessor extends AttributeProcessor {
 				let fragmentProcessorName = FragmentAttributeProcessor.NAME;
 
 				let fragmentSignature = getThymeleafAttributeValue(fragment, dialectPrefix, fragmentProcessorName);
-				let {parameterNames} = new ExpressionProcessor(context, FragmentSignatureGrammar).process(fragmentSignature);
+				let {parameterNames} = new ExpressionProcessor(FragmentSignatureGrammar).process(fragmentSignature, context);
 				if (parameterNames) {
 					let {parameters} = fragmentInfo;
 

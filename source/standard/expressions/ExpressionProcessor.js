@@ -28,28 +28,30 @@ import Parser                      from '../../parser/Parser.js';
 export default class ExpressionProcessor {
 
 	/**
-	 * @param {Object} [context={}]
+	 * Constructor, create a new processor that can parse/execute a string in the
+	 * given grammar.
+	 * 
 	 * @param {Grammar} [grammar=ThymeleafExpressionLanguage]
 	 */
-	constructor(context = {}, grammar = ThymeleafExpressionLanguage) {
+	constructor(grammar = ThymeleafExpressionLanguage) {
 
-		this.context = context;
-		this.grammar = grammar; // TODO: Move context parameter to `process` method
+		this.grammar = grammar;
 	}
 
 	/**
 	 * Parse and execute the given input as a Thymeleaf expression.
 	 * 
 	 * @param {String} input
+	 * @param {Object} [context={}]
 	 * @return {*}
 	 */
-	process(input) {
+	process(input, context = {}) {
 
 		// TODO: Probably don't need to create a new parser every time?
 		let parser = new Parser(this.grammar);
 		let expression = parser.parse(input);
 		return expression ? expression({
-			...this.context,
+			...context,
 			expression: input
 		}) : null;
 	}

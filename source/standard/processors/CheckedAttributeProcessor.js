@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import ExpressionProcessor from '../expressions/ExpressionProcessor';
-import AttributeProcessor  from '../../processors/AttributeProcessor';
+import ExpressionProcessor from '../expressions/ExpressionProcessor.js';
+import AttributeProcessor  from '../../processors/AttributeProcessor.js';
 
 /**
  * Thymeleaf's `th:checked` attribute processor, sets or removes the `checked`
@@ -59,7 +59,7 @@ export default class CheckedAttributeProcessor extends AttributeProcessor {
 	 */
 	process(element, attribute, attributeValue, context) {
 
-		let result = new ExpressionProcessor(context).process(attributeValue);
+		let result = new ExpressionProcessor().process(attributeValue, context);
 		if (result) {
 			element.setAttribute('checked', '');
 		}

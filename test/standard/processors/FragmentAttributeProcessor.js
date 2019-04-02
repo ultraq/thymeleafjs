@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import FragmentAttributeProcessor      from '../../../source/standard/processors/FragmentAttributeProcessor';
-import {createThymeleafAttributeValue} from '../../../source/utilities/Dom';
+import FragmentAttributeProcessor      from '../../../source/standard/processors/FragmentAttributeProcessor.js';
+import {createThymeleafAttributeValue} from '../../../source/utilities/Dom.js';
 
 import h  from 'hyperscript';
 import hh from 'hyperscript-helpers';
@@ -34,35 +34,10 @@ describe('processors/standard/FragmentAttributeProcessor', function() {
 		attribute = `${processor.prefix}:${processor.name}`;
 	});
 
-	test('Adds encountered fragments to the context (no fragments list)', function() {
+	test('Removes the attribute processor', function() {
 		let attributeValue = 'my-fragment';
 		let element = createThymeleafAttributeValue(div(), attribute, attributeValue);
-
-		let context = {};
-		processor.process(element, attribute, attributeValue, context);
-
-		let {fragments} = context;
-		expect(Array.isArray(fragments)).toBe(true);
-		expect(fragments[0]).toEqual({
-			name: attributeValue,
-			element
-		});
-	});
-
-	test('Adds encountered fragments to the context (existing fragments list)', function() {
-		let attributeValue = 'my-fragment';
-		let element = createThymeleafAttributeValue(div(), attribute, attributeValue);
-
-		let context = {
-			fragments: []
-		};
-		processor.process(element, attribute, attributeValue, context);
-
-		let {fragments} = context;
-		expect(Array.isArray(fragments)).toBe(true);
-		expect(fragments[0]).toEqual({
-			name: attributeValue,
-			element
-		});
+		processor.process(element, attribute, attributeValue, {});
+		expect(element.hasAttribute(attribute)).toBe(false);
 	});
 });

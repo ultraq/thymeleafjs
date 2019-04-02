@@ -61,7 +61,7 @@ export default class WithAttributeProcessor extends AttributeProcessor {
 		//       stack" data structure for scoping values to elements more
 		//       efficiently.
 		let localVariables = {};
-		let aliases = new ExpressionProcessor(context).process(attributeValue);
+		let aliases = new ExpressionProcessor().process(attributeValue, context);
 		aliases.forEach(({name, value}) => {
 			localVariables[name] = value;
 		});

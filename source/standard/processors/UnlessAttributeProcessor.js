@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-import ExpressionProcessor from '../expressions/ExpressionProcessor';
-import AttributeProcessor  from '../../processors/AttributeProcessor';
-import {clearChildren}     from '../../utilities/Dom';
+import ExpressionProcessor from '../expressions/ExpressionProcessor.js';
+import AttributeProcessor  from '../../processors/AttributeProcessor.js';
+import {clearChildren}     from '../../utilities/Dom.js';
 
 /**
  * JS equivalent of Thymeleaf's `th:unless` attribute processor, excludes or
@@ -54,7 +54,7 @@ export default class UnlessAttributeProcessor extends AttributeProcessor {
    */
   process(element, attribute, attributeValue, context) {
 
-    let expressionResult = new ExpressionProcessor(context).process(attributeValue);
+    let expressionResult = new ExpressionProcessor().process(attributeValue, context);
     if (expressionResult) {
       clearChildren(element);
       element.parentNode.removeChild(element);

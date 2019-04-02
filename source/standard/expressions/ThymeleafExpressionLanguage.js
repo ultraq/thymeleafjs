@@ -14,18 +14,18 @@
  * limitations under the License.
  */
 
-import {AllInput}          from './AllInput';
-import ExpressionProcessor from './ExpressionProcessor';
+import {AllInput}          from './AllInput.js';
+import ExpressionProcessor from './ExpressionProcessor.js';
 import ThymeleafRule       from './ThymeleafRule.js';
-import Grammar             from '../../parser/Grammar';
+import Grammar             from '../../parser/Grammar.js';
 import {
 	Optional,
 	OneOrMore,
 	OrderedChoice,
 	Sequence,
 	ZeroOrMore
-} from '../../parser/Operators';
-import {RegularExpression} from '../../parser/RegularExpression';
+} from '../../parser/Operators.js';
+import {RegularExpression} from '../../parser/RegularExpression.js';
 
 import {flatten, remove} from '@ultraq/array-utils';
 
@@ -103,10 +103,10 @@ export default new Grammar('Thymeleaf Expression Language',
 			if (parameters) {
 
 				// TODO: Push this parsing of the parameters list back into the grammar
-				let expressionProcessor = new ExpressionProcessor(context);
+				let expressionProcessor = new ExpressionProcessor();
 				let paramsList = parameters(context).slice(1, -1).split(',').map(param => {
 					let [lhs, rhs] = param.split('=');
-					return [lhs, expressionProcessor.process(rhs)];
+					return [lhs, expressionProcessor.process(rhs, context)];
 				});
 
 				// Fill out any placeholders in the URL from the parameters

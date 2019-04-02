@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import ExpressionProcessor from '../expressions/ExpressionProcessor';
-import AttributeProcessor  from '../../processors/AttributeProcessor';
+import ExpressionProcessor from '../expressions/ExpressionProcessor.js';
+import AttributeProcessor  from '../../processors/AttributeProcessor.js';
 
 /**
  * JS equivalent of Thymeleaf's `th:each` attribute processor, iterates over an
@@ -56,7 +56,7 @@ export default class EachAttributeProcessor extends AttributeProcessor {
 
 		element.removeAttribute(attribute);
 
-		let iterationInfo = new ExpressionProcessor(context).process(attributeValue);
+		let iterationInfo = new ExpressionProcessor().process(attributeValue, context);
 		if (iterationInfo) {
 			let {localValueName, iterable} = iterationInfo;
 			let templateNode = element.cloneNode(true);

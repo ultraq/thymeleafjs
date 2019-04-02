@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import ExpressionProcessor from '../expressions/ExpressionProcessor';
-import AttributeProcessor  from '../../processors/AttributeProcessor';
+import ExpressionProcessor from '../expressions/ExpressionProcessor.js';
+import AttributeProcessor  from '../../processors/AttributeProcessor.js';
 
 /**
  * The `th:classappend` is a special attribute that applies the expression to
@@ -52,7 +52,7 @@ export default class ClassAppendAttributeProcessor extends AttributeProcessor {
 	 */
 	process(element, attribute, attributeValue, context) {
 
-		let classes = new ExpressionProcessor(context).process(attributeValue);
+		let classes = new ExpressionProcessor().process(attributeValue, context);
 		if (classes) {
 			element.className += ` ${classes}`;
 		}

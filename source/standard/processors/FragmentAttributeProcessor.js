@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import AttributeProcessor from '../../processors/AttributeProcessor';
+import AttributeProcessor from '../../processors/AttributeProcessor.js';
 
 /**
  * JS equivalent of Thymeleaf's `th:fragment` attribute processor, marks an
@@ -53,14 +53,5 @@ export default class FragmentAttributeProcessor extends AttributeProcessor {
 	process(element, attribute, attributeValue, context) {
 
 		element.removeAttribute(attribute);
-
-		// TODO: Some off-context mechanism for encountered fragments?
-		if (!context.fragments) {
-			context.fragments = [];
-		}
-		context.fragments.push({
-			name:    attributeValue,
-			element: element.cloneNode(true)
-		});
 	}
 }

@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import ExpressionProcessor from '../expressions/ExpressionProcessor';
-import AttributeProcessor  from '../../processors/AttributeProcessor';
+import ExpressionProcessor from '../expressions/ExpressionProcessor.js';
+import AttributeProcessor  from '../../processors/AttributeProcessor.js';
 
 /**
  * Configurable attribute processor that sets or empties an attribute value on
@@ -51,7 +51,7 @@ export default class EmptyableAttributeProcessor extends AttributeProcessor {
 	 */
 	process(element, attribute, attributeValue, context) {
 
-		let value = new ExpressionProcessor(context).process(attributeValue);
+		let value = new ExpressionProcessor().process(attributeValue, context);
 		element.setAttribute(this.name, value ? value.toString() : '');
 		element.removeAttribute(attribute);
 	}

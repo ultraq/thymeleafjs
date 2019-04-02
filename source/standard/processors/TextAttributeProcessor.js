@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import ExpressionProcessor from '../expressions/ExpressionProcessor';
-import AttributeProcessor  from '../../processors/AttributeProcessor';
+import ExpressionProcessor from '../expressions/ExpressionProcessor.js';
+import AttributeProcessor  from '../../processors/AttributeProcessor.js';
 
 /**
  * JS equivalent of Thymeleaf's `th:text` attribute processor, applies the
@@ -53,7 +53,7 @@ export default class TextAttributeProcessor extends AttributeProcessor {
 	 */
 	process(element, attribute, attributeValue, context) {
 
-		element.textContent = new ExpressionProcessor(context).process(attributeValue);
+		element.textContent = new ExpressionProcessor().process(attributeValue, context);
 		element.removeAttribute(attribute);
 	}
 }
