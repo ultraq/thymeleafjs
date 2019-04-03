@@ -6,6 +6,9 @@ Changelog
  - Added a `thjs:unless/data-thjs-unless` processor
    ([#25](https://github.com/ultraq/thymeleafjs/pull/25))
  - Added a `thjs:with/data-thjs-with` processor
+ - Added support for parameters passed in fragment expressions
+ - Added support for element processors and Thymeleaf's `th:block` element
+   processor
 
 ### 0.14.0
  - Method calls (`#...` in variable expressions) supported, though they don't

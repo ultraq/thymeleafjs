@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+import AttributeProcessor from './AttributeProcessor.js';
+import ElementProcessor   from './ElementProcessor.js';
+
 /**
  * Class for determining if an element contains a processor on it.
  */
@@ -33,33 +36,47 @@ export default class Matcher {
 	}
 
 	/**
-	 * Return the matching attribute of an element that a processor can work over.
+	 * Return the matching attribute or element that a processor can work over.
 	 * 
 	 * @param {Element} element
 	 * @param {AttributeProcessor} processor
 	 * @return {String}
-	 *   The attribute that matched processing by this processor, or `null` if no
-	 *   match was found.
+	 *   The attribute or element that matched processing by this processor, or
+	 *   `null` if no match was found.
 	 */
 	matches(element, processor) {
 
-		let prefixes = [].concat(
-			this.isomorphic ? this.isomorphic.prefix : [],
-			processor.prefix
-		);
 		let {name} = processor;
 
-		for (let prefix of prefixes) {
-			let attribute;
-			attribute = `${prefix}:${name}`;
-			if (element.hasAttribute(attribute)) {
-				return attribute;
-			}
-			attribute = `data-${prefix}-${name}`;
-			if (element.hasAttribute(attribute)) {
-				return attribute;
+		// TODO: Some way to do this generically and not have to type check?
+
+		// Attribute processor matching, can be of the name prefix:name or data-prefix-name
+		if (processor instanceof AttributeProcessor) {
+			let prefixes = [].concat(
+				this.isomorphic ? this.isomorphic.prefix : [],
+				processor.prefix
+			);
+			for (let prefix of prefixes) {
+				let attribute;
+				attribute = `${prefix}:${name}`;
+				if (element.hasAttribute(attribute)) {
+					return attribute;
+				}
+				attribute = `data-${prefix}-${name}`;
+				if (element.hasAttribute(attribute)) {
+					return attribute;
+				}
 			}
 		}
+
+		// Element processor, can only be of the name prefix:name
+		else if (processor instanceof ElementProcessor) {
+			let elementName = `${processor.prefix}:${name}`;
+			if (element.tagName === elementName.toUpperCase()) {
+				return elementName;
+			}
+		}
+
 		return null;
 	}
 }

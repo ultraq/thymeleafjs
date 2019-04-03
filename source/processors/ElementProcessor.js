@@ -1,5 +1,5 @@
 /* 
- * Copyright 2017, Emanuel Rabina (http://www.ultraq.net.nz/)
+ * Copyright 2019, Emanuel Rabina (http://www.ultraq.net.nz/)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,11 +15,11 @@
  */
 
 /**
- * Common class for attribute processors.
+ * Parent class for element processors.
  * 
  * @author Emanuel Rabina
  */
-export default class AttributeProcessor {
+export default class ElementProcessor {
 
 	/**
 	 * Constructor, sets this processor's prefix and name.

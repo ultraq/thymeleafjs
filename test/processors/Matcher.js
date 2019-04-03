@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+import AttributeProcessor              from '../../source/processors/AttributeProcessor.js';
+import ElementProcessor                from '../../source/processors/ElementProcessor.js';
 import Matcher                         from '../../source/processors/Matcher';
 import {createThymeleafAttributeValue} from '../../source/utilities/Dom';
 
@@ -29,33 +31,44 @@ describe('processors/Matcher', function() {
 
 	const prefix = 'test';
 	const name   = 'greeting';
-	const mockProcessor = {
-		prefix,
-		name
-	};
 
 	let matcher;
 	beforeAll(function() {
 		matcher = new Matcher({}, false);
 	});
 
-	test('Match XML attributes', function() {
-		let attribute = `${prefix}:${name}`;
-		let element = createThymeleafAttributeValue(div(), attribute, 'hello');
-		let match = matcher.matches(element, mockProcessor);
-		expect(match).toBe(attribute);
+	describe('Attribute processor matching', function() {
+		const mockProcessor = new AttributeProcessor(prefix, name);
+
+		test('Match XML attributes', function() {
+			let attribute = `${prefix}:${name}`;
+			let element = createThymeleafAttributeValue(div(), attribute, 'hello');
+			let match = matcher.matches(element, mockProcessor);
+			expect(match).toBe(attribute);
+		});
+
+		test('Match data- attributes', function() {
+			let attribute = `data-${prefix}-${name}`;
+			let element = createThymeleafAttributeValue(div(), attribute, 'hello');
+			let match = matcher.matches(element, mockProcessor);
+			expect(match).toBe(attribute);
+		});
+
+		test('Return `null` if no match', function() {
+			let element = createThymeleafAttributeValue(div(), 'test:something-else', 'hello');
+			let match = matcher.matches(element, mockProcessor);
+			expect(match).toBeNull();
+		});
 	});
 
-	test('Match data- attributes', function() {
-		let attribute = `data-${prefix}-${name}`;
-		let element = createThymeleafAttributeValue(div(), attribute, 'hello');
-		let match = matcher.matches(element, mockProcessor);
-		expect(match).toBe(attribute);
-	});
+	describe('Element processor matching', function() {
+		const mockProcessor = new ElementProcessor(prefix, name);
 
-	test('Return `null` if no match', function() {
-		let element = createThymeleafAttributeValue(div(), 'test:something-else', 'hello');
-		let match = matcher.matches(element, mockProcessor);
-		expect(match).toBeNull();
+		test('Match XML namespaced elements', function() {
+			let elementName = `${prefix}:${name}`;
+			let element = document.createElement(elementName);
+			let match = matcher.matches(element, mockProcessor);
+			expect(match).toBe(elementName);
+		});
 	});
 });

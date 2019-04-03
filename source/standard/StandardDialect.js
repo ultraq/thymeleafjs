@@ -14,26 +14,27 @@
  * limitations under the License.
  */
 
-import AttrAttributeProcessor        from './processors/AttrAttributeProcessor';
-import CheckedAttributeProcessor     from './processors/CheckedAttributeProcessor';
-import ClassAppendAttributeProcessor from './processors/ClassAppendAttributeProcessor';
-import EachAttributeProcessor        from './processors/EachAttributeProcessor';
+import AttrAttributeProcessor        from './processors/AttrAttributeProcessor.js';
+import BlockElementProcessor         from './processors/BlockElementProcessor.js';
+import CheckedAttributeProcessor     from './processors/CheckedAttributeProcessor.js';
+import ClassAppendAttributeProcessor from './processors/ClassAppendAttributeProcessor.js';
+import EachAttributeProcessor        from './processors/EachAttributeProcessor.js';
 import EmptyableAttributeProcessor, {
 	EMPTYABLE_ATTRIBUTE_NAMES
-}                                    from './processors/EmptyableAttributeProcessor';
-import FragmentAttributeProcessor    from './processors/FragmentAttributeProcessor';
-import IfAttributeProcessor          from './processors/IfAttributeProcessor';
-import InsertAttributeProcessor      from './processors/InsertAttributeProcessor';
+}                                    from './processors/EmptyableAttributeProcessor.js';
+import FragmentAttributeProcessor    from './processors/FragmentAttributeProcessor.js';
+import IfAttributeProcessor          from './processors/IfAttributeProcessor.js';
+import InsertAttributeProcessor      from './processors/InsertAttributeProcessor.js';
 import RemovableAttributeProcessor, {
 	REMOVABLE_ATTRIBUTE_NAMES
-}                                    from './processors/RemovableAttributeProcessor';
+}                                    from './processors/RemovableAttributeProcessor.js';
 import RemoveAttributeProcessor      from './processors/RemoveAttributeProcessor.js';
 import ReplaceAttributeProcessor     from './processors/ReplaceAttributeProcessor.js';
-import TextAttributeProcessor        from './processors/TextAttributeProcessor';
-import UnlessAttributeProcessor      from './processors/UnlessAttributeProcessor';
-import UTextAttributeProcessor       from './processors/UTextAttributeProcessor';
+import TextAttributeProcessor        from './processors/TextAttributeProcessor.js';
+import UnlessAttributeProcessor      from './processors/UnlessAttributeProcessor.js';
+import UTextAttributeProcessor       from './processors/UTextAttributeProcessor.js';
 import WithAttributeProcessor        from './processors/WithAttributeProcessor.js';
-import Dialect                       from '../dialects/Dialect';
+import Dialect                       from '../dialects/Dialect.js';
 
 /**
  * The out-of-the-box dialect for Thymeleaf, the "Standard Dialect".
@@ -48,7 +49,7 @@ export default class StandardDialect extends Dialect {
 	/**
 	 * Create an instance of this dialect with the name "Standard" and
 	 * given prefix, defaulting to "th" if not supplied.
-	 *
+	 * 
 	 * @param {String} [prefix='thjs']
 	 */
 	constructor(prefix = StandardDialect.DEFAULT_PREFIX) {
@@ -58,7 +59,7 @@ export default class StandardDialect extends Dialect {
 
 	/**
 	 * Returns the supported standard processors.
-	 *
+	 * 
 	 * @return {Array} A list of the processors included in this dialect.
 	 */
 	get processors() {
@@ -69,7 +70,7 @@ export default class StandardDialect extends Dialect {
 
 		// Order taken from https://www.thymeleaf.org/doc/tutorials/3.0/usingthymeleaf.html#attribute-precedence
 		let {prefix} = this;
-		return [].concat(
+		return [
 			// Fragment inclusion
 			new InsertAttributeProcessor(prefix),
 			new ReplaceAttributeProcessor(prefix),
@@ -105,7 +106,10 @@ export default class StandardDialect extends Dialect {
 			new FragmentAttributeProcessor(prefix),
 
 			// Fragment removal
-			new RemoveAttributeProcessor(prefix)
-		);
+			new RemoveAttributeProcessor(prefix),
+
+			// Element processors
+			new BlockElementProcessor(prefix)
+		];
 	}
 }

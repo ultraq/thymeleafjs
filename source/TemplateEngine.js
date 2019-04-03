@@ -15,6 +15,8 @@
  */
 
 import {DEFAULT_CONFIGURATION}  from './Configurations.js';
+import AttributeProcessor       from './processors/AttributeProcessor.js';
+import ElementProcessor         from './processors/ElementProcessor.js';
 import Matcher                  from './processors/Matcher.js';
 import StandardDialect          from './standard/StandardDialect.js';
 import {promisify}              from './utilities/Functions.js';
@@ -121,10 +123,20 @@ export default class TemplateEngine {
 		// parent needs to happen before moving on to this element's children.
 		let requireReprocessing = false;
 		for (let processor of this.processors) {
-			let attribute = matcher.matches(element, processor);
-			let processorResult = attribute ?
-				await processor.process(element, attribute, element.getAttribute(attribute), localContext) :
-				false;
+			let processorResult = false;
+
+			// TODO: Some way to do this generically and not have to type check?
+			let attributeOrElementName = matcher.matches(element, processor);
+			if (attributeOrElementName) {
+				if (processor instanceof AttributeProcessor) {
+					processorResult = await processor.process(element, attributeOrElementName,
+						element.getAttribute(attributeOrElementName), localContext);
+				}
+				else if (processor instanceof ElementProcessor) {
+					processorResult = await processor.process(element, localContext);
+				}
+			}
+
 			requireReprocessing = requireReprocessing || processorResult;
 		}
 
