@@ -47,10 +47,19 @@ export default class BlockElementProcessor extends ElementProcessor {
 	 */
 	process(element, context) {
 
+		let parent = element.parentElement;
 		while (element.firstChild) {
-			element.parentElement.insertBefore(element.firstChild, element);
+			let child = element.firstChild;
+			parent.insertBefore(child, element);
+
+			if (child instanceof Element && element.__thymeleafLocalVariables) {
+				child.__thymeleafLocalVariables = {
+					...(child.__thymeleafLocalVariables || {}),
+					...element.__thymeleafLocalVariables
+				};
+			}
 		}
-		element.parentElement.removeChild(element);
+		parent.removeChild(element);
 
 		return true;
 	}

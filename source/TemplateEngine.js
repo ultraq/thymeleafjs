@@ -108,11 +108,7 @@ export default class TemplateEngine {
 	 */
 	async processNode(element, context = {}) {
 
-		let localVariables = {};
-		if (element.__thymeleafLocalVariables) {
-			localVariables = element.__thymeleafLocalVariables;
-			delete element.__thymeleafLocalVariables;
-		}
+		let localVariables = element.__thymeleafLocalVariables || {};
 		let localContext = {
 			...context,
 			...localVariables
@@ -121,7 +117,6 @@ export default class TemplateEngine {
 
 		// Process the current element, store whether or not reprocessing of the
 		// parent needs to happen before moving on to this element's children.
-		let requireReprocessing = false;
 		for (let processor of this.processors) {
 			let processorResult = false;
 
@@ -137,11 +132,9 @@ export default class TemplateEngine {
 				}
 			}
 
-			requireReprocessing = requireReprocessing || processorResult;
-		}
-
-		if (requireReprocessing) {
-			return true;
+			if (processorResult) {
+				return true;
+			}
 		}
 
 		// Process this element's children
