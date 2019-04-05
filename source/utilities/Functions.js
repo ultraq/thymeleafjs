@@ -26,7 +26,7 @@ export function promisify(func) {
 		return new Promise((resolve, reject) => {
 			func(...arguments, (error, result) => {
 				if (error) {
-					reject(new Error(error));
+					reject(new Error(result));
 				}
 				else {
 					resolve(result);

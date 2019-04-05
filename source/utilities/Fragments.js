@@ -39,11 +39,9 @@ export async function extractFragment(fragmentInfo, context) {
 		let fragmentProcessorName = FragmentAttributeProcessor.NAME;
 
 		return $(`[${dialectPrefix}\\:${fragmentProcessorName}^="${fragmentName}"]`, template) ||
-					 $(`[data-${dialectPrefix}-${fragmentProcessorName}^="${fragmentName}"`, template);
-	}
-	else {
-		console.log('No template resolver configured');
+					 $(`[data-${dialectPrefix}-${fragmentProcessorName}^="${fragmentName}"]`, template);
 	}
 
+	console.log('No template resolver configured');
 	return null;
 }

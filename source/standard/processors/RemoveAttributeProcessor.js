@@ -61,6 +61,6 @@ export default class RemoveAttributeProcessor extends AttributeProcessor {
 				element.parentElement.removeChild(element);
 		}
 
-		return false;
+		return true;
 	}
 }
