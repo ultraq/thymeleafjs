@@ -2,6 +2,10 @@
 Changelog
 =========
 
+### 0.15.1
+ - Fix for the `th:if` processor not causing the element to be reprocessed once
+   removed
+
 ### 0.15.0
  - Added a `thjs:unless/data-thjs-unless` processor
    ([#25](https://github.com/ultraq/thymeleafjs/pull/25))

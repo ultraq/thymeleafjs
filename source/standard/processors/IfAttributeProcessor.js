@@ -51,6 +51,7 @@ export default class IfAttributeProcessor extends AttributeProcessor {
 	 * @param {String} attributeValue
 	 *   The value given by the attribute.
 	 * @param {Object} context
+	 * @return {Boolean} `true` if the element was removed.
 	 */
 	process(element, attribute, attributeValue, context) {
 
@@ -58,6 +59,7 @@ export default class IfAttributeProcessor extends AttributeProcessor {
 		if (!expressionResult) {
 			clearChildren(element);
 			element.parentNode.removeChild(element);
+			return true;
 		}
 		element.removeAttribute(attribute);
 	}

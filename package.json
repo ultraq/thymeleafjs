@@ -23,7 +23,7 @@
 		"build:node": "cross-env BABEL_ENV=build ENVIRONMENT=node rollup --config",
 		"build:dist": "cross-env BABEL_ENV=build rollup --config rollup.config.dist.js",
 		"watch": "chokidar \"source/**/*.js\" \"test/**/*.js\" -c \"npm run lint && npm test && npm run build\"",
-		"prepublish": "npm run build"
+		"prepublishOnly": "npm run build"
 	},
 	"dependencies": {
 		"@ultraq/array-utils": "^1.1.0",
