@@ -59,6 +59,12 @@ export default class RemoveAttributeProcessor extends AttributeProcessor {
 		switch (attributeValue) {
 			case 'all':
 				element.parentElement.removeChild(element);
+				break;
+			case 'all-but-first':
+				while (element.lastElementChild !== element.firstElementChild) {
+					element.removeChild(element.lastElementChild);
+				}
+				break;
 		}
 
 		return true;

@@ -2,6 +2,9 @@
 Changelog
 =========
 
+### 0.16.0
+ - Added support for the `all-but-first` value of the `thjs:remove` processor.
+
 ### 0.15.1
  - Fix for the `th:if` processor not causing the element to be reprocessed once
    removed
