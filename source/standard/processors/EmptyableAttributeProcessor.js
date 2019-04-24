@@ -58,6 +58,7 @@ export default class EmptyableAttributeProcessor extends AttributeProcessor {
 }
 
 export const EMPTYABLE_ATTRIBUTE_NAMES = [
+	'datetime',
 	'href',
 	'src',
 	'style',
