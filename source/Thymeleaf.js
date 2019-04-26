@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-export {STANDARD_CONFIGURATION}        from './Configurations';
-export {default as TemplateEngine}     from './TemplateEngine';
-export {default as Dialect}            from './dialects/Dialect';
-export {default as AttributeProcessor} from './processors/AttributeProcessor';
-export {default as StandardDialect}    from './standard/StandardDialect';
+export {STANDARD_CONFIGURATION}         from './Configurations';
+export {default as TemplateEngine}      from './TemplateEngine';
+export {default as Dialect}             from './dialects/Dialect';
+export {default as AttributeProcessor}  from './processors/AttributeProcessor';
+export {default as ExpressionProcessor} from './standard/expressions/ExpressionProcessor.js';
+export {default as StandardDialect}     from './standard/StandardDialect';
