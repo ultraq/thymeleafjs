@@ -48,6 +48,8 @@ export default class WithAttributeProcessor extends AttributeProcessor {
 	 * @param {String} attributeValue
 	 *   The value given by the attribute.
 	 * @param {Object} context
+	 * @return {Boolean} `true` as adding new local variables needs to re-run
+	 *   processing.
 	 */
 	process(element, attribute, attributeValue, context) {
 
@@ -59,5 +61,7 @@ export default class WithAttributeProcessor extends AttributeProcessor {
 			localVariables[name] = value;
 		});
 		element.__thymeleafLocalVariables = localVariables;
+
+		return true;
 	}
 }
