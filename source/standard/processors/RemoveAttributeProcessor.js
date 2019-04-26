@@ -49,24 +49,22 @@ export default class RemoveAttributeProcessor extends AttributeProcessor {
 	 * @param {String} attributeValue
 	 *   The value given by the attribute.
 	 * @param {Object} context
-	 * @return {Promise<Boolean>} Whether or not the parent element needs to do a
-	 *   second pass as its children have been modified by this processor.
+	 * @return {Boolean} Whether reprocessing behaviour needs to be applied, only
+	 *   when the current tag has been removed.
 	 */
-	async process(element, attribute, attributeValue, context) {
+	process(element, attribute, attributeValue, context) {
 
 		element.removeAttribute(attribute);
 
 		switch (attributeValue) {
 			case 'all':
 				element.parentElement.removeChild(element);
-				break;
+				return true;
 			case 'all-but-first':
 				while (element.lastElementChild !== element.firstElementChild) {
 					element.removeChild(element.lastElementChild);
 				}
-				break;
+				return false;
 		}
-
-		return true;
 	}
 }

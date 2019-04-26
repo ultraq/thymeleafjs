@@ -48,10 +48,8 @@ export default class WithAttributeProcessor extends AttributeProcessor {
 	 * @param {String} attributeValue
 	 *   The value given by the attribute.
 	 * @param {Object} context
-	 * @return {Promise<Boolean>} Whether or not the parent element needs to do a
-	 *   second pass as its children have been modified by this processor.
 	 */
-	async process(element, attribute, attributeValue, context) {
+	process(element, attribute, attributeValue, context) {
 
 		element.removeAttribute(attribute);
 
@@ -61,7 +59,5 @@ export default class WithAttributeProcessor extends AttributeProcessor {
 			localVariables[name] = value;
 		});
 		element.__thymeleafLocalVariables = localVariables;
-
-		return true;
 	}
 }

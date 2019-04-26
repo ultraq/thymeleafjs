@@ -115,9 +115,11 @@ export default class TemplateEngine {
 		};
 		let matcher = new Matcher(localContext, this.isomorphic);
 
-		// Process the current element, store whether or not reprocessing of the
-		// parent needs to happen before moving on to this element's children.
-		for (let processor of this.processors) {
+		// Run the current element through the gamut of registered processors.  If
+		// one of them sends a reprocessing signal, return from this method to let
+		// the caller re-run everything.
+		for (let i = 0; i < this.processors.length; i++) {
+			let processor = this.processors[i];
 			let processorResult = false;
 
 			// TODO: Some way to do this generically and not have to type check?
@@ -137,21 +139,15 @@ export default class TemplateEngine {
 			}
 		}
 
-		// Process this element's children
-		// TODO: This reprocessing mechanism causes double-handling of elements, eg:
-		//       child n sends the reprocessing signal, then children 1...n-1 are
-		//       all reprocessed.  This needs to be addressed for performance
-		//       reasons.
-		let reprocess;
-		do {
-			reprocess = false;
-			for (let child of element.children) {
-				reprocess = await this.processNode(child, localContext);
-				if (reprocess) {
-					break;
-				}
+		// Process this element's children, handling the reprocessing signal to
+		// re-run the 'current' child element (could have been shifted due to being
+		// removed etc).
+		for (let i = 0; i < element.children.length; ) {
+			let child = element.children[i];
+			let reprocess = await this.processNode(child, localContext);
+			if (!reprocess) {
+				i++;
 			}
 		}
-		while (reprocess);
 	}
 }
