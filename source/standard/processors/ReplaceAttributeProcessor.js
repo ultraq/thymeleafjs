@@ -14,13 +14,15 @@
  * limitations under the License.
  */
 
-import FragmentAttributeProcessor                  from './FragmentAttributeProcessor.js';
-import StandardDialect                             from '../StandardDialect.js';
-import ExpressionProcessor                         from '../expressions/ExpressionProcessor.js';
-import FragmentSignatureGrammar                    from '../expressions/FragmentSignatureGrammar.js';
-import AttributeProcessor                          from '../../processors/AttributeProcessor.js';
-import {clearChildren, getThymeleafAttributeValue} from '../../utilities/Dom.js';
-import {extractFragment}                           from '../../utilities/Fragments.js';
+import FragmentAttributeProcessor   from './FragmentAttributeProcessor.js';
+import StandardDialect              from '../StandardDialect.js';
+import ExpressionProcessor          from '../expressions/ExpressionProcessor.js';
+import FragmentSignatureGrammar     from '../expressions/FragmentSignatureGrammar.js';
+import AttributeProcessor           from '../../processors/AttributeProcessor.js';
+import {getThymeleafAttributeValue} from '../../utilities/Dom.js';
+import {extractFragment}            from '../../utilities/Fragments.js';
+
+import {clearChildren} from '@ultraq/dom-utils';
 
 /**
  * JS equivalent of Thymeleaf's `th:relace` attribute processor, replaces the

@@ -16,7 +16,8 @@
 
 import ExpressionProcessor from '../expressions/ExpressionProcessor.js';
 import AttributeProcessor  from '../../processors/AttributeProcessor.js';
-import {clearChildren}     from '../../utilities/Dom.js';
+
+import {clearChildren} from '@ultraq/dom-utils';
 
 /**
  * JS equivalent of Thymeleaf's `th:unless` attribute processor, excludes or

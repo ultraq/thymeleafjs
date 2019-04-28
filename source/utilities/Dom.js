@@ -17,17 +17,6 @@
 /* global ENVIRONMENT */
 
 /**
- * Removes all of an element's child nodes.
- * 
- * @param {Element} element
- */
-export function clearChildren(element) {
-	while (element.firstChild) {
-		element.removeChild(element.firstChild);
-	}
-}
-
-/**
  * Sets a Thymeleaf attribute and value on an existing element.  Used primarily
  * in tests.
  * 
@@ -65,7 +54,7 @@ export function getThymeleafAttributeValue(element, prefix, processorName) {
 export function deserialize(htmlString) {
 	return ENVIRONMENT === 'browser' ?
 		/* istanbul ignore next */
-		document.createRange().createContextualFragment(htmlString) :
+		require('@ultraq/dom-utils').deserialize(htmlString) :
 		require('jsdom').jsdom(htmlString, {
 			features: {
 				FetchExternalResources: false,
@@ -84,6 +73,6 @@ export function deserialize(htmlString) {
 export function serialize(documentFragment) {
 	return ENVIRONMENT === 'browser' ?
 		/* istanbul ignore next */
-		new XMLSerializer().serializeToString(documentFragment) :
+		require('@ultraq/dom-utils').serialize(documentFragment) :
 		require('jsdom').serializeDocument(documentFragment);
 }
