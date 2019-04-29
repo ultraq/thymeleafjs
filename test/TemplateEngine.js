@@ -14,8 +14,10 @@
  * limitations under the License.
  */
 
-import {DEFAULT_CONFIGURATION} from '../source/Configurations';
-import TemplateEngine          from '../source/TemplateEngine';
+import {DEFAULT_CONFIGURATION} from '../source/Configurations.js';
+import TemplateEngine          from '../source/TemplateEngine.js';
+import Dialect                 from '../source/dialects/Dialect.js';
+import StandardDialect         from '../source/standard/StandardDialect.js';
 import {promisify}             from '../source/utilities/Functions';
 
 import {range} from '@ultraq/array-utils';
@@ -27,8 +29,67 @@ import path    from 'path';
  */
 describe('TemplateEngine', function() {
 
+	describe('Configuration', function() {
+
+		test('Default configuration', function() {
+			let templateEngine = new TemplateEngine();
+			expect(templateEngine.dialects).toBe(DEFAULT_CONFIGURATION.dialects);
+		});
+	});
+
+	describe('Expression objects', function() {
+
+		class TestDialect1 extends Dialect {
+			constructor() {
+				super('Test1');
+			}
+			expressionObjects = {
+				'#obj1': {
+					sum: (a, b) => a + b
+				}
+			}
+		}
+		class TestDialect2 extends Dialect {
+			constructor() {
+				super('Test2');
+			}
+			expressionObjects = {
+				'#obj2': {
+					multiply: (a, b) => a * b
+				}
+			}
+		}
+
+		const templateEngine = new TemplateEngine({
+			...DEFAULT_CONFIGURATION,
+			dialects: [
+				new StandardDialect(),
+				new TestDialect1(),
+				new TestDialect2()
+			]
+		});
+
+		test('Combine expression objects across all dialects in a single one', function() {
+			let {expressionObjects} = templateEngine;
+			expect(expressionObjects).toHaveProperty('#obj1');
+			expect(expressionObjects).toHaveProperty('#obj2');
+		});
+
+		test('Expression objects available in processing', async function() {
+			let htmlString = await templateEngine.process(
+				'<div thjs:text="${#obj1.sum(2, 2)}">Result in here</div>'
+			);
+			expect(htmlString).toEqual(expect.stringContaining('<div>4</div>'));
+
+			htmlString = await templateEngine.process(
+				'<div thjs:text="${#obj2.multiply(3, 2)}">Result in here</div>'
+			);
+			expect(htmlString).toEqual(expect.stringContaining('<div>6</div>'));
+		});
+	});
+
 	function removeWhitespace(string) {
-		return string.replace(/(\t|\n)/g, '');
+		return string.replace(/([\t\n])/g, '');
 	}
 
 	test('#processFile', function() {
