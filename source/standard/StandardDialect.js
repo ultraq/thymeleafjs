@@ -88,10 +88,10 @@ export default class StandardDialect extends Dialect {
 			// General attribute modification
 			new AttrAttributeProcessor(prefix),
 			new ClassAppendAttributeProcessor(prefix),
-			EMPTYABLE_ATTRIBUTE_NAMES.map(attributeName => {
+			...EMPTYABLE_ATTRIBUTE_NAMES.map(attributeName => {
 				return new EmptyableAttributeProcessor(prefix, attributeName);
 			}),
-			REMOVABLE_ATTRIBUTE_NAMES.map(attributeName => {
+			...REMOVABLE_ATTRIBUTE_NAMES.map(attributeName => {
 				return new RemovableAttributeProcessor(prefix, attributeName);
 			}),
 

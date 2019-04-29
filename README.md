@@ -151,8 +151,16 @@ which is resolved with the processed template.
 ### Dialect
 
 A basic class that is used as a template for implementing dialects that contain
-processors to expand Thymeleaf's functionality.  The [Standard Dialect](#standarddialect)
-is itself an instance of `Dialect`.
+processors and expression objects to expand Thymeleaf's functionality.  The
+[Standard Dialect](#standarddialect) is itself an instance of `Dialect`.
+
+To add processors, create a class that extends `Dialect`, and add either a
+`processors` property or getter which is an array of processors.
+
+To add expression objects, extend `Dialect` and add either a `expressionObjects`
+property or getter which is an object whose keys are the expression object names
+(starting with `#` as the convention from Thymeleaf) and the values are the
+expression objects.
 
 
 ### AttributeProcessor

@@ -22,8 +22,6 @@ import StandardDialect          from './standard/StandardDialect.js';
 import {promisify}              from './utilities/Functions.js';
 import {deserialize, serialize} from './utilities/Dom.js';
 
-import {flatten} from '@ultraq/array-utils';
-
 const XML_NAMESPACE_ATTRIBUTE = `xmlns:${StandardDialect.DEFAULT_PREFIX}`;
 
 /**
@@ -41,15 +39,26 @@ export default class TemplateEngine {
 	 */
 	constructor({dialects, isomorphic, templateResolver} = DEFAULT_CONFIGURATION) {
 
-		this.dialects         = dialects;
-		this.isomorphic       = isomorphic;
-		this.processors       = flatten(dialects.map(dialect => dialect.processors));
+		this.dialects = dialects;
+		this.isomorphic = isomorphic;
 		this.templateResolver = templateResolver;
+
+		// Combine all processors into a unified list
+		this.processors = dialects.reduce((acc, {processors}) => processors ? [
+			...acc,
+			...processors
+		] : acc, []);
+
+		// Combine all expression objects into a unified object
+		this.expressionObjects = dialects.reduce((acc, {expressionObjects}) => expressionObjects ? {
+			...acc,
+			...expressionObjects
+		} : acc, {});
 	}
 
 	/**
 	 * Process the Thymeleaf template data, returning the processed template.
-	 * 
+	 *
 	 * @param {String} template
 	 * @param {Object} [context={}]
 	 * @return {Promise<String>}
@@ -62,6 +71,7 @@ export default class TemplateEngine {
 		let rootElement = document.firstElementChild;
 		return this.processNode(rootElement, {
 			...context,
+			...this.expressionObjects,
 			dialects:         this.dialects,
 			templateResolver: this.templateResolver
 		})

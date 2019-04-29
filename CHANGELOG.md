@@ -2,6 +2,9 @@
 Changelog
 =========
 
+### 0.17.0
+ - Dialects can now add expression objects to the processing context
+
 ### 0.16.1
  - Fix chained expressions when using built-in javascript properties
 

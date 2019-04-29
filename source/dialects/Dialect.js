@@ -22,14 +22,35 @@
 export default class Dialect {
 
 	/**
-	 * Constructor, sets this dialect's name and prefix.
+	 * Constructor, sets this dialect's name and optional prefix.
 	 * 
 	 * @param {String} name
-	 * @param {String} prefix
+	 * @param {String} [prefix]
 	 */
 	constructor(name, prefix) {
 
 		this.name   = name;
 		this.prefix = prefix;
+	}
+
+	/**
+	 * Return an object whose keys are the expression object names, the values the
+	 * expression object available properties and methods.
+	 * 
+	 * @return {Object}
+	 */
+	get expressionObjects() {
+
+		return null;
+	}
+
+	/**
+	 * Return an array of processors.
+	 * 
+	 * @return {Array}
+	 */
+	get processors() {
+
+		return null;
 	}
 }
