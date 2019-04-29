@@ -29,9 +29,9 @@ export default class ThymeleafRule extends Rule {
 	 */
 	constructor(name, expression, matchProcessor) {
 
-		const contextSensitiveMatchProcessor = result => context => {
+		const contextSensitiveMatchProcessor = result => (...args) => {
 			// console.log(`Processing rule: ${name}`);
-			return typeof result === 'function' ? result(context) : result;
+			return typeof result === 'function' ? result.apply(null, args) : result;
 		};
 		super(name, expression, matchProcessor || contextSensitiveMatchProcessor);
 	}

@@ -2,6 +2,9 @@
 Changelog
 =========
 
+### 0.16.1
+ - Fix chained expressions when using built-in javascript properties
+
 ### 0.16.0
  - Added support for the `all-but-first` value of the `thjs:remove` processor.
  - Added support for `thjs:datetime` -> `datetime` HTML attribute

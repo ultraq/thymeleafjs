@@ -76,11 +76,11 @@ export default new Grammar('Thymeleaf Expression Language',
 	new ThymeleafRule('Chain',
 		Sequence('ChainLink', ZeroOrMore(Sequence(/\./, 'ChainLink'))),
 		(chain) => context => {
-			return flatten(chain).filter(link => link !== '.').reduce((accumulator, nextLink) => {
-				return accumulator === null || accumulator === undefined ? accumulator : nextLink({
-					...context,
-					...accumulator
-				});
+			return flatten(chain).filter(link => link !== '.').reduce((linkContext, nextLink) => {
+				if (linkContext === null || linkContext === undefined) {
+					return linkContext;
+				}
+				return nextLink(linkContext, context);
 			}, context);
 		}
 	),
@@ -365,14 +365,14 @@ export default new Grammar('Thymeleaf Expression Language',
 	),
 	new ThymeleafRule('MethodCall',
 		Sequence('MethodName', /\(/, Optional('MethodParameters'), /\)/),
-		([name, , parameters]) => context => {
+		([name, , parameters]) => (context, parameterContext) => {
 			let methodName = name(context);
 			let method = context[methodName];
 			if (!method) {
 				console.warn(`No method '${methodName}' present on the current context.  Expression: ${context.expression}`);
 				return '';
 			}
-			return method.apply(context, parameters(context));
+			return method.apply(null, parameters(parameterContext || context));
 		}
 	),
 	new ThymeleafRule('MethodName', 'Identifier'),

@@ -41,6 +41,17 @@ describe('standard/expressions/ThymeleafExpressionLanguage', function() {
 			expect(result).toBe(context.greetings.hello);
 		});
 
+		test('Built-in properties', function() {
+			let greetingsList = [
+				'Hello :)',
+				'Goodbye :('
+			];
+			let result = new ExpressionProcessor().process('${greetingsList.length}', {
+				greetingsList
+			});
+			expect(result).toBe(greetingsList.length);
+		});
+
 		test('null/undefined value handling', function() {
 			let expressionProcessor = new ExpressionProcessor();
 			let result = expressionProcessor.process('${greetings.goodnight}', context);
