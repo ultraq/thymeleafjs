@@ -88,6 +88,13 @@ describe('standard/expressions/ThymeleafExpressionLanguage', function() {
 			});
 			expect(result).toBe(format(date, 'human'));
 		});
+
+		test('Negation', function() {
+			let result = new ExpressionProcessor().process('${!happy}', {
+				happy: true
+			});
+			expect(result).toBe(false);
+		});
 	});
 
 

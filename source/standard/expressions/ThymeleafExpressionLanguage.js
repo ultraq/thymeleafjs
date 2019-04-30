@@ -71,22 +71,27 @@ export default new Grammar('Thymeleaf Expression Language',
 	 */
 	new ThymeleafRule('VariableExpression',
 		Sequence(/\${/, 'Chain', /\}/),
-		([, chain]) => context => chain(context) || ''
+		([, chain]) => context => {
+			let result = chain(context);
+			return result !== null && result !== undefined ? result : '';
+		}
 	),
 	new ThymeleafRule('Chain',
-		Sequence('ChainLink', ZeroOrMore(Sequence(/\./, 'ChainLink'))),
-		(chain) => context => {
-			return flatten(chain).filter(link => link !== '.').reduce((linkContext, nextLink) => {
+		Sequence(Optional('Negation'), 'ChainLink', ZeroOrMore(Sequence(/\./, 'ChainLink'))),
+		([negation, ...chain]) => context => {
+			let result = flatten(chain).filter(link => link !== '.').reduce((linkContext, nextLink) => {
 				if (linkContext === null || linkContext === undefined) {
 					return linkContext;
 				}
 				return nextLink(linkContext, context);
 			}, context);
+			return typeof negation === 'function' ? !result : result;
 		}
 	),
 	new ThymeleafRule('ChainLink',
 		OrderedChoice('MethodCall', 'PropertyName', 'Literal')
 	),
+	new ThymeleafRule('Negation', /!/),
 
 	/**
 	 * Link expressions, `@{url(parameters)}`.  Used for generating URLs out of

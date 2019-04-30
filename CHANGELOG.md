@@ -2,6 +2,9 @@
 Changelog
 =========
 
+### 0.17.1
+ - Expressions can now do negation using the `!` operator
+
 ### 0.17.0
  - Dialects can now add expression objects to the processing context
 
