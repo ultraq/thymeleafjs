@@ -212,6 +212,8 @@ See here for supported processors: https://github.com/ultraq/thymeleafjs/issues/
 
 See here for supported expression syntaxes: https://github.com/ultraq/thymeleafjs/issues/20
 
+See here for supported expression objects: https://github.com/ultraq/thymeleafjs/issues/31
+
 
 Integration
 -----------
