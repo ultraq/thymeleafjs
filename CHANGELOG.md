@@ -2,6 +2,10 @@
 Changelog
 =========
 
+### 0.17.3
+ - Fix TypeError when calling native JS methods within expression language
+   blocks
+
 ### 0.17.2
  - Adding `th:alt` as a removable attribute
  - Allow escaped single quotes in strings

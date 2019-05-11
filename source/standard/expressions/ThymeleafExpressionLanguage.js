@@ -381,7 +381,7 @@ export default new Grammar('Thymeleaf Expression Language',
 				console.warn(`No method '${methodName}' present on the current context.  Expression: ${context.expression}`);
 				return '';
 			}
-			return method.apply(null, parameters(parameterContext || context));
+			return method.apply(context, parameters(parameterContext || context));
 		}
 	),
 	new ThymeleafRule('MethodName', 'Identifier'),
