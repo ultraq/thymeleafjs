@@ -64,5 +64,6 @@ export default class RemovableAttributeProcessor extends AttributeProcessor {
 }
 
 export const REMOVABLE_ATTRIBUTE_NAMES = [
+	'alt',
 	'class'
 ];

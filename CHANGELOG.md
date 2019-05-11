@@ -2,6 +2,9 @@
 Changelog
 =========
 
+### 0.17.2
+ - Adding `th:alt` as a removable attribute
+
 ### 0.17.1
  - Expressions can now do negation using the `!` operator
 
@@ -83,7 +86,7 @@ Changelog
 ### 0.8.0
  - Rework bundles so that they can target browser and node environments
    separately
-   ([#12](https://github.com/ultraq/thymeleaf-js/issues/12))
+   ([#12](https://github.com/ultraq/thymeleafjs/issues/12))
  - Other small changes to work on browsers more effectively
 
 ### 0.7.1
@@ -91,7 +94,7 @@ Changelog
 
 ### 0.7.0
  - Add initial support for link expression syntax
-   ([#9](https://github.com/ultraq/thymeleaf-js/issues/9))
+   ([#9](https://github.com/ultraq/thymeleafjs/issues/9))
 
 ### 0.6.0
  - Use `thjs` as the default prefix for the standard dialect.
