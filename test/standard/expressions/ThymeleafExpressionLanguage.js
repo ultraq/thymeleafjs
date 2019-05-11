@@ -167,6 +167,13 @@ describe('standard/expressions/ThymeleafExpressionLanguage', function() {
 			let result = new ExpressionProcessor().process(expression, context);
 			expect(result).toBe(`${firstLine}${secondLine}${thirdLine}${fourthLine}`);
 		});
+
+		test('Allow escaped quotes in strings', function() {
+			let result = new ExpressionProcessor().process("'Thumbnail for \\'' + ${myImage} + '\\''", { // eslint-disable-line
+				myImage: 'My Image'
+			});
+			expect(result).toBe("Thumbnail for 'My Image'");
+		});
 	});
 
 

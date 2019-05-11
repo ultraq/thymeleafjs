@@ -4,6 +4,8 @@ Changelog
 
 ### 0.17.2
  - Adding `th:alt` as a removable attribute
+ - Allow escaped single quotes in strings
+   ([#23](https://github.com/ultraq/thymeleafjs/issues/23))
 
 ### 0.17.1
  - Expressions can now do negation using the `!` operator
