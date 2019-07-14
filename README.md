@@ -15,11 +15,11 @@ starting to look foreign to me.  Upon evaluating several existing JavaScript
 templating languages to help build a mock Node server for development, it made
 me yearn for the natural templating feature of Thymeleaf.
 
-The goal of this project is not to be a full JS implementation of Thymeleaf, but
-rather to support the use of equivalent Thymeleaf "attribute processors" which
-perform the same tasks as simple JS templating libraries like [Mustache](https://github.com/janl/mustache.js/).
-And then, finally, I can use it with a Node server like [Express](http://expressjs.com/)
-and achieve my Thymeleaf-in-JS dream :)
+This project aims first to perform similar tasks to existing JS templating
+libraries like [Mustache](https://github.com/janl/mustache.js/) on Node servers
+like [Express](http://expressjs.com/).  Once the Thymeleaf-in-JS dream is
+achieved, I can start thinking about stretch goals to make it a better
+companion to the original Thymeleaf for web development :)
 
 
 Current goals
