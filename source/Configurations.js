@@ -25,6 +25,9 @@ import StandardDialect from './standard/StandardDialect';
  * @property {Object} [isomorphic]
  *   An object which configures the isomorphic capabilities of the template
  *   engine.
+ * @property {Function} messageResolver
+ *   A function for building a message string from some external source, given a
+ *   message key and optional parameters for that particular message.
  * @property {Function} templateResolver
  *   A function for returning the text of templates named by fragment
  *   expressions in templates.  Is given only 1 argument, the template name from

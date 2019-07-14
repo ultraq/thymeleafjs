@@ -24,7 +24,7 @@ import {
 	OrderedChoice,
 	Sequence,
 	ZeroOrMore
-} from '../../parser/Operators.js';
+}                          from '../../parser/Operators.js';
 import {RegularExpression} from '../../parser/RegularExpression.js';
 
 import {flatten, remove} from '@ultraq/array-utils';
@@ -32,6 +32,7 @@ import {flatten, remove} from '@ultraq/array-utils';
 // For helping identify rules that return objects
 const METADATA_FRAGMENT  = 'fragment';
 const METADATA_ITERATION = 'iteration';
+const METADATA_MESSAGE   = 'message';
 
 /**
  * Grammar for the Thymeleaf expression language.  Describes the language and
@@ -45,6 +46,7 @@ export default new Grammar('Thymeleaf Expression Language',
 	new ThymeleafRule('ThymeleafExpression',
 		OrderedChoice(
 			AllInput('VariableExpression'),
+			AllInput('MessageExpression'),
 			AllInput('LinkExpression'),
 			AllInput('FragmentExpression'),
 			AllInput('Iteration'),
@@ -92,6 +94,26 @@ export default new Grammar('Thymeleaf Expression Language',
 		OrderedChoice('MethodCall', 'PropertyName', 'Literal')
 	),
 	new ThymeleafRule('Negation', /!/),
+
+	/**
+	 * Message expressions, `#{messageKey(parameters)}`.  Used for referencing
+	 * text from a resource file, often for localization purposes.
+	 */
+	new ThymeleafRule('MessageExpression',
+		Sequence(/#{/, 'MessageKey', Optional(Sequence(/\(/, Sequence('Expression', ZeroOrMore(Sequence(/,/, 'Expression'))), /\)/)), /}/),
+		([, messageKey, [, messageParameters]]) => context => {
+			return {
+				type: METADATA_MESSAGE,
+				key: messageKey(context),
+				parameters: messageParameters ?
+					flatten(messageParameters)
+						.filter(messageParameter => typeof messageParameter === 'function')
+						.map(messageParameter => messageParameter(context)) :
+					null
+			};
+		}
+	),
+	new ThymeleafRule('MessageKey', /[\w.-]+/),
 
 	/**
 	 * Link expressions, `@{url(parameters)}`.  Used for generating URLs out of
@@ -306,13 +328,15 @@ export default new Grammar('Thymeleaf Expression Language',
 			switch (comparator(context)) {
 				case '==':  return lhs == rhs; // eslint-disable-line
 				case '===': return lhs === rhs;
+				case '!=':  return lhs != rhs; // eslint-disable-line
+				case '!==': return lhs !== rhs;
 			}
 			return false;
 		}
 	),
 	new ThymeleafRule('Comparator',
 		OrderedChoice(
-			/===?/
+			/[=!]==?/
 		)
 	),
 

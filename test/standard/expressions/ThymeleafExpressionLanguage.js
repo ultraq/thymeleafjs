@@ -98,6 +98,26 @@ describe('standard/expressions/ThymeleafExpressionLanguage', function() {
 	});
 
 
+	describe('#MessageExpression', function() {
+
+		test('Can read the key and parameter parts', function() {
+			const context = {
+				messageResolver: jest.fn(),
+				greeting: 'Hello!'
+			};
+			let expressionProcessor = new ExpressionProcessor();
+			let result = expressionProcessor.process('#{myMessage(${greeting})}', context);
+			expect(result).toEqual({
+				type: 'message',
+				key: 'myMessage',
+				parameters: [
+					'Hello!'
+				]
+			});
+		});
+	});
+
+
 	describe('#FragmentExpression', function() {
 
 		test('Extracts the template, fragment, and parameter parts', function() {

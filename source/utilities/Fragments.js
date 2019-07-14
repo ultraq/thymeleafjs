@@ -23,7 +23,7 @@ import {$} from 'dumb-query-selector';
 /**
  * Extract HTML from the target identified by the given fragment information.
  * 
- * @param {String} fragmentInfo
+ * @param {Object} fragmentInfo
  * @param {Object} context
  * @return {Promise<Element>}
  */

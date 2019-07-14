@@ -35,12 +35,13 @@ export default class TemplateEngine {
 	/**
 	 * Constructor, set up a new template engine instance.
 	 * 
-	 * @param {Object} config
+	 * @param {Object} [config=DEFAULT_CONFIGURATION]
 	 */
-	constructor({dialects, isomorphic, templateResolver} = DEFAULT_CONFIGURATION) {
+	constructor({dialects, isomorphic, messageResolver, templateResolver} = DEFAULT_CONFIGURATION) {
 
 		this.dialects = dialects;
 		this.isomorphic = isomorphic;
+		this.messageResolver = messageResolver;
 		this.templateResolver = templateResolver;
 
 		// Combine all processors into a unified list
@@ -73,6 +74,7 @@ export default class TemplateEngine {
 			...context,
 			...this.expressionObjects,
 			dialects:         this.dialects,
+			messageResolver:  this.messageResolver,
 			templateResolver: this.templateResolver
 		})
 			.then(() => {

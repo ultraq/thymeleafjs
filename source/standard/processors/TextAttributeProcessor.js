@@ -16,6 +16,7 @@
 
 import ExpressionProcessor from '../expressions/ExpressionProcessor.js';
 import AttributeProcessor  from '../../processors/AttributeProcessor.js';
+import {buildMessage}      from '../../utilities/Messages.js';
 
 /**
  * JS equivalent of Thymeleaf's `th:text` attribute processor, applies the
@@ -51,9 +52,14 @@ export default class TextAttributeProcessor extends AttributeProcessor {
 	 *   The value given by the attribute.
 	 * @param {Object} context
 	 */
-	process(element, attribute, attributeValue, context) {
+	async process(element, attribute, attributeValue, context) {
 
-		element.textContent = new ExpressionProcessor().process(attributeValue, context);
+		// TODO: Move message constructon to the expression language?  Need to make
+		//       all the executions async!
+		let messageResult = new ExpressionProcessor().process(attributeValue, context);
+		element.textContent =
+			typeof messageResult === 'object' ? await buildMessage(messageResult, context) :
+			messageResult;
 		element.removeAttribute(attribute);
 	}
 }
