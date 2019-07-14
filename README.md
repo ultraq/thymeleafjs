@@ -108,6 +108,9 @@ passed in to set any of the available options.  These are:
  - **dialects**: array of [Dialect](#dialect) instances to use in processing
  - **isomorphic**: enables the ability to run standard Thymeleaf processors with
    priority given to `thjs` processors of the same name.
+ - **messageResolver**: a function given a message key and optional message
+   parameters which should then return the message string or `Promise` of the
+   message string.  Required if you want to use message expressions (`#{...}`).
  - **templateResolver**: a function supplied the template name which should then
    return the text or a `Promise` that will resolve with the text of the
    template being requested.  Required if you want to make use of template
@@ -122,6 +125,9 @@ let templateEngine = new TemplateEngine({
   ],
   isomorphic: {
   	prefix: 'thjs'
+  },
+  messageResolver: (key, parameters) => {
+  	// ...
   },
   templateResolver: templateName => {
   	// ...

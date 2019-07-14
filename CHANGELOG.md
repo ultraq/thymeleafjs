@@ -2,7 +2,9 @@
 Changelog
 =========
 
-### 0.17.3
+### 0.18.0
+ - Added support for message expressions `#{...}` and a `messageResolver`
+   configuration function.
  - Fix TypeError when calling native JS methods within expression language
    blocks
 
