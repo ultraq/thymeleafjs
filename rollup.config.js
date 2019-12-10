@@ -1,7 +1,7 @@
 
 import babel       from 'rollup-plugin-babel';
 import commonjs    from 'rollup-plugin-commonjs';
-import nodeResolve from 'rollup-plugin-node-resolve';
+import nodeResolve from '@rollup/plugin-node-resolve';
 import replace     from 'rollup-plugin-replace';
 
 const {ENVIRONMENT} = process.env;
@@ -27,9 +27,7 @@ export default {
 				'dumb-query-selector': ['$', '$$']
 			}
 		}),
-		nodeResolve({
-			jsnext: true
-		}),
+		nodeResolve(),
 		replace({
 			ENVIRONMENT: JSON.stringify(ENVIRONMENT)
 		})
