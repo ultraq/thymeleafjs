@@ -181,7 +181,12 @@ export default new Grammar('Thymeleaf Expression Language',
 			};
 		}
 	),
-	new ThymeleafRule('TemplateName', /[\w-._/]+/),
+	new ThymeleafRule('TemplateName',
+ 		OrderedChoice(
+			/[\w-._/]+/,
+			'VariableExpression'
+		)
+ 	),
 	new ThymeleafRule('FragmentName', /[\w-._]+/),
 	new ThymeleafRule('FragmentParametersSection',
 		Sequence(/\(/, Optional('FragmentParameters'), /\)/),
