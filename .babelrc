@@ -18,7 +18,7 @@
 							"last 5 chrome versions",
 							"last 5 firefox versions"
 						],
-						"node": "8.0.0"
+						"node": "10.0.0"
 					}
 				}]
 			]
@@ -27,7 +27,7 @@
 			"presets": [
 				["@babel/preset-env", {
 					"targets": {
-						"node": "8.0.0"
+						"node": "10.0.0"
 					}
 				}]
 			]
