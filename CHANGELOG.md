@@ -2,6 +2,10 @@
 Changelog
 =========
 
+### 0.18.1
+ - Allow variable expressions in 'template name' part of the fragment expression
+   ([#35](https://github.com/ultraq/thymeleafjs/pull/35))
+
 ### 0.18.0
  - Added support for message expressions `#{...}` and a `messageResolver`
    configuration function.
