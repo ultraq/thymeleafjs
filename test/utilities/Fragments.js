@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import FragmentAttributeProcessor from '../../source/standard/processors/FragmentAttributeProcessor.js';
 import StandardDialect            from '../../source/standard/StandardDialect.js';
+import FragmentAttributeProcessor from '../../source/standard/processors/FragmentAttributeProcessor.js';
 import {extractFragment}          from '../../source/utilities/Fragments.js';
 
 /**

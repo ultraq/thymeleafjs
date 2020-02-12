@@ -19,8 +19,8 @@ import AttributeProcessor       from './processors/AttributeProcessor.js';
 import ElementProcessor         from './processors/ElementProcessor.js';
 import Matcher                  from './processors/Matcher.js';
 import StandardDialect          from './standard/StandardDialect.js';
-import {promisify}              from './utilities/Functions.js';
 import {deserialize, serialize} from './utilities/Dom.js';
+import {promisify}              from './utilities/Functions.js';
 
 const XML_NAMESPACE_ATTRIBUTE = `xmlns:${StandardDialect.DEFAULT_PREFIX}`;
 

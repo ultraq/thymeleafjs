@@ -15,8 +15,8 @@
  */
 
 import {deserialize}              from './Dom.js';
-import FragmentAttributeProcessor from '../standard/processors/FragmentAttributeProcessor.js';
 import StandardDialect            from '../standard/StandardDialect.js';
+import FragmentAttributeProcessor from '../standard/processors/FragmentAttributeProcessor.js';
 
 import {$} from 'dumb-query-selector';
 

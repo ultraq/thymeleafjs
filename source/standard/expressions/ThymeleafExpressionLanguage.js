@@ -182,11 +182,11 @@ export default new Grammar('Thymeleaf Expression Language',
 		}
 	),
 	new ThymeleafRule('TemplateName',
- 		OrderedChoice(
+		OrderedChoice(
 			/[\w-._/]+/,
 			'VariableExpression'
 		)
- 	),
+	),
 	new ThymeleafRule('FragmentName', /[\w-._]+/),
 	new ThymeleafRule('FragmentParametersSection',
 		Sequence(/\(/, Optional('FragmentParameters'), /\)/),
@@ -398,7 +398,7 @@ export default new Grammar('Thymeleaf Expression Language',
 	new ThymeleafRule('PropertyName', 'Identifier',
 		(propertyName) => context => {
 			let property = propertyName(context);
-			return context.hasOwnProperty(property) ? context[property] : '';
+			return Object.prototype.hasOwnProperty.call(context, property) ? context[property] : '';
 		}
 	),
 	new ThymeleafRule('MethodCall',

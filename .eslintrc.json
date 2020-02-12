@@ -15,9 +15,6 @@
 		"es6": true
 	},
 	"rules": {
-		"comma-dangle": ["error", {
-			"functions": "never"
-		}],
 		"no-console": "off",
 		"import/order": ["error", {
 			"groups": [
@@ -25,8 +22,7 @@
 				"sibling",
 				"parent",
 				"internal",
-				"external",
-				"builtin"
+				["external", "builtin"]
 			]
 		}]
 	}

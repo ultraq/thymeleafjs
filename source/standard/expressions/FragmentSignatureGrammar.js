@@ -16,8 +16,8 @@
 
 import {AllInput}                       from './AllInput.js';
 import ThymeleafRule                    from './ThymeleafRule.js';
-import {Optional, Sequence, ZeroOrMore} from '../../parser/Operators.js';
 import Grammar                          from '../../parser/Grammar.js';
+import {Optional, Sequence, ZeroOrMore} from '../../parser/Operators.js';
 
 import {flatten} from '@ultraq/array-utils';
 
