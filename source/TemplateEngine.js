@@ -14,13 +14,15 @@
  * limitations under the License.
  */
 
-import {DEFAULT_CONFIGURATION}  from './Configurations.js';
-import AttributeProcessor       from './processors/AttributeProcessor.js';
-import ElementProcessor         from './processors/ElementProcessor.js';
-import Matcher                  from './processors/Matcher.js';
-import StandardDialect          from './standard/StandardDialect.js';
-import {deserialize, serialize} from './utilities/Dom.js';
-import {promisify}              from './utilities/Functions.js';
+import {DEFAULT_CONFIGURATION} from './Configurations.js';
+import AttributeProcessor      from './processors/AttributeProcessor.js';
+import ElementProcessor        from './processors/ElementProcessor.js';
+import Matcher                 from './processors/Matcher.js';
+import StandardDialect         from './standard/StandardDialect.js';
+import {deserialize}           from './utilities/Dom.js';
+import {promisify}             from './utilities/Functions.js';
+
+import {serialize} from '@ultraq/dom-utils';
 
 const XML_NAMESPACE_ATTRIBUTE = `xmlns:${StandardDialect.DEFAULT_PREFIX}`;
 

@@ -52,27 +52,12 @@ export function getThymeleafAttributeValue(element, prefix, processorName) {
  * @return {DocumentFragment}
  */
 export function deserialize(htmlString) {
-	return ENVIRONMENT === 'browser' ?
+	if (ENVIRONMENT === 'browser') {
 		/* istanbul ignore next */
-		require('@ultraq/dom-utils').deserialize(htmlString) :
-		require('jsdom').jsdom(htmlString, {
-			features: {
-				FetchExternalResources: false,
-				ProcessExternalResources: false
-			}
-		});
-}
-
-/**
- * Use either JSDOM or the browser's native DOM serialization to serialize a
- * document fragment into an HTML string.
- * 
- * @param {DocumentFragment} documentFragment
- * @return {String}
- */
-export function serialize(documentFragment) {
-	return ENVIRONMENT === 'browser' ?
-		/* istanbul ignore next */
-		require('@ultraq/dom-utils').serialize(documentFragment) :
-		require('jsdom').serializeDocument(documentFragment);
+		return require('@ultraq/dom-utils').deserialize(htmlString);
+	}
+	else {
+		const {JSDOM} = require('jsdom');
+		return new JSDOM(htmlString).window.document;
+	}
 }

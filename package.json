@@ -28,10 +28,10 @@
 	"dependencies": {
 		"@babel/runtime": "^7.7.5",
 		"@ultraq/array-utils": "^1.1.0",
-		"@ultraq/dom-utils": "^0.1.1",
+		"@ultraq/dom-utils": "^0.2.0",
 		"@ultraq/string-utils": "^1.1.0",
 		"dumb-query-selector": "^3.3.0",
-		"jsdom": "~9.12.0"
+		"jsdom": "^16.2.1"
 	},
 	"devDependencies": {
 		"@babel/core": "^7.6.4",
