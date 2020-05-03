@@ -2,6 +2,13 @@
 Changelog
 =========
 
+### 0.19.0
+ - Changes to template rendering, brought about by:
+    - No longer render using the `XMLSerializer`.  This should remove
+      unnecessary XML namespaces appearing in template fragments or re-rendered
+      templates.
+    - Update JSDOM dependency from 9.x to 16.x.
+
 ### 0.18.1
  - Allow variable expressions in 'template name' part of the fragment expression
    ([#35](https://github.com/ultraq/thymeleafjs/pull/35))
