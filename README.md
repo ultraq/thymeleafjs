@@ -5,7 +5,6 @@ ThymeleafJS
 [![Build Status](https://travis-ci.org/ultraq/thymeleafjs.svg?branch=master)](https://travis-ci.org/ultraq/thymeleafjs)
 [![Coverage Status](https://coveralls.io/repos/github/ultraq/thymeleafjs/badge.svg?branch=master)](https://coveralls.io/github/ultraq/thymeleafjs?branch=master)
 [![npm](https://img.shields.io/npm/v/thymeleaf.svg?maxAge=3600)](https://www.npmjs.com/package/thymeleaf)
-[![License](https://img.shields.io/github/license/ultraq/thymeleafjs.svg?maxAge=2592000)](https://github.com/ultraq/thymeleafjs/blob/master/LICENSE.txt)
 
 A basic implementation of the [Thymeleaf](http://thymeleaf.org/) templating
 engine in JavaScript.
