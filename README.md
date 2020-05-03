@@ -2,7 +2,7 @@
 ThymeleafJS
 ===========
 
-[![Build Status](https://travis-ci.org/ultraq/thymeleafjs.svg?branch=master)](https://travis-ci.org/ultraq/thymeleafjs)
+[![Build Status](https://travis-ci.com/ultraq/thymeleafjs.svg?branch=master)](https://travis-ci.com/ultraq/thymeleafjs)
 [![Coverage Status](https://coveralls.io/repos/github/ultraq/thymeleafjs/badge.svg?branch=master)](https://coveralls.io/github/ultraq/thymeleafjs?branch=master)
 [![npm](https://img.shields.io/npm/v/thymeleaf.svg?maxAge=3600)](https://www.npmjs.com/package/thymeleaf)
 
