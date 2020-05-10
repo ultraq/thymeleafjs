@@ -16,7 +16,7 @@
 	},
 	"scripts": {
 		"lint": "eslint \"**/*.js\"",
-		"test": "jest",
+		"test": "npm run lint && jest",
 		"coverage": "cat coverage/lcov.info | coveralls",
 		"build": "npm run build:browser && npm run build:node && npm run build:dist",
 		"build:browser": "cross-env BABEL_ENV=build ENVIRONMENT=browser rollup --config",
@@ -46,7 +46,7 @@
 		"coveralls": "^3.1.0",
 		"cross-env": "^5.1.0",
 		"eslint": "^6.8.0",
-		"eslint-config-ultraq": "^2.3.0",
+		"eslint-config-ultraq": "^2.3.3",
 		"eslint-plugin-import": "^2.20.2",
 		"hyperscript": "^2.0.2",
 		"hyperscript-helpers": "^3.0.2",
