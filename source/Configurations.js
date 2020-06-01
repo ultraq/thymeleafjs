@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import StandardDialect from './standard/StandardDialect';
+import StandardDialect from './standard/StandardDialect.js';
 
 /**
  * Configuration object for the template engine.

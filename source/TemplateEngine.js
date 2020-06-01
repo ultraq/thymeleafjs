@@ -14,17 +14,13 @@
  * limitations under the License.
  */
 
-import {DEFAULT_CONFIGURATION} from './Configurations.js';
-import AttributeProcessor      from './processors/AttributeProcessor.js';
-import ElementProcessor        from './processors/ElementProcessor.js';
-import Matcher                 from './processors/Matcher.js';
-import StandardDialect         from './standard/StandardDialect.js';
-import {deserialize}           from './utilities/Dom.js';
-import {promisify}             from './utilities/Functions.js';
-
-import {serialize} from '@ultraq/dom-utils';
-
-const XML_NAMESPACE_ATTRIBUTE = `xmlns:${StandardDialect.DEFAULT_PREFIX}`;
+import {DEFAULT_CONFIGURATION}  from './Configurations.js';
+import AttributeProcessor       from './processors/AttributeProcessor.js';
+import ElementProcessor         from './processors/ElementProcessor.js';
+import Matcher                  from './processors/Matcher.js';
+import StandardDialect          from './standard/StandardDialect.js';
+import {deserialize, serialize} from './utilities/Dom.js';
+import {promisify}              from './utilities/Functions.js';
 
 /**
  * A highly-configurable class responsible for processing the Thymeleaf
@@ -45,6 +41,9 @@ export default class TemplateEngine {
 		this.isomorphic = isomorphic;
 		this.messageResolver = messageResolver;
 		this.templateResolver = templateResolver;
+
+		let standardDialect = dialects.find(dialect => dialect instanceof StandardDialect);
+		this.xmlNamespaceAttribute = `xmlns:${standardDialect ? standardDialect.prefix : StandardDialect.DEFAULT_PREFIX}`;
 
 		// Combine all processors into a unified list
 		this.processors = dialects.reduce((acc, {processors}) => processors ? [
@@ -80,11 +79,11 @@ export default class TemplateEngine {
 			templateResolver: this.templateResolver
 		})
 			.then(() => {
-				// TODO: Special case, remove the xmlns:th namespace from the document.
-				//       This should be handled like in main Thymeleaf where it's just
-				//       another processor that runs on the document.
-				if (rootElement.hasAttribute(XML_NAMESPACE_ATTRIBUTE)) {
-					rootElement.removeAttribute(XML_NAMESPACE_ATTRIBUTE);
+				// TODO: Special case, remove the xmlns:thjs namespace from the
+				//       document.  This should be handled like in main Thymeleaf where
+				//       it's just another processor that runs on the document.
+				if (rootElement.hasAttribute(this.xmlNamespaceAttribute)) {
+					rootElement.removeAttribute(this.xmlNamespaceAttribute);
 				}
 				return serialize(document);
 			});
