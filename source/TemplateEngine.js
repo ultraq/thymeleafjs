@@ -38,12 +38,12 @@ export default class TemplateEngine {
 	constructor({dialects, isomorphic, messageResolver, templateResolver} = DEFAULT_CONFIGURATION) {
 
 		this.dialects = dialects;
+		this.standardDialect = dialects.find(dialect => dialect instanceof StandardDialect);
 		this.isomorphic = isomorphic;
 		this.messageResolver = messageResolver;
 		this.templateResolver = templateResolver;
 
-		let standardDialect = dialects.find(dialect => dialect instanceof StandardDialect);
-		this.xmlNamespaceAttribute = `xmlns:${standardDialect ? standardDialect.prefix : StandardDialect.DEFAULT_PREFIX}`;
+		this.xmlNamespaceAttribute = `xmlns:${this.standardDialect?.prefix || StandardDialect.DEFAULT_PREFIX}`;
 
 		// Combine all processors into a unified list
 		this.processors = dialects.reduce((acc, {processors}) => processors ? [
@@ -69,8 +69,8 @@ export default class TemplateEngine {
 	 */
 	process(template, context = {}) {
 
-		let document = deserialize(template);
-		let rootElement = document.firstElementChild;
+		let documentFragment = deserialize(template);
+		let rootElement = documentFragment.firstElementChild;
 		return this.processNode(rootElement, {
 			...context,
 			...this.expressionObjects,
@@ -85,7 +85,12 @@ export default class TemplateEngine {
 				if (rootElement.hasAttribute(this.xmlNamespaceAttribute)) {
 					rootElement.removeAttribute(this.xmlNamespaceAttribute);
 				}
-				return serialize(document);
+				// TODO: Special case, remove the xmlns:thjs namespace in isomorphic
+				//       mode.  This should also be handled with another processor.
+				if (this.isomorphic?.prefix && rootElement.hasAttribute(this.isomorphic.prefix)) {
+					rootElement.removeAttribute(this.isomorphic.prefix);
+				}
+				return serialize(documentFragment);
 			});
 	}
 
