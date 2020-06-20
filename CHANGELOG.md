@@ -2,6 +2,12 @@
 Changelog
 =========
 
+### 0.19.1
+ - Added `XmlNsAttributeProcessor` to remove Thymeleaf's XML namespaces in HTML
+   files.
+ - Remove the standard variant of an attribute processor when the isomorphic one
+   is processed.
+
 ### 0.19.0
  - Changes to template rendering, brought about by:
     - No longer render using the `XMLSerializer`.  This should remove
