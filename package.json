@@ -16,7 +16,7 @@
 	},
 	"scripts": {
 		"lint": "eslint \"**/*.js\"",
-		"test": "npm run lint && jest",
+		"test": "jest",
 		"coverage": "cat coverage/lcov.info | coveralls",
 		"build": "npm run build:browser && npm run build:node && npm run build:dist",
 		"build:browser": "cross-env BABEL_ENV=build ENVIRONMENT=browser rollup --config",
