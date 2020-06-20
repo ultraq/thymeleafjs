@@ -40,9 +40,10 @@ export default class Matcher {
 	 * 
 	 * @param {Element} element
 	 * @param {AttributeProcessor} processor
-	 * @return {String}
-	 *   The attribute or element that matched processing by this processor, or
-	 *   `null` if no match was found.
+	 * @return {Object}
+	 *   A match result containing a `match` key whose value is what was matched
+	 *   (will be `null` if no match was made), and whether it was against the
+	 *   isomorphic prefix or not.
 	 */
 	matches(element, processor) {
 
@@ -53,18 +54,24 @@ export default class Matcher {
 		// Attribute processor matching, can be of the name prefix:name or data-prefix-name
 		if (processor instanceof AttributeProcessor) {
 			let prefixes = [].concat(
-				this.isomorphic ? this.isomorphic.prefix : [],
+				this.isomorphic?.prefix || [],
 				processor.prefix
 			);
 			for (let prefix of prefixes) {
 				let attribute;
 				attribute = `${prefix}:${name}`;
 				if (element.hasAttribute(attribute)) {
-					return attribute;
+					return {
+						match: attribute,
+						isomorphic: prefix === this.isomorphic?.prefix
+					};
 				}
 				attribute = `data-${prefix}-${name}`;
 				if (element.hasAttribute(attribute)) {
-					return attribute;
+					return {
+						match: attribute,
+						isomorphic: prefix === this.isomorphic?.prefix
+					};
 				}
 			}
 		}
@@ -73,10 +80,15 @@ export default class Matcher {
 		else if (processor instanceof ElementProcessor) {
 			let elementName = `${processor.prefix}:${name}`;
 			if (element.tagName === elementName.toUpperCase()) {
-				return elementName;
+				return {
+					match: elementName,
+					isomorphic: false
+				};
 			}
 		}
 
-		return null;
+		return {
+			match: null
+		};
 	}
 }

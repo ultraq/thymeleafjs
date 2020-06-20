@@ -136,16 +136,23 @@ export default class TemplateEngine {
 		// Run the current element through the gamut of registered processors.  If
 		// one of them sends a reprocessing signal, return from this method to let
 		// the caller re-run everything.
+		// TODO: Flip this around, running through each attribute then matching
+		//       against processors
 		for (let i = 0; i < this.processors.length; i++) {
 			let processor = this.processors[i];
 			let processorResult = false;
 
-			// TODO: Some way to do this generically and not have to type check?
-			let attributeOrElementName = matcher.matches(element, processor);
-			if (attributeOrElementName) {
+			let {match, isomorphic} = matcher.matches(element, processor);
+			if (match) {
+				// TODO: Some way to do this generically and not have to type check?
 				if (processor instanceof AttributeProcessor) {
-					processorResult = await processor.process(element, attributeOrElementName,
-						element.getAttribute(attributeOrElementName), localContext);
+					processorResult = await processor.process(element, match,
+						element.getAttribute(match), localContext);
+
+					// TODO: Some better way of clearing out the standard attribute
+					if (isomorphic) {
+						element.removeAttribute(`${this.standardDialect.prefix}:${processor.name}`);
+					}
 				}
 				else if (processor instanceof ElementProcessor) {
 					processorResult = await processor.process(element, localContext);

@@ -43,20 +43,20 @@ describe('processors/Matcher', function() {
 		test('Match XML attributes', function() {
 			let attribute = `${prefix}:${name}`;
 			let element = createThymeleafAttributeValue(div(), attribute, 'hello');
-			let match = matcher.matches(element, mockProcessor);
+			let {match} = matcher.matches(element, mockProcessor);
 			expect(match).toBe(attribute);
 		});
 
 		test('Match data- attributes', function() {
 			let attribute = `data-${prefix}-${name}`;
 			let element = createThymeleafAttributeValue(div(), attribute, 'hello');
-			let match = matcher.matches(element, mockProcessor);
+			let {match} = matcher.matches(element, mockProcessor);
 			expect(match).toBe(attribute);
 		});
 
 		test('Return `null` if no match', function() {
 			let element = createThymeleafAttributeValue(div(), 'test:something-else', 'hello');
-			let match = matcher.matches(element, mockProcessor);
+			let {match} = matcher.matches(element, mockProcessor);
 			expect(match).toBeNull();
 		});
 	});
@@ -67,7 +67,7 @@ describe('processors/Matcher', function() {
 		test('Match XML namespaced elements', function() {
 			let elementName = `${prefix}:${name}`;
 			let element = document.createElement(elementName);
-			let match = matcher.matches(element, mockProcessor);
+			let {match} = matcher.matches(element, mockProcessor);
 			expect(match).toBe(elementName);
 		});
 	});
