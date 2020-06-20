@@ -32,4 +32,23 @@ export default class AttributeProcessor {
 		this.prefix = prefix;
 		this.name   = name;
 	}
+
+	/**
+	 * Process the given attribute on the element it appears.
+	 * 
+	 * @abstract
+	 * @param {Element} element
+	 *   Element being processed.
+	 * @param {String} attribute
+	 *   The attribute that was encountered to invoke this processor.
+	 * @param {String} attributeValue
+	 *   The value given by the attribute.
+	 * @param {Object} context
+	 * @return {Boolean} Whether or not the parent tree needs reprocessing because
+	 *   of modifications made by the processor.
+	 */
+	process(element, attribute, attributeValue, context) {
+
+		return false;
+	}
 }

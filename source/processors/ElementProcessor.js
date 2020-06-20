@@ -32,4 +32,19 @@ export default class ElementProcessor {
 		this.prefix = prefix;
 		this.name   = name;
 	}
+
+	/**
+	 * Processes the given element.
+	 * 
+	 * @abstract
+	 * @param {Element} element
+	 *   Element being processed.
+	 * @param {Object} context
+	 * @return {Boolean} Whether or not the parent tree needs reprocessing because
+	 *   of modifications made by the processor.
+	 */
+	process(element, context) {
+
+		return false;
+	}
 }
