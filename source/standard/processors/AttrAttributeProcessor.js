@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import ExpressionProcessor from '../expressions/ExpressionProcessor.js';
-import AttributeProcessor  from '../../processors/AttributeProcessor.js';
+import ExpressionProcessor            from '../expressions/ExpressionProcessor.js';
+import SelfRemovingAttributeProcessor from '../../processors/SelfRemovingAttributeProcessor.js';
 
 import {escapeHtml} from '@ultraq/string-utils';
 
@@ -25,7 +25,7 @@ import {escapeHtml} from '@ultraq/string-utils';
  * 
  * @author Emanuel Rabina
  */
-export default class AttrAttributeProcessor extends AttributeProcessor {
+export default class AttrAttributeProcessor extends SelfRemovingAttributeProcessor {
 
 	static NAME = 'attr';
 
@@ -33,10 +33,11 @@ export default class AttrAttributeProcessor extends AttributeProcessor {
 	 * Constructor, set this processor to use the `attr` name and supplied prefix.
 	 * 
 	 * @param {String} prefix
+	 * @param {Object} isomorphic
 	 */
-	constructor(prefix) {
+	constructor(prefix, isomorphic) {
 
-		super(prefix, AttrAttributeProcessor.NAME);
+		super(prefix, AttrAttributeProcessor.NAME, isomorphic);
 	}
 
 	/**
@@ -51,6 +52,7 @@ export default class AttrAttributeProcessor extends AttributeProcessor {
 	 * @param {String} attributeValue
 	 *   The value given by the attribute.
 	 * @param {Object} context
+	 * @return {Boolean} `false`.
 	 */
 	process(element, attribute, attributeValue, context) {
 
@@ -66,6 +68,6 @@ export default class AttrAttributeProcessor extends AttributeProcessor {
 		else if (process.env.NODE_ENV !== 'test') {
 			console.warn(`Value to ${attribute}, ${attributeValue}, doesn't seem to contain an attribute assignment expression.  Ignoring.`);
 		}
-		element.removeAttribute(attribute);
+		return super.process(element, attribute, attributeValue, context);
 	}
 }

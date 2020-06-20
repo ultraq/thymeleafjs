@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-import ExpressionProcessor from '../expressions/ExpressionProcessor.js';
-import AttributeProcessor  from '../../processors/AttributeProcessor.js';
+import ExpressionProcessor            from '../expressions/ExpressionProcessor.js';
+import SelfRemovingAttributeProcessor from '../../processors/SelfRemovingAttributeProcessor.js';
 
 /**
  * `th:with`, used for creating scoped variables, useful for aliasing things.
  * 
  * @author Emanuel Rabina
  */
-export default class WithAttributeProcessor extends AttributeProcessor {
+export default class WithAttributeProcessor extends SelfRemovingAttributeProcessor {
 
 	static NAME = 'with';
 
@@ -31,10 +31,11 @@ export default class WithAttributeProcessor extends AttributeProcessor {
 	 * prefix.
 	 * 
 	 * @param {String} prefix
+	 * @param {Object} isomorphic
 	 */
-	constructor(prefix) {
+	constructor(prefix, isomorphic) {
 
-		super(prefix, WithAttributeProcessor.NAME);
+		super(prefix, WithAttributeProcessor.NAME, isomorphic);
 	}
 
 	/**
@@ -53,7 +54,7 @@ export default class WithAttributeProcessor extends AttributeProcessor {
 	 */
 	process(element, attribute, attributeValue, context) {
 
-		element.removeAttribute(attribute);
+		super.process(element, attribute, attributeValue, context);
 
 		let localVariables = {};
 		let aliases = new ExpressionProcessor().process(attributeValue, context);

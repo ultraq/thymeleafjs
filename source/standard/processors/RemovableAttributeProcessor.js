@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import ExpressionProcessor from '../expressions/ExpressionProcessor.js';
-import AttributeProcessor  from '../../processors/AttributeProcessor.js';
+import ExpressionProcessor            from '../expressions/ExpressionProcessor.js';
+import SelfRemovingAttributeProcessor from '../../processors/SelfRemovingAttributeProcessor.js';
 
 /**
  * Configurable attribute processor that sets or removes an attribute on an
@@ -23,17 +23,18 @@ import AttributeProcessor  from '../../processors/AttributeProcessor.js';
  * 
  * @author Emanuel Rabina
  */
-export default class RemovableAttributeProcessor extends AttributeProcessor {
+export default class RemovableAttributeProcessor extends SelfRemovingAttributeProcessor {
 
 	/**
 	 * Constructor, set the name of the attribute this processor will operate on.
 	 * 
 	 * @param {String} prefix
 	 * @param {String} name
+	 * @param {Object} isomorphic
 	 */
-	constructor(prefix, name) {
+	constructor(prefix, name, isomorphic) {
 
-		super(prefix, name);
+		super(prefix, name, isomorphic);
 	}
 
 	/**
@@ -48,6 +49,7 @@ export default class RemovableAttributeProcessor extends AttributeProcessor {
 	 * @param {String} attributeValue
 	 *   The value given by the attribute.
 	 * @param {Object} context
+	 * @return {Boolean} `false`.
 	 */
 	process(element, attribute, attributeValue, context) {
 
@@ -59,7 +61,7 @@ export default class RemovableAttributeProcessor extends AttributeProcessor {
 			element.removeAttribute(this.name);
 		}
 
-		element.removeAttribute(attribute);
+		return super.process(element, attribute, attributeValue, context);
 	}
 }
 

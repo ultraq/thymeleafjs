@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import ExpressionProcessor from '../expressions/ExpressionProcessor.js';
-import AttributeProcessor  from '../../processors/AttributeProcessor.js';
+import ExpressionProcessor            from '../expressions/ExpressionProcessor.js';
+import SelfRemovingAttributeProcessor from '../../processors/SelfRemovingAttributeProcessor.js';
 
 /**
  * The `th:classappend` is a special attribute that applies the expression to
@@ -23,7 +23,7 @@ import AttributeProcessor  from '../../processors/AttributeProcessor.js';
  * 
  * @author Emanuel Rabina
  */
-export default class ClassAppendAttributeProcessor extends AttributeProcessor {
+export default class ClassAppendAttributeProcessor extends SelfRemovingAttributeProcessor {
 
 	static NAME = 'classappend';
 
@@ -31,10 +31,11 @@ export default class ClassAppendAttributeProcessor extends AttributeProcessor {
 	 * Constructor, set this processor to use the `attr` name and supplied prefix.
 	 * 
 	 * @param {String} prefix
+	 * @param {Object} isomorphic
 	 */
-	constructor(prefix) {
+	constructor(prefix, isomorphic) {
 
-		super(prefix, ClassAppendAttributeProcessor.NAME);
+		super(prefix, ClassAppendAttributeProcessor.NAME, isomorphic);
 	}
 
 	/**
@@ -49,6 +50,7 @@ export default class ClassAppendAttributeProcessor extends AttributeProcessor {
 	 * @param {String} attributeValue
 	 *   The value given by the attribute.
 	 * @param {Object} context
+	 * @return {Boolean} `false`.
 	 */
 	process(element, attribute, attributeValue, context) {
 
@@ -56,6 +58,6 @@ export default class ClassAppendAttributeProcessor extends AttributeProcessor {
 		if (classes) {
 			element.className += ` ${classes}`;
 		}
-		element.removeAttribute(attribute);
+		return super.process(element, attribute, attributeValue, context);
 	}
 }

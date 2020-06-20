@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-import FragmentAttributeProcessor   from './FragmentAttributeProcessor.js';
-import StandardDialect              from '../StandardDialect.js';
-import ExpressionProcessor          from '../expressions/ExpressionProcessor.js';
-import FragmentSignatureGrammar     from '../expressions/FragmentSignatureGrammar.js';
-import AttributeProcessor           from '../../processors/AttributeProcessor.js';
-import {getThymeleafAttributeValue} from '../../utilities/Dom.js';
-import {extractFragment}            from '../../utilities/Fragments.js';
+import FragmentAttributeProcessor     from './FragmentAttributeProcessor.js';
+import StandardDialect                from '../StandardDialect.js';
+import ExpressionProcessor            from '../expressions/ExpressionProcessor.js';
+import FragmentSignatureGrammar       from '../expressions/FragmentSignatureGrammar.js';
+import SelfRemovingAttributeProcessor from '../../processors/SelfRemovingAttributeProcessor.js';
+import {getThymeleafAttributeValue}   from '../../utilities/Dom.js';
+import {extractFragment}              from '../../utilities/Fragments.js';
 
 import {clearChildren} from '@ultraq/dom-utils';
 
@@ -30,7 +30,7 @@ import {clearChildren} from '@ultraq/dom-utils';
  * 
  * @author Emanuel Rabina
  */
-export default class InsertAttributeProcessor extends AttributeProcessor {
+export default class InsertAttributeProcessor extends SelfRemovingAttributeProcessor {
 
 	static NAME = 'insert';
 
@@ -39,10 +39,11 @@ export default class InsertAttributeProcessor extends AttributeProcessor {
 	 * prefix.
 	 * 
 	 * @param {String} prefix
+	 * @param {Object} isomorphic
 	 */
-	constructor(prefix) {
+	constructor(prefix, isomorphic) {
 
-		super(prefix, InsertAttributeProcessor.NAME);
+		super(prefix, InsertAttributeProcessor.NAME, isomorphic);
 	}
 
 	/**
@@ -57,12 +58,12 @@ export default class InsertAttributeProcessor extends AttributeProcessor {
 	 * @param {String} attributeValue
 	 *   The value given by the attribute.
 	 * @param {Object} context
-	 * @return {Promise<Boolean>} Whether or not the parent element needs to do a
-	 *   second pass as its children have been modified by this processor.
+	 * @return {Boolean} Whether or not the parent element needs to do a second
+	 *   pass as its children have been modified by this processor.
 	 */
 	async process(element, attribute, attributeValue, context) {
 
-		element.removeAttribute(attribute);
+		super.process(element, attribute, attributeValue, context);
 		clearChildren(element);
 
 		let fragmentInfo = new ExpressionProcessor().process(attributeValue, context);

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import AttributeProcessor from '../../processors/AttributeProcessor.js';
+import SelfRemovingAttributeProcessor from '../../processors/SelfRemovingAttributeProcessor.js';
 
 /**
  * JS equivalent of Thymeleaf's `th:fragment` attribute processor, marks an
@@ -23,7 +23,7 @@ import AttributeProcessor from '../../processors/AttributeProcessor.js';
  * 
  * @author Emanuel Rabina
  */
-export default class FragmentAttributeProcessor extends AttributeProcessor {
+export default class FragmentAttributeProcessor extends SelfRemovingAttributeProcessor {
 
 	static NAME = 'fragment';
 
@@ -32,26 +32,10 @@ export default class FragmentAttributeProcessor extends AttributeProcessor {
 	 * prefix.
 	 * 
 	 * @param {String} prefix
+	 * @param {Object} isomorphic
 	 */
-	constructor(prefix) {
+	constructor(prefix, isomorphic) {
 
-		super(prefix, FragmentAttributeProcessor.NAME);
-	}
-
-	/**
-	 * Processes an element that contains a `th:fragment` or `data-th-fragment`
-	 * attribute on it.
-	 * 
-	 * @param {Element} element
-	 *   Element being processed.
-	 * @param {String} attribute
-	 *   The attribute that was encountered to invoke this processor.
-	 * @param {String} attributeValue
-	 *   The value given by the attribute.
-	 * @param {Object} context
-	 */
-	process(element, attribute, attributeValue, context) {
-
-		element.removeAttribute(attribute);
+		super(prefix, FragmentAttributeProcessor.NAME, isomorphic);
 	}
 }

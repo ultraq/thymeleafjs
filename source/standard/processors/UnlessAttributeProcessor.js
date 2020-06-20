@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import ExpressionProcessor from '../expressions/ExpressionProcessor.js';
-import AttributeProcessor  from '../../processors/AttributeProcessor.js';
+import ExpressionProcessor            from '../expressions/ExpressionProcessor.js';
+import SelfRemovingAttributeProcessor from '../../processors/SelfRemovingAttributeProcessor.js';
 
 import {clearChildren} from '@ultraq/dom-utils';
 
@@ -26,7 +26,7 @@ import {clearChildren} from '@ultraq/dom-utils';
  * 
  * @author Robbie Bardijn
  */
-export default class UnlessAttributeProcessor extends AttributeProcessor {
+export default class UnlessAttributeProcessor extends SelfRemovingAttributeProcessor {
 
 	static NAME = 'unless';
 
@@ -34,10 +34,11 @@ export default class UnlessAttributeProcessor extends AttributeProcessor {
 	 * Constructor, set this processor to use the `unless` name and supplied prefix.
 	 * 
 	 * @param {String} prefix
+	 * @param {Object} isomorphic
 	 */
-	constructor(prefix) {
+	constructor(prefix, isomorphic) {
 
-		super(prefix, UnlessAttributeProcessor.NAME);
+		super(prefix, UnlessAttributeProcessor.NAME, isomorphic);
 	}
 
 	/**
@@ -52,14 +53,17 @@ export default class UnlessAttributeProcessor extends AttributeProcessor {
 	 * @param {String} attributeValue
 	 *   The value given by the attribute.
 	 * @param {Object} context
+	 * @return {Boolean} `true` if the element was removed.
 	 */
 	process(element, attribute, attributeValue, context) {
 
 		let expressionResult = new ExpressionProcessor().process(attributeValue, context);
 		if (expressionResult) {
 			clearChildren(element);
+			// TODO: element.remove()?
 			element.parentNode.removeChild(element);
+			return true;
 		}
-		element.removeAttribute(attribute);
+		return super.process(element, attribute, attributeValue, context);
 	}
 }

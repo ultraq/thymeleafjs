@@ -48,14 +48,16 @@ export default class StandardDialect extends Dialect {
 	static DEFAULT_PREFIX = 'thjs';
 
 	/**
-	 * Create an instance of this dialect with the name "Standard" and
-	 * given prefix, defaulting to "th" if not supplied.
+	 * Create an instance of this dialect with the name "Standard" and given
+	 * prefix.
 	 * 
 	 * @param {String} [prefix='thjs']
+	 * @param {Object} [isomorphic]
 	 */
-	constructor(prefix = StandardDialect.DEFAULT_PREFIX) {
+	constructor(prefix = StandardDialect.DEFAULT_PREFIX, isomorphic) {
 
 		super(StandardDialect.NAME, prefix);
+		this.isomorphic = isomorphic;
 	}
 
 	/**
@@ -70,50 +72,50 @@ export default class StandardDialect extends Dialect {
 		//       Thymeleaf.  Figure out a 'proper' way to do the ordering.
 
 		// Order taken from https://www.thymeleaf.org/doc/tutorials/3.0/usingthymeleaf.html#attribute-precedence
-		let {prefix} = this;
+		let {prefix, isomorphic} = this;
 		return [
 			// Fragment inclusion
-			new InsertAttributeProcessor(prefix),
-			new ReplaceAttributeProcessor(prefix),
+			new InsertAttributeProcessor(prefix, isomorphic),
+			new ReplaceAttributeProcessor(prefix, isomorphic),
 
 			// Fragment iteration
-			new EachAttributeProcessor(prefix),
+			new EachAttributeProcessor(prefix, isomorphic),
 
 			// Conditional evaluation
-			new IfAttributeProcessor(prefix),
-			new UnlessAttributeProcessor(prefix),
+			new IfAttributeProcessor(prefix, isomorphic),
+			new UnlessAttributeProcessor(prefix, isomorphic),
 
 			// Local variable definition
-			new WithAttributeProcessor(prefix),
+			new WithAttributeProcessor(prefix, isomorphic),
 
 			// General attribute modification
-			new AttrAttributeProcessor(prefix),
-			new ClassAppendAttributeProcessor(prefix),
+			new AttrAttributeProcessor(prefix, isomorphic),
+			new ClassAppendAttributeProcessor(prefix, isomorphic),
 			...EMPTYABLE_ATTRIBUTE_NAMES.map(attributeName => {
-				return new EmptyableAttributeProcessor(prefix, attributeName);
+				return new EmptyableAttributeProcessor(prefix, attributeName, isomorphic);
 			}),
 			...REMOVABLE_ATTRIBUTE_NAMES.map(attributeName => {
-				return new RemovableAttributeProcessor(prefix, attributeName);
+				return new RemovableAttributeProcessor(prefix, attributeName, isomorphic);
 			}),
 
 			// Specific attribute modification
-			new CheckedAttributeProcessor(prefix),
+			new CheckedAttributeProcessor(prefix, isomorphic),
 
 			// Text
-			new TextAttributeProcessor(prefix),
-			new UTextAttributeProcessor(prefix),
+			new TextAttributeProcessor(prefix, isomorphic),
+			new UTextAttributeProcessor(prefix, isomorphic),
 
 			// Fragment specification
-			new FragmentAttributeProcessor(prefix),
+			new FragmentAttributeProcessor(prefix, isomorphic),
 
 			// Fragment removal
-			new RemoveAttributeProcessor(prefix),
+			new RemoveAttributeProcessor(prefix, isomorphic),
 
 			// Element processors
 			new BlockElementProcessor(prefix),
 
 			// Misc
-			new XmlNsAttributeProcessor(prefix)
+			new XmlNsAttributeProcessor(prefix, isomorphic)
 		];
 	}
 }

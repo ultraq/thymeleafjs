@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import ExpressionProcessor from '../expressions/ExpressionProcessor.js';
-import AttributeProcessor  from '../../processors/AttributeProcessor.js';
+import ExpressionProcessor            from '../expressions/ExpressionProcessor.js';
+import SelfRemovingAttributeProcessor from '../../processors/SelfRemovingAttributeProcessor.js';
 
 import {clearChildren} from '@ultraq/dom-utils';
 
@@ -26,7 +26,7 @@ import {clearChildren} from '@ultraq/dom-utils';
  * 
  * @author Emanuel Rabina
  */
-export default class IfAttributeProcessor extends AttributeProcessor {
+export default class IfAttributeProcessor extends SelfRemovingAttributeProcessor {
 
 	static NAME = 'if';
 
@@ -34,10 +34,11 @@ export default class IfAttributeProcessor extends AttributeProcessor {
 	 * Constructor, set this processor to use the `if` name and supplied prefix.
 	 * 
 	 * @param {String} prefix
+	 * @param {Object} isomorphic
 	 */
-	constructor(prefix) {
+	constructor(prefix, isomorphic) {
 
-		super(prefix, IfAttributeProcessor.NAME);
+		super(prefix, IfAttributeProcessor.NAME, isomorphic);
 	}
 
 	/**
@@ -59,9 +60,10 @@ export default class IfAttributeProcessor extends AttributeProcessor {
 		let expressionResult = new ExpressionProcessor().process(attributeValue, context);
 		if (!expressionResult) {
 			clearChildren(element);
+			// TODO: element.remove()?
 			element.parentNode.removeChild(element);
 			return true;
 		}
-		element.removeAttribute(attribute);
+		return super.process(element, attribute, attributeValue, context);
 	}
 }

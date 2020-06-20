@@ -14,30 +14,32 @@
  * limitations under the License.
  */
 
-import AttributeProcessor from '../../processors/AttributeProcessor.js';
+import AttributeProcessor from './AttributeProcessor.js';
 
 /**
- * `xmlns:th`, used for removing the Thymeleaf XML namespace often added to HTML
- * files to satisfy the XML validators that are used to edit them.
+ * An attribute processor that removes itself from the element being processed.
+ * Used for providing this behaviour to the standard processors, and for being
+ * able to work with isomorphic use cases.
  * 
  * @author Emanuel Rabina
  */
-export default class XmlNsAttributeProcessor extends AttributeProcessor {
+export default class SelfRemovingAttributeProcessor extends AttributeProcessor {
 
 	/**
-	 * Constructor, set this processor to operate on the given XML namespace.
-	 * 
+	 * Constructor, saves the isomorphic information for processing.
+	 *
 	 * @param {String} prefix
+	 * @param {String} name
 	 * @param {Object} isomorphic
 	 */
-	constructor(prefix, isomorphic) {
+	constructor(prefix, name, isomorphic) {
 
-		super('xmlns', prefix);
+		super(prefix, name);
 		this.isomorphic = isomorphic;
 	}
 
 	/**
-	 * Removes the XML namespace from an element.
+	 * Removes this attribute from the element being processed.
 	 * 
 	 * @param {Element} element
 	 *   Element being processed.
@@ -46,14 +48,14 @@ export default class XmlNsAttributeProcessor extends AttributeProcessor {
 	 * @param {String} attributeValue
 	 *   The value given by the attribute.
 	 * @param {Object} context
-	 * @return {Boolean} `false`, as removing the XML namespace never requires
+	 * @return {Boolean} `false` as removing an attribute never requires
 	 *   repropcessing.
 	 */
-	process(element, attribute, attributeValue, context) {
+	async process(element, attribute, attributeValue, context) {
 
 		element.removeAttribute(attribute);
 		if (this.isomorphic) {
-			element.removeAttribute(`xmlns:${this.isomorphic.prefix}`);
+			element.removeAttribute(`${context.standardDialect.prefix}:${this.name}`);
 		}
 		return false;
 	}

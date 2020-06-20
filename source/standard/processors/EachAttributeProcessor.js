@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import ExpressionProcessor from '../expressions/ExpressionProcessor.js';
-import AttributeProcessor  from '../../processors/AttributeProcessor.js';
+import ExpressionProcessor            from '../expressions/ExpressionProcessor.js';
+import SelfRemovingAttributeProcessor from '../../processors/SelfRemovingAttributeProcessor.js';
 
 /**
  * JS equivalent of Thymeleaf's `th:each` attribute processor, iterates over an
@@ -24,7 +24,7 @@ import AttributeProcessor  from '../../processors/AttributeProcessor.js';
  * 
  * @author Emanuel Rabina
  */
-export default class EachAttributeProcessor extends AttributeProcessor {
+export default class EachAttributeProcessor extends SelfRemovingAttributeProcessor {
 
 	static NAME = 'each';
 
@@ -32,10 +32,11 @@ export default class EachAttributeProcessor extends AttributeProcessor {
 	 * Constructor, set this processor to use the `each` name and supplied prefix.
 	 * 
 	 * @param {String} prefix
+	 * @param {Object} isomorphic
 	 */
-	constructor(prefix) {
+	constructor(prefix, isomorphic) {
 
-		super(prefix, EachAttributeProcessor.NAME);
+		super(prefix, EachAttributeProcessor.NAME, isomorphic);
 	}
 
 	/**
@@ -54,7 +55,7 @@ export default class EachAttributeProcessor extends AttributeProcessor {
 	 */
 	process(element, attribute, attributeValue, context) {
 
-		element.removeAttribute(attribute);
+		super.process(element, attribute, attributeValue, context);
 
 		let iterationInfo = new ExpressionProcessor().process(attributeValue, context);
 		if (iterationInfo) {

@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-import ExpressionProcessor from '../expressions/ExpressionProcessor.js';
-import AttributeProcessor  from '../../processors/AttributeProcessor.js';
-import {buildMessage}      from '../../utilities/Messages.js';
+import ExpressionProcessor            from '../expressions/ExpressionProcessor.js';
+import SelfRemovingAttributeProcessor from '../../processors/SelfRemovingAttributeProcessor.js';
+import {buildMessage}                 from '../../utilities/Messages.js';
 
 /**
  * JS equivalent of Thymeleaf's `th:text` attribute processor, applies the
@@ -25,7 +25,7 @@ import {buildMessage}      from '../../utilities/Messages.js';
  * 
  * @author Emanuel Rabina
  */
-export default class TextAttributeProcessor extends AttributeProcessor {
+export default class TextAttributeProcessor extends SelfRemovingAttributeProcessor {
 
 	static NAME = 'text';
 
@@ -33,10 +33,11 @@ export default class TextAttributeProcessor extends AttributeProcessor {
 	 * Constructor, set this processor to use the `text` name and supplied prefix.
 	 * 
 	 * @param {String} prefix
+	 * @param {Object} isomorphic
 	 */
-	constructor(prefix) {
+	constructor(prefix, isomorphic) {
 
-		super(prefix, TextAttributeProcessor.NAME);
+		super(prefix, TextAttributeProcessor.NAME, isomorphic);
 	}
 
 	/**
@@ -51,6 +52,7 @@ export default class TextAttributeProcessor extends AttributeProcessor {
 	 * @param {String} attributeValue
 	 *   The value given by the attribute.
 	 * @param {Object} context
+	 * @return {Boolean} `false`.
 	 */
 	async process(element, attribute, attributeValue, context) {
 
@@ -60,6 +62,6 @@ export default class TextAttributeProcessor extends AttributeProcessor {
 		element.textContent =
 			typeof messageResult === 'object' ? await buildMessage(messageResult, context) :
 			messageResult;
-		element.removeAttribute(attribute);
+		return super.process(element, attribute, attributeValue, context);
 	}
 }

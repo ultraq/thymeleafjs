@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import ExpressionProcessor from '../expressions/ExpressionProcessor.js';
-import AttributeProcessor  from '../../processors/AttributeProcessor.js';
+import ExpressionProcessor            from '../expressions/ExpressionProcessor.js';
+import SelfRemovingAttributeProcessor from '../../processors/SelfRemovingAttributeProcessor.js';
 
 /**
  * JS equivalent of Thymeleaf's `th:utext` attribute processor, applies the
@@ -24,7 +24,7 @@ import AttributeProcessor  from '../../processors/AttributeProcessor.js';
  * 
  * @author Emanuel Rabina
  */
-export default class UTextAttributeProcessor extends AttributeProcessor {
+export default class UTextAttributeProcessor extends SelfRemovingAttributeProcessor {
 
 	static NAME = 'utext';
 
@@ -33,10 +33,11 @@ export default class UTextAttributeProcessor extends AttributeProcessor {
 	 * prefix.
 	 * 
 	 * @param {String} prefix
+	 * @param {Object} isomorphic
 	 */
-	constructor(prefix) {
+	constructor(prefix, isomorphic) {
 
-		super(prefix, UTextAttributeProcessor.NAME);
+		super(prefix, UTextAttributeProcessor.NAME, isomorphic);
 	}
 
 	/**
@@ -51,10 +52,11 @@ export default class UTextAttributeProcessor extends AttributeProcessor {
 	 * @param {String} attributeValue
 	 *   The value given by the attribute.
 	 * @param {Object} context
+	 * @return {Boolean} `false`.
 	 */
 	process(element, attribute, attributeValue, context) {
 
 		element.innerHTML = new ExpressionProcessor().process(attributeValue, context);
-		element.removeAttribute(attribute);
+		return super.process(element, attribute, attributeValue, context);
 	}
 }

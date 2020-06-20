@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import ExpressionProcessor from '../expressions/ExpressionProcessor.js';
-import AttributeProcessor  from '../../processors/AttributeProcessor.js';
+import ExpressionProcessor            from '../expressions/ExpressionProcessor.js';
+import SelfRemovingAttributeProcessor from '../../processors/SelfRemovingAttributeProcessor.js';
 
 /**
  * Thymeleaf's `th:checked` attribute processor, sets or removes the `checked`
@@ -29,7 +29,7 @@ import AttributeProcessor  from '../../processors/AttributeProcessor.js';
  * 
  * @author Emanuel Rabina
  */
-export default class CheckedAttributeProcessor extends AttributeProcessor {
+export default class CheckedAttributeProcessor extends SelfRemovingAttributeProcessor {
 
 	static NAME = 'checked';
 
@@ -38,10 +38,11 @@ export default class CheckedAttributeProcessor extends AttributeProcessor {
 	 * prefix.
 	 * 
 	 * @param {String} prefix
+	 * @param {Object} isomorphic
 	 */
-	constructor(prefix) {
+	constructor(prefix, isomorphic) {
 
-		super(prefix, CheckedAttributeProcessor.NAME);
+		super(prefix, CheckedAttributeProcessor.NAME, isomorphic);
 	}
 
 	/**
@@ -56,6 +57,7 @@ export default class CheckedAttributeProcessor extends AttributeProcessor {
 	 * @param {String} attributeValue
 	 *   The value given by the attribute.
 	 * @param {Object} context
+	 * @return {Boolean} `false`.
 	 */
 	process(element, attribute, attributeValue, context) {
 
@@ -67,6 +69,6 @@ export default class CheckedAttributeProcessor extends AttributeProcessor {
 			element.removeAttribute('checked');
 		}
 
-		element.removeAttribute(attribute);
+		return super.process(element, attribute, attributeValue, context);
 	}
 }

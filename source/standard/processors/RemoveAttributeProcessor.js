@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import AttributeProcessor from '../../processors/AttributeProcessor.js';
+import SelfRemovingAttributeProcessor from '../../processors/SelfRemovingAttributeProcessor.js';
 
 /**
  * `th:remove`, used to remove the current element or select parts of it (and
@@ -22,7 +22,7 @@ import AttributeProcessor from '../../processors/AttributeProcessor.js';
  * 
  * @author Emanuel Rabina
  */
-export default class RemoveAttributeProcessor extends AttributeProcessor {
+export default class RemoveAttributeProcessor extends SelfRemovingAttributeProcessor {
 
 	static NAME = 'remove';
 
@@ -31,10 +31,11 @@ export default class RemoveAttributeProcessor extends AttributeProcessor {
 	 * prefix.
 	 * 
 	 * @param {String} prefix
+	 * @param {Object} isomorphic
 	 */
-	constructor(prefix) {
+	constructor(prefix, isomorphic) {
 
-		super(prefix, RemoveAttributeProcessor.NAME);
+		super(prefix, RemoveAttributeProcessor.NAME, isomorphic);
 	}
 
 	/**
@@ -54,7 +55,7 @@ export default class RemoveAttributeProcessor extends AttributeProcessor {
 	 */
 	process(element, attribute, attributeValue, context) {
 
-		element.removeAttribute(attribute);
+		super.process(element, attribute, attributeValue, context);
 
 		switch (attributeValue) {
 			case 'all':

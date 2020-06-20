@@ -18,7 +18,6 @@ import {DEFAULT_CONFIGURATION}  from './Configurations.js';
 import AttributeProcessor       from './processors/AttributeProcessor.js';
 import ElementProcessor         from './processors/ElementProcessor.js';
 import Matcher                  from './processors/Matcher.js';
-import StandardDialect          from './standard/StandardDialect.js';
 import {deserialize, serialize} from './utilities/Dom.js';
 import {promisify}              from './utilities/Functions.js';
 
@@ -38,12 +37,10 @@ export default class TemplateEngine {
 	constructor({dialects, isomorphic, messageResolver, templateResolver} = DEFAULT_CONFIGURATION) {
 
 		this.dialects = dialects;
-		this.standardDialect = dialects.find(dialect => dialect instanceof StandardDialect);
+		this.standardDialect = dialects.find(dialect => dialect.name === 'Standard');
 		this.isomorphic = isomorphic;
 		this.messageResolver = messageResolver;
 		this.templateResolver = templateResolver;
-
-		this.xmlNamespaceAttribute = `xmlns:${this.standardDialect?.prefix || StandardDialect.DEFAULT_PREFIX}`;
 
 		// Combine all processors into a unified list
 		this.processors = dialects.reduce((acc, {processors}) => processors ? [
@@ -75,15 +72,11 @@ export default class TemplateEngine {
 			...context,
 			...this.expressionObjects,
 			dialects:         this.dialects,
+			standardDialect:  this.standardDialect,
 			messageResolver:  this.messageResolver,
 			templateResolver: this.templateResolver
 		})
 			.then(() => {
-				// TODO: Special case, remove the xmlns:thjs namespace in isomorphic
-				//       mode.  This should also be handled with another processor.
-				if (this.isomorphic?.prefix && rootElement.hasAttribute(this.isomorphic.prefix)) {
-					rootElement.removeAttribute(this.isomorphic.prefix);
-				}
 				return serialize(documentFragment);
 			});
 	}
@@ -136,17 +129,12 @@ export default class TemplateEngine {
 			let processor = this.processors[i];
 			let processorResult = false;
 
-			let {match, isomorphic} = matcher.matches(element, processor);
+			let {match} = matcher.matches(element, processor);
 			if (match) {
 				// TODO: Some way to do this generically and not have to type check?
 				if (processor instanceof AttributeProcessor) {
 					processorResult = await processor.process(element, match,
 						element.getAttribute(match), localContext);
-
-					// TODO: Some better way of clearing out the standard attribute
-					if (isomorphic) {
-						element.removeAttribute(`${this.standardDialect.prefix}:${processor.name}`);
-					}
 				}
 				else if (processor instanceof ElementProcessor) {
 					processorResult = await processor.process(element, localContext);
