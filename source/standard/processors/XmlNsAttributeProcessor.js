@@ -1,5 +1,5 @@
 /* 
- * Copyright 2019, Emanuel Rabina (http://www.ultraq.net.nz/)
+ * Copyright 2020, Emanuel Rabina (http://www.ultraq.net.nz/)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,32 +14,30 @@
  * limitations under the License.
  */
 
-import ExpressionProcessor from '../expressions/ExpressionProcessor.js';
-import AttributeProcessor  from '../../processors/AttributeProcessor.js';
+import AttributeProcessor from '../../processors/AttributeProcessor.js';
 
 /**
- * `th:with`, used for creating scoped variables, useful for aliasing things.
+ * `xmlns:th`, used for removing the Thymeleaf XML namespace often added to HTML
+ * files to satisfy the XML validators that are used to edit them.
  * 
  * @author Emanuel Rabina
  */
-export default class WithAttributeProcessor extends AttributeProcessor {
-
-	static NAME = 'with';
+export default class XmlNsAttributeProcessor extends AttributeProcessor {
 
 	/**
-	 * Constructor, set this processor to use the `with` name and supplied
-	 * prefix.
+	 * Constructor, set this processor to operate on the given XML namespace.
 	 * 
 	 * @param {String} prefix
 	 */
 	constructor(prefix) {
 
-		super(prefix, WithAttributeProcessor.NAME);
+		super('xmlns', prefix);
 	}
 
 	/**
-	 * Processes an element that contains a `th:with`/`data-th-with` attribute,
-	 * setting a variable scoped to the current element with the given name.
+	 * Processes an element that contains a `th:remove`/`data-th-remove`
+	 * attribute, removing the current element or parts of it based on the
+	 * attribute value.
 	 * 
 	 * @param {Element} element
 	 *   Element being processed.
@@ -48,20 +46,12 @@ export default class WithAttributeProcessor extends AttributeProcessor {
 	 * @param {String} attributeValue
 	 *   The value given by the attribute.
 	 * @param {Object} context
-	 * @return {Boolean} `true` as adding new local variables needs to re-run
-	 *   processing.
+	 * @return {Boolean} `false`, as removing the XML namespace never requires
+	 *   repropcessing.
 	 */
 	process(element, attribute, attributeValue, context) {
 
 		element.removeAttribute(attribute);
-
-		let localVariables = {};
-		let aliases = new ExpressionProcessor().process(attributeValue, context);
-		aliases.forEach(({name, value}) => {
-			localVariables[name] = value;
-		});
-		element.__thymeleafLocalVariables = localVariables;
-
-		return true;
+		return false;
 	}
 }

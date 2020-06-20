@@ -34,6 +34,7 @@ import TextAttributeProcessor        from './processors/TextAttributeProcessor.j
 import UnlessAttributeProcessor      from './processors/UnlessAttributeProcessor.js';
 import UTextAttributeProcessor       from './processors/UTextAttributeProcessor.js';
 import WithAttributeProcessor        from './processors/WithAttributeProcessor.js';
+import XmlNsAttributeProcessor       from './processors/XmlNsAttributeProcessor.js';
 import Dialect                       from '../dialects/Dialect.js';
 
 /**
@@ -109,7 +110,10 @@ export default class StandardDialect extends Dialect {
 			new RemoveAttributeProcessor(prefix),
 
 			// Element processors
-			new BlockElementProcessor(prefix)
+			new BlockElementProcessor(prefix),
+
+			// Misc
+			new XmlNsAttributeProcessor(prefix)
 		];
 	}
 }

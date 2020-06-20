@@ -79,12 +79,6 @@ export default class TemplateEngine {
 			templateResolver: this.templateResolver
 		})
 			.then(() => {
-				// TODO: Special case, remove the xmlns:thjs namespace from the
-				//       document.  This should be handled like in main Thymeleaf where
-				//       it's just another processor that runs on the document.
-				if (rootElement.hasAttribute(this.xmlNamespaceAttribute)) {
-					rootElement.removeAttribute(this.xmlNamespaceAttribute);
-				}
 				// TODO: Special case, remove the xmlns:thjs namespace in isomorphic
 				//       mode.  This should also be handled with another processor.
 				if (this.isomorphic?.prefix && rootElement.hasAttribute(this.isomorphic.prefix)) {
