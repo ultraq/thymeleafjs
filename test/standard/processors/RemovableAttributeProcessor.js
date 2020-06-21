@@ -14,15 +14,10 @@
  * limitations under the License.
  */
 
-import ExpressionProcessor             from '../../../source/standard/expressions/ExpressionProcessor.js';
-import ThymeleafExpressionLanguage     from '../../../source/standard/expressions/ThymeleafExpressionLanguage.js';
-import RemovableAttributeProcessor     from '../../../source/standard/processors/RemovableAttributeProcessor.js';
-import {createThymeleafAttributeValue} from '../../../source/utilities/Dom.js';
-
-import h  from 'hyperscript';
-import hh from 'hyperscript-helpers';
-
-const {div} = hh(h);
+import ExpressionProcessor         from '../../../source/standard/expressions/ExpressionProcessor.js';
+import ThymeleafExpressionLanguage from '../../../source/standard/expressions/ThymeleafExpressionLanguage.js';
+import RemovableAttributeProcessor from '../../../source/standard/processors/RemovableAttributeProcessor.js';
+import {createHtml}                from '../../../source/utilities/Dom.js';
 
 /**
  * Tests for the configurable removable attribute processor.
@@ -39,11 +34,7 @@ describe('processors/standard/RemovableAttributeProcessor', function() {
 			let processor = new RemovableAttributeProcessor('test', attributeName, new ExpressionProcessor(ThymeleafExpressionLanguage));
 			let attribute = `test:${attributeName}`;
 			let attributeValue = '${greeting}';
-			let element = createThymeleafAttributeValue(
-				div({ [attributeName]: 'to-be-replaced' }),
-				attribute,
-				attributeValue
-			);
+			let element = createHtml(`<div ${attributeName}="to-be-replaced" ${attribute}="${attributeValue}"></div>`);
 			processor.process(element, attribute, attributeValue, context);
 			expect(element.getAttribute(attributeName)).toBe(context.greeting);
 		});
@@ -54,14 +45,9 @@ describe('processors/standard/RemovableAttributeProcessor', function() {
 			let processor = new RemovableAttributeProcessor('test', attributeName, new ExpressionProcessor(ThymeleafExpressionLanguage));
 			let attribute = `test:${attributeName}`;
 			let attributeValue = '${nothing}';
-			let element = createThymeleafAttributeValue(
-				div({ [attributeName]: 'to-be-replaced' }),
-				attribute,
-				attributeValue
-			);
+			let element = createHtml(`<div ${attributeName}="to-be-replaced" ${attribute}="${attributeValue}"></div>`);
 			processor.process(element, attribute, attributeValue, context);
 			expect(element.hasAttribute(attributeName)).toBe(false);
 		});
 	});
-
 });

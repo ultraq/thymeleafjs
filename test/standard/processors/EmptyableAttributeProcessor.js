@@ -14,15 +14,10 @@
  * limitations under the License.
  */
 
-import ExpressionProcessor             from '../../../source/standard/expressions/ExpressionProcessor.js';
-import ThymeleafExpressionLanguage     from '../../../source/standard/expressions/ThymeleafExpressionLanguage.js';
-import EmptyableAttributeProcessor     from '../../../source/standard/processors/EmptyableAttributeProcessor.js';
-import {createThymeleafAttributeValue} from '../../../source/utilities/Dom.js';
-
-import h  from 'hyperscript';
-import hh from 'hyperscript-helpers';
-
-const {div} = hh(h);
+import ExpressionProcessor         from '../../../source/standard/expressions/ExpressionProcessor.js';
+import ThymeleafExpressionLanguage from '../../../source/standard/expressions/ThymeleafExpressionLanguage.js';
+import EmptyableAttributeProcessor from '../../../source/standard/processors/EmptyableAttributeProcessor.js';
+import {createHtml}                from '../../../source/utilities/Dom.js';
 
 /**
  * Tests for the configurable emptyable attribute processor.
@@ -40,11 +35,7 @@ describe('processors/standard/EmptyableAttributeProcessor', function() {
 			let processor = new EmptyableAttributeProcessor('test', attributeName, expressionProcessor);
 			let attribute = `test:${attributeName}`;
 			let attributeValue = '${greeting}';
-			let element = createThymeleafAttributeValue(
-				div({ [attributeName]: 'to-be-replaced' }),
-				attribute,
-				attributeValue
-			);
+			let element = createHtml(`<div ${attributeName}="to-be-replaced" ${attribute}="${attributeValue}"></div>`);
 			processor.process(element, attribute, attributeValue, context);
 			expect(element.getAttribute(attributeName)).toBe(context.greeting);
 		});
@@ -55,11 +46,7 @@ describe('processors/standard/EmptyableAttributeProcessor', function() {
 			let processor = new EmptyableAttributeProcessor('test', attributeName, expressionProcessor);
 			let attribute = `test:${attributeName}`;
 			let attributeValue = '${nothing}';
-			let element = createThymeleafAttributeValue(
-				div({ [attributeName]: 'to-be-replaced' }),
-				attribute,
-				attributeValue
-			);
+			let element = createHtml(`<div ${attributeName}="to-be-replaced" ${attribute}="${attributeValue}"></div>`);
 			processor.process(element, attribute, attributeValue, context);
 			expect(element.getAttribute(attributeName)).toBe('');
 		});

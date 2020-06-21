@@ -31,7 +31,7 @@ export default class RemoveAttributeProcessor extends SelfRemovingAttributeProce
 	 * prefix.
 	 * 
 	 * @param {String} prefix
-	 * @param {Object} isomorphic
+	 * @param {Object} [isomorphic]
 	 */
 	constructor(prefix, isomorphic) {
 

@@ -32,7 +32,7 @@ export default class FragmentAttributeProcessor extends SelfRemovingAttributePro
 	 * prefix.
 	 * 
 	 * @param {String} prefix
-	 * @param {Object} isomorphic
+	 * @param {Object} [isomorphic]
 	 */
 	constructor(prefix, isomorphic) {
 

@@ -14,15 +14,10 @@
  * limitations under the License.
  */
 
-import AttributeProcessor              from '../../source/processors/AttributeProcessor.js';
-import ElementProcessor                from '../../source/processors/ElementProcessor.js';
-import Matcher                         from '../../source/processors/Matcher';
-import {createThymeleafAttributeValue} from '../../source/utilities/Dom';
-
-import h  from 'hyperscript';
-import hh from 'hyperscript-helpers';
-
-const {div} = hh(h);
+import AttributeProcessor from '../../source/processors/AttributeProcessor.js';
+import ElementProcessor   from '../../source/processors/ElementProcessor.js';
+import Matcher            from '../../source/processors/Matcher';
+import {createHtml}       from '../../source/utilities/Dom';
 
 /**
  * Tests for the matcher class.
@@ -42,20 +37,20 @@ describe('processors/Matcher', function() {
 
 		test('Match XML attributes', function() {
 			let attribute = `${prefix}:${name}`;
-			let element = createThymeleafAttributeValue(div(), attribute, 'hello');
+			let element = createHtml(`<div ${attribute}="hello"></div>`);
 			let match = matcher.matches(element, mockProcessor);
 			expect(match).toBe(attribute);
 		});
 
 		test('Match data- attributes', function() {
 			let attribute = `data-${prefix}-${name}`;
-			let element = createThymeleafAttributeValue(div(), attribute, 'hello');
+			let element = createHtml(`<div ${attribute}="hello"></div>`);
 			let match = matcher.matches(element, mockProcessor);
 			expect(match).toBe(attribute);
 		});
 
 		test('Return `null` if no match', function() {
-			let element = createThymeleafAttributeValue(div(), 'test:something-else', 'hello');
+			let element = createHtml('<div> test:something-else="hello"></div>');
 			let match = matcher.matches(element, mockProcessor);
 			expect(match).toBeNull();
 		});
@@ -66,7 +61,7 @@ describe('processors/Matcher', function() {
 
 		test('Match XML namespaced elements', function() {
 			let elementName = `${prefix}:${name}`;
-			let element = document.createElement(elementName);
+			let element = createHtml(`<${elementName}></${elementName}>`);
 			let match = matcher.matches(element, mockProcessor);
 			expect(match).toBe(elementName);
 		});

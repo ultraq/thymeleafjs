@@ -14,15 +14,10 @@
  * limitations under the License.
  */
 
-import ExpressionProcessor             from '../../../source/standard/expressions/ExpressionProcessor.js';
-import ThymeleafExpressionLanguage     from '../../../source/standard/expressions/ThymeleafExpressionLanguage.js';
-import WithAttributeProcessor          from '../../../source/standard/processors/WithAttributeProcessor.js';
-import {createThymeleafAttributeValue} from '../../../source/utilities/Dom.js';
-
-import h  from 'hyperscript';
-import hh from 'hyperscript-helpers';
-
-const {div} = hh(h);
+import ExpressionProcessor         from '../../../source/standard/expressions/ExpressionProcessor.js';
+import ThymeleafExpressionLanguage from '../../../source/standard/expressions/ThymeleafExpressionLanguage.js';
+import WithAttributeProcessor      from '../../../source/standard/processors/WithAttributeProcessor.js';
+import {createHtml}                from '../../../source/utilities/Dom.js';
 
 /**
  * Tests for the `th:with` attribute processor.
@@ -40,7 +35,7 @@ describe('processors/standard/WithAttributeProcessor', function() {
 			someValue: 'Hello!'
 		};
 		let attributeValue = 'someKey=${someValue}';
-		let element = createThymeleafAttributeValue(div(), attribute, attributeValue);
+		let element = createHtml(`<div ${attribute}="${attributeValue}"></div>`);
 
 		processor.process(element, attribute, attributeValue, context);
 

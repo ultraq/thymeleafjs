@@ -14,12 +14,8 @@
  * limitations under the License.
  */
 
-import BlockElementProcessor  from '../../../source/standard/processors/BlockElementProcessor.js';
-
-import h  from 'hyperscript';
-import hh from 'hyperscript-helpers';
-
-const {div, p} = hh(h);
+import BlockElementProcessor from '../../../source/standard/processors/BlockElementProcessor.js';
+import {createHtml}          from '../../../source/utilities/Dom.js';
 
 /**
  * Tests for the block element processor.
@@ -34,16 +30,16 @@ describe('standard/processors/BlockElementProcessor', function() {
 	});
 
 	test('Scoped values copied down to child elements ', function() {
-		let element = document.createElement(elementName);
+		let container = createHtml(`
+			<div>
+				<${elementName}>
+					<p>Hello!</p>
+				</${elementName}>
+			</div>
+		`);
+		let element = container.firstElementChild;
 		element.__thymeleafLocalVariables = {};
-		let paragraph = p('Hello!');
-		element.appendChild(paragraph);
-		div([
-			element
-		]);
-
 		processor.process(element, {});
-
-		expect(paragraph).toHaveProperty('__thymeleafLocalVariables', element.__thymeleafLocalVariables);
+		expect(container.querySelector('p')).toHaveProperty('__thymeleafLocalVariables', element.__thymeleafLocalVariables);
 	});
 });

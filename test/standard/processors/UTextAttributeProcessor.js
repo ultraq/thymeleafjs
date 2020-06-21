@@ -14,15 +14,10 @@
  * limitations under the License.
  */
 
-import ExpressionProcessor             from '../../../source/standard/expressions/ExpressionProcessor.js';
-import ThymeleafExpressionLanguage     from '../../../source/standard/expressions/ThymeleafExpressionLanguage.js';
-import UTextAttributeProcessor         from '../../../source/standard/processors/UTextAttributeProcessor.js';
-import {createThymeleafAttributeValue} from '../../../source/utilities/Dom.js';
-
-import h  from 'hyperscript';
-import hh from 'hyperscript-helpers';
-
-const {div} = hh(h);
+import ExpressionProcessor         from '../../../source/standard/expressions/ExpressionProcessor.js';
+import ThymeleafExpressionLanguage from '../../../source/standard/expressions/ThymeleafExpressionLanguage.js';
+import UTextAttributeProcessor     from '../../../source/standard/processors/UTextAttributeProcessor.js';
+import {createHtml}                from '../../../source/utilities/Dom.js';
 
 /**
  * Tests for the `th:utext` attribute processor.
@@ -38,20 +33,20 @@ describe('processors/standard/UTextAttributeProcessor', function() {
 
 	test("Replaces an element's text content", function() {
 		let text = 'Hello!';
-		let element = createThymeleafAttributeValue(div('Goodbye'), attribute, text);
+		let element = createHtml(`<div ${attribute}="${text}">Goodbye</div>`);
 		processor.process(element, attribute, text);
 		expect(element.innerHTML).toBe(text);
 	});
 
 	test("Doesn't escape special HTML characters in the text content", function() {
 		let text = '<script></script>';
-		let element = createThymeleafAttributeValue(div('HTML stuffs'), attribute, text);
+		let element = createHtml(`<div ${attribute}="${text}">HTML stuffs</div>`);
 		processor.process(element, attribute, text);
 		expect(element.innerHTML).toBe(text);
 	});
 
 	test('Cleans up encountered attributes', function() {
-		let element = createThymeleafAttributeValue(div(), attribute, '');
+		let element = createHtml(`<div ${attribute}=""></div>`);
 		processor.process(element, attribute, '');
 		expect(element.hasAttribute(attribute)).toBe(false);
 	});

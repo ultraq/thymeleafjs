@@ -14,13 +14,8 @@
  * limitations under the License.
  */
 
-import FragmentAttributeProcessor      from '../../../source/standard/processors/FragmentAttributeProcessor.js';
-import {createThymeleafAttributeValue} from '../../../source/utilities/Dom.js';
-
-import h  from 'hyperscript';
-import hh from 'hyperscript-helpers';
-
-const {div} = hh(h);
+import FragmentAttributeProcessor from '../../../source/standard/processors/FragmentAttributeProcessor.js';
+import {createHtml}               from '../../../source/utilities/Dom.js';
 
 /**
  * Tests for the `th:fragment` attribute processor.
@@ -36,7 +31,7 @@ describe('processors/standard/FragmentAttributeProcessor', function() {
 
 	test('Removes the attribute processor', function() {
 		let attributeValue = 'my-fragment';
-		let element = createThymeleafAttributeValue(div(), attribute, attributeValue);
+		let element = createHtml(`<div ${attribute}="${attributeValue}"></div>`);
 		processor.process(element, attribute, attributeValue, {});
 		expect(element.hasAttribute(attribute)).toBe(false);
 	});

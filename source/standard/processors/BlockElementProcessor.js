@@ -52,7 +52,7 @@ export default class BlockElementProcessor extends ElementProcessor {
 			let child = element.firstChild;
 			parent.insertBefore(child, element);
 
-			if (child instanceof Element && element.__thymeleafLocalVariables) {
+			if (child.nodeType === Node.ELEMENT_NODE && element.__thymeleafLocalVariables) {
 				child.__thymeleafLocalVariables = {
 					...(child.__thymeleafLocalVariables || {}),
 					...element.__thymeleafLocalVariables

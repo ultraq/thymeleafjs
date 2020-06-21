@@ -14,16 +14,12 @@
  * limitations under the License.
  */
 
-import ExpressionProcessor             from '../../../source/standard/expressions/ExpressionProcessor.js';
-import ThymeleafExpressionLanguage     from '../../../source/standard/expressions/ThymeleafExpressionLanguage.js';
-import EachAttributeProcessor          from '../../../source/standard/processors/EachAttributeProcessor.js';
-import {createThymeleafAttributeValue} from '../../../source/utilities/Dom.js';
+import ExpressionProcessor         from '../../../source/standard/expressions/ExpressionProcessor.js';
+import ThymeleafExpressionLanguage from '../../../source/standard/expressions/ThymeleafExpressionLanguage.js';
+import EachAttributeProcessor      from '../../../source/standard/processors/EachAttributeProcessor.js';
+import {createHtml}                from '../../../source/utilities/Dom.js';
 
 import {range} from '@ultraq/array-utils';
-import h       from 'hyperscript';
-import hh      from 'hyperscript-helpers';
-
-const {ul, li} = hh(h);
 
 /**
  * Tests for the `th:each` attribute processor.
@@ -38,13 +34,10 @@ describe('processors/standard/EachAttributeProcessor', function() {
 
 	test('Repeats an element for every item in an iterable', function() {
 		let iterationExpression = 'items: ${items}';
-		let items = range(1, 10);
-		let child = createThymeleafAttributeValue(li(), attribute, iterationExpression);
-		let parent = ul([
-			child
-		]);
-		let result = processor.process(child, attribute, iterationExpression, { items });
-
+		let parent = createHtml(`<ul><li ${attribute}="${iterationExpression}"></li></ul>`);
+		let result = processor.process(parent.firstElementChild, attribute, iterationExpression, {
+			items: range(1, 10)
+		});
 		expect(result).toBe(true);
 		expect(parent.childElementCount).toBe(9);
 	});

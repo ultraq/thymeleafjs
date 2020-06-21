@@ -17,17 +17,15 @@
 /* global ENVIRONMENT */
 
 /**
- * Sets a Thymeleaf attribute and value on an existing element.  Used primarily
- * in tests.
+ * Create and return a new HTML fragment using JSDOM from the given string.
+ * Used for tests.
  * 
- * @param {Element} element
- * @param {String} attribute
- * @param {String} value
- * @return {Element} The same element but with the attribute and value set on it.
+ * @param {String} htmlString
+ * @return {Element}
  */
-export function createThymeleafAttributeValue(element, attribute, value) {
-	element.setAttribute(attribute, value);
-	return element;
+export function createHtml(htmlString) {
+	const {JSDOM} = require('jsdom');
+	return new JSDOM(htmlString).window.document.body.firstElementChild;
 }
 
 /**

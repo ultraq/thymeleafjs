@@ -49,8 +49,6 @@
 		"eslint": "^6.8.0",
 		"eslint-config-ultraq": "^2.3.3",
 		"eslint-plugin-import": "^2.20.2",
-		"hyperscript": "^2.0.2",
-		"hyperscript-helpers": "^3.0.2",
 		"jest": "^25.2.7",
 		"rollup": "^1.27.8",
 		"rollup-plugin-babel": "^4.3.3",

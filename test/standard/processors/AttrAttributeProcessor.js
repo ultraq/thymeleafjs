@@ -14,15 +14,10 @@
  * limitations under the License.
  */
 
-import ExpressionProcessor             from '../../../source/standard/expressions/ExpressionProcessor.js';
-import ThymeleafExpressionLanguage     from '../../../source/standard/expressions/ThymeleafExpressionLanguage.js';
-import AttrAttributeProcessor          from '../../../source/standard/processors/AttrAttributeProcessor';
-import {createThymeleafAttributeValue} from '../../../source/utilities/Dom';
-
-import h  from 'hyperscript';
-import hh from 'hyperscript-helpers';
-
-const {div} = hh(h);
+import ExpressionProcessor         from '../../../source/standard/expressions/ExpressionProcessor.js';
+import ThymeleafExpressionLanguage from '../../../source/standard/expressions/ThymeleafExpressionLanguage.js';
+import AttrAttributeProcessor      from '../../../source/standard/processors/AttrAttributeProcessor.js';
+import {createHtml}                from '../../../source/utilities/Dom.js';
 
 /**
  * Tests for the `th:attr` attribute processor.
@@ -39,10 +34,8 @@ describe('processors/standard/AttrAttributeProcessor', function() {
 	test('Set the value of the target attribute', function() {
 		let value = 'test-class';
 		let attributeValue = 'class=${value}';
-		let element = createThymeleafAttributeValue(div(), attribute, attributeValue);
-
+		let element = createHtml(`<div ${attribute}="${attributeValue}"></div>`);
 		processor.process(element, attribute, attributeValue, { value });
-
 		expect(element.classList.contains(value)).toBe(true);
 	});
 
@@ -50,21 +43,17 @@ describe('processors/standard/AttrAttributeProcessor', function() {
 		let valueId = 'test-id';
 		let valueClass = 'test-class';
 		let attributeValue = `id=\${valueId},class='${valueClass}'`;
-		let element = createThymeleafAttributeValue(div(), attribute, attributeValue);
-
+		let element = createHtml(`<div ${attribute}="${attributeValue}"></div>`);
 		processor.process(element, attribute, attributeValue, { valueId });
-
 		expect(element.id).toBe(valueId);
 		expect(element.classList.contains(valueClass)).toBe(true);
 	});
 
 	test("Do nothing if an expression doesn't match the attribute expression pattern", function() {
 		['class=', '${nothing}'].forEach(attributeValue => {
-			let element = createThymeleafAttributeValue(div(), attribute, attributeValue);
-
+			let element = createHtml(`<div ${attribute}="${attributeValue}"></div>`);
 			processor.process(element, attribute, attributeValue);
-
-			expect(div.attributes).toBeUndefined();
+			expect(element.attributes).toHaveLength(0);
 		});
 	});
 });

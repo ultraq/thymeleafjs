@@ -14,15 +14,10 @@
  * limitations under the License.
  */
 
-import ExpressionProcessor             from '../../../source/standard/expressions/ExpressionProcessor.js';
-import ThymeleafExpressionLanguage     from '../../../source/standard/expressions/ThymeleafExpressionLanguage.js';
-import CheckedAttributeProcessor       from '../../../source/standard/processors/CheckedAttributeProcessor';
-import {createThymeleafAttributeValue} from '../../../source/utilities/Dom';
-
-import h  from 'hyperscript';
-import hh from 'hyperscript-helpers';
-
-const {div} = hh(h);
+import ExpressionProcessor         from '../../../source/standard/expressions/ExpressionProcessor.js';
+import ThymeleafExpressionLanguage from '../../../source/standard/expressions/ThymeleafExpressionLanguage.js';
+import CheckedAttributeProcessor   from '../../../source/standard/processors/CheckedAttributeProcessor.js';
+import {createHtml}                from '../../../source/utilities/Dom.js';
 
 /**
  * Tests for the `th:checked` attribute processor.
@@ -41,7 +36,7 @@ describe('processors/standard/CheckedAttributeProcessor', function() {
 			greeting: 'Hello!'
 		};
 		['checked', '${greeting}'].forEach(value => {
-			let element = createThymeleafAttributeValue(div(), attribute, value);
+			let element = createHtml(`<div ${attribute}="${value}"></div>`);
 			processor.process(element, attribute, value, context);
 			expect(element.hasAttribute('checked')).toBe(true);
 		});
@@ -52,7 +47,7 @@ describe('processors/standard/CheckedAttributeProcessor', function() {
 			greeting: null
 		};
 		['', '${greeting}'].forEach(value => {
-			let element = createThymeleafAttributeValue(div(), attribute, value);
+			let element = createHtml(`<div ${attribute}="${value}"></div>`);
 			processor.process(element, attribute, value, context);
 			expect(element.hasAttribute('checked')).toBe(false);
 		});

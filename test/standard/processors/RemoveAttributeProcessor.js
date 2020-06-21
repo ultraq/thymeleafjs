@@ -14,10 +14,8 @@
  * limitations under the License.
  */
 
-import RemoveAttributeProcessor        from '../../../source/standard/processors/RemoveAttributeProcessor.js';
-import {createThymeleafAttributeValue} from '../../../source/utilities/Dom.js';
-
-import h from 'hyperscript';
+import RemoveAttributeProcessor from '../../../source/standard/processors/RemoveAttributeProcessor.js';
+import {createHtml}             from '../../../source/utilities/Dom.js';
 
 /**
  * Tests for the attribute processor that removes certain elements.
@@ -32,23 +30,25 @@ describe('processors/standard/RemoveAttributeProcessor', function() {
 
 	test('Remove all', function() {
 		let removeValue = 'all';
-		let element = createThymeleafAttributeValue(h('div'), attribute, removeValue);
-		let parent = h('div#parent', [
-			element
-		]);
-		processor.process(element, attribute, removeValue);
+		let parent = createHtml(`
+			<div id="parent">
+				<div ${attribute}="${removeValue}"></div>
+			</div>
+		`);
+		processor.process(parent.firstElementChild, attribute, removeValue);
 		expect(parent.childElementCount).toBe(0);
 	});
 
 	test('Remove all-but-first', function() {
 		let removeValue = 'all-but-first';
-		let first = h('div#first');
-		let element = createThymeleafAttributeValue(h('div', [
-			first,
-			h('div#last')
-		]), attribute, removeValue);
-		processor.process(element, attribute, removeValue);
-		expect(element.childElementCount).toBe(1);
-		expect(element.lastElementChild).toBe(first);
+		let parent = createHtml(`
+			<div ${attribute}="${removeValue}">
+				<div id="first"></div>
+				<div id="last"></div>
+			</div>
+		`);
+		processor.process(parent, attribute, removeValue);
+		expect(parent.childElementCount).toBe(1);
+		expect(parent.firstElementChild).toBe(parent.querySelector('#first'));
 	});
 });

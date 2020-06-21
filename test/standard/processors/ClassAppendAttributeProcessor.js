@@ -14,15 +14,10 @@
  * limitations under the License.
  */
 
-import ExpressionProcessor             from '../../../source/standard/expressions/ExpressionProcessor.js';
-import ThymeleafExpressionLanguage     from '../../../source/standard/expressions/ThymeleafExpressionLanguage.js';
-import ClassAppendAttributeProcessor   from '../../../source/standard/processors/ClassAppendAttributeProcessor';
-import {createThymeleafAttributeValue} from '../../../source/utilities/Dom';
-
-import h  from 'hyperscript';
-import hh from 'hyperscript-helpers';
-
-const {div} = hh(h);
+import ExpressionProcessor           from '../../../source/standard/expressions/ExpressionProcessor.js';
+import ThymeleafExpressionLanguage   from '../../../source/standard/expressions/ThymeleafExpressionLanguage.js';
+import ClassAppendAttributeProcessor from '../../../source/standard/processors/ClassAppendAttributeProcessor.js';
+import {createHtml}                  from '../../../source/utilities/Dom.js';
 
 /**
  * Tests for the `th:classappend` processor.
@@ -40,10 +35,8 @@ describe('standard/processors/ClassAppendAttributeProcessor', function() {
 	test('Adds a class to an element', function() {
 		let extraClass = 'added';
 		let attributeValue = extraClass;
-		let element = createThymeleafAttributeValue(div(), attribute, attributeValue);
-
+		let element = createHtml(`<div ${attribute}="${attributeValue}"></div>`);
 		processor.process(element, attribute, attributeValue);
-
 		expect(element.classList.contains(extraClass)).toBe(true);
 	});
 
@@ -52,10 +45,8 @@ describe('standard/processors/ClassAppendAttributeProcessor', function() {
 			extraClass: null
 		};
 		let attributeValue = '${extraClass}';
-		let element = createThymeleafAttributeValue(div('.existing-class'), attribute, attributeValue);
-
+		let element = createHtml(`<div class="existing-class" ${attribute}="${attributeValue}"></div>`);
 		processor.process(element, attribute, attributeValue, context);
-
 		expect(element.className).toBe('existing-class');
 	});
 });

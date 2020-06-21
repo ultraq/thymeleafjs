@@ -14,15 +14,7 @@
  * limitations under the License.
  */
 
-import {
-	createThymeleafAttributeValue,
-	getThymeleafAttributeValue
-} from '../../source/utilities/Dom.js';
-
-import h from 'hyperscript';
-import hh from 'hyperscript-helpers';
-
-const {div} = hh(h);
+import {createHtml, getThymeleafAttributeValue} from '../../source/utilities/Dom.js';
 
 /**
  * Tests for the DOM utilities.
@@ -35,13 +27,13 @@ describe('utilities/Dom', function() {
 		const value = 'hello';
 
 		test('Returns the XML attribute value', function() {
-			let element = createThymeleafAttributeValue(div(), `${prefix}:${name}`, value);
+			let element = createHtml(`<div ${prefix}:${name}="${value}"></div>`);
 			let result = getThymeleafAttributeValue(element, prefix, name);
 			expect(result).toBe(value);
 		});
 
 		test('Returns the data- attribute value', function() {
-			let element = createThymeleafAttributeValue(div(), `data-${prefix}-${name}`, value);
+			let element = createHtml(`<div data-${prefix}-${name}="${value}"></div>`);
 			let result = getThymeleafAttributeValue(element, prefix, name);
 			expect(result).toBe(value);
 		});

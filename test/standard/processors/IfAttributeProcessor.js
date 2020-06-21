@@ -14,15 +14,10 @@
  * limitations under the License.
  */
 
-import ExpressionProcessor             from '../../../source/standard/expressions/ExpressionProcessor.js';
-import ThymeleafExpressionLanguage     from '../../../source/standard/expressions/ThymeleafExpressionLanguage.js';
-import IfAttributeProcessor            from '../../../source/standard/processors/IfAttributeProcessor.js';
-import {createThymeleafAttributeValue} from '../../../source/utilities/Dom.js';
-
-import h  from 'hyperscript';
-import hh from 'hyperscript-helpers';
-
-const {div, p} = hh(h);
+import ExpressionProcessor         from '../../../source/standard/expressions/ExpressionProcessor.js';
+import ThymeleafExpressionLanguage from '../../../source/standard/expressions/ThymeleafExpressionLanguage.js';
+import IfAttributeProcessor        from '../../../source/standard/processors/IfAttributeProcessor.js';
+import {createHtml}                from '../../../source/utilities/Dom.js';
 
 /**
  * Tests for the `th:if` attribute processor.
@@ -37,21 +32,23 @@ describe('processors/standard/IfAttributeProcessor', function() {
 
 	test('Renders the element and children if the expression is truthy', function() {
 		let expression = '${value}';
-		let child = createThymeleafAttributeValue(p('Hello!'), attribute, expression);
-		let parent = div([
-			child
-		]);
-		processor.process(child, attribute, expression, { value: true });
-		expect(parent.childNodes).toHaveLength(1);
+		let parent = createHtml(`
+			<div>
+				<p ${attribute}="${expression}">Hello!</p>
+			</div>
+		`);
+		processor.process(parent.firstElementChild, attribute, expression, { value: true });
+		expect(parent.children).toHaveLength(1);
 	});
 
 	test('Removes the element and children if the expression is falsey', function() {
 		let expression = '${value}';
-		let childElement = createThymeleafAttributeValue(p('Hello!'), attribute, expression);
-		let element = div([
-			childElement
-		]);
-		processor.process(childElement, 'th:if', expression, { value: false });
-		expect(element.childNodes).toHaveLength(0);
+		let parent = createHtml(`
+			<div>
+				<p ${attribute}=${expression}>Hello!</p>
+			</div>
+		`);
+		processor.process(parent.firstElementChild, 'th:if', expression, { value: false });
+		expect(parent.children).toHaveLength(0);
 	});
 });

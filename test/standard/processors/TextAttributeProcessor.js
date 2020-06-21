@@ -14,15 +14,10 @@
  * limitations under the License.
  */
 
-import ExpressionProcessor             from '../../../source/standard/expressions/ExpressionProcessor.js';
-import ThymeleafExpressionLanguage     from '../../../source/standard/expressions/ThymeleafExpressionLanguage.js';
-import TextAttributeProcessor          from '../../../source/standard/processors/TextAttributeProcessor.js';
-import {createThymeleafAttributeValue} from '../../../source/utilities/Dom.js';
-
-import h  from 'hyperscript';
-import hh from 'hyperscript-helpers';
-
-const {div} = hh(h);
+import ExpressionProcessor         from '../../../source/standard/expressions/ExpressionProcessor.js';
+import ThymeleafExpressionLanguage from '../../../source/standard/expressions/ThymeleafExpressionLanguage.js';
+import TextAttributeProcessor      from '../../../source/standard/processors/TextAttributeProcessor.js';
+import {createHtml}                from '../../../source/utilities/Dom.js';
 
 /**
  * Tests for the `th:text` attribute processor.
@@ -37,14 +32,14 @@ describe('processors/standard/TextAttributeProcessor', function() {
 
 	test("Replaces an element's text content", function() {
 		let text = 'Hello!';
-		let element = createThymeleafAttributeValue(div('Goodbye!'), attribute, text);
+		let element = createHtml(`<div ${attribute}="${text}">Goodbye!</div>`);
 		processor.process(element, attribute, text);
 		expect(element.innerHTML).toBe(text);
 	});
 
 	test('Escapes special HTML characters in the text content', function() {
 		let text = '<script>';
-		let element = createThymeleafAttributeValue(div('HTML stuffs'), attribute, text);
+		let element = createHtml(`<div ${attribute}="${text}">HTML stuffs</div>`);
 		processor.process(element, attribute, text);
 		expect(element.innerHTML).toBe('&lt;script&gt;');
 	});
