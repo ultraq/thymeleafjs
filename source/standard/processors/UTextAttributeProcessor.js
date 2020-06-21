@@ -16,6 +16,8 @@
 
 import SelfRemovingAttributeProcessor from '../../processors/SelfRemovingAttributeProcessor.js';
 
+export const NAME = 'utext';
+
 /**
  * JS equivalent of Thymeleaf's `th:utext` attribute processor, applies the
  * expression in the attribute value to the text content of the element being
@@ -24,8 +26,6 @@ import SelfRemovingAttributeProcessor from '../../processors/SelfRemovingAttribu
  * @author Emanuel Rabina
  */
 export default class UTextAttributeProcessor extends SelfRemovingAttributeProcessor {
-
-	static NAME = 'utext';
 
 	/**
 	 * Constructor, set this processor to use the `utext` name and supplied
@@ -37,7 +37,7 @@ export default class UTextAttributeProcessor extends SelfRemovingAttributeProces
 	 */
 	constructor(prefix, expressionProcessor, isomorphic) {
 
-		super(prefix, UTextAttributeProcessor.NAME, isomorphic);
+		super(prefix, NAME, isomorphic);
 		this.expressionProcessor = expressionProcessor;
 	}
 

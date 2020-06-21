@@ -20,6 +20,8 @@ import SelfRemovingAttributeProcessor from '../../processors/SelfRemovingAttribu
 
 import {escapeHtml} from '@ultraq/string-utils';
 
+export const NAME = 'attr';
+
 /**
  * JS equivalent of Thymeleaf's `th:attr` attribute processor, modifies or sets
  * a target attribute to whatever its associated expression evaluates to.
@@ -27,8 +29,6 @@ import {escapeHtml} from '@ultraq/string-utils';
  * @author Emanuel Rabina
  */
 export default class AttrAttributeProcessor extends SelfRemovingAttributeProcessor {
-
-	static NAME = 'attr';
 
 	/**
 	 * Constructor, set this processor to use the `attr` name and supplied prefix.
@@ -39,7 +39,7 @@ export default class AttrAttributeProcessor extends SelfRemovingAttributeProcess
 	 */
 	constructor(prefix, expressionProcessor, isomorphic) {
 
-		super(prefix, AttrAttributeProcessor.NAME, isomorphic);
+		super(prefix, NAME, isomorphic);
 		this.expressionProcessor = new ExpressionProcessor(ThymeleafExpressionLanguage);
 	}
 

@@ -16,6 +16,8 @@
 
 import SelfRemovingAttributeProcessor from '../../processors/SelfRemovingAttributeProcessor.js';
 
+export const NAME = 'each';
+
 /**
  * JS equivalent of Thymeleaf's `th:each` attribute processor, iterates over an
  * [iterable object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols),
@@ -24,8 +26,6 @@ import SelfRemovingAttributeProcessor from '../../processors/SelfRemovingAttribu
  * @author Emanuel Rabina
  */
 export default class EachAttributeProcessor extends SelfRemovingAttributeProcessor {
-
-	static NAME = 'each';
 
 	/**
 	 * Constructor, set this processor to use the `each` name and supplied prefix.
@@ -36,7 +36,7 @@ export default class EachAttributeProcessor extends SelfRemovingAttributeProcess
 	 */
 	constructor(prefix, expressionProcessor, isomorphic) {
 
-		super(prefix, EachAttributeProcessor.NAME, isomorphic);
+		super(prefix, NAME, isomorphic);
 		this.expressionProcessor = expressionProcessor;
 	}
 

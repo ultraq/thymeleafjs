@@ -16,6 +16,8 @@
 
 import SelfRemovingAttributeProcessor from '../../processors/SelfRemovingAttributeProcessor.js';
 
+export const NAME = 'remove';
+
 /**
  * `th:remove`, used to remove the current element or select parts of it (and
  * its children).
@@ -23,8 +25,6 @@ import SelfRemovingAttributeProcessor from '../../processors/SelfRemovingAttribu
  * @author Emanuel Rabina
  */
 export default class RemoveAttributeProcessor extends SelfRemovingAttributeProcessor {
-
-	static NAME = 'remove';
 
 	/**
 	 * Constructor, set this processor to use the `remove` name and supplied
@@ -35,7 +35,7 @@ export default class RemoveAttributeProcessor extends SelfRemovingAttributeProce
 	 */
 	constructor(prefix, isomorphic) {
 
-		super(prefix, RemoveAttributeProcessor.NAME, isomorphic);
+		super(prefix, NAME, isomorphic);
 	}
 
 	/**

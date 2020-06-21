@@ -16,6 +16,8 @@
 
 import ElementProcessor from '../../processors/ElementProcessor.js';
 
+export const NAME = 'block';
+
 /**
  * Equivalent of Thymeleaf's "synthetic tag", `th:block`, which removes itself,
  * leaving the body of the tag behind.
@@ -24,8 +26,6 @@ import ElementProcessor from '../../processors/ElementProcessor.js';
  */
 export default class BlockElementProcessor extends ElementProcessor {
 
-	static NAME = 'block';
-
 	/**
 	 * Constructor, set this processor to use the `block` name and supplied prefix.
 	 * 
@@ -33,7 +33,7 @@ export default class BlockElementProcessor extends ElementProcessor {
 	 */
 	constructor(prefix) {
 
-		super(prefix, BlockElementProcessor.NAME);
+		super(prefix, NAME);
 	}
 
 	/**

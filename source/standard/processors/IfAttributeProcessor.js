@@ -18,6 +18,8 @@ import SelfRemovingAttributeProcessor from '../../processors/SelfRemovingAttribu
 
 import {clearChildren} from '@ultraq/dom-utils';
 
+export const NAME = 'if';
+
 /**
  * JS equivalent of Thymeleaf's `th:if` attribute processor, includes or
  * excludes the current element and its children from rendering, depending on
@@ -26,8 +28,6 @@ import {clearChildren} from '@ultraq/dom-utils';
  * @author Emanuel Rabina
  */
 export default class IfAttributeProcessor extends SelfRemovingAttributeProcessor {
-
-	static NAME = 'if';
 
 	/**
 	 * Constructor, set this processor to use the `if` name and supplied prefix.
@@ -38,7 +38,7 @@ export default class IfAttributeProcessor extends SelfRemovingAttributeProcessor
 	 */
 	constructor(prefix, expressionProcessor, isomorphic) {
 
-		super(prefix, IfAttributeProcessor.NAME, isomorphic);
+		super(prefix, NAME, isomorphic);
 		this.expressionProcessor = expressionProcessor;
 	}
 

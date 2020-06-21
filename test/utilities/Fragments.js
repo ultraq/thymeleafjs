@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-import StandardDialect            from '../../source/standard/StandardDialect.js';
-import FragmentAttributeProcessor from '../../source/standard/processors/FragmentAttributeProcessor.js';
-import {extractFragment}          from '../../source/utilities/Fragments.js';
+import {DEFAULT_PREFIX}  from '../../source/standard/StandardDialect.js';
+import {NAME}            from '../../source/standard/processors/FragmentAttributeProcessor.js';
+import {extractFragment} from '../../source/utilities/Fragments.js';
 
 /**
  * Tests for the Fragments utility.
@@ -41,21 +41,21 @@ describe('utilities/Fragments', function() {
 		};
 
 		test('Locates fragments by XML name', async function() {
-			fragmentAttributeName = `${StandardDialect.DEFAULT_PREFIX}:${FragmentAttributeProcessor.NAME}`;
-			let result = await extractFragment(StandardDialect.DEFAULT_PREFIX, fragmentInfo, context);
+			fragmentAttributeName = `${DEFAULT_PREFIX}:${NAME}`;
+			let result = await extractFragment(DEFAULT_PREFIX, fragmentInfo, context);
 			expect(result.tagName).toBe('DIV');
 			expect(result.textContent).toBe('Hi!');
 		});
 
 		test('Locates fragments by data- attribute name', async function() {
-			fragmentAttributeName = `data-${StandardDialect.DEFAULT_PREFIX}-${FragmentAttributeProcessor.NAME}`;
-			let result = await extractFragment(StandardDialect.DEFAULT_PREFIX, fragmentInfo, context);
+			fragmentAttributeName = `data-${DEFAULT_PREFIX}-${NAME}`;
+			let result = await extractFragment(DEFAULT_PREFIX, fragmentInfo, context);
 			expect(result.tagName).toBe('DIV');
 			expect(result.textContent).toBe('Hi!');
 		});
 
 		test('No template resolver returns `null`', async function() {
-			let result = await extractFragment(StandardDialect.DEFAULT_PREFIX, null, {});
+			let result = await extractFragment(DEFAULT_PREFIX, null, {});
 			expect(result).toBe(null);
 		});
 	});

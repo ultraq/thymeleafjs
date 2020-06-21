@@ -16,6 +16,8 @@
 
 import SelfRemovingAttributeProcessor from '../../processors/SelfRemovingAttributeProcessor.js';
 
+export const NAME = 'checked';
+
 /**
  * Thymeleaf's `th:checked` attribute processor, sets or removes the `checked`
  * attribute from an element based on the result of the expression within it.
@@ -30,8 +32,6 @@ import SelfRemovingAttributeProcessor from '../../processors/SelfRemovingAttribu
  */
 export default class CheckedAttributeProcessor extends SelfRemovingAttributeProcessor {
 
-	static NAME = 'checked';
-
 	/**
 	 * Constructor, set this processor to use the `checked` name and supplied
 	 * prefix.
@@ -42,7 +42,7 @@ export default class CheckedAttributeProcessor extends SelfRemovingAttributeProc
 	 */
 	constructor(prefix, expressionProcessor, isomorphic) {
 
-		super(prefix, CheckedAttributeProcessor.NAME, isomorphic);
+		super(prefix, NAME, isomorphic);
 		this.expressionProcessor = expressionProcessor;
 	}
 

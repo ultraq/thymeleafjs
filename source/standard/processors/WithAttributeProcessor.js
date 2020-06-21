@@ -16,14 +16,14 @@
 
 import SelfRemovingAttributeProcessor from '../../processors/SelfRemovingAttributeProcessor.js';
 
+export const NAME = 'with';
+
 /**
  * `th:with`, used for creating scoped variables, useful for aliasing things.
  * 
  * @author Emanuel Rabina
  */
 export default class WithAttributeProcessor extends SelfRemovingAttributeProcessor {
-
-	static NAME = 'with';
 
 	/**
 	 * Constructor, set this processor to use the `with` name and supplied
@@ -35,7 +35,7 @@ export default class WithAttributeProcessor extends SelfRemovingAttributeProcess
 	 */
 	constructor(prefix, expressionProcessor, isomorphic) {
 
-		super(prefix, WithAttributeProcessor.NAME, isomorphic);
+		super(prefix, NAME, isomorphic);
 		this.expressionProcessor = expressionProcessor;
 	}
 

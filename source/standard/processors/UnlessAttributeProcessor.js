@@ -18,6 +18,8 @@ import SelfRemovingAttributeProcessor from '../../processors/SelfRemovingAttribu
 
 import {clearChildren} from '@ultraq/dom-utils';
 
+export const NAME = 'unless';
+
 /**
  * JS equivalent of Thymeleaf's `th:unless` attribute processor, excludes or
  * includes the current element and its children from rendering, depending on
@@ -26,8 +28,6 @@ import {clearChildren} from '@ultraq/dom-utils';
  * @author Robbie Bardijn
  */
 export default class UnlessAttributeProcessor extends SelfRemovingAttributeProcessor {
-
-	static NAME = 'unless';
 
 	/**
 	 * Constructor, set this processor to use the `unless` name and supplied prefix.
@@ -38,7 +38,7 @@ export default class UnlessAttributeProcessor extends SelfRemovingAttributeProce
 	 */
 	constructor(prefix, expressionProcessor, isomorphic) {
 
-		super(prefix, UnlessAttributeProcessor.NAME, isomorphic);
+		super(prefix, NAME, isomorphic);
 		this.expressionProcessor = expressionProcessor;
 	}
 

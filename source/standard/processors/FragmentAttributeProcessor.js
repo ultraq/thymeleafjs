@@ -16,6 +16,8 @@
 
 import SelfRemovingAttributeProcessor from '../../processors/SelfRemovingAttributeProcessor.js';
 
+export const NAME = 'fragment';
+
 /**
  * JS equivalent of Thymeleaf's `th:fragment` attribute processor, marks an
  * element as a template fragment that can be imported by other processors like
@@ -24,8 +26,6 @@ import SelfRemovingAttributeProcessor from '../../processors/SelfRemovingAttribu
  * @author Emanuel Rabina
  */
 export default class FragmentAttributeProcessor extends SelfRemovingAttributeProcessor {
-
-	static NAME = 'fragment';
 
 	/**
 	 * Constructor, set this processor to use the `fragment` name and supplied
@@ -36,6 +36,6 @@ export default class FragmentAttributeProcessor extends SelfRemovingAttributePro
 	 */
 	constructor(prefix, isomorphic) {
 
-		super(prefix, FragmentAttributeProcessor.NAME, isomorphic);
+		super(prefix, NAME, isomorphic);
 	}
 }

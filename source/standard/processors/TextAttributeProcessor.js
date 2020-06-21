@@ -17,6 +17,8 @@
 import SelfRemovingAttributeProcessor from '../../processors/SelfRemovingAttributeProcessor.js';
 import {buildMessage}                 from '../../utilities/Messages.js';
 
+export const NAME = 'text';
+
 /**
  * JS equivalent of Thymeleaf's `th:text` attribute processor, applies the
  * expression in the attribute value to the text content of the element being
@@ -25,8 +27,6 @@ import {buildMessage}                 from '../../utilities/Messages.js';
  * @author Emanuel Rabina
  */
 export default class TextAttributeProcessor extends SelfRemovingAttributeProcessor {
-
-	static NAME = 'text';
 
 	/**
 	 * Constructor, set this processor to use the `text` name and supplied prefix.
@@ -37,7 +37,7 @@ export default class TextAttributeProcessor extends SelfRemovingAttributeProcess
 	 */
 	constructor(prefix, expressionProcessor, isomorphic) {
 
-		super(prefix, TextAttributeProcessor.NAME, isomorphic);
+		super(prefix, NAME, isomorphic);
 		this.expressionProcessor = expressionProcessor;
 	}
 

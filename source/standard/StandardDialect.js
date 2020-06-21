@@ -40,17 +40,15 @@ import WithAttributeProcessor        from './processors/WithAttributeProcessor.j
 import XmlNsAttributeProcessor       from './processors/XmlNsAttributeProcessor.js';
 import Dialect                       from '../dialects/Dialect.js';
 
+export const NAME = 'Standard';
+export const DEFAULT_PREFIX = 'thjs';
+
 /**
  * The out-of-the-box dialect for Thymeleaf, the "Standard Dialect".
  * 
  * @author Emanuel Rabina
  */
 export default class StandardDialect extends Dialect {
-
-	// TODO: Move these statics as named exports so that they can be imported
-	//       directly instead of having to do DefaultExport.NAME, etc.
-	static NAME           = 'Standard';
-	static DEFAULT_PREFIX = 'thjs';
 
 	/**
 	 * Create an instance of this dialect with the name "Standard" and given
@@ -59,9 +57,9 @@ export default class StandardDialect extends Dialect {
 	 * @param {String} [prefix='thjs']
 	 * @param {Object} [isomorphic]
 	 */
-	constructor(prefix = StandardDialect.DEFAULT_PREFIX, isomorphic) {
+	constructor(prefix = DEFAULT_PREFIX, isomorphic) {
 
-		super(StandardDialect.NAME, prefix);
+		super(NAME, prefix);
 		this.isomorphic = isomorphic;
 	}
 

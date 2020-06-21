@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import {deserialize}              from './Dom.js';
-import FragmentAttributeProcessor from '../standard/processors/FragmentAttributeProcessor.js';
+import {deserialize} from './Dom.js';
+import {NAME}        from '../standard/processors/FragmentAttributeProcessor.js';
 
 import {$} from 'dumb-query-selector';
 
@@ -32,9 +32,8 @@ export async function extractFragment(dialectPrefix, fragmentInfo, context) {
 	if (templateResolver) {
 		let {templateName, fragmentName} = fragmentInfo;
 		let template = deserialize(await templateResolver(templateName));
-		let fragmentProcessorName = FragmentAttributeProcessor.NAME;
-		return $(`[${dialectPrefix}\\:${fragmentProcessorName}^="${fragmentName}"]`, template) ||
-					 $(`[data-${dialectPrefix}-${fragmentProcessorName}^="${fragmentName}"]`, template);
+		return $(`[${dialectPrefix}\\:${NAME}^="${fragmentName}"]`, template) ||
+					 $(`[data-${dialectPrefix}-${NAME}^="${fragmentName}"]`, template);
 	}
 	console.log('No template resolver configured');
 	return null;

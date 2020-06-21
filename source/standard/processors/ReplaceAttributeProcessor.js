@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-import FragmentAttributeProcessor     from './FragmentAttributeProcessor.js';
-import SelfRemovingAttributeProcessor from '../../processors/SelfRemovingAttributeProcessor.js';
-import {getThymeleafAttributeValue}   from '../../utilities/Dom.js';
-import {extractFragment}              from '../../utilities/Fragments.js';
+import {NAME as FragmentAttributeProcessorName} from './FragmentAttributeProcessor.js';
+import SelfRemovingAttributeProcessor           from '../../processors/SelfRemovingAttributeProcessor.js';
+import {getThymeleafAttributeValue}             from '../../utilities/Dom.js';
+import {extractFragment}                        from '../../utilities/Fragments.js';
 
 import {clearChildren} from '@ultraq/dom-utils';
 
@@ -71,7 +71,7 @@ export default class ReplaceAttributeProcessor extends SelfRemovingAttributeProc
 		if (fragmentInfo) {
 			let fragment = await extractFragment(this.prefix, fragmentInfo, context);
 			if (fragment) {
-				let fragmentSignature = getThymeleafAttributeValue(fragment, this.prefix, FragmentAttributeProcessor.NAME);
+				let fragmentSignature = getThymeleafAttributeValue(fragment, this.prefix, FragmentAttributeProcessorName);
 				let {parameterNames} = this.fragmentSignatureProcessor.process(fragmentSignature, context);
 				if (parameterNames) {
 					let {parameters} = fragmentInfo;

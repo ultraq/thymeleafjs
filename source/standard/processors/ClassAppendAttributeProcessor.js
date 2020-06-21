@@ -16,6 +16,8 @@
 
 import SelfRemovingAttributeProcessor from '../../processors/SelfRemovingAttributeProcessor.js';
 
+export const NAME = 'classappend';
+
 /**
  * The `th:classappend` is a special attribute that applies the expression to
  * any existing classes already on an element.
@@ -23,8 +25,6 @@ import SelfRemovingAttributeProcessor from '../../processors/SelfRemovingAttribu
  * @author Emanuel Rabina
  */
 export default class ClassAppendAttributeProcessor extends SelfRemovingAttributeProcessor {
-
-	static NAME = 'classappend';
 
 	/**
 	 * Constructor, set this processor to use the `attr` name and supplied prefix.
@@ -35,7 +35,7 @@ export default class ClassAppendAttributeProcessor extends SelfRemovingAttribute
 	 */
 	constructor(prefix, expressionProcessor, isomorphic) {
 
-		super(prefix, ClassAppendAttributeProcessor.NAME, isomorphic);
+		super(prefix, NAME, isomorphic);
 		this.expressionProcessor = expressionProcessor;
 	}
 
