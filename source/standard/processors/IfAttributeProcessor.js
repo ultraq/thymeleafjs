@@ -16,8 +16,6 @@
 
 import SelfRemovingAttributeProcessor from '../../processors/SelfRemovingAttributeProcessor.js';
 
-import {clearChildren} from '@ultraq/dom-utils';
-
 export const NAME = 'if';
 
 /**
@@ -60,9 +58,7 @@ export default class IfAttributeProcessor extends SelfRemovingAttributeProcessor
 
 		let expressionResult = this.expressionProcessor.process(attributeValue, context);
 		if (!expressionResult) {
-			clearChildren(element);
-			// TODO: element.remove()?
-			element.parentNode.removeChild(element);
+			element.remove();
 			return true;
 		}
 		return super.process(element, attribute, attributeValue, context);
