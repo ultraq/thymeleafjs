@@ -24,12 +24,6 @@ import {extractFragment}          from '../../source/utilities/Fragments.js';
 describe('utilities/Fragments', function() {
 
 	describe('#extractFragment', function() {
-		const dialects = [
-			{
-				name: StandardDialect.NAME,
-				prefix: StandardDialect.DEFAULT_PREFIX
-			}
-		];
 		const fragmentInfo = {
 			fragmentName: 'test-fragment',
 			templateName: 'test-template'
@@ -43,7 +37,6 @@ describe('utilities/Fragments', function() {
 			</body>
 		`;
 		const context = {
-			dialects,
 			templateResolver
 		};
 

@@ -29,14 +29,6 @@ import path    from 'path';
  */
 describe('TemplateEngine', function() {
 
-	describe('Configuration', function() {
-
-		test('Default configuration', function() {
-			let templateEngine = new TemplateEngine();
-			expect(templateEngine.dialects).toBe(DEFAULT_CONFIGURATION.dialects);
-		});
-	});
-
 	describe('Expression objects', function() {
 
 		class TestDialect1 extends Dialect {

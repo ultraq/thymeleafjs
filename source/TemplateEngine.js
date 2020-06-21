@@ -36,7 +36,6 @@ export default class TemplateEngine {
 	 */
 	constructor({dialects, isomorphic, messageResolver, templateResolver} = DEFAULT_CONFIGURATION) {
 
-		this.dialects         = dialects;
 		this.isomorphic       = isomorphic;
 		this.messageResolver  = messageResolver;
 		this.templateResolver = templateResolver;
@@ -73,7 +72,6 @@ export default class TemplateEngine {
 			// TODO: Is there some way to make these things a dependency of the
 			//       processors that need them?  Otherwise it feels like passing
 			//       dependencies as part of the context object 🤔
-			dialects:         this.dialects,
 			messageResolver:  this.messageResolver,
 			templateResolver: this.templateResolver
 		})
