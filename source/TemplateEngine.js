@@ -34,9 +34,8 @@ export default class TemplateEngine {
 	 * 
 	 * @param {Object} [config=DEFAULT_CONFIGURATION]
 	 */
-	constructor({dialects, isomorphic, messageResolver, templateResolver} = DEFAULT_CONFIGURATION) {
+	constructor({dialects, messageResolver, templateResolver} = DEFAULT_CONFIGURATION) {
 
-		this.isomorphic       = isomorphic;
 		this.messageResolver  = messageResolver;
 		this.templateResolver = templateResolver;
 
@@ -117,20 +116,17 @@ export default class TemplateEngine {
 			...context,
 			...localVariables
 		};
-		let matcher = new Matcher(localContext, this.isomorphic);
+		let matcher = new Matcher();
 
 		// Run the current element through the gamut of registered processors.  If
 		// one of them sends a reprocessing signal, return from this method to let
 		// the caller re-run everything.
-		// TODO: Flip this around, running through each attribute then matching
-		//       against processors
 		for (let i = 0; i < this.processors.length; i++) {
 			let processor = this.processors[i];
 			let processorResult = false;
 
-			let {match} = matcher.matches(element, processor);
+			let match = matcher.matches(element, processor);
 			if (match) {
-				// TODO: Some way to do this generically and not have to type check?
 				if (processor instanceof AttributeProcessor) {
 					processorResult = await processor.process(element, match,
 						element.getAttribute(match), localContext);

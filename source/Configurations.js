@@ -46,10 +46,6 @@ export const DEFAULT_CONFIGURATION = {
 	]
 };
 
-const isomorphic = {
-	prefix: 'thjs'
-};
-
 /**
  * Standard configuration, configures the standard dialect with the `th` prefix
  * and enables isomorphic mode which enables the ability to use much of the same
@@ -60,7 +56,8 @@ const isomorphic = {
 export const STANDARD_CONFIGURATION = {
 	...DEFAULT_CONFIGURATION,
 	dialects: [
-		new StandardDialect('th', isomorphic)
-	],
-	isomorphic
+		new StandardDialect('th', {
+			prefix: 'thjs'
+		})
+	]
 };

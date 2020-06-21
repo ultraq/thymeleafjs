@@ -19,59 +19,40 @@ import ElementProcessor   from './ElementProcessor.js';
 
 /**
  * Class for determining if an element contains a processor on it.
+ * 
+ * @author Emanuel Rabina
  */
 export default class Matcher {
-
-	/**
-	 * Create a matcher to work with the current context and isomorphic processing
-	 * settings.
-	 * 
-	 * @param {Object} context
-	 * @param {Object} isomorphic
-	 */
-	constructor(context, isomorphic) {
-
-		this.context    = context;
-		this.isomorphic = isomorphic;
-	}
 
 	/**
 	 * Return the matching attribute or element that a processor can work over.
 	 * 
 	 * @param {Element} element
 	 * @param {AttributeProcessor} processor
-	 * @return {Object}
-	 *   A match result containing a `match` key whose value is what was matched
-	 *   (will be `null` if no match was made), and whether it was against the
-	 *   isomorphic prefix or not.
+	 * @return {String}
+	 *   A match result containing what was matched (either an attribute or an
+	 *   element, relevant to the processor being tested), or `null` if nothing
+	 *   was matched.
 	 */
 	matches(element, processor) {
 
-		let {name} = processor;
-
-		// TODO: Some way to do this generically and not have to type check?
+		let {isomorphic, name, prefix} = processor;
 
 		// Attribute processor matching, can be of the name prefix:name or data-prefix-name
 		if (processor instanceof AttributeProcessor) {
-			let prefixes = [].concat(
-				this.isomorphic?.prefix || [],
-				processor.prefix
-			);
+			let prefixes = [prefix];
+			if (isomorphic) {
+				prefixes.unshift(isomorphic.prefix);
+			}
 			for (let prefix of prefixes) {
 				let attribute;
 				attribute = `${prefix}:${name}`;
 				if (element.hasAttribute(attribute)) {
-					return {
-						match: attribute,
-						isomorphic: prefix === this.isomorphic?.prefix
-					};
+					return attribute;
 				}
 				attribute = `data-${prefix}-${name}`;
 				if (element.hasAttribute(attribute)) {
-					return {
-						match: attribute,
-						isomorphic: prefix === this.isomorphic?.prefix
-					};
+					return attribute;
 				}
 			}
 		}
@@ -80,15 +61,10 @@ export default class Matcher {
 		else if (processor instanceof ElementProcessor) {
 			let elementName = `${processor.prefix}:${name}`;
 			if (element.tagName === elementName.toUpperCase()) {
-				return {
-					match: elementName,
-					isomorphic: false
-				};
+				return elementName;
 			}
 		}
 
-		return {
-			match: null
-		};
+		return null;
 	}
 }

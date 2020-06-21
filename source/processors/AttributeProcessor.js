@@ -26,11 +26,13 @@ export default class AttributeProcessor {
 	 * 
 	 * @param {String} prefix
 	 * @param {String} name
+	 * @param {Object} [isomorphic]
 	 */
-	constructor(prefix, name) {
+	constructor(prefix, name, isomorphic) {
 
-		this.prefix = prefix;
-		this.name   = name;
+		this.prefix     = prefix;
+		this.name       = name;
+		this.isomorphic = isomorphic;
 	}
 
 	/**

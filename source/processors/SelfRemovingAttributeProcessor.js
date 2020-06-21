@@ -27,15 +27,14 @@ export default class SelfRemovingAttributeProcessor extends AttributeProcessor {
 
 	/**
 	 * Constructor, saves the isomorphic information for processing.
-	 *
+	 * 
 	 * @param {String} prefix
 	 * @param {String} name
-	 * @param {Object} isomorphic
+	 * @param {Object} [isomorphic]
 	 */
 	constructor(prefix, name, isomorphic) {
 
-		super(prefix, name);
-		this.isomorphic = isomorphic;
+		super(prefix, name, isomorphic);
 	}
 
 	/**
