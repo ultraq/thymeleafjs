@@ -44,6 +44,8 @@ import Dialect                       from '../dialects/Dialect.js';
  */
 export default class StandardDialect extends Dialect {
 
+	// TODO: Move these statics as named exports so that they can be imported
+	//       directly instead of having to do DefaultExport.NAME, etc.
 	static NAME           = 'Standard';
 	static DEFAULT_PREFIX = 'thjs';
 

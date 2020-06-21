@@ -55,7 +55,7 @@ export default class SelfRemovingAttributeProcessor extends AttributeProcessor {
 
 		element.removeAttribute(attribute);
 		if (this.isomorphic) {
-			element.removeAttribute(`${context.standardDialect.prefix}:${this.name}`);
+			element.removeAttribute(`${this.prefix}:${this.name}`);
 		}
 		return false;
 	}

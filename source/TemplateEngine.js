@@ -37,7 +37,6 @@ export default class TemplateEngine {
 	constructor({dialects, isomorphic, messageResolver, templateResolver} = DEFAULT_CONFIGURATION) {
 
 		this.dialects = dialects;
-		this.standardDialect = dialects.find(dialect => dialect.name === 'Standard');
 		this.isomorphic = isomorphic;
 		this.messageResolver = messageResolver;
 		this.templateResolver = templateResolver;
@@ -72,7 +71,6 @@ export default class TemplateEngine {
 			...context,
 			...this.expressionObjects,
 			dialects:         this.dialects,
-			standardDialect:  this.standardDialect,
 			messageResolver:  this.messageResolver,
 			templateResolver: this.templateResolver
 		})

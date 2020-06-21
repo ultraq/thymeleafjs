@@ -15,7 +15,6 @@
  */
 
 import FragmentAttributeProcessor     from './FragmentAttributeProcessor.js';
-import StandardDialect                from '../StandardDialect.js';
 import ExpressionProcessor            from '../expressions/ExpressionProcessor.js';
 import FragmentSignatureGrammar       from '../expressions/FragmentSignatureGrammar.js';
 import SelfRemovingAttributeProcessor from '../../processors/SelfRemovingAttributeProcessor.js';
@@ -68,23 +67,16 @@ export default class ReplaceAttributeProcessor extends SelfRemovingAttributeProc
 
 		let fragmentInfo = new ExpressionProcessor().process(attributeValue, context);
 		if (fragmentInfo) {
-			let fragment = await extractFragment(fragmentInfo, context);
+			let fragment = await extractFragment(this.prefix, fragmentInfo, context);
 			if (fragment) {
-
-				let standardDialect = context.dialects.find(dialect => dialect.name === StandardDialect.NAME);
-				let dialectPrefix = standardDialect.prefix;
-				let fragmentProcessorName = FragmentAttributeProcessor.NAME;
-
-				let fragmentSignature = getThymeleafAttributeValue(fragment, dialectPrefix, fragmentProcessorName);
+				let fragmentSignature = getThymeleafAttributeValue(fragment, this.prefix, FragmentAttributeProcessor.NAME);
 				let {parameterNames} = new ExpressionProcessor(FragmentSignatureGrammar).process(fragmentSignature, context);
 				if (parameterNames) {
 					let {parameters} = fragmentInfo;
-
 					let localContext = {};
 					parameterNames.forEach((parameterName, index) => {
 						localContext[parameterName] = parameters[parameterName] || parameters[index] || null;
 					});
-
 					fragment.__thymeleafLocalVariables = localContext;
 				}
 

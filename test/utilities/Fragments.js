@@ -49,20 +49,20 @@ describe('utilities/Fragments', function() {
 
 		test('Locates fragments by XML name', async function() {
 			fragmentAttributeName = `${StandardDialect.DEFAULT_PREFIX}:${FragmentAttributeProcessor.NAME}`;
-			let result = await extractFragment(fragmentInfo, context);
+			let result = await extractFragment(StandardDialect.DEFAULT_PREFIX, fragmentInfo, context);
 			expect(result.tagName).toBe('DIV');
 			expect(result.textContent).toBe('Hi!');
 		});
 
 		test('Locates fragments by data- attribute name', async function() {
 			fragmentAttributeName = `data-${StandardDialect.DEFAULT_PREFIX}-${FragmentAttributeProcessor.NAME}`;
-			let result = await extractFragment(fragmentInfo, context);
+			let result = await extractFragment(StandardDialect.DEFAULT_PREFIX, fragmentInfo, context);
 			expect(result.tagName).toBe('DIV');
 			expect(result.textContent).toBe('Hi!');
 		});
 
 		test('No template resolver returns `null`', async function() {
-			let result = await extractFragment(null, {});
+			let result = await extractFragment(StandardDialect.DEFAULT_PREFIX, null, {});
 			expect(result).toBe(null);
 		});
 	});
