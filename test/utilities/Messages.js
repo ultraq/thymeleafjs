@@ -26,15 +26,13 @@ describe('utilities/Messages', function() {
 		test('Calls the function with the key, parameters, and context', async function() {
 			const key = 'key';
 			const parameters = [];
-			const context = {
-				messageResolver: jest.fn()
-			};
-			await buildMessage({key, parameters}, context);
-			expect(context.messageResolver).toHaveBeenCalledWith(key, parameters);
+			const messageResolver = jest.fn();
+			await buildMessage({key, parameters}, messageResolver);
+			expect(messageResolver).toHaveBeenCalledWith(key, parameters);
 		});
 
 		test('No message resolver returns `null`', async function() {
-			let result = await buildMessage(null, {});
+			let result = await buildMessage(null, null);
 			expect(result).toBe(null);
 		});
 	});

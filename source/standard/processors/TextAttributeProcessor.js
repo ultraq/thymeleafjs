@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import ExpressionProcessor            from '../expressions/ExpressionProcessor.js';
 import SelfRemovingAttributeProcessor from '../../processors/SelfRemovingAttributeProcessor.js';
 import {buildMessage}                 from '../../utilities/Messages.js';
 
@@ -33,11 +32,13 @@ export default class TextAttributeProcessor extends SelfRemovingAttributeProcess
 	 * Constructor, set this processor to use the `text` name and supplied prefix.
 	 * 
 	 * @param {String} prefix
-	 * @param {Object} isomorphic
+	 * @param {ExpressionProcessor} expressionProcessor
+	 * @param {Object} [isomorphic]
 	 */
-	constructor(prefix, isomorphic) {
+	constructor(prefix, expressionProcessor, isomorphic) {
 
 		super(prefix, TextAttributeProcessor.NAME, isomorphic);
+		this.expressionProcessor = expressionProcessor;
 	}
 
 	/**
@@ -58,9 +59,9 @@ export default class TextAttributeProcessor extends SelfRemovingAttributeProcess
 
 		// TODO: Move message constructon to the expression language?  Need to make
 		//       all the executions async!
-		let messageResult = new ExpressionProcessor().process(attributeValue, context);
+		let messageResult = this.expressionProcessor.process(attributeValue, context);
 		element.textContent =
-			typeof messageResult === 'object' ? await buildMessage(messageResult, context) :
+			typeof messageResult === 'object' ? await buildMessage(messageResult, context.messageResolver) :
 			messageResult;
 		return super.process(element, attribute, attributeValue, context);
 	}

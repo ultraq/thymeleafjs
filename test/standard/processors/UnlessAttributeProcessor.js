@@ -14,8 +14,10 @@
  * limitations under the License.
  */
 
-import UnlessAttributeProcessor        from '../../../source/standard/processors/UnlessAttributeProcessor';
-import {createThymeleafAttributeValue} from '../../../source/utilities/Dom';
+import ExpressionProcessor             from '../../../source/standard/expressions/ExpressionProcessor.js';
+import ThymeleafExpressionLanguage     from '../../../source/standard/expressions/ThymeleafExpressionLanguage.js';
+import UnlessAttributeProcessor        from '../../../source/standard/processors/UnlessAttributeProcessor.js';
+import {createThymeleafAttributeValue} from '../../../source/utilities/Dom.js';
 
 import h  from 'hyperscript';
 import hh from 'hyperscript-helpers';
@@ -29,7 +31,7 @@ describe('processors/standard/UnlessAttributeProcessor', function() {
 
 	let attribute, processor;
 	beforeAll(function() {
-		processor = new UnlessAttributeProcessor('test');
+		processor = new UnlessAttributeProcessor('test', new ExpressionProcessor(ThymeleafExpressionLanguage));
 		attribute = `${processor.prefix}:${processor.name}`;
 	});
 

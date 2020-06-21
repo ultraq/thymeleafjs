@@ -18,17 +18,14 @@
  * Build a message string from a processed message expression.
  * 
  * @param {Object} messageInfo
- * @param {Object} context
+ * @param {Function} messageResolver
  * @return {Promise<String>}
  */
-export async function buildMessage(messageInfo, context) {
-
-	let {messageResolver} = context;
+export async function buildMessage(messageInfo, messageResolver) {
 	if (messageResolver) {
 		let {key, parameters} = messageInfo;
 		return await messageResolver(key, parameters) || '';
 	}
-
 	console.log('No message resolver configured');
 	return null;
 }

@@ -14,8 +14,7 @@
  * limitations under the License.
  */
 
-import ThymeleafExpressionLanguage from './ThymeleafExpressionLanguage.js';
-import Parser                      from '../../parser/Parser.js';
+import Parser from '../../parser/Parser.js';
 
 /**
  * Parses and executes Thymeleaf expressions.
@@ -31,11 +30,11 @@ export default class ExpressionProcessor {
 	 * Constructor, create a new processor that can parse/execute a string in the
 	 * given grammar.
 	 * 
-	 * @param {Grammar} [grammar=ThymeleafExpressionLanguage]
+	 * @param {Grammar} grammar
 	 */
-	constructor(grammar = ThymeleafExpressionLanguage) {
+	constructor(grammar) {
 
-		this.grammar = grammar;
+		this.parser = new Parser(grammar);
 	}
 
 	/**
@@ -47,12 +46,10 @@ export default class ExpressionProcessor {
 	 */
 	process(input, context = {}) {
 
-		// TODO: Probably don't need to create a new parser every time?
-		let parser = new Parser(this.grammar);
-		let expression = parser.parse(input);
-		return expression ? expression({
+		let expression = this.parser.parse(input);
+		return expression?.({
 			...context,
 			expression: input
-		}) : null;
+		});
 	}
 }

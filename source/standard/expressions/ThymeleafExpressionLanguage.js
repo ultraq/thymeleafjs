@@ -40,7 +40,7 @@ const METADATA_MESSAGE   = 'message';
  * 
  * @author Emanuel Rabina
  */
-export default new Grammar('Thymeleaf Expression Language',
+const ThymeleafExpressionLanguage = new Grammar('Thymeleaf Expression Language',
 
 	// Ordered as at https://www.thymeleaf.org/doc/tutorials/3.0/usingthymeleaf.html#standard-expression-syntax
 	new ThymeleafRule('ThymeleafExpression',
@@ -119,8 +119,8 @@ export default new Grammar('Thymeleaf Expression Language',
 	 * Link expressions, `@{url(parameters)}`.  Used for generating URLs out of
 	 * context parameters.
 	 * 
-	 * TODO: Change this to use the other expression types as it causes a circular
-	 *       dependency in the build.
+	 * TODO: Change this to use the other expression types so I can remove this
+	 *       bespoke operator.
 	 */
 	new ThymeleafRule('LinkExpression',
 		RegularExpression(/^@\{(.+?)(\(.+\))?\}$/, ['Url', 'UrlParameters']),
@@ -130,7 +130,7 @@ export default new Grammar('Thymeleaf Expression Language',
 			if (parameters) {
 
 				// TODO: Push this parsing of the parameters list back into the grammar
-				let expressionProcessor = new ExpressionProcessor();
+				let expressionProcessor = new ExpressionProcessor(ThymeleafExpressionLanguage);
 				let paramsList = parameters(context).slice(1, -1).split(',').map(param => {
 					let [lhs, rhs] = param.split('=');
 					return [lhs, expressionProcessor.process(rhs, context)];
@@ -436,3 +436,5 @@ export default new Grammar('Thymeleaf Expression Language',
 		)
 	)
 );
+
+export default ThymeleafExpressionLanguage;

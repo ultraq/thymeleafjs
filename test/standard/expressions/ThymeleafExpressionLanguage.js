@@ -14,12 +14,18 @@
  * limitations under the License.
  */
 
-import ExpressionProcessor from '../../../source/standard/expressions/ExpressionProcessor.js';
+import ExpressionProcessor         from '../../../source/standard/expressions/ExpressionProcessor.js';
+import ThymeleafExpressionLanguage from '../../../source/standard/expressions/ThymeleafExpressionLanguage.js';
 
 /**
  * Tests for the Thymeleaf expression language.
  */
 describe('standard/expressions/ThymeleafExpressionLanguage', function() {
+
+	let expressionProcessor;
+	beforeAll(function() {
+		expressionProcessor = new ExpressionProcessor(ThymeleafExpressionLanguage);
+	});
 
 	describe('#VariableExpression', function() {
 		const context = {
@@ -32,8 +38,6 @@ describe('standard/expressions/ThymeleafExpressionLanguage', function() {
 		};
 
 		test('Expressions get passed to underlying function', function() {
-			let expressionProcessor = new ExpressionProcessor();
-
 			let result = expressionProcessor.process('${greeting}', context);
 			expect(result).toBe(context.greeting);
 
@@ -46,27 +50,24 @@ describe('standard/expressions/ThymeleafExpressionLanguage', function() {
 				'Hello :)',
 				'Goodbye :('
 			];
-			let result = new ExpressionProcessor().process('${greetingsList.length}', {
+			let result = expressionProcessor.process('${greetingsList.length}', {
 				greetingsList
 			});
 			expect(result).toBe(greetingsList.length);
 		});
 
 		test('null/undefined value handling', function() {
-			let expressionProcessor = new ExpressionProcessor();
 			let result = expressionProcessor.process('${greetings.goodnight}', context);
 			expect(result).toBe('');
 		});
 
 		test('No context handling', function() {
-			let expressionProcessor = new ExpressionProcessor();
 			let result = expressionProcessor.process('${greeting}');
 			expect(result).toBe('');
 		});
 
 		test('Method calls', function() {
 			let sum = (a, b) => a + b;
-			let expressionProcessor = new ExpressionProcessor();
 			let result = expressionProcessor.process('${sum(1, 2)}', {
 				sum
 			});
@@ -76,7 +77,6 @@ describe('standard/expressions/ThymeleafExpressionLanguage', function() {
 		test('Utility function calls', function() {
 			const date = new Date();
 			const format = (date, format) => '' + date + format;
-			let expressionProcessor = new ExpressionProcessor();
 			let result = expressionProcessor.process('${#joda.format(date, #dateFormat.HUMAN)}', {
 				'#joda': {
 					format
@@ -90,7 +90,7 @@ describe('standard/expressions/ThymeleafExpressionLanguage', function() {
 		});
 
 		test('Negation', function() {
-			let result = new ExpressionProcessor().process('${!happy}', {
+			let result = expressionProcessor.process('${!happy}', {
 				happy: true
 			});
 			expect(result).toBe(false);
@@ -105,7 +105,6 @@ describe('standard/expressions/ThymeleafExpressionLanguage', function() {
 				messageResolver: jest.fn(),
 				greeting: 'Hello!'
 			};
-			let expressionProcessor = new ExpressionProcessor();
 			let result = expressionProcessor.process('#{myMessage(${greeting})}', context);
 			expect(result).toEqual({
 				type: 'message',
@@ -124,7 +123,6 @@ describe('standard/expressions/ThymeleafExpressionLanguage', function() {
 			const context = {
 				parameter: '1234'
 			};
-			let expressionProcessor = new ExpressionProcessor();
 			let result = expressionProcessor.process('~{template :: fragment(${parameter})}', context);
 			expect(result).toEqual({
 				type: 'fragment',
@@ -143,14 +141,14 @@ describe('standard/expressions/ThymeleafExpressionLanguage', function() {
 
 		test('Value and local name mapping', function() {
 			let expression = 'item: ${items}';
-			let result = new ExpressionProcessor().process(expression, context);
+			let result = expressionProcessor.process(expression, context);
 			expect(result.localValueName).toBe('item');
 			expect(result.iterable).toBe(context.items);
 		});
 
 		test('Iteration statuses', function() {
 			let expresion = 'item,i: ${items}';
-			let result = new ExpressionProcessor().process(expresion, context);
+			let result = expressionProcessor.process(expresion, context);
 			expect(result.localValueName).toBe('item');
 			expect(result.iterable).toBe(context.items);
 			expect(result.iterationStatusVariable).toBe('i');
@@ -171,12 +169,12 @@ describe('standard/expressions/ThymeleafExpressionLanguage', function() {
 		};
 
 		test('Join 2 strings', function() {
-			let result = new ExpressionProcessor().process(`'${firstString}' + '${secondString}'`, context);
+			let result = expressionProcessor.process(`'${firstString}' + '${secondString}'`, context);
 			expect(result).toBe(`${firstString}${secondString}`);
 		});
 
 		test('Join 2 expressions', function() {
-			let result = new ExpressionProcessor().process(`\${firstString} + \${secondString}`, context);
+			let result = expressionProcessor.process(`\${firstString} + \${secondString}`, context);
 			expect(result).toBe(`${firstString}${secondString}`);
 		});
 
@@ -184,12 +182,12 @@ describe('standard/expressions/ThymeleafExpressionLanguage', function() {
 			const secondLine = 'And this is crazy ';
 			const fourthLine = 'So call me maybe?';
 			let expression = `\${firstLine} + '${secondLine}' + \${thirdLine} + '${fourthLine}'`;
-			let result = new ExpressionProcessor().process(expression, context);
+			let result = expressionProcessor.process(expression, context);
 			expect(result).toBe(`${firstLine}${secondLine}${thirdLine}${fourthLine}`);
 		});
 
 		test('Allow escaped quotes in strings', function() {
-			let result = new ExpressionProcessor().process("'Thumbnail for \\'' + ${myImage} + '\\''", { // eslint-disable-line
+			let result = expressionProcessor.process("'Thumbnail for \\'' + ${myImage} + '\\''", { // eslint-disable-line
 				myImage: 'My Image'
 			});
 			expect(result).toBe("Thumbnail for 'My Image'");
@@ -202,7 +200,6 @@ describe('standard/expressions/ThymeleafExpressionLanguage', function() {
 		test('Returns information about the scoped variable', function() {
 			let aliasName = 'someKey';
 			let aliasValue = 'Hello!';
-			let expressionProcessor = new ExpressionProcessor();
 			let result = expressionProcessor.process(`${aliasName}=\${someValue}`, {
 				someValue: aliasValue
 			});
@@ -222,22 +219,22 @@ describe('standard/expressions/ThymeleafExpressionLanguage', function() {
 		};
 
 		test('Leaves URLs without special parameters alone', function() {
-			let result = new ExpressionProcessor().process('@{/test}', context);
+			let result = expressionProcessor.process('@{/test}', context);
 			expect(result).toBe('/test');
 		});
 
 		test('Append special parameters', function() {
-			let result = new ExpressionProcessor().process('@{/test(param1=hard-coded-value,param2=${greeting})}', context);
+			let result = expressionProcessor.process('@{/test(param1=hard-coded-value,param2=${greeting})}', context);
 			expect(result).toBe('/test?param1=hard-coded-value&param2=hello');
 		});
 
 		test('Replace parameters in url', function() {
-			let result = new ExpressionProcessor().process('@{/{part1}/{part2}/(part1=test,part2=${greeting})}', context);
+			let result = expressionProcessor.process('@{/{part1}/{part2}/(part1=test,part2=${greeting})}', context);
 			expect(result).toBe('/test/hello/');
 		});
 
 		test('Mixed template and query parameters', function() {
-			let result = new ExpressionProcessor().process('@{/test/{template}(template=${greeting},query=next)}', context);
+			let result = expressionProcessor.process('@{/test/{template}(template=${greeting},query=next)}', context);
 			expect(result).toBe('/test/hello?query=next');
 		});
 	});
@@ -246,8 +243,7 @@ describe('standard/expressions/ThymeleafExpressionLanguage', function() {
 	describe('#LogicalExpression', function() {
 
 		test('${var} === literal', function() {
-			let processor = new ExpressionProcessor();
-			let result = processor.process('${number} === 3', {
+			let result = expressionProcessor.process('${number} === 3', {
 				number: 3
 			});
 			expect(result).toBe(true);
@@ -257,8 +253,7 @@ describe('standard/expressions/ThymeleafExpressionLanguage', function() {
 	describe('#IfThenCondition', function() {
 
 		test('Executes the true branch', function() {
-			let processor = new ExpressionProcessor();
-			let result = processor.process("${condition} ? 'Hello!'", {
+			let result = expressionProcessor.process("${condition} ? 'Hello!'", {
 				condition: true
 			});
 			expect(result).toBe('Hello!');
@@ -269,16 +264,14 @@ describe('standard/expressions/ThymeleafExpressionLanguage', function() {
 	describe('#IfThenElseCondition', function() {
 
 		test('Executes the true branch', function() {
-			let processor = new ExpressionProcessor();
-			let result = processor.process("${condition} ? 'Hello!' : 'Goodbye :('", {
+			let result = expressionProcessor.process("${condition} ? 'Hello!' : 'Goodbye :('", {
 				condition: true
 			});
 			expect(result).toBe('Hello!');
 		});
 
 		test('Executes the false branch', function() {
-			let processor = new ExpressionProcessor();
-			let result = processor.process("${condition} ? 'Hello!' : 'Goodbye :('", {
+			let result = expressionProcessor.process("${condition} ? 'Hello!' : 'Goodbye :('", {
 				condition: false
 			});
 			expect(result).toBe('Goodbye :(');
@@ -290,7 +283,7 @@ describe('standard/expressions/ThymeleafExpressionLanguage', function() {
 
 		test('Verbatim expressions (fallback)', function() {
 			let greeting = 'Hello!';
-			let result = new ExpressionProcessor().process(greeting);
+			let result = expressionProcessor.process(greeting);
 			expect(result).toBe(greeting);
 		});
 	});

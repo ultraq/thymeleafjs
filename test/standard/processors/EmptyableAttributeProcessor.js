@@ -14,8 +14,10 @@
  * limitations under the License.
  */
 
-import EmptyableAttributeProcessor     from '../../../source/standard/processors/EmptyableAttributeProcessor';
-import {createThymeleafAttributeValue} from '../../../source/utilities/Dom';
+import ExpressionProcessor             from '../../../source/standard/expressions/ExpressionProcessor.js';
+import ThymeleafExpressionLanguage     from '../../../source/standard/expressions/ThymeleafExpressionLanguage.js';
+import EmptyableAttributeProcessor     from '../../../source/standard/processors/EmptyableAttributeProcessor.js';
+import {createThymeleafAttributeValue} from '../../../source/utilities/Dom.js';
 
 import h  from 'hyperscript';
 import hh from 'hyperscript-helpers';
@@ -31,10 +33,11 @@ describe('processors/standard/EmptyableAttributeProcessor', function() {
 		greeting: 'Hello!'
 	};
 	const attributeNames = ['href', 'value'];
+	const expressionProcessor = new ExpressionProcessor(ThymeleafExpressionLanguage);
 
 	test('Replaces the configured value', function() {
 		attributeNames.forEach(attributeName => {
-			let processor = new EmptyableAttributeProcessor('test', attributeName);
+			let processor = new EmptyableAttributeProcessor('test', attributeName, expressionProcessor);
 			let attribute = `test:${attributeName}`;
 			let attributeValue = '${greeting}';
 			let element = createThymeleafAttributeValue(
@@ -49,7 +52,7 @@ describe('processors/standard/EmptyableAttributeProcessor', function() {
 
 	test('Empties the configured value', function() {
 		attributeNames.forEach(attributeName => {
-			let processor = new EmptyableAttributeProcessor('test', attributeName);
+			let processor = new EmptyableAttributeProcessor('test', attributeName, expressionProcessor);
 			let attribute = `test:${attributeName}`;
 			let attributeValue = '${nothing}';
 			let element = createThymeleafAttributeValue(

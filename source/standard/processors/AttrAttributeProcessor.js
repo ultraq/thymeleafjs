@@ -15,6 +15,7 @@
  */
 
 import ExpressionProcessor            from '../expressions/ExpressionProcessor.js';
+import ThymeleafExpressionLanguage    from '../expressions/ThymeleafExpressionLanguage.js';
 import SelfRemovingAttributeProcessor from '../../processors/SelfRemovingAttributeProcessor.js';
 
 import {escapeHtml} from '@ultraq/string-utils';
@@ -33,11 +34,13 @@ export default class AttrAttributeProcessor extends SelfRemovingAttributeProcess
 	 * Constructor, set this processor to use the `attr` name and supplied prefix.
 	 * 
 	 * @param {String} prefix
-	 * @param {Object} isomorphic
+	 * @param {ExpressionProcessor} expressionProcessor
+	 * @param {Object} [isomorphic]
 	 */
-	constructor(prefix, isomorphic) {
+	constructor(prefix, expressionProcessor, isomorphic) {
 
 		super(prefix, AttrAttributeProcessor.NAME, isomorphic);
+		this.expressionProcessor = new ExpressionProcessor(ThymeleafExpressionLanguage);
 	}
 
 	/**
@@ -61,7 +64,7 @@ export default class AttrAttributeProcessor extends SelfRemovingAttributeProcess
 		if (/(.+=.+,)*.+=.+/.test(attributeValue)) {
 			attributeValue.split(',').forEach(attribute => {
 				let attributeParts = attribute.split('=');
-				element.setAttribute(attributeParts[0], escapeHtml(new ExpressionProcessor().process(attributeParts[1], context)));
+				element.setAttribute(attributeParts[0], escapeHtml(this.expressionProcessor.process(attributeParts[1], context)));
 			});
 		}
 		/* istanbul ignore next */

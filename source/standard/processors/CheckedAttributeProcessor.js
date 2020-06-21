@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import ExpressionProcessor            from '../expressions/ExpressionProcessor.js';
 import SelfRemovingAttributeProcessor from '../../processors/SelfRemovingAttributeProcessor.js';
 
 /**
@@ -38,11 +37,13 @@ export default class CheckedAttributeProcessor extends SelfRemovingAttributeProc
 	 * prefix.
 	 * 
 	 * @param {String} prefix
-	 * @param {Object} isomorphic
+	 * @param {ExpressionProcessor} expressionProcessor
+	 * @param {Object} [isomorphic]
 	 */
-	constructor(prefix, isomorphic) {
+	constructor(prefix, expressionProcessor, isomorphic) {
 
 		super(prefix, CheckedAttributeProcessor.NAME, isomorphic);
+		this.expressionProcessor = expressionProcessor;
 	}
 
 	/**
@@ -61,7 +62,7 @@ export default class CheckedAttributeProcessor extends SelfRemovingAttributeProc
 	 */
 	process(element, attribute, attributeValue, context) {
 
-		let result = new ExpressionProcessor().process(attributeValue, context);
+		let result = this.expressionProcessor.process(attributeValue, context);
 		if (result) {
 			element.setAttribute('checked', '');
 		}

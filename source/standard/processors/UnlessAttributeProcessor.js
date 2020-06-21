@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import ExpressionProcessor            from '../expressions/ExpressionProcessor.js';
 import SelfRemovingAttributeProcessor from '../../processors/SelfRemovingAttributeProcessor.js';
 
 import {clearChildren} from '@ultraq/dom-utils';
@@ -34,11 +33,13 @@ export default class UnlessAttributeProcessor extends SelfRemovingAttributeProce
 	 * Constructor, set this processor to use the `unless` name and supplied prefix.
 	 * 
 	 * @param {String} prefix
-	 * @param {Object} isomorphic
+	 * @param {ExpressionProcessor} expressionProcessor
+	 * @param {Object} [isomorphic]
 	 */
-	constructor(prefix, isomorphic) {
+	constructor(prefix, expressionProcessor, isomorphic) {
 
 		super(prefix, UnlessAttributeProcessor.NAME, isomorphic);
+		this.expressionProcessor = expressionProcessor;
 	}
 
 	/**
@@ -57,7 +58,7 @@ export default class UnlessAttributeProcessor extends SelfRemovingAttributeProce
 	 */
 	process(element, attribute, attributeValue, context) {
 
-		let expressionResult = new ExpressionProcessor().process(attributeValue, context);
+		let expressionResult = this.expressionProcessor.process(attributeValue, context);
 		if (expressionResult) {
 			clearChildren(element);
 			// TODO: element.remove()?

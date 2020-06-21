@@ -14,8 +14,10 @@
  * limitations under the License.
  */
 
-import UTextAttributeProcessor         from '../../../source/standard/processors/UTextAttributeProcessor';
-import {createThymeleafAttributeValue} from '../../../source/utilities/Dom';
+import ExpressionProcessor             from '../../../source/standard/expressions/ExpressionProcessor.js';
+import ThymeleafExpressionLanguage     from '../../../source/standard/expressions/ThymeleafExpressionLanguage.js';
+import UTextAttributeProcessor         from '../../../source/standard/processors/UTextAttributeProcessor.js';
+import {createThymeleafAttributeValue} from '../../../source/utilities/Dom.js';
 
 import h  from 'hyperscript';
 import hh from 'hyperscript-helpers';
@@ -30,7 +32,7 @@ describe('processors/standard/UTextAttributeProcessor', function() {
 	let processor;
 	let attribute;
 	beforeAll(function() {
-		processor = new UTextAttributeProcessor('test');
+		processor = new UTextAttributeProcessor('test', new ExpressionProcessor(ThymeleafExpressionLanguage));
 		attribute = `${processor.prefix}:${processor.name}`;
 	});
 

@@ -15,8 +15,6 @@
  */
 
 import FragmentAttributeProcessor     from './FragmentAttributeProcessor.js';
-import ExpressionProcessor            from '../expressions/ExpressionProcessor.js';
-import FragmentSignatureGrammar       from '../expressions/FragmentSignatureGrammar.js';
 import SelfRemovingAttributeProcessor from '../../processors/SelfRemovingAttributeProcessor.js';
 import {getThymeleafAttributeValue}   from '../../utilities/Dom.js';
 import {extractFragment}              from '../../utilities/Fragments.js';
@@ -38,11 +36,15 @@ export default class ReplaceAttributeProcessor extends SelfRemovingAttributeProc
 	 * prefix.
 	 * 
 	 * @param {String} prefix
-	 * @param {Object} isomorphic
+	 * @param {ExpressionProcessor} expressionProcessor
+	 * @param {ExpressionProcessor} fragmentSignatureProcessor
+	 * @param {Object} [isomorphic]
 	 */
-	constructor(prefix, isomorphic) {
+	constructor(prefix, expressionProcessor, fragmentSignatureProcessor, isomorphic) {
 
 		super(prefix, ReplaceAttributeProcessor.NAME, isomorphic);
+		this.expressionProcessor = expressionProcessor;
+		this.fragmentSignatureProcessor = fragmentSignatureProcessor;
 	}
 
 	/**
@@ -65,12 +67,12 @@ export default class ReplaceAttributeProcessor extends SelfRemovingAttributeProc
 		super.process(element, attribute, attributeValue, context);
 		clearChildren(element);
 
-		let fragmentInfo = new ExpressionProcessor().process(attributeValue, context);
+		let fragmentInfo = this.expressionProcessor.process(attributeValue, context);
 		if (fragmentInfo) {
 			let fragment = await extractFragment(this.prefix, fragmentInfo, context);
 			if (fragment) {
 				let fragmentSignature = getThymeleafAttributeValue(fragment, this.prefix, FragmentAttributeProcessor.NAME);
-				let {parameterNames} = new ExpressionProcessor(FragmentSignatureGrammar).process(fragmentSignature, context);
+				let {parameterNames} = this.fragmentSignatureProcessor.process(fragmentSignature, context);
 				if (parameterNames) {
 					let {parameters} = fragmentInfo;
 					let localContext = {};

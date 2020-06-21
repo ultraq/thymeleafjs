@@ -14,8 +14,10 @@
  * limitations under the License.
  */
 
-import RemovableAttributeProcessor     from '../../../source/standard/processors/RemovableAttributeProcessor';
-import {createThymeleafAttributeValue} from '../../../source/utilities/Dom';
+import ExpressionProcessor             from '../../../source/standard/expressions/ExpressionProcessor.js';
+import ThymeleafExpressionLanguage     from '../../../source/standard/expressions/ThymeleafExpressionLanguage.js';
+import RemovableAttributeProcessor     from '../../../source/standard/processors/RemovableAttributeProcessor.js';
+import {createThymeleafAttributeValue} from '../../../source/utilities/Dom.js';
 
 import h  from 'hyperscript';
 import hh from 'hyperscript-helpers';
@@ -34,7 +36,7 @@ describe('processors/standard/RemovableAttributeProcessor', function() {
 
 	test('Replaces the configured value', function() {
 		attributeNames.forEach(attributeName => {
-			let processor = new RemovableAttributeProcessor('test', attributeName);
+			let processor = new RemovableAttributeProcessor('test', attributeName, new ExpressionProcessor(ThymeleafExpressionLanguage));
 			let attribute = `test:${attributeName}`;
 			let attributeValue = '${greeting}';
 			let element = createThymeleafAttributeValue(
@@ -49,7 +51,7 @@ describe('processors/standard/RemovableAttributeProcessor', function() {
 
 	test('Removes the configured attribute', function() {
 		attributeNames.forEach(attributeName => {
-			let processor = new RemovableAttributeProcessor('test', attributeName);
+			let processor = new RemovableAttributeProcessor('test', attributeName, new ExpressionProcessor(ThymeleafExpressionLanguage));
 			let attribute = `test:${attributeName}`;
 			let attributeValue = '${nothing}';
 			let element = createThymeleafAttributeValue(

@@ -14,8 +14,10 @@
  * limitations under the License.
  */
 
-import EachAttributeProcessor          from '../../../source/standard/processors/EachAttributeProcessor';
-import {createThymeleafAttributeValue} from '../../../source/utilities/Dom';
+import ExpressionProcessor             from '../../../source/standard/expressions/ExpressionProcessor.js';
+import ThymeleafExpressionLanguage     from '../../../source/standard/expressions/ThymeleafExpressionLanguage.js';
+import EachAttributeProcessor          from '../../../source/standard/processors/EachAttributeProcessor.js';
+import {createThymeleafAttributeValue} from '../../../source/utilities/Dom.js';
 
 import {range} from '@ultraq/array-utils';
 import h       from 'hyperscript';
@@ -30,7 +32,7 @@ describe('processors/standard/EachAttributeProcessor', function() {
 
 	let processor, attribute;
 	beforeAll(function() {
-		processor = new EachAttributeProcessor('test');
+		processor = new EachAttributeProcessor('test', new ExpressionProcessor(ThymeleafExpressionLanguage));
 		attribute = `${processor.prefix}:${processor.name}`;
 	});
 

@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import ExpressionProcessor            from '../expressions/ExpressionProcessor.js';
 import SelfRemovingAttributeProcessor from '../../processors/SelfRemovingAttributeProcessor.js';
 
 /**
@@ -33,11 +32,13 @@ export default class UTextAttributeProcessor extends SelfRemovingAttributeProces
 	 * prefix.
 	 * 
 	 * @param {String} prefix
-	 * @param {Object} isomorphic
+	 * @param {ExpressionProcessor} expressionProcessor
+	 * @param {Object} [isomorphic]
 	 */
-	constructor(prefix, isomorphic) {
+	constructor(prefix, expressionProcessor, isomorphic) {
 
 		super(prefix, UTextAttributeProcessor.NAME, isomorphic);
+		this.expressionProcessor = expressionProcessor;
 	}
 
 	/**
@@ -56,7 +57,7 @@ export default class UTextAttributeProcessor extends SelfRemovingAttributeProces
 	 */
 	process(element, attribute, attributeValue, context) {
 
-		element.innerHTML = new ExpressionProcessor().process(attributeValue, context);
+		element.innerHTML = this.expressionProcessor.process(attributeValue, context);
 		return super.process(element, attribute, attributeValue, context);
 	}
 }

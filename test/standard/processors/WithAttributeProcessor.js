@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+import ExpressionProcessor             from '../../../source/standard/expressions/ExpressionProcessor.js';
+import ThymeleafExpressionLanguage     from '../../../source/standard/expressions/ThymeleafExpressionLanguage.js';
 import WithAttributeProcessor          from '../../../source/standard/processors/WithAttributeProcessor.js';
 import {createThymeleafAttributeValue} from '../../../source/utilities/Dom.js';
 
@@ -29,7 +31,7 @@ describe('processors/standard/WithAttributeProcessor', function() {
 
 	let attribute, processor;
 	beforeAll(function() {
-		processor = new WithAttributeProcessor('test');
+		processor = new WithAttributeProcessor('test', new ExpressionProcessor(ThymeleafExpressionLanguage));
 		attribute = `${processor.prefix}:${processor.name}`;
 	});
 

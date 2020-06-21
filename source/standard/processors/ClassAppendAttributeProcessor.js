@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import ExpressionProcessor            from '../expressions/ExpressionProcessor.js';
 import SelfRemovingAttributeProcessor from '../../processors/SelfRemovingAttributeProcessor.js';
 
 /**
@@ -31,11 +30,13 @@ export default class ClassAppendAttributeProcessor extends SelfRemovingAttribute
 	 * Constructor, set this processor to use the `attr` name and supplied prefix.
 	 * 
 	 * @param {String} prefix
-	 * @param {Object} isomorphic
+	 * @param {ExpressionProcessor} expressionProcessor
+	 * @param {Object} [isomorphic]
 	 */
-	constructor(prefix, isomorphic) {
+	constructor(prefix, expressionProcessor, isomorphic) {
 
 		super(prefix, ClassAppendAttributeProcessor.NAME, isomorphic);
+		this.expressionProcessor = expressionProcessor;
 	}
 
 	/**
@@ -54,7 +55,7 @@ export default class ClassAppendAttributeProcessor extends SelfRemovingAttribute
 	 */
 	process(element, attribute, attributeValue, context) {
 
-		let classes = new ExpressionProcessor().process(attributeValue, context);
+		let classes = this.expressionProcessor.process(attributeValue, context);
 		if (classes) {
 			element.className += ` ${classes}`;
 		}

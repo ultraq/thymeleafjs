@@ -14,8 +14,10 @@
  * limitations under the License.
  */
 
-import IfAttributeProcessor            from '../../../source/standard/processors/IfAttributeProcessor';
-import {createThymeleafAttributeValue} from '../../../source/utilities/Dom';
+import ExpressionProcessor             from '../../../source/standard/expressions/ExpressionProcessor.js';
+import ThymeleafExpressionLanguage     from '../../../source/standard/expressions/ThymeleafExpressionLanguage.js';
+import IfAttributeProcessor            from '../../../source/standard/processors/IfAttributeProcessor.js';
+import {createThymeleafAttributeValue} from '../../../source/utilities/Dom.js';
 
 import h  from 'hyperscript';
 import hh from 'hyperscript-helpers';
@@ -29,7 +31,7 @@ describe('processors/standard/IfAttributeProcessor', function() {
 
 	let attribute, processor;
 	beforeAll(function() {
-		processor = new IfAttributeProcessor('test');
+		processor = new IfAttributeProcessor('test', new ExpressionProcessor(ThymeleafExpressionLanguage));
 		attribute = `${processor.prefix}:${processor.name}`;
 	});
 
