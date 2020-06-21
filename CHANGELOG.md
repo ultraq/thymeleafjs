@@ -7,6 +7,7 @@ Changelog
    files.
  - Remove the standard variant of an attribute processor when the isomorphic one
    is processed.
+ - Isomorphic mode now configured at the dialect level
  - Lots of statics moved to named exports for better tree-shaking / smaller
    imports.
 

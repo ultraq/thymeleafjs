@@ -18,5 +18,6 @@ export {STANDARD_CONFIGURATION}         from './Configurations';
 export {default as TemplateEngine}      from './TemplateEngine';
 export {default as Dialect}             from './dialects/Dialect';
 export {default as AttributeProcessor}  from './processors/AttributeProcessor';
+export {default as ElementProcessor}    from './processors/ElementProcessor.js';
 export {default as ExpressionProcessor} from './standard/expressions/ExpressionProcessor.js';
 export {default as StandardDialect}     from './standard/StandardDialect';

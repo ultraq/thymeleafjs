@@ -105,8 +105,6 @@ When constructing a new instance of the template engine, a config object can be
 passed in to set any of the available options.  These are:
 
  - **dialects**: array of [Dialect](#dialect) instances to use in processing
- - **isomorphic**: enables the ability to run standard Thymeleaf processors with
-   priority given to `thjs` processors of the same name.
  - **messageResolver**: a function given a message key and optional message
    parameters which should then return the message string or `Promise` of the
    message string.  Required if you want to use message expressions (`#{...}`).
@@ -116,15 +114,14 @@ passed in to set any of the available options.  These are:
    fragment processors like `th:insert`.
 
 ```javascript
-import {TemplateEngine} from 'thymeleaf';
+import {StandardDialect, TemplateEngine} from 'thymeleaf';
 
 let templateEngine = new TemplateEngine({
   dialects: [
-    // ...
+    new StandardDialect('th', { // Enable isomorphic mode with this config object
+      prefix: 'thjs'
+    })
   ],
-  isomorphic: {
-  	prefix: 'thjs'
-  },
   messageResolver: (key, parameters) => {
   	// ...
   },
@@ -171,8 +168,12 @@ expression objects.
 ### AttributeProcessor
 
 A basic class that is used for creating processors that work using HTML
-attributes.  All of the processors in the Standard Dialect are currently
-`AttributeProcessor`s.
+attributes.
+
+
+### ElementProcessor
+
+A processor for working on HTML elements.
 
 
 ### StandardDialect
