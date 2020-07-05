@@ -33,6 +33,7 @@ export default {
 		})
 	],
 	external: [
+		'@babel/runtime',
 		'@ultraq/array-utils',
 		'@ultraq/dom-utils',
 		'@ultraq/string-utils',
