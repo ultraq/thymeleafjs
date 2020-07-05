@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-export {STANDARD_CONFIGURATION}         from './Configurations.js';
-export {default as TemplateEngine}      from './TemplateEngine.js';
-export {default as Dialect}             from './dialects/Dialect.js';
-export {default as AttributeProcessor}  from './processors/AttributeProcessor.js';
-export {default as ElementProcessor}    from './processors/ElementProcessor.js';
-export {default as ExpressionProcessor} from './standard/expressions/ExpressionProcessor.js';
-export {default as StandardDialect}     from './standard/StandardDialect.js';
+export {STANDARD_CONFIGURATION}                 from './Configurations.js';
+export {default as TemplateEngine}              from './TemplateEngine.js';
+export {default as Dialect}                     from './dialects/Dialect.js';
+export {default as AttributeProcessor}          from './processors/AttributeProcessor.js';
+export {default as ElementProcessor}            from './processors/ElementProcessor.js';
+export {default as StandardDialect}             from './standard/StandardDialect.js';
+export {default as ExpressionProcessor}         from './standard/expressions/ExpressionProcessor.js';
+export {default as ThymeleafExpressionLanguage} from './standard/expressions/ThymeleafExpressionLanguage.js';
