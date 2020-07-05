@@ -15,11 +15,13 @@
  */
 
 import {NAME as FragmentAttributeProcessorName} from './FragmentAttributeProcessor.js';
-import SelfRemovingAttributeProcessor           from '../../processors/SelfRemovingAttributeProcessor.js';
+import AttributeProcessor                       from '../../processors/AttributeProcessor.js';
 import {getThymeleafAttributeValue}             from '../../utilities/Dom.js';
 import {extractFragment}                        from '../../utilities/Fragments.js';
 
 import {clearChildren} from '@ultraq/dom-utils';
+
+export const NAME = 'replace';
 
 /**
  * JS equivalent of Thymeleaf's `th:relace` attribute processor, replaces the
@@ -27,9 +29,7 @@ import {clearChildren} from '@ultraq/dom-utils';
  * 
  * @author Emanuel Rabina
  */
-export default class ReplaceAttributeProcessor extends SelfRemovingAttributeProcessor {
-
-	static NAME = 'replace';
+export default class ReplaceAttributeProcessor extends AttributeProcessor {
 
 	/**
 	 * Constructor, set this processor to use the `replace` name and supplied
@@ -42,7 +42,7 @@ export default class ReplaceAttributeProcessor extends SelfRemovingAttributeProc
 	 */
 	constructor(prefix, expressionProcessor, fragmentSignatureProcessor, isomorphic) {
 
-		super(prefix, ReplaceAttributeProcessor.NAME, isomorphic);
+		super(prefix, NAME, isomorphic);
 		this.expressionProcessor = expressionProcessor;
 		this.fragmentSignatureProcessor = fragmentSignatureProcessor;
 	}

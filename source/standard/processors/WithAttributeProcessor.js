@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import SelfRemovingAttributeProcessor from '../../processors/SelfRemovingAttributeProcessor.js';
+import AttributeProcessor from '../../processors/AttributeProcessor.js';
 
 export const NAME = 'with';
 
@@ -23,7 +23,7 @@ export const NAME = 'with';
  * 
  * @author Emanuel Rabina
  */
-export default class WithAttributeProcessor extends SelfRemovingAttributeProcessor {
+export default class WithAttributeProcessor extends AttributeProcessor {
 
 	/**
 	 * Constructor, set this processor to use the `with` name and supplied

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import SelfRemovingAttributeProcessor from '../../processors/SelfRemovingAttributeProcessor.js';
+import AttributeProcessor from '../../processors/AttributeProcessor.js';
 
 export const NAME = 'classappend';
 
@@ -24,7 +24,7 @@ export const NAME = 'classappend';
  * 
  * @author Emanuel Rabina
  */
-export default class ClassAppendAttributeProcessor extends SelfRemovingAttributeProcessor {
+export default class ClassAppendAttributeProcessor extends AttributeProcessor {
 
 	/**
 	 * Constructor, set this processor to use the `attr` name and supplied prefix.

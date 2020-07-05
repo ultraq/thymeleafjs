@@ -15,11 +15,13 @@
  */
 
 import {NAME as FragmentAttributeProcessorName} from './FragmentAttributeProcessor.js';
-import SelfRemovingAttributeProcessor           from '../../processors/SelfRemovingAttributeProcessor.js';
+import AttributeProcessor                       from '../../processors/AttributeProcessor.js';
 import {getThymeleafAttributeValue}             from '../../utilities/Dom.js';
 import {extractFragment}                        from '../../utilities/Fragments.js';
 
 import {clearChildren} from '@ultraq/dom-utils';
+
+export const NAME = 'insert';
 
 /**
  * JS equivalent of Thymeleaf's `th:insert` attribute processor, inserts the
@@ -27,9 +29,7 @@ import {clearChildren} from '@ultraq/dom-utils';
  * 
  * @author Emanuel Rabina
  */
-export default class InsertAttributeProcessor extends SelfRemovingAttributeProcessor {
-
-	static NAME = 'insert';
+export default class InsertAttributeProcessor extends AttributeProcessor {
 
 	/**
 	 * Constructor, set this processor to use the `insert` name and supplied
@@ -42,7 +42,7 @@ export default class InsertAttributeProcessor extends SelfRemovingAttributeProce
 	 */
 	constructor(prefix, expressionProcessor, fragmentSignatureProcessor, isomorphic) {
 
-		super(prefix, InsertAttributeProcessor.NAME, isomorphic);
+		super(prefix, NAME, isomorphic);
 		this.expressionProcessor = expressionProcessor;
 		this.fragmentSignatureProcessor = fragmentSignatureProcessor;
 	}

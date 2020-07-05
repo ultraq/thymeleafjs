@@ -36,7 +36,6 @@ export default class ElementProcessor {
 	/**
 	 * Processes the given element.
 	 * 
-	 * @abstract
 	 * @param {Element} element
 	 *   Element being processed.
 	 * @param {Object} context

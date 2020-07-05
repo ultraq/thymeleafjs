@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import SelfRemovingAttributeProcessor from '../../processors/SelfRemovingAttributeProcessor.js';
+import AttributeProcessor from '../../processors/AttributeProcessor.js';
 
 export const NAME = 'fragment';
 
@@ -25,7 +25,7 @@ export const NAME = 'fragment';
  * 
  * @author Emanuel Rabina
  */
-export default class FragmentAttributeProcessor extends SelfRemovingAttributeProcessor {
+export default class FragmentAttributeProcessor extends AttributeProcessor {
 
 	/**
 	 * Constructor, set this processor to use the `fragment` name and supplied

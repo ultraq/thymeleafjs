@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import SelfRemovingAttributeProcessor from '../../processors/SelfRemovingAttributeProcessor.js';
-import {buildMessage}                 from '../../utilities/Messages.js';
+import AttributeProcessor from '../../processors/AttributeProcessor.js';
+import {buildMessage}     from '../../utilities/Messages.js';
 
 export const NAME = 'text';
 
@@ -26,7 +26,7 @@ export const NAME = 'text';
  * 
  * @author Emanuel Rabina
  */
-export default class TextAttributeProcessor extends SelfRemovingAttributeProcessor {
+export default class TextAttributeProcessor extends AttributeProcessor {
 
 	/**
 	 * Constructor, set this processor to use the `text` name and supplied prefix.

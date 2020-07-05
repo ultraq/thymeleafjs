@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import SelfRemovingAttributeProcessor from '../../processors/SelfRemovingAttributeProcessor.js';
+import AttributeProcessor from '../../processors/AttributeProcessor.js';
 
 import {clearChildren} from '@ultraq/dom-utils';
 
@@ -27,7 +27,7 @@ export const NAME = 'unless';
  * 
  * @author Robbie Bardijn
  */
-export default class UnlessAttributeProcessor extends SelfRemovingAttributeProcessor {
+export default class UnlessAttributeProcessor extends AttributeProcessor {
 
 	/**
 	 * Constructor, set this processor to use the `unless` name and supplied prefix.

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import SelfRemovingAttributeProcessor from '../../processors/SelfRemovingAttributeProcessor.js';
+import AttributeProcessor from '../../processors/AttributeProcessor.js';
 
 /**
  * Configurable attribute processor that sets or empties an attribute value on
@@ -22,7 +22,7 @@ import SelfRemovingAttributeProcessor from '../../processors/SelfRemovingAttribu
  * 
  * @author Emanuel Rabina
  */
-export default class EmptyableAttributeProcessor extends SelfRemovingAttributeProcessor {
+export default class EmptyableAttributeProcessor extends AttributeProcessor {
 
 	/**
 	 * Constructor, set the name of the attribute this processor will operate on.

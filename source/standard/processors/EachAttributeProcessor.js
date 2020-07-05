@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import SelfRemovingAttributeProcessor from '../../processors/SelfRemovingAttributeProcessor.js';
+import AttributeProcessor from '../../processors/AttributeProcessor.js';
 
 export const NAME = 'each';
 
@@ -25,7 +25,7 @@ export const NAME = 'each';
  * 
  * @author Emanuel Rabina
  */
-export default class EachAttributeProcessor extends SelfRemovingAttributeProcessor {
+export default class EachAttributeProcessor extends AttributeProcessor {
 
 	/**
 	 * Constructor, set this processor to use the `each` name and supplied prefix.

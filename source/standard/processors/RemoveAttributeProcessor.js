@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import SelfRemovingAttributeProcessor from '../../processors/SelfRemovingAttributeProcessor.js';
+import AttributeProcessor from '../../processors/AttributeProcessor.js';
 
 export const NAME = 'remove';
 
@@ -24,7 +24,7 @@ export const NAME = 'remove';
  * 
  * @author Emanuel Rabina
  */
-export default class RemoveAttributeProcessor extends SelfRemovingAttributeProcessor {
+export default class RemoveAttributeProcessor extends AttributeProcessor {
 
 	/**
 	 * Constructor, set this processor to use the `remove` name and supplied

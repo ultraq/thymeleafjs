@@ -14,9 +14,7 @@
  * limitations under the License.
  */
 
-import ExpressionProcessor            from '../expressions/ExpressionProcessor.js';
-import ThymeleafExpressionLanguage    from '../expressions/ThymeleafExpressionLanguage.js';
-import SelfRemovingAttributeProcessor from '../../processors/SelfRemovingAttributeProcessor.js';
+import AttributeProcessor from '../../processors/AttributeProcessor.js';
 
 import {escapeHtml} from '@ultraq/string-utils';
 
@@ -28,7 +26,7 @@ export const NAME = 'attr';
  * 
  * @author Emanuel Rabina
  */
-export default class AttrAttributeProcessor extends SelfRemovingAttributeProcessor {
+export default class AttrAttributeProcessor extends AttributeProcessor {
 
 	/**
 	 * Constructor, set this processor to use the `attr` name and supplied prefix.
@@ -40,7 +38,7 @@ export default class AttrAttributeProcessor extends SelfRemovingAttributeProcess
 	constructor(prefix, expressionProcessor, isomorphic) {
 
 		super(prefix, NAME, isomorphic);
-		this.expressionProcessor = new ExpressionProcessor(ThymeleafExpressionLanguage);
+		this.expressionProcessor = expressionProcessor;
 	}
 
 	/**

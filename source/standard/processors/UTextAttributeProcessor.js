@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import SelfRemovingAttributeProcessor from '../../processors/SelfRemovingAttributeProcessor.js';
+import AttributeProcessor from '../../processors/AttributeProcessor.js';
 
 export const NAME = 'utext';
 
@@ -25,7 +25,7 @@ export const NAME = 'utext';
  * 
  * @author Emanuel Rabina
  */
-export default class UTextAttributeProcessor extends SelfRemovingAttributeProcessor {
+export default class UTextAttributeProcessor extends AttributeProcessor {
 
 	/**
 	 * Constructor, set this processor to use the `utext` name and supplied

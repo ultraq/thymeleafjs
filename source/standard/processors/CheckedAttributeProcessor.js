@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import SelfRemovingAttributeProcessor from '../../processors/SelfRemovingAttributeProcessor.js';
+import AttributeProcessor from '../../processors/AttributeProcessor.js';
 
 export const NAME = 'checked';
 
@@ -30,7 +30,7 @@ export const NAME = 'checked';
  * 
  * @author Emanuel Rabina
  */
-export default class CheckedAttributeProcessor extends SelfRemovingAttributeProcessor {
+export default class CheckedAttributeProcessor extends AttributeProcessor {
 
 	/**
 	 * Constructor, set this processor to use the `checked` name and supplied

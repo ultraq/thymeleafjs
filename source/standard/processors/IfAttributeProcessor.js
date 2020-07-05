@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import SelfRemovingAttributeProcessor from '../../processors/SelfRemovingAttributeProcessor.js';
+import AttributeProcessor from '../../processors/AttributeProcessor.js';
 
 export const NAME = 'if';
 
@@ -25,7 +25,7 @@ export const NAME = 'if';
  * 
  * @author Emanuel Rabina
  */
-export default class IfAttributeProcessor extends SelfRemovingAttributeProcessor {
+export default class IfAttributeProcessor extends AttributeProcessor {
 
 	/**
 	 * Constructor, set this processor to use the `if` name and supplied prefix.

@@ -38,7 +38,6 @@ export default class AttributeProcessor {
 	/**
 	 * Process the given attribute on the element it appears.
 	 * 
-	 * @abstract
 	 * @param {Element} element
 	 *   Element being processed.
 	 * @param {String} attribute
@@ -51,6 +50,10 @@ export default class AttributeProcessor {
 	 */
 	process(element, attribute, attributeValue, context) {
 
+		element.removeAttribute(attribute);
+		if (this.isomorphic) {
+			element.removeAttribute(`${this.prefix}:${this.name}`);
+		}
 		return false;
 	}
 }
