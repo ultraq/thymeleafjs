@@ -15,6 +15,11 @@
  */
 
 /* global ENVIRONMENT */
+import {
+	deserialize as domDeserialize,
+	serialize as domSerialize
+}              from '@ultraq/dom-utils';
+import {JSDOM} from 'jsdom';
 
 /**
  * Create and return a new HTML fragment using JSDOM from the given string.
@@ -24,7 +29,6 @@
  * @return {Element}
  */
 export function createHtml(htmlString) {
-	const {JSDOM} = require('jsdom');
 	return new JSDOM(htmlString).window.document.body.firstElementChild;
 }
 
@@ -52,10 +56,9 @@ export function getThymeleafAttributeValue(element, prefix, processorName) {
 export function deserialize(htmlString) {
 	/* istanbul ignore if */
 	if (ENVIRONMENT === 'browser') {
-		return require('@ultraq/dom-utils').deserialize(htmlString);
+		return domDeserialize(htmlString);
 	}
 	else {
-		const {JSDOM} = require('jsdom');
 		return new JSDOM(htmlString).window.document;
 	}
 }
@@ -70,7 +73,7 @@ export function deserialize(htmlString) {
 export function serialize(documentFragment) {
 	/* istanbul ignore if */
 	if (ENVIRONMENT === 'browser') {
-		return require('@ultraq/dom-utils').serialize(documentFragment);
+		return domSerialize(documentFragment);
 	}
 	else {
 		let result = '';

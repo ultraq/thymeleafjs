@@ -1,8 +1,8 @@
 
+import babel       from '@rollup/plugin-babel';
+import commonjs    from '@rollup/plugin-commonjs';
 import nodeResolve from '@rollup/plugin-node-resolve';
-import babel       from 'rollup-plugin-babel';
-import commonjs    from 'rollup-plugin-commonjs';
-import replace     from 'rollup-plugin-replace';
+import replace     from '@rollup/plugin-replace';
 
 const {ENVIRONMENT} = process.env;
 
@@ -21,23 +21,23 @@ export default {
 		}
 	],
 	plugins: [
-		babel(),
-		commonjs({
-			namedExports: {
-				'dumb-query-selector': ['$', '$$']
-			}
+		babel({
+			babelHelpers: 'bundled', // Have opted for bundled as it still duplicates things in runtime mode
+			skipPreflightCheck: true // See: https://github.com/rollup/plugins/issues/381#issuecomment-627215009
 		}),
+		commonjs(),
 		nodeResolve(),
 		replace({
 			ENVIRONMENT: JSON.stringify(ENVIRONMENT)
 		})
 	],
 	external: [
-		'@babel/runtime',
+		/@babel\/runtime/,
 		'@ultraq/array-utils',
 		'@ultraq/dom-utils',
 		'@ultraq/string-utils',
 		'dumb-query-selector',
+		'fs',
 		'jsdom'
 	]
 };

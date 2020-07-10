@@ -21,6 +21,8 @@ import Matcher                  from './processors/Matcher.js';
 import {deserialize, serialize} from './utilities/Dom.js';
 import {promisify}              from './utilities/Functions.js';
 
+import {readFile} from 'fs';
+
 /**
  * A highly-configurable class responsible for processing the Thymeleaf
  * directives found in HTML documents and fragments.
@@ -80,21 +82,21 @@ export default class TemplateEngine {
 	}
 
 	/**
-	 * Process the Thymeleaf template at the given path, returning a promise of the
-	 * processed template.
+	 * Process the Thymeleaf template at the given path, returning a promise of
+	 * the processed template.
 	 * 
 	 * @param {String} filePath
 	 * @param {Object} [context={}]
 	 * @return {Promise<String>}
-	 *   A promise resolved with the processed template, or rejected with an error
-	 *   message.
+	 *   A promise of the processed template.  The promise is immediately rejected
+	 *   if this method is called in a browser environment.
 	 */
 	processFile(filePath, context = {}) {
 
 		/* global ENVIRONMENT */
 		return ENVIRONMENT === 'browser' ?
-			Promise.reject(new Error('Cannot use fs.readFile inside a browser')) :
-			promisify(require('fs').readFile)(filePath)
+			Promise.reject(new Error('Cannot use TemplateEngine.processFile() inside a browser')) :
+			promisify(readFile)(filePath)
 				.then(data => {
 					return this.process(data, context);
 				});
