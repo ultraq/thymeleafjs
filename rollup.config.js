@@ -39,5 +39,8 @@ export default {
 		'dumb-query-selector',
 		'fs',
 		'jsdom'
-	]
+	],
+	treeshake: {
+		moduleSideEffects: false
+	}
 };
