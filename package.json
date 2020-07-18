@@ -31,7 +31,7 @@
 		"@ultraq/dom-utils": "^0.3.2",
 		"@ultraq/string-utils": "^2.0.0",
 		"dumb-query-selector": "^3.3.0",
-		"jsdom": "^16.2.1"
+		"jsdom": "^16.3.0"
 	},
 	"devDependencies": {
 		"@babel/core": "^7.10.4",
@@ -48,9 +48,9 @@
 		"chokidar-cli": "^2.1.0",
 		"coveralls": "^3.1.0",
 		"cross-env": "^5.1.0",
-		"eslint": "^6.8.0",
+		"eslint": "^7.4.0",
 		"eslint-config-ultraq": "^2.3.3",
-		"eslint-plugin-import": "^2.20.2",
+		"eslint-plugin-import": "^2.22.0",
 		"jest": "^25.2.7",
 		"rollup": "^2.21.0",
 		"rollup-plugin-terser": "^6.1.0"
