@@ -8,12 +8,13 @@
 		"type": "git",
 		"url": "https://github.com/ultraq/thymeleafjs"
 	},
-	"main": "lib/thymeleaf.node.cjs.js",
 	"module": "lib/thymeleaf.node.es.js",
+	"main": "lib/thymeleaf.node.cjs.js",
 	"browser": {
-		"./lib/thymeleaf.node.cjs.js": "./lib/thymeleaf.browser.cjs.js",
-		"./lib/thymeleaf.node.es.js": "./lib/thymeleaf.browser.es.js"
+		"./lib/thymeleaf.node.es.js": "./lib/thymeleaf.browser.es.js",
+		"./lib/thymeleaf.node.cjs.js": "./lib/thymeleaf.browser.cjs.js"
 	},
+	"sideEffects": false,
 	"scripts": {
 		"lint": "eslint \"**/*.js\"",
 		"test": "jest",
