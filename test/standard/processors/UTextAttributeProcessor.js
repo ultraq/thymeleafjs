@@ -24,30 +24,35 @@ import {createHtml}                from '../../../source/utilities/Dom.js';
  */
 describe('processors/standard/UTextAttributeProcessor', function() {
 
-	let processor;
-	let attribute;
-	beforeAll(function() {
-		processor = new UTextAttributeProcessor('test', new ExpressionProcessor(ThymeleafExpressionLanguage));
-		attribute = `${processor.prefix}:${processor.name}`;
-	});
+	const processor = new UTextAttributeProcessor('test');
+	const attribute = `${processor.prefix}:${processor.name}`;
+	const baseContext = {
+		expressionProcessor: new ExpressionProcessor(ThymeleafExpressionLanguage)
+	};
 
 	test("Replaces an element's text content", function() {
 		let text = 'Hello!';
 		let element = createHtml(`<div ${attribute}="${text}">Goodbye</div>`);
-		processor.process(element, attribute, text);
+		processor.process(element, attribute, text, {
+			...baseContext
+		});
 		expect(element.innerHTML).toBe(text);
 	});
 
 	test("Doesn't escape special HTML characters in the text content", function() {
 		let text = '<script></script>';
 		let element = createHtml(`<div ${attribute}="${text}">HTML stuffs</div>`);
-		processor.process(element, attribute, text);
+		processor.process(element, attribute, text, {
+			...baseContext
+		});
 		expect(element.innerHTML).toBe(text);
 	});
 
 	test('Cleans up encountered attributes', function() {
 		let element = createHtml(`<div ${attribute}=""></div>`);
-		processor.process(element, attribute, '');
+		processor.process(element, attribute, '', {
+			...baseContext
+		});
 		expect(element.hasAttribute(attribute)).toBe(false);
 	});
 });

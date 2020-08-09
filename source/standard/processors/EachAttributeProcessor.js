@@ -31,13 +31,11 @@ export default class EachAttributeProcessor extends AttributeProcessor {
 	 * Constructor, set this processor to use the `each` name and supplied prefix.
 	 * 
 	 * @param {String} prefix
-	 * @param {ExpressionProcessor} expressionProcessor
 	 * @param {Object} [isomorphic]
 	 */
-	constructor(prefix, expressionProcessor, isomorphic) {
+	constructor(prefix, isomorphic) {
 
 		super(prefix, NAME, isomorphic);
-		this.expressionProcessor = expressionProcessor;
 	}
 
 	/**
@@ -58,7 +56,7 @@ export default class EachAttributeProcessor extends AttributeProcessor {
 
 		super.process(element, attribute, attributeValue, context);
 
-		let iterationInfo = this.expressionProcessor.process(attributeValue, context);
+		let iterationInfo = context.expressionProcessor.process(attributeValue, context);
 		if (iterationInfo) {
 			let {localValueName, iterable} = iterationInfo;
 			let templateNode = element.cloneNode(true);

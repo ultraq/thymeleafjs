@@ -30,13 +30,11 @@ export default class ClassAppendAttributeProcessor extends AttributeProcessor {
 	 * Constructor, set this processor to use the `attr` name and supplied prefix.
 	 * 
 	 * @param {String} prefix
-	 * @param {ExpressionProcessor} expressionProcessor
 	 * @param {Object} [isomorphic]
 	 */
-	constructor(prefix, expressionProcessor, isomorphic) {
+	constructor(prefix, isomorphic) {
 
 		super(prefix, NAME, isomorphic);
-		this.expressionProcessor = expressionProcessor;
 	}
 
 	/**
@@ -55,7 +53,7 @@ export default class ClassAppendAttributeProcessor extends AttributeProcessor {
 	 */
 	process(element, attribute, attributeValue, context) {
 
-		let classes = this.expressionProcessor.process(attributeValue, context);
+		let classes = context.expressionProcessor.process(attributeValue, context);
 		if (classes) {
 			element.className += ` ${classes}`;
 		}

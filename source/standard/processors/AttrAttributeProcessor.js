@@ -32,13 +32,11 @@ export default class AttrAttributeProcessor extends AttributeProcessor {
 	 * Constructor, set this processor to use the `attr` name and supplied prefix.
 	 * 
 	 * @param {String} prefix
-	 * @param {ExpressionProcessor} expressionProcessor
 	 * @param {Object} [isomorphic]
 	 */
-	constructor(prefix, expressionProcessor, isomorphic) {
+	constructor(prefix, isomorphic) {
 
 		super(prefix, NAME, isomorphic);
-		this.expressionProcessor = expressionProcessor;
 	}
 
 	/**
@@ -62,7 +60,7 @@ export default class AttrAttributeProcessor extends AttributeProcessor {
 		if (/(.+=.+,)*.+=.+/.test(attributeValue)) {
 			attributeValue.split(',').forEach(attribute => {
 				let attributeParts = attribute.split('=');
-				element.setAttribute(attributeParts[0], escapeHtml(this.expressionProcessor.process(attributeParts[1], context)));
+				element.setAttribute(attributeParts[0], escapeHtml(context.expressionProcessor.process(attributeParts[1], context)));
 			});
 		}
 		/* istanbul ignore next */

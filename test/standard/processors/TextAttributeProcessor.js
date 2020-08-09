@@ -24,23 +24,27 @@ import {createHtml}                from '../../../source/utilities/Dom.js';
  */
 describe('processors/standard/TextAttributeProcessor', function() {
 
-	let attribute, processor;
-	beforeAll(function() {
-		processor = new TextAttributeProcessor('test', new ExpressionProcessor(ThymeleafExpressionLanguage));
-		attribute = `${processor.prefix}:${processor.name}`;
-	});
+	const processor = new TextAttributeProcessor('test');
+	const attribute = `${processor.prefix}:${processor.name}`;
+	const baseContext = {
+		expressionProcessor: new ExpressionProcessor(ThymeleafExpressionLanguage)
+	};
 
 	test("Replaces an element's text content", function() {
 		let text = 'Hello!';
 		let element = createHtml(`<div ${attribute}="${text}">Goodbye!</div>`);
-		processor.process(element, attribute, text);
+		processor.process(element, attribute, text, {
+			...baseContext
+		});
 		expect(element.innerHTML).toBe(text);
 	});
 
 	test('Escapes special HTML characters in the text content', function() {
 		let text = '<script>';
 		let element = createHtml(`<div ${attribute}="${text}">HTML stuffs</div>`);
-		processor.process(element, attribute, text);
+		processor.process(element, attribute, text, {
+			...baseContext
+		});
 		expect(element.innerHTML).toBe('&lt;script&gt;');
 	});
 });

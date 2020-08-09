@@ -24,11 +24,11 @@ import {createHtml}                from '../../../source/utilities/Dom.js';
  */
 describe('processors/standard/IfAttributeProcessor', function() {
 
-	let attribute, processor;
-	beforeAll(function() {
-		processor = new IfAttributeProcessor('test', new ExpressionProcessor(ThymeleafExpressionLanguage));
-		attribute = `${processor.prefix}:${processor.name}`;
-	});
+	const processor = new IfAttributeProcessor('test');
+	const attribute = `${processor.prefix}:${processor.name}`;
+	const baseContext = {
+		expressionProcessor: new ExpressionProcessor(ThymeleafExpressionLanguage)
+	};
 
 	test('Renders the element and children if the expression is truthy', function() {
 		let expression = '${value}';
@@ -37,7 +37,10 @@ describe('processors/standard/IfAttributeProcessor', function() {
 				<p ${attribute}="${expression}">Hello!</p>
 			</div>
 		`);
-		processor.process(parent.firstElementChild, attribute, expression, { value: true });
+		processor.process(parent.firstElementChild, attribute, expression, {
+			...baseContext,
+			value: true
+		});
 		expect(parent.children).toHaveLength(1);
 	});
 
@@ -48,7 +51,10 @@ describe('processors/standard/IfAttributeProcessor', function() {
 				<p ${attribute}=${expression}>Hello!</p>
 			</div>
 		`);
-		processor.process(parent.firstElementChild, 'th:if', expression, { value: false });
+		processor.process(parent.firstElementChild, 'th:if', expression, {
+			...baseContext,
+			value: false
+		});
 		expect(parent.children).toHaveLength(0);
 	});
 });

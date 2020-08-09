@@ -25,14 +25,15 @@ import {createHtml}                from '../../../source/utilities/Dom.js';
 describe('processors/standard/EmptyableAttributeProcessor', function() {
 
 	const context = {
+		expressionProcessor: new ExpressionProcessor(ThymeleafExpressionLanguage),
 		greeting: 'Hello!'
 	};
+
 	const attributeNames = ['href', 'value'];
-	const expressionProcessor = new ExpressionProcessor(ThymeleafExpressionLanguage);
 
 	test('Replaces the configured value', function() {
 		attributeNames.forEach(attributeName => {
-			let processor = new EmptyableAttributeProcessor('test', attributeName, expressionProcessor);
+			let processor = new EmptyableAttributeProcessor('test', attributeName);
 			let attribute = `test:${attributeName}`;
 			let attributeValue = '${greeting}';
 			let element = createHtml(`<div ${attributeName}="to-be-replaced" ${attribute}="${attributeValue}"></div>`);
@@ -43,7 +44,7 @@ describe('processors/standard/EmptyableAttributeProcessor', function() {
 
 	test('Empties the configured value', function() {
 		attributeNames.forEach(attributeName => {
-			let processor = new EmptyableAttributeProcessor('test', attributeName, expressionProcessor);
+			let processor = new EmptyableAttributeProcessor('test', attributeName);
 			let attribute = `test:${attributeName}`;
 			let attributeValue = '${nothing}';
 			let element = createHtml(`<div ${attributeName}="to-be-replaced" ${attribute}="${attributeValue}"></div>`);
@@ -51,5 +52,4 @@ describe('processors/standard/EmptyableAttributeProcessor', function() {
 			expect(element.getAttribute(attributeName)).toBe('');
 		});
 	});
-
 });

@@ -24,29 +24,29 @@ import {createHtml}                  from '../../../source/utilities/Dom.js';
  */
 describe('standard/processors/ClassAppendAttributeProcessor', function() {
 
-	let processor;
-	let attribute;
-	beforeAll(function() {
-		processor = new ClassAppendAttributeProcessor('test', new ExpressionProcessor(ThymeleafExpressionLanguage));
-		attribute = `${processor.prefix}:${processor.name}`;
-	});
-
+	const processor = new ClassAppendAttributeProcessor('test');
+	const attribute = `${processor.prefix}:${processor.name}`;
+	const baseContext = {
+		expressionProcessor: new ExpressionProcessor(ThymeleafExpressionLanguage)
+	};
 
 	test('Adds a class to an element', function() {
 		let extraClass = 'added';
 		let attributeValue = extraClass;
 		let element = createHtml(`<div ${attribute}="${attributeValue}"></div>`);
-		processor.process(element, attribute, attributeValue);
+		processor.process(element, attribute, attributeValue, {
+			...baseContext
+		});
 		expect(element.classList.contains(extraClass)).toBe(true);
 	});
 
 	test('But not if the expression is falsey', function() {
-		let context = {
-			extraClass: null
-		};
 		let attributeValue = '${extraClass}';
 		let element = createHtml(`<div class="existing-class" ${attribute}="${attributeValue}"></div>`);
-		processor.process(element, attribute, attributeValue, context);
+		processor.process(element, attribute, attributeValue, {
+			...baseContext,
+			extraClass: null
+		});
 		expect(element.className).toBe('existing-class');
 	});
 });

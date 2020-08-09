@@ -26,16 +26,17 @@ import {range} from '@ultraq/array-utils';
  */
 describe('processors/standard/EachAttributeProcessor', function() {
 
-	let processor, attribute;
-	beforeAll(function() {
-		processor = new EachAttributeProcessor('test', new ExpressionProcessor(ThymeleafExpressionLanguage));
-		attribute = `${processor.prefix}:${processor.name}`;
-	});
+	const processor = new EachAttributeProcessor('test');
+	const attribute = `${processor.prefix}:${processor.name}`;
+	const baseContext = {
+		expressionProcessor: new ExpressionProcessor(ThymeleafExpressionLanguage)
+	};
 
 	test('Repeats an element for every item in an iterable', function() {
 		let iterationExpression = 'items: ${items}';
 		let parent = createHtml(`<ul><li ${attribute}="${iterationExpression}"></li></ul>`);
 		let result = processor.process(parent.firstElementChild, attribute, iterationExpression, {
+			...baseContext,
 			items: range(1, 10)
 		});
 		expect(result).toBe(true);

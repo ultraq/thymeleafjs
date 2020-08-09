@@ -14,9 +14,6 @@
  * limitations under the License.
  */
 
-import ExpressionProcessor           from './expressions/ExpressionProcessor.js';
-import FragmentSignatureGrammar      from './expressions/FragmentSignatureGrammar.js';
-import ThymeleafExpressionLanguage   from './expressions/ThymeleafExpressionLanguage.js';
 import AttrAttributeProcessor        from './processors/AttrAttributeProcessor.js';
 import BlockElementProcessor         from './processors/BlockElementProcessor.js';
 import CheckedAttributeProcessor     from './processors/CheckedAttributeProcessor.js';
@@ -76,39 +73,37 @@ export default class StandardDialect extends Dialect {
 
 		// Order taken from https://www.thymeleaf.org/doc/tutorials/3.0/usingthymeleaf.html#attribute-precedence
 		let {prefix, isomorphic} = this;
-		let expressionProcessor = new ExpressionProcessor(ThymeleafExpressionLanguage);
-		let fragmentSignatureProcessor = new ExpressionProcessor(FragmentSignatureGrammar);
 		return [
 			// Fragment inclusion
-			new InsertAttributeProcessor(prefix, expressionProcessor, fragmentSignatureProcessor, isomorphic),
-			new ReplaceAttributeProcessor(prefix, expressionProcessor, fragmentSignatureProcessor, isomorphic),
+			new InsertAttributeProcessor(prefix, isomorphic),
+			new ReplaceAttributeProcessor(prefix, isomorphic),
 
 			// Fragment iteration
-			new EachAttributeProcessor(prefix, expressionProcessor, isomorphic),
+			new EachAttributeProcessor(prefix, isomorphic),
 
 			// Conditional evaluation
-			new IfAttributeProcessor(prefix, expressionProcessor, isomorphic),
-			new UnlessAttributeProcessor(prefix, expressionProcessor, isomorphic),
+			new IfAttributeProcessor(prefix, isomorphic),
+			new UnlessAttributeProcessor(prefix, isomorphic),
 
 			// Local variable definition
-			new WithAttributeProcessor(prefix, expressionProcessor, isomorphic),
+			new WithAttributeProcessor(prefix, isomorphic),
 
 			// General attribute modification
-			new AttrAttributeProcessor(prefix, expressionProcessor, isomorphic),
-			new ClassAppendAttributeProcessor(prefix, expressionProcessor, isomorphic),
+			new AttrAttributeProcessor(prefix, isomorphic),
+			new ClassAppendAttributeProcessor(prefix, isomorphic),
 			...EMPTYABLE_ATTRIBUTE_NAMES.map(attributeName => {
-				return new EmptyableAttributeProcessor(prefix, attributeName, expressionProcessor, isomorphic);
+				return new EmptyableAttributeProcessor(prefix, attributeName, isomorphic);
 			}),
 			...REMOVABLE_ATTRIBUTE_NAMES.map(attributeName => {
-				return new RemovableAttributeProcessor(prefix, attributeName, expressionProcessor, isomorphic);
+				return new RemovableAttributeProcessor(prefix, attributeName, isomorphic);
 			}),
 
 			// Specific attribute modification
-			new CheckedAttributeProcessor(prefix, expressionProcessor, isomorphic),
+			new CheckedAttributeProcessor(prefix, isomorphic),
 
 			// Text
-			new TextAttributeProcessor(prefix, expressionProcessor, isomorphic),
-			new UTextAttributeProcessor(prefix, expressionProcessor, isomorphic),
+			new TextAttributeProcessor(prefix, isomorphic),
+			new UTextAttributeProcessor(prefix, isomorphic),
 
 			// Fragment specification
 			new FragmentAttributeProcessor(prefix, isomorphic),

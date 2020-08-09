@@ -30,13 +30,11 @@ export default class WithAttributeProcessor extends AttributeProcessor {
 	 * prefix.
 	 * 
 	 * @param {String} prefix
-	 * @param {ExpressionProcessor} expressionProcessor
 	 * @param {Object} [isomorphic]
 	 */
-	constructor(prefix, expressionProcessor, isomorphic) {
+	constructor(prefix, isomorphic) {
 
 		super(prefix, NAME, isomorphic);
-		this.expressionProcessor = expressionProcessor;
 	}
 
 	/**
@@ -58,7 +56,7 @@ export default class WithAttributeProcessor extends AttributeProcessor {
 		super.process(element, attribute, attributeValue, context);
 
 		let localVariables = {};
-		let aliases = this.expressionProcessor.process(attributeValue, context);
+		let aliases = context.expressionProcessor.process(attributeValue, context);
 		aliases.forEach(({name, value}) => {
 			localVariables[name] = value;
 		});

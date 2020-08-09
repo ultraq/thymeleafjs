@@ -14,12 +14,15 @@
  * limitations under the License.
  */
 
-import {DEFAULT_CONFIGURATION}  from './Configurations.js';
-import AttributeProcessor       from './processors/AttributeProcessor.js';
-import ElementProcessor         from './processors/ElementProcessor.js';
-import Matcher                  from './processors/Matcher.js';
-import {deserialize, serialize} from './utilities/Dom.js';
-import {promisify}              from './utilities/Functions.js';
+import {DEFAULT_CONFIGURATION}     from './Configurations.js';
+import AttributeProcessor          from './processors/AttributeProcessor.js';
+import ElementProcessor            from './processors/ElementProcessor.js';
+import Matcher                     from './processors/Matcher.js';
+import ExpressionProcessor         from './standard/expressions/ExpressionProcessor.js';
+import FragmentSignatureGrammar    from './standard/expressions/FragmentSignatureGrammar.js';
+import ThymeleafExpressionLanguage from './standard/expressions/ThymeleafExpressionLanguage.js';
+import {deserialize, serialize}    from './utilities/Dom.js';
+import {promisify}                 from './utilities/Functions.js';
 
 import {readFile} from 'fs';
 
@@ -52,6 +55,9 @@ export default class TemplateEngine {
 			...acc,
 			...expressionObjects
 		} : acc, {});
+
+		this.expressionProcessor = new ExpressionProcessor(ThymeleafExpressionLanguage);
+		this.fragmentSignatureProcessor = new ExpressionProcessor(FragmentSignatureGrammar);
 	}
 
 	/**
@@ -116,7 +122,9 @@ export default class TemplateEngine {
 		let localVariables = element.__thymeleafLocalVariables || {};
 		let localContext = {
 			...context,
-			...localVariables
+			...localVariables,
+			expressionProcessor: this.expressionProcessor,
+			fragmentSignatureProcessor: this.fragmentSignatureProcessor
 		};
 		let matcher = new Matcher();
 

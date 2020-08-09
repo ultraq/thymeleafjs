@@ -33,13 +33,11 @@ export default class UnlessAttributeProcessor extends AttributeProcessor {
 	 * Constructor, set this processor to use the `unless` name and supplied prefix.
 	 * 
 	 * @param {String} prefix
-	 * @param {ExpressionProcessor} expressionProcessor
 	 * @param {Object} [isomorphic]
 	 */
-	constructor(prefix, expressionProcessor, isomorphic) {
+	constructor(prefix, isomorphic) {
 
 		super(prefix, NAME, isomorphic);
-		this.expressionProcessor = expressionProcessor;
 	}
 
 	/**
@@ -58,7 +56,7 @@ export default class UnlessAttributeProcessor extends AttributeProcessor {
 	 */
 	process(element, attribute, attributeValue, context) {
 
-		let expressionResult = this.expressionProcessor.process(attributeValue, context);
+		let expressionResult = context.expressionProcessor.process(attributeValue, context);
 		if (expressionResult) {
 			clearChildren(element);
 			// TODO: element.remove()?

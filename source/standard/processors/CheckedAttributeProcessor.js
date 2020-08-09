@@ -37,13 +37,11 @@ export default class CheckedAttributeProcessor extends AttributeProcessor {
 	 * prefix.
 	 * 
 	 * @param {String} prefix
-	 * @param {ExpressionProcessor} expressionProcessor
 	 * @param {Object} [isomorphic]
 	 */
-	constructor(prefix, expressionProcessor, isomorphic) {
+	constructor(prefix, isomorphic) {
 
 		super(prefix, NAME, isomorphic);
-		this.expressionProcessor = expressionProcessor;
 	}
 
 	/**
@@ -62,7 +60,7 @@ export default class CheckedAttributeProcessor extends AttributeProcessor {
 	 */
 	process(element, attribute, attributeValue, context) {
 
-		let result = this.expressionProcessor.process(attributeValue, context);
+		let result = context.expressionProcessor.process(attributeValue, context);
 		if (result) {
 			element.setAttribute('checked', '');
 		}

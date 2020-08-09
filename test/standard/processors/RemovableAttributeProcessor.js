@@ -25,13 +25,14 @@ import {createHtml}                from '../../../source/utilities/Dom.js';
 describe('processors/standard/RemovableAttributeProcessor', function() {
 
 	const context = {
+		expressionProcessor: new ExpressionProcessor(ThymeleafExpressionLanguage),
 		greeting: 'Hello!'
 	};
 	const attributeNames = ['class', 'title'];
 
 	test('Replaces the configured value', function() {
 		attributeNames.forEach(attributeName => {
-			let processor = new RemovableAttributeProcessor('test', attributeName, new ExpressionProcessor(ThymeleafExpressionLanguage));
+			let processor = new RemovableAttributeProcessor('test', attributeName);
 			let attribute = `test:${attributeName}`;
 			let attributeValue = '${greeting}';
 			let element = createHtml(`<div ${attributeName}="to-be-replaced" ${attribute}="${attributeValue}"></div>`);
@@ -42,7 +43,7 @@ describe('processors/standard/RemovableAttributeProcessor', function() {
 
 	test('Removes the configured attribute', function() {
 		attributeNames.forEach(attributeName => {
-			let processor = new RemovableAttributeProcessor('test', attributeName, new ExpressionProcessor(ThymeleafExpressionLanguage));
+			let processor = new RemovableAttributeProcessor('test', attributeName);
 			let attribute = `test:${attributeName}`;
 			let attributeValue = '${nothing}';
 			let element = createHtml(`<div ${attributeName}="to-be-replaced" ${attribute}="${attributeValue}"></div>`);

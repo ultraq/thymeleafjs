@@ -36,15 +36,11 @@ export default class InsertAttributeProcessor extends AttributeProcessor {
 	 * prefix.
 	 * 
 	 * @param {String} prefix
-	 * @param {ExpressionProcessor} expressionProcessor
-	 * @param {ExpressionProcessor} fragmentSignatureProcessor
 	 * @param {Object} [isomorphic]
 	 */
-	constructor(prefix, expressionProcessor, fragmentSignatureProcessor, isomorphic) {
+	constructor(prefix, isomorphic) {
 
 		super(prefix, NAME, isomorphic);
-		this.expressionProcessor = expressionProcessor;
-		this.fragmentSignatureProcessor = fragmentSignatureProcessor;
 	}
 
 	/**
@@ -67,12 +63,12 @@ export default class InsertAttributeProcessor extends AttributeProcessor {
 		super.process(element, attribute, attributeValue, context);
 		clearChildren(element);
 
-		let fragmentInfo = this.expressionProcessor.process(attributeValue, context);
+		let fragmentInfo = context.expressionProcessor.process(attributeValue, context);
 		if (fragmentInfo) {
 			let fragment = await extractFragment(this.prefix, fragmentInfo, context);
 			if (fragment) {
 				let fragmentSignature = getThymeleafAttributeValue(fragment, this.prefix, FragmentAttributeProcessorName);
-				let {parameterNames} = this.fragmentSignatureProcessor.process(fragmentSignature, context);
+				let {parameterNames} = context.fragmentSignatureProcessor.process(fragmentSignature, context);
 				if (parameterNames) {
 					let {parameters} = fragmentInfo;
 					let localContext = {};

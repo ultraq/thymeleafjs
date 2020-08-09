@@ -32,13 +32,11 @@ export default class TextAttributeProcessor extends AttributeProcessor {
 	 * Constructor, set this processor to use the `text` name and supplied prefix.
 	 * 
 	 * @param {String} prefix
-	 * @param {ExpressionProcessor} expressionProcessor
 	 * @param {Object} [isomorphic]
 	 */
-	constructor(prefix, expressionProcessor, isomorphic) {
+	constructor(prefix, isomorphic) {
 
 		super(prefix, NAME, isomorphic);
-		this.expressionProcessor = expressionProcessor;
 	}
 
 	/**
@@ -59,7 +57,7 @@ export default class TextAttributeProcessor extends AttributeProcessor {
 
 		// TODO: Move message constructon to the expression language?  Need to make
 		//       all the executions async!
-		let messageResult = this.expressionProcessor.process(attributeValue, context);
+		let messageResult = context.expressionProcessor.process(attributeValue, context);
 		element.textContent =
 			typeof messageResult === 'object' ? await buildMessage(messageResult, context.messageResolver) :
 			messageResult;

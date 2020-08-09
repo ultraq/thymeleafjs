@@ -24,18 +24,20 @@ import {createHtml}                from '../../../source/utilities/Dom.js';
  */
 describe('processors/standard/AttrAttributeProcessor', function() {
 
-	let processor;
-	let attribute;
-	beforeAll(function() {
-		processor = new AttrAttributeProcessor('test', new ExpressionProcessor(ThymeleafExpressionLanguage));
-		attribute = `${processor.prefix}:${processor.name}`;
-	});
+	const processor = new AttrAttributeProcessor('test');
+	const attribute = `${processor.prefix}:${processor.name}`;
+	const baseContext = {
+		expressionProcessor: new ExpressionProcessor(ThymeleafExpressionLanguage)
+	};
 
 	test('Set the value of the target attribute', function() {
 		let value = 'test-class';
 		let attributeValue = 'class=${value}';
 		let element = createHtml(`<div ${attribute}="${attributeValue}"></div>`);
-		processor.process(element, attribute, attributeValue, { value });
+		processor.process(element, attribute, attributeValue, {
+			...baseContext,
+			value
+		});
 		expect(element.classList.contains(value)).toBe(true);
 	});
 
@@ -44,7 +46,10 @@ describe('processors/standard/AttrAttributeProcessor', function() {
 		let valueClass = 'test-class';
 		let attributeValue = `id=\${valueId},class='${valueClass}'`;
 		let element = createHtml(`<div ${attribute}="${attributeValue}"></div>`);
-		processor.process(element, attribute, attributeValue, { valueId });
+		processor.process(element, attribute, attributeValue, {
+			...baseContext,
+			valueId
+		});
 		expect(element.id).toBe(valueId);
 		expect(element.classList.contains(valueClass)).toBe(true);
 	});
@@ -52,7 +57,9 @@ describe('processors/standard/AttrAttributeProcessor', function() {
 	test("Do nothing if an expression doesn't match the attribute expression pattern", function() {
 		['class=', '${nothing}'].forEach(attributeValue => {
 			let element = createHtml(`<div ${attribute}="${attributeValue}"></div>`);
-			processor.process(element, attribute, attributeValue);
+			processor.process(element, attribute, attributeValue, {
+				...baseContext
+			});
 			expect(element.attributes).toHaveLength(0);
 		});
 	});

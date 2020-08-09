@@ -31,13 +31,11 @@ export default class IfAttributeProcessor extends AttributeProcessor {
 	 * Constructor, set this processor to use the `if` name and supplied prefix.
 	 * 
 	 * @param {String} prefix
-	 * @param {ExpressionProcessor} expressionProcessor
 	 * @param {Object} [isomorphic]
 	 */
-	constructor(prefix, expressionProcessor, isomorphic) {
+	constructor(prefix, isomorphic) {
 
 		super(prefix, NAME, isomorphic);
-		this.expressionProcessor = expressionProcessor;
 	}
 
 	/**
@@ -56,7 +54,7 @@ export default class IfAttributeProcessor extends AttributeProcessor {
 	 */
 	process(element, attribute, attributeValue, context) {
 
-		let expressionResult = this.expressionProcessor.process(attributeValue, context);
+		let expressionResult = context.expressionProcessor.process(attributeValue, context);
 		if (!expressionResult) {
 			element.remove();
 			return true;

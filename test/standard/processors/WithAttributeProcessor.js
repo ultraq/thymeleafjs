@@ -24,14 +24,15 @@ import {createHtml}                from '../../../source/utilities/Dom.js';
  */
 describe('processors/standard/WithAttributeProcessor', function() {
 
-	let attribute, processor;
-	beforeAll(function() {
-		processor = new WithAttributeProcessor('test', new ExpressionProcessor(ThymeleafExpressionLanguage));
-		attribute = `${processor.prefix}:${processor.name}`;
-	});
+	const processor = new WithAttributeProcessor('test');
+	const attribute = `${processor.prefix}:${processor.name}`;
+	const baseContext = {
+		expressionProcessor: new ExpressionProcessor(ThymeleafExpressionLanguage)
+	};
 
 	test('Returns the name and value of the expression', function() {
 		let context = {
+			...baseContext,
 			someValue: 'Hello!'
 		};
 		let attributeValue = 'someKey=${someValue}';

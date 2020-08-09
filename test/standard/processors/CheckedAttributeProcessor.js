@@ -24,33 +24,31 @@ import {createHtml}                from '../../../source/utilities/Dom.js';
  */
 describe('processors/standard/CheckedAttributeProcessor', function() {
 
-	let processor;
-	let attribute;
-	beforeAll(function() {
-		processor = new CheckedAttributeProcessor('test', new ExpressionProcessor(ThymeleafExpressionLanguage));
-		attribute = `${processor.prefix}:${processor.name}`;
-	});
+	const processor = new CheckedAttributeProcessor('test');
+	const attribute = `${processor.prefix}:${processor.name}`;
+	const baseContext = {
+		expressionProcessor: new ExpressionProcessor(ThymeleafExpressionLanguage)
+	};
 
 	test('Sets the `checked` attribute if the expression is a truthy value', function() {
-		let context = {
-			greeting: 'Hello!'
-		};
 		['checked', '${greeting}'].forEach(value => {
 			let element = createHtml(`<div ${attribute}="${value}"></div>`);
-			processor.process(element, attribute, value, context);
+			processor.process(element, attribute, value, {
+				...baseContext,
+				greeting: 'Hello!'
+			});
 			expect(element.hasAttribute('checked')).toBe(true);
 		});
 	});
 
 	test('Removes the `checked` attribute if the expression is a falsey value', function() {
-		let context = {
-			greeting: null
-		};
 		['', '${greeting}'].forEach(value => {
 			let element = createHtml(`<div ${attribute}="${value}"></div>`);
-			processor.process(element, attribute, value, context);
+			processor.process(element, attribute, value, {
+				...baseContext,
+				greeting: null
+			});
 			expect(element.hasAttribute('checked')).toBe(false);
 		});
 	});
-
 });

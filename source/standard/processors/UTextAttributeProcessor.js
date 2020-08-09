@@ -32,13 +32,11 @@ export default class UTextAttributeProcessor extends AttributeProcessor {
 	 * prefix.
 	 * 
 	 * @param {String} prefix
-	 * @param {ExpressionProcessor} expressionProcessor
 	 * @param {Object} [isomorphic]
 	 */
-	constructor(prefix, expressionProcessor, isomorphic) {
+	constructor(prefix, isomorphic) {
 
 		super(prefix, NAME, isomorphic);
-		this.expressionProcessor = expressionProcessor;
 	}
 
 	/**
@@ -57,7 +55,7 @@ export default class UTextAttributeProcessor extends AttributeProcessor {
 	 */
 	process(element, attribute, attributeValue, context) {
 
-		element.innerHTML = this.expressionProcessor.process(attributeValue, context);
+		element.innerHTML = context.expressionProcessor.process(attributeValue, context);
 		return super.process(element, attribute, attributeValue, context);
 	}
 }

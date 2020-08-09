@@ -29,13 +29,11 @@ export default class RemovableAttributeProcessor extends AttributeProcessor {
 	 * 
 	 * @param {String} prefix
 	 * @param {String} name
-	 * @param {ExpressionProcessor} expressionProcessor
 	 * @param {Object} [isomorphic]
 	 */
-	constructor(prefix, name, expressionProcessor, isomorphic) {
+	constructor(prefix, name, isomorphic) {
 
 		super(prefix, name, isomorphic);
-		this.expressionProcessor = expressionProcessor;
 	}
 
 	/**
@@ -54,7 +52,7 @@ export default class RemovableAttributeProcessor extends AttributeProcessor {
 	 */
 	process(element, attribute, attributeValue, context) {
 
-		let value = this.expressionProcessor.process(attributeValue, context);
+		let value = context.expressionProcessor.process(attributeValue, context);
 		if (value) {
 			element.setAttribute(this.name, value.toString());
 		}
