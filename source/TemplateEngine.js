@@ -43,6 +43,8 @@ export default class TemplateEngine {
 
 		this.messageResolver  = messageResolver;
 		this.templateResolver = templateResolver;
+		this.expressionProcessor = new ExpressionProcessor(ThymeleafExpressionLanguage);
+		this.fragmentSignatureProcessor = new ExpressionProcessor(FragmentSignatureGrammar);
 
 		// Combine all processors into a unified list
 		this.processors = dialects.reduce((acc, {processors}) => processors ? [
@@ -55,9 +57,6 @@ export default class TemplateEngine {
 			...acc,
 			...expressionObjects
 		} : acc, {});
-
-		this.expressionProcessor = new ExpressionProcessor(ThymeleafExpressionLanguage);
-		this.fragmentSignatureProcessor = new ExpressionProcessor(FragmentSignatureGrammar);
 	}
 
 	/**
@@ -79,6 +78,8 @@ export default class TemplateEngine {
 			// TODO: Is there some way to make these things a dependency of the
 			//       processors that need them?  Otherwise it feels like passing
 			//       dependencies as part of the context object 🤔
+			expressionProcessor: this.expressionProcessor,
+			fragmentSignatureProcessor: this.fragmentSignatureProcessor,
 			messageResolver:  this.messageResolver,
 			templateResolver: this.templateResolver
 		})
@@ -122,9 +123,7 @@ export default class TemplateEngine {
 		let localVariables = element.__thymeleafLocalVariables || {};
 		let localContext = {
 			...context,
-			...localVariables,
-			expressionProcessor: this.expressionProcessor,
-			fragmentSignatureProcessor: this.fragmentSignatureProcessor
+			...localVariables
 		};
 		let matcher = new Matcher();
 
