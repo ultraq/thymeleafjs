@@ -21,6 +21,12 @@ import {
 }              from '@ultraq/dom-utils';
 import {JSDOM} from 'jsdom';
 
+// Node.nodeType values, not present outside of a JSDOM environment so can't
+// reference them w/ Node.X
+// For a full list of values, see: https://developer.mozilla.org/en-US/docs/Web/API/Node/nodeType
+export const NODE_TYPE_DOCUMENT_TYPE = 10;
+export const NODE_TYPE_ELEMENT = 1;
+
 /**
  * Create and return a new HTML fragment using JSDOM from the given string.
  * Used for tests.
@@ -78,7 +84,7 @@ export function serialize(documentFragment) {
 	else {
 		let result = '';
 		let {firstChild, firstElementChild} = documentFragment;
-		if (firstChild.nodeType === Node.DOCUMENT_TYPE_NODE) {
+		if (firstChild.nodeType === NODE_TYPE_DOCUMENT_TYPE) {
 			result += `<!DOCTYPE ${firstChild.name}>`;
 		}
 		return result + firstElementChild.outerHTML;

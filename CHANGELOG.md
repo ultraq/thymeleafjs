@@ -2,6 +2,10 @@
 Changelog
 =========
 
+### 0.20.1
+ - Fix `Node is not defined` errors when using Thymeleaf in a NodeJS environment,
+   ([#38](https://github.com/ultraq/thymeleafjs/issues/38))
+
 ### 0.20.0
  - Added `XmlNsAttributeProcessor` to remove Thymeleaf's XML namespaces in HTML
    files.

@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 
-import ElementProcessor from '../../processors/ElementProcessor.js';
+import ElementProcessor    from '../../processors/ElementProcessor.js';
+import {NODE_TYPE_ELEMENT} from '../../utilities/Dom.js';
 
 export const NAME = 'block';
 
@@ -52,7 +53,7 @@ export default class BlockElementProcessor extends ElementProcessor {
 			let child = element.firstChild;
 			parent.insertBefore(child, element);
 
-			if (child.nodeType === Node.ELEMENT_NODE && element.__thymeleafLocalVariables) {
+			if (child.nodeType === NODE_TYPE_ELEMENT && element.__thymeleafLocalVariables) {
 				child.__thymeleafLocalVariables = {
 					...(child.__thymeleafLocalVariables || {}),
 					...element.__thymeleafLocalVariables
