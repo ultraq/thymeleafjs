@@ -360,15 +360,17 @@ const ThymeleafExpressionLanguage = new Grammar('Thymeleaf Expression Language',
 			let rhs = rightOperand(context);
 			switch (operator(context)) {
 				case '==':  return lhs == rhs; // eslint-disable-line
+				case 'eq':
 				case '===': return lhs === rhs;
 				case '!=':  return lhs != rhs; // eslint-disable-line
+				case 'ne':
 				case '!==': return lhs !== rhs;
 			}
 			return false;
 		}
 	),
 	new ThymeleafRule('EqualityOperator',
-		OrderedChoice(/[=!]==?/)
+		OrderedChoice(/[=!]==?/, /eq/, /ne/)
 	),
 
 

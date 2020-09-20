@@ -263,14 +263,24 @@ describe('standard/expressions/ThymeleafExpressionLanguage', function() {
 		});
 	});
 
-
-	describe('#Condition', function() {
+	describe('#EqualityOperation', function() {
 
 		test('${var} === literal', function() {
-			let result = expressionProcessor.process('${number} === 3', {
-				number: 3
+			['===', 'eq'].forEach(symbol => {
+				let result = expressionProcessor.process(`\${number} ${symbol} 3`, {
+					number: 3
+				});
+				expect(result).toBe(true);
 			});
-			expect(result).toBe(true);
+		});
+
+		test('${var} !== literal', function() {
+			['!==', 'ne'].forEach(symbol => {
+				let result = expressionProcessor.process(`\${number} ${symbol} 3`, {
+					number: 3
+				});
+				expect(result).toBe(false);
+			});
 		});
 	});
 

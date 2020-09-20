@@ -4,6 +4,7 @@ Changelog
 
 ### 0.20.2
  - Add support for logical operators: `&&`/`and`, `||`/`or`
+ - Add support for equality operator keywords: `eq`, `ne`
 
 ### 0.20.1
  - Fix `Node is not defined` errors when using Thymeleaf in a NodeJS environment,
