@@ -87,13 +87,14 @@ const ThymeleafExpressionLanguage = new Grammar('Thymeleaf Expression Language',
 				}
 				return nextLink(linkContext, context);
 			}, context);
+			// TODO: Need a better way of applying negation - this fails when I
+			//       introduce the 'not' keyword
 			return typeof negation === 'function' ? !result : result;
 		}
 	),
 	new ThymeleafRule('ChainLink',
 		OrderedChoice('MethodCall', 'PropertyName', 'Literal')
 	),
-	new ThymeleafRule('Negation', /!/),
 
 	/**
 	 * Message expressions, `#{messageKey(parameters)}`.  Used for referencing
@@ -317,20 +318,47 @@ const ThymeleafExpressionLanguage = new Grammar('Thymeleaf Expression Language',
 	// Boolean operations
 	// ==================
 
+	new ThymeleafRule('LogicalOperation',
+		OrderedChoice('LogicalAndOperation', 'LogicalOrOperation')
+	),
+	new ThymeleafRule('LogicalAndOperation',
+		Sequence('Expression', 'LogicalAndOperator', 'Expression'),
+		([leftOperand, , rightOperand]) => context => {
+			let lhs = leftOperand(context);
+			let rhs = rightOperand(context);
+			return lhs && rhs;
+		}
+	),
+	new ThymeleafRule('LogicalAndOperator',
+		OrderedChoice(/&&/, /and/)
+	),
+	new ThymeleafRule('LogicalOrOperation',
+		Sequence('Expression', 'LogicalOrOperator', 'Expression'),
+		([leftOperand, , rightOperand]) => context => {
+			let lhs = leftOperand(context);
+			let rhs = rightOperand(context);
+			return lhs || rhs;
+		}
+	),
+	new ThymeleafRule('LogicalOrOperator',
+		OrderedChoice(/\|\|/, /or/)
+	),
+
+	new ThymeleafRule('Negation', /!/),
+
 
 	// Comparisons and equality
 	// ========================
 
 	/**
-	 * A logical expression is any expression that resolves to a `true`/`false`
-	 * value.
+	 * An operation for comparing the equality of each side of the operator.
 	 */
-	new ThymeleafRule('LogicalExpression',
-		Sequence('Expression', 'Comparator', 'Expression'),
-		([leftOperand, comparator, rightOperand]) => context => {
+	new ThymeleafRule('EqualityOperation',
+		Sequence('Expression', 'EqualityOperator', 'Expression'),
+		([leftOperand, operator, rightOperand]) => context => {
 			let lhs = leftOperand(context);
 			let rhs = rightOperand(context);
-			switch (comparator(context)) {
+			switch (operator(context)) {
 				case '==':  return lhs == rhs; // eslint-disable-line
 				case '===': return lhs === rhs;
 				case '!=':  return lhs != rhs; // eslint-disable-line
@@ -339,10 +367,8 @@ const ThymeleafExpressionLanguage = new Grammar('Thymeleaf Expression Language',
 			return false;
 		}
 	),
-	new ThymeleafRule('Comparator',
-		OrderedChoice(
-			/[=!]==?/
-		)
+	new ThymeleafRule('EqualityOperator',
+		OrderedChoice(/[=!]==?/)
 	),
 
 
@@ -350,11 +376,23 @@ const ThymeleafExpressionLanguage = new Grammar('Thymeleaf Expression Language',
 	// =====================
 
 	/**
+	 * A logical expression is any expression that resolves to a `true`/`false`
+	 * value.
+	 */
+	new ThymeleafRule('LogicalExpression',
+		OrderedChoice(
+			'EqualityOperation',
+			'LogicalOperation',
+			'Expression'
+		)
+	),
+
+	/**
 	 * If-then condition, `if ? then`.  This is the truthy branch only of the
 	 * classic ternary operator.  The falsey branch is a no-op.
 	 */
 	new ThymeleafRule('IfThenCondition',
-		Sequence('Condition', /\?/, 'Expression'),
+		Sequence('LogicalExpression', /\?/, 'Expression'),
 		([condition, , truthyExpression]) => context => {
 			return condition(context) ? truthyExpression(context) : undefined;
 		}
@@ -364,21 +402,10 @@ const ThymeleafExpressionLanguage = new Grammar('Thymeleaf Expression Language',
 	 * If-then-else condition, `if ? then : else`, the classic ternary operator.
 	 */
 	new ThymeleafRule('IfThenElseCondition',
-		Sequence('Condition', /\?/, 'Expression', /:/, 'Expression'),
+		Sequence('LogicalExpression', /\?/, 'Expression', /:/, 'Expression'),
 		([condition, , truthyExpression, , falseyExpression]) => context => {
 			return condition(context) ? truthyExpression(context) : falseyExpression(context);
 		}
-	),
-
-	/**
-	 * A condition is some expression or value that resolves to a true/false
-	 * value.
-	 */
-	new ThymeleafRule('Condition',
-		OrderedChoice(
-			'LogicalExpression',
-			'Expression'
-		)
 	),
 
 

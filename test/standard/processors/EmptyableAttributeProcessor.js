@@ -16,7 +16,9 @@
 
 import ExpressionProcessor         from '../../../source/standard/expressions/ExpressionProcessor.js';
 import ThymeleafExpressionLanguage from '../../../source/standard/expressions/ThymeleafExpressionLanguage.js';
-import EmptyableAttributeProcessor from '../../../source/standard/processors/EmptyableAttributeProcessor.js';
+import EmptyableAttributeProcessor, {
+	EMPTYABLE_ATTRIBUTE_NAMES
+}                                  from '../../../source/standard/processors/EmptyableAttributeProcessor.js';
 import {createHtml}                from '../../../source/utilities/Dom.js';
 
 /**
@@ -29,27 +31,23 @@ describe('processors/standard/EmptyableAttributeProcessor', function() {
 		greeting: 'Hello!'
 	};
 
-	const attributeNames = ['href', 'value'];
+	const attributeName = EMPTYABLE_ATTRIBUTE_NAMES[0];
 
 	test('Replaces the configured value', function() {
-		attributeNames.forEach(attributeName => {
-			let processor = new EmptyableAttributeProcessor('test', attributeName);
-			let attribute = `test:${attributeName}`;
-			let attributeValue = '${greeting}';
-			let element = createHtml(`<div ${attributeName}="to-be-replaced" ${attribute}="${attributeValue}"></div>`);
-			processor.process(element, attribute, attributeValue, context);
-			expect(element.getAttribute(attributeName)).toBe(context.greeting);
-		});
+		let processor = new EmptyableAttributeProcessor('test', attributeName);
+		let attribute = `test:${attributeName}`;
+		let attributeValue = '${greeting}';
+		let element = createHtml(`<div ${attributeName}="to-be-replaced" ${attribute}="${attributeValue}"></div>`);
+		processor.process(element, attribute, attributeValue, context);
+		expect(element.getAttribute(attributeName)).toBe(context.greeting);
 	});
 
 	test('Empties the configured value', function() {
-		attributeNames.forEach(attributeName => {
-			let processor = new EmptyableAttributeProcessor('test', attributeName);
-			let attribute = `test:${attributeName}`;
-			let attributeValue = '${nothing}';
-			let element = createHtml(`<div ${attributeName}="to-be-replaced" ${attribute}="${attributeValue}"></div>`);
-			processor.process(element, attribute, attributeValue, context);
-			expect(element.getAttribute(attributeName)).toBe('');
-		});
+		let processor = new EmptyableAttributeProcessor('test', attributeName);
+		let attribute = `test:${attributeName}`;
+		let attributeValue = '${nothing}';
+		let element = createHtml(`<div ${attributeName}="to-be-replaced" ${attribute}="${attributeValue}"></div>`);
+		processor.process(element, attribute, attributeValue, context);
+		expect(element.getAttribute(attributeName)).toBe('');
 	});
 });

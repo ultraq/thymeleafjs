@@ -2,6 +2,9 @@
 Changelog
 =========
 
+### 0.20.2
+ - Add support for logical operators: `&&`/`and`, `||`/`or`
+
 ### 0.20.1
  - Fix `Node is not defined` errors when using Thymeleaf in a NodeJS environment,
    ([#38](https://github.com/ultraq/thymeleafjs/issues/38))

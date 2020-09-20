@@ -240,7 +240,31 @@ describe('standard/expressions/ThymeleafExpressionLanguage', function() {
 	});
 
 
-	describe('#LogicalExpression', function() {
+	describe('#LogicalOperation', function() {
+
+		test('a && b', function() {
+			['&&', 'and'].forEach(symbol => {
+				let result = expressionProcessor.process(`\${a} ${symbol} \${b}`, {
+					a: true,
+					b: true
+				});
+				expect(result).toBe(true);
+			});
+		});
+
+		test('a || b', function() {
+			['||', 'or'].forEach(symbol => {
+				let result = expressionProcessor.process(`\${a} ${symbol} \${b}`, {
+					a: true,
+					b: false
+				});
+				expect(result).toBe(true);
+			});
+		});
+	});
+
+
+	describe('#Condition', function() {
 
 		test('${var} === literal', function() {
 			let result = expressionProcessor.process('${number} === 3', {

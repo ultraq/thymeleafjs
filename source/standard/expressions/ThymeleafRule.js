@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import Rule from '../../parser/Rule';
+import Rule from '../../parser/Rule.js';
 
 /**
  * A custom rule where the default match processor returns a function to execute
