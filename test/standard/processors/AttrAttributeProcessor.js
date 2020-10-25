@@ -19,6 +19,8 @@ import ThymeleafExpressionLanguage from '../../../source/standard/expressions/Th
 import AttrAttributeProcessor      from '../../../source/standard/processors/AttrAttributeProcessor.js';
 import {createHtml}                from '../../../source/utilities/Dom.js';
 
+import {escapeHtml} from '@ultraq/string-utils';
+
 /**
  * Tests for the `th:attr` attribute processor.
  */
@@ -62,5 +64,21 @@ describe('processors/standard/AttrAttributeProcessor', function() {
 			});
 			expect(element.attributes).toHaveLength(0);
 		});
+	});
+
+	test('Emit more complex objects as JSON', function() {
+		let attributeValue = 'data-test-objects=${testObjects}';
+		let testObjects = {
+			list: [
+				{ name: 'test-object-1' },
+				{ name: 'test-object-2' }
+			]
+		};
+		let element = createHtml(`<div ${attribute}="${attributeValue}"></div>`);
+		processor.process(element, attribute, attributeValue, {
+			...baseContext,
+			testObjects
+		});
+		expect(element.dataset.testObjects).toBe(escapeHtml(JSON.stringify(testObjects)));
 	});
 });

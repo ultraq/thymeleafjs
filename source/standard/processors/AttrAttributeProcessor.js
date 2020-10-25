@@ -59,8 +59,13 @@ export default class AttrAttributeProcessor extends AttributeProcessor {
 		//       turned into an expression?
 		if (/(.+=.+,)*.+=.+/.test(attributeValue)) {
 			attributeValue.split(',').forEach(attribute => {
-				let attributeParts = attribute.split('=');
-				element.setAttribute(attributeParts[0], escapeHtml(context.expressionProcessor.process(attributeParts[1], context)));
+				let [name, value] = attribute.split('=');
+				let processorResult = context.expressionProcessor.process(value, context);
+				element.setAttribute(name, escapeHtml(
+					typeof processorResult === 'string' ?
+						processorResult :
+						JSON.stringify(processorResult))
+				);
 			});
 		}
 		/* istanbul ignore next */
