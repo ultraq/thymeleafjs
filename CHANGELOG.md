@@ -2,6 +2,10 @@
 Changelog
 =========
 
+### 0.20.3
+ - Emit complex objects in `thjs:attr` using `JSON.stringify`
+   ([#41](https://github.com/ultraq/thymeleafjs/issues/41))
+
 ### 0.20.2
  - Add support for logical operators: `&&`/`and`, `||`/`or`
  - Add support for equality operator keywords: `eq`, `ne`
