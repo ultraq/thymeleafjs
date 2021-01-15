@@ -71,6 +71,14 @@ const ThymeleafExpressionLanguage = new Grammar('Thymeleaf Expression Language',
 	 * language, so this part often extends to do what OGNL (and thus SpEL) can
 	 * do.
 	 */
+
+	new ThymeleafRule('LiteralSubstitution', Sequence(/^\|/, OneOrMore(Sequence(/[^$|]*/, 'VariableExpression', /[^$|]*/)), /\|$/), ([, matchers]) => context => {
+		return flatten(matchers).reduce((curr, acc) => {
+			if (typeof acc === 'string') return curr + acc;
+			return curr + acc(context);
+		}, '');
+	}),
+
 	new ThymeleafRule('VariableExpression',
 		Sequence(/\${/, 'Chain', /\}/),
 		([, chain]) => context => {
@@ -459,6 +467,7 @@ const ThymeleafExpressionLanguage = new Grammar('Thymeleaf Expression Language',
 	 */
 	new ThymeleafRule('Expression',
 		OrderedChoice(
+			'LiteralSubstitution',
 			'VariableExpression',
 			'StringConcatenation',
 			'Literal'
