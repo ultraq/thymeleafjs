@@ -74,7 +74,9 @@ const ThymeleafExpressionLanguage = new Grammar('Thymeleaf Expression Language',
 
 	new ThymeleafRule('LiteralSubstitution', Sequence(/^\|/, OneOrMore(Sequence(/[^$|]*/, 'VariableExpression', /[^$|]*/)), /\|$/), ([, matchers]) => context => {
 		return flatten(matchers).reduce((curr, acc) => {
-			if (typeof acc === 'string') return curr + acc;
+			if (typeof acc === 'string') {
+				return curr + acc;
+			}
 			return curr + acc(context);
 		}, '');
 	}),

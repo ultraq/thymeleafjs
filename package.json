@@ -51,7 +51,7 @@
 		"coveralls": "^3.1.0",
 		"cross-env": "^5.1.0",
 		"eslint": "^7.4.0",
-		"eslint-config-ultraq": "^2.3.3",
+		"eslint-config-ultraq": "^2.3.4",
 		"eslint-plugin-import": "^2.22.0",
 		"jest": "^26.6.3",
 		"rollup": "^2.21.0",
