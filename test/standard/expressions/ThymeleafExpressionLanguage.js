@@ -97,6 +97,16 @@ describe('standard/expressions/ThymeleafExpressionLanguage', function() {
 		});
 	});
 
+	describe('LiteralSubstitution', () => {
+		test('Expressions inside template get parsed', function() {
+			let name = 'John', surname = 'Doe';
+
+			let result = expressionProcessor.process('|How are you ${name}, ${surname}?|', {
+				name, surname
+			});
+			expect(result).toBe(`How are you ${name}, ${surname}?`);
+		});
+	});
 
 	describe('#MessageExpression', function() {
 
