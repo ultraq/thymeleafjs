@@ -2,6 +2,10 @@
 Changelog
 =========
 
+### 0.20.4
+ - Add support for literal substitions: `|...|`
+   ([#43](https://github.com/ultraq/thymeleafjs/pull/43))
+
 ### 0.20.3
  - Emit complex objects in `thjs:attr` using `JSON.stringify`
    ([#41](https://github.com/ultraq/thymeleafjs/issues/41))
