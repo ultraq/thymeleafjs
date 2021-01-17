@@ -57,7 +57,7 @@ export default class Parser {
 	 */
 	parse(input) {
 
-		let inputBuffer = new InputBuffer(input);
+		let inputBuffer = new InputBuffer(input, this.grammar.whitespaceSensitive);
 		let matchResult = this.grammar.accept(inputBuffer, this);
 		if (matchResult === null || !inputBuffer.exhausted()) {
 			let errorMessage = `Failed to parse "${input}"`;

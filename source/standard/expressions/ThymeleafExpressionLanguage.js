@@ -17,6 +17,7 @@
 import {AllInput}          from './AllInput.js';
 import ExpressionProcessor from './ExpressionProcessor.js';
 import ThymeleafRule       from './ThymeleafRule.js';
+import {buildExpression}   from '../../parser/ExpressionBuilder.js';
 import Grammar             from '../../parser/Grammar.js';
 import {
 	Optional,
@@ -71,16 +72,6 @@ const ThymeleafExpressionLanguage = new Grammar('Thymeleaf Expression Language',
 	 * language, so this part often extends to do what OGNL (and thus SpEL) can
 	 * do.
 	 */
-
-	new ThymeleafRule('LiteralSubstitution', Sequence(/^\|/, OneOrMore(Sequence(/[^$|]*/, 'VariableExpression', /[^$|]*/)), /\|$/), ([, matchers]) => context => {
-		return flatten(matchers).reduce((curr, acc) => {
-			if (typeof acc === 'string') {
-				return curr + acc;
-			}
-			return curr + acc(context);
-		}, '');
-	}),
-
 	new ThymeleafRule('VariableExpression',
 		Sequence(/\${/, 'Chain', /\}/),
 		([, chain]) => context => {
@@ -235,25 +226,6 @@ const ThymeleafExpressionLanguage = new Grammar('Thymeleaf Expression Language',
 	),
 
 	/**
-	 * String concatenation, `'...' + '...'` or even `${...} + ${...}`, the
-	 * joining of 2 expressions by way of the `+` operator.
-	 */
-	new ThymeleafRule('StringConcatenation',
-		Sequence('Concatenatable', OneOrMore(Sequence(/\+/, 'Concatenatable'))),
-		(values) => context => {
-			return flatten(values).filter(item => item !== '+').reduce((result, value) => {
-				return result + (typeof value === 'function' ? value(context) : value);
-			}, '');
-		}
-	),
-	new ThymeleafRule('Concatenatable',
-		OrderedChoice(
-			'StringLiteral',
-			'VariableExpression'
-		)
-	),
-
-	/**
 	 * Scoped variable aliases, `key=${expression},...`, describes one or more
 	 * names for scoped variables with the expressions that can be their values.
 	 */
@@ -319,6 +291,37 @@ const ThymeleafExpressionLanguage = new Grammar('Thymeleaf Expression Language',
 
 	// Text operations
 	// ===============
+
+	/**
+	 * String concatenation, `'...' + '...'` or even `${...} + ${...}`, the
+	 * joining of 2 expressions by way of the `+` operator.
+	 */
+	new ThymeleafRule('StringConcatenation',
+		Sequence('Concatenatable', OneOrMore(Sequence(/\+/, 'Concatenatable'))),
+		(values) => context => {
+			return flatten(values).filter(item => item !== '+').reduce((result, value) => {
+				return result + (typeof value === 'function' ? value(context) : value);
+			}, '');
+		}
+	),
+	new ThymeleafRule('Concatenatable',
+		OrderedChoice(
+			'StringLiteral',
+			'VariableExpression'
+		)
+	),
+
+	new ThymeleafRule('LiteralSubstitution',
+		Sequence(/^\|/, OneOrMore(Sequence(/[^$|]*/, 'VariableExpression', /[^$|]*/)), /\|$/),
+		([, matchers]) => context => {
+			return flatten(matchers).reduce((curr, acc) => {
+				if (typeof acc === 'string') {
+					return curr + acc;
+				}
+				return curr + acc(context);
+			}, '');
+		}
+	),
 
 
 	// Arithmetic operations
@@ -454,7 +457,7 @@ const ThymeleafExpressionLanguage = new Grammar('Thymeleaf Expression Language',
 	),
 	new ThymeleafRule('MethodName', 'Identifier'),
 	new ThymeleafRule('MethodParameters',
-		Sequence('Chain', ZeroOrMore(Sequence(/,/, 'Chain'))),
+		buildExpression('Chain (, Chain)*'),
 		(parametersAndSeparators) => context => {
 			return parametersAndSeparators ?
 				flatten(parametersAndSeparators)
@@ -468,12 +471,7 @@ const ThymeleafExpressionLanguage = new Grammar('Thymeleaf Expression Language',
 	 * Any valid unit of code that resolves to some value.
 	 */
 	new ThymeleafRule('Expression',
-		OrderedChoice(
-			'LiteralSubstitution',
-			'VariableExpression',
-			'StringConcatenation',
-			'Literal'
-		)
+		buildExpression(`LiteralSubstitution / VariableExpression / StringConcatenation / Literal`)
 	)
 );
 

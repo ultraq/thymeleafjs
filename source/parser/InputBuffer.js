@@ -36,10 +36,12 @@ export default class InputBuffer {
 
 	/**
 	 * @param {String} input
+	 * @param {Boolean} whitespaceSensitive
 	 */
-	constructor(input) {
+	constructor(input, whitespaceSensitive) {
 
 		this.input = input;
+		this.whitespaceSensitive = whitespaceSensitive;
 	}
 
 	/**
@@ -107,7 +109,7 @@ export default class InputBuffer {
 
 		let remaining = this.input.substring(this.position);
 		let leadingWhitespace = remaining.match(/^\s+/);
-		if (leadingWhitespace) {
+		if (leadingWhitespace && !this.whitespaceSensitive) {
 			leadingWhitespace = leadingWhitespace[0];
 			remaining = remaining.substring(leadingWhitespace.length);
 		}

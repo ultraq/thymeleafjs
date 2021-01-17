@@ -23,13 +23,14 @@ export default class Grammar {
 
 	/**
 	 * @param {String} name
-	 * @param {Rule} startingRule
-	 * @param {...Rule} additionalRules
+	 * @param {Array<Rule>} rules
+	 * @param {Boolean} [whitespaceSensitive=false]
 	 */
-	constructor(name, startingRule, ...additionalRules) {
+	constructor(name, rules, whitespaceSensitive = false) {
 
 		this.name = name;
-		this.rules = [].concat(startingRule, additionalRules);
+		this.rules = rules;
+		this.whitespaceSensitive = whitespaceSensitive;
 	}
 
 	/**
