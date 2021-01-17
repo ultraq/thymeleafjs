@@ -72,15 +72,6 @@ const ThymeleafExpressionLanguage = new Grammar('Thymeleaf Expression Language',
 	 * do.
 	 */
 
-	new ThymeleafRule('LiteralSubstitution', Sequence(/^\|/, OneOrMore(Sequence(/[^$|]*/, 'VariableExpression', /[^$|]*/)), /\|$/), ([, matchers]) => context => {
-		return flatten(matchers).reduce((curr, acc) => {
-			if (typeof acc === 'string') {
-				return curr + acc;
-			}
-			return curr + acc(context);
-		}, '');
-	}),
-
 	new ThymeleafRule('VariableExpression',
 		Sequence(/\${/, 'Chain', /\}/),
 		([, chain]) => context => {
@@ -235,25 +226,6 @@ const ThymeleafExpressionLanguage = new Grammar('Thymeleaf Expression Language',
 	),
 
 	/**
-	 * String concatenation, `'...' + '...'` or even `${...} + ${...}`, the
-	 * joining of 2 expressions by way of the `+` operator.
-	 */
-	new ThymeleafRule('StringConcatenation',
-		Sequence('Concatenatable', OneOrMore(Sequence(/\+/, 'Concatenatable'))),
-		(values) => context => {
-			return flatten(values).filter(item => item !== '+').reduce((result, value) => {
-				return result + (typeof value === 'function' ? value(context) : value);
-			}, '');
-		}
-	),
-	new ThymeleafRule('Concatenatable',
-		OrderedChoice(
-			'StringLiteral',
-			'VariableExpression'
-		)
-	),
-
-	/**
 	 * Scoped variable aliases, `key=${expression},...`, describes one or more
 	 * names for scoped variables with the expressions that can be their values.
 	 */
@@ -319,6 +291,35 @@ const ThymeleafExpressionLanguage = new Grammar('Thymeleaf Expression Language',
 
 	// Text operations
 	// ===============
+
+
+	/**
+	 * String concatenation, `'...' + '...'` or even `${...} + ${...}`, the
+	 * joining of 2 expressions by way of the `+` operator.
+	 */
+	new ThymeleafRule('StringConcatenation',
+		Sequence('Concatenatable', OneOrMore(Sequence(/\+/, 'Concatenatable'))),
+		(values) => context => {
+			return flatten(values).filter(item => item !== '+').reduce((result, value) => {
+				return result + (typeof value === 'function' ? value(context) : value);
+			}, '');
+		}
+	),
+	new ThymeleafRule('Concatenatable',
+		OrderedChoice(
+			'StringLiteral',
+			'VariableExpression'
+		)
+	),
+
+	new ThymeleafRule('LiteralSubstitution', Sequence(/^\|/, OneOrMore(Sequence(/[^$|]*/, 'VariableExpression', /[^$|]*/)), /\|$/), ([, matchers]) => context => {
+		return flatten(matchers).reduce((curr, acc) => {
+			if (typeof acc === 'string') {
+				return curr + acc;
+			}
+			return curr + acc(context);
+		}, '');
+	}),
 
 
 	// Arithmetic operations
