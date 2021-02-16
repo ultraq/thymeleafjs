@@ -32,7 +32,8 @@
 		"@ultraq/dom-utils": "^0.4.0",
 		"@ultraq/string-utils": "^2.1.0",
 		"dumb-query-selector": "^3.3.0",
-		"jsdom": "^16.3.0"
+		"jsdom": "^16.3.0",
+		"lodash.get": "^4.4.2"
 	},
 	"devDependencies": {
 		"@babel/core": "^7.10.4",

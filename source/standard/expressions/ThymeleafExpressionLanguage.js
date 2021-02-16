@@ -29,6 +29,8 @@ import {RegularExpression} from '../../parser/RegularExpression.js';
 
 import {flatten, remove} from '@ultraq/array-utils';
 
+import getByPath from 'lodash.get';
+
 // For helping identify rules that return objects
 const METADATA_FRAGMENT  = 'fragment';
 const METADATA_ITERATION = 'iteration';
@@ -94,7 +96,7 @@ const ThymeleafExpressionLanguage = new Grammar('Thymeleaf Expression Language',
 		}
 	),
 	new ThymeleafRule('ChainLink',
-		OrderedChoice('MethodCall', 'PropertyName', 'Literal')
+		OrderedChoice('MethodCall', 'ArrayIndex', 'PropertyName', 'Literal')
 	),
 
 	/**
@@ -439,6 +441,11 @@ const ThymeleafExpressionLanguage = new Grammar('Thymeleaf Expression Language',
 		(propertyName) => context => {
 			let property = propertyName(context);
 			return Object.prototype.hasOwnProperty.call(context, property) ? context[property] : '';
+		}
+	),
+	new ThymeleafRule('ArrayIndex', /([\w]+)?(\[[\d]*])+/,
+		(path) => context => {
+			return getByPath(context, path);
 		}
 	),
 	new ThymeleafRule('MethodCall',
