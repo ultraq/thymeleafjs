@@ -59,6 +59,7 @@ export default class AttrAttributeProcessor extends AttributeProcessor {
 		//       turned into an expression?
 		if (/(.+=.+,)*.+=.+/.test(attributeValue)) {
 			attributeValue.split(',').forEach(attribute => {
+				attribute = attribute.trim();
 				let [name, value] = attribute.split('=');
 				let processorResult = context.expressionProcessor.process(value, context);
 				element.setAttribute(name, escapeHtml(

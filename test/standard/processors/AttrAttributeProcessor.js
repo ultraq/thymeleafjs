@@ -56,6 +56,23 @@ describe('processors/standard/AttrAttributeProcessor', function() {
 		expect(element.classList.contains(valueClass)).toBe(true);
 	});
 
+	test('Allow attributes to have spaces between them', function() {
+		let valueId = 'test-id';
+		let target = 'test-target';
+		let valueClass = 'test-class';
+		let attributeValue = `id=\${valueId}, data-target=\${target}, class='${valueClass}'`;
+		let element = createHtml(`<div ${attribute}="${attributeValue}"></div>`);
+		processor.process(element, attribute, attributeValue, {
+			...baseContext,
+			valueId,
+			target
+		});
+		expect(element.id).toBe(valueId);
+		expect(element.dataset.target).toBe(target);
+		expect(element.classList.contains(valueClass)).toBe(true);
+	});
+
+
 	test("Do nothing if an expression doesn't match the attribute expression pattern", function() {
 		['class=', '${nothing}'].forEach(attributeValue => {
 			let element = createHtml(`<div ${attribute}="${attributeValue}"></div>`);
