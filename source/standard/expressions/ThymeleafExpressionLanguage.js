@@ -26,10 +26,9 @@ import {
 	ZeroOrMore
 }                          from '../../parser/Operators.js';
 import {RegularExpression} from '../../parser/RegularExpression.js';
+import { getByPath }       from '../../utilities/getByPath';
 
 import {flatten, remove} from '@ultraq/array-utils';
-
-import getByPath from 'lodash.get';
 
 // For helping identify rules that return objects
 const METADATA_FRAGMENT  = 'fragment';
