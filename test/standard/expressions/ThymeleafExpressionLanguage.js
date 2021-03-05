@@ -95,6 +95,44 @@ describe('standard/expressions/ThymeleafExpressionLanguage', function() {
 			});
 			expect(result).toBe(false);
 		});
+
+		describe('Array Access', () => {
+			const arrayContext = {
+				days: [ 'Sat', 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
+				nestedArrays: [
+					{
+						name: 'User 1',
+						roles: ['admin']
+					},
+					{
+						name: 'User 2',
+						roles: ['editor', 'member']
+					}
+				]
+			};
+
+			test('Should be able to access plain array by index', function() {
+				let result = expressionProcessor.process('${days[0]}', arrayContext);
+				expect(result).toBe('Sat');
+
+				result = expressionProcessor.process('${days[1]}', arrayContext);
+				expect(result).toBe('Sun');
+			});
+
+			test('Should be able to access nested array by index', function() {
+				let result = expressionProcessor.process('${nestedArrays[0].name}', arrayContext);
+				expect(result).toBe('User 1');
+
+				result = expressionProcessor.process('${nestedArrays[1].name}', arrayContext);
+				expect(result).toBe('User 2');
+
+				result = expressionProcessor.process('${nestedArrays[0].roles[0]}', arrayContext);
+				expect(result).toBe('admin');
+
+				result = expressionProcessor.process('${nestedArrays[1].roles[1]}', arrayContext);
+				expect(result).toBe('member');
+			});
+		});
 	});
 
 	describe('LiteralSubstitution', () => {
