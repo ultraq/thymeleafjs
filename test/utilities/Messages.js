@@ -32,8 +32,13 @@ describe('utilities/Messages', function() {
 		});
 
 		test('No message resolver returns `null`', async function() {
+			let mockConsole = jest.spyOn(console, 'log').mockImplementation(() => {});
+
 			let result = await buildMessage(null, null);
 			expect(result).toBe(null);
+			expect(mockConsole).toHaveBeenCalledWith('No message resolver configured');
+
+			mockConsole.mockRestore();
 		});
 	});
 });

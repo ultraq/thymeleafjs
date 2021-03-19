@@ -55,8 +55,13 @@ describe('utilities/Fragments', function() {
 		});
 
 		test('No template resolver returns `null`', async function() {
+			let mockConsole = jest.spyOn(console, 'log').mockImplementation(() => {});
+
 			let result = await extractFragment(DEFAULT_PREFIX, null, {});
 			expect(result).toBe(null);
+			expect(mockConsole).toHaveBeenCalledWith('No template resolver configured');
+
+			mockConsole.mockRestore();
 		});
 	});
 });
