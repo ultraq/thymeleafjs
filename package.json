@@ -1,6 +1,6 @@
 {
 	"name": "thymeleaf",
-	"version": "0.20.4",
+	"version": "0.20.5",
 	"description": "A basic implementation of the Thymeleaf templating engine in JavaScript",
 	"author": "Emanuel Rabina <emanuelrabina@gmail.com> (http://www.ultraq.net.nz/)",
 	"license": "Apache-2.0",

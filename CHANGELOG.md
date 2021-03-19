@@ -2,6 +2,10 @@
 Changelog
 =========
 
+### 0.20.5
+ - Add support for array access by index: `array[i]`
+   ([#44](https://github.com/ultraq/thymeleafjs/pull/44))
+
 ### 0.20.4
  - Add support for literal substitions: `|...|`
    ([#43](https://github.com/ultraq/thymeleafjs/pull/43))
