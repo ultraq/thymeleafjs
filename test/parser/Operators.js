@@ -18,7 +18,8 @@ import InputBuffer from '../../source/parser/InputBuffer';
 import {
 	OrderedChoice,
 	Sequence,
-	ZeroOrMore}      from '../../source/parser/Operators';
+	ZeroOrMore
+}                  from '../../source/parser/Operators';
 import Parser      from '../../source/parser/Parser';
 
 /**
