@@ -2,6 +2,9 @@
 Changelog
 =========
 
+### 0.21.0
+ - Drop support for Node 10
+
 ### 0.20.5
  - Add support for array access by index: `array[i]`
    ([#44](https://github.com/ultraq/thymeleafjs/pull/44))
