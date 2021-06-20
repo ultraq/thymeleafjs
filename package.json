@@ -1,6 +1,6 @@
 {
 	"name": "thymeleaf",
-	"version": "0.20.5",
+	"version": "0.21.0",
 	"description": "A basic implementation of the Thymeleaf templating engine in JavaScript",
 	"author": "Emanuel Rabina <emanuelrabina@gmail.com> (http://www.ultraq.net.nz/)",
 	"license": "Apache-2.0",
@@ -58,6 +58,6 @@
 		"rollup-plugin-terser": "^6.1.0"
 	},
 	"engines": {
-		"node": ">=10"
+		"node": ">=12"
 	}
 }
