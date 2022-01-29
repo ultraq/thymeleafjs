@@ -259,11 +259,15 @@ const ThymeleafExpressionLanguage = new Grammar('Thymeleaf Expression Language',
 	/**
 	 * String literal, characters surrounded by `'` (single quotes).
 	 * 
-	 * This is trying to emulate negative lookbehind so that escaped quotes don't
-	 * get counted as string terminators, but JavaScript only got that feature in
-	 * ES2018, so if I used it it'd leave too many JS engines without support.
+	 * The first part is attempting to match an empty string as the second part
+	 * doesn't work on empty strings.
+	 * 
+	 * The second part is trying to emulate negative lookbehind so that escaped
+	 * quotes don't get counted as string terminators, but JavaScript only got
+	 * that feature in ES2018, so if I used it it'd leave too many JS engines
+	 * without support.
 	 */
-	new ThymeleafRule('StringLiteral', /'.*?(?!\\').'/, result => () => result.slice(1, -1).replace(/\\/g, '')),
+	new ThymeleafRule('StringLiteral', /''|'.*?(?!\\').'/, result => () => result.slice(1, -1).replace(/\\/g, '')),
 
 	/**
 	 * A number.

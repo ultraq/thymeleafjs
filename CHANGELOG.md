@@ -4,6 +4,8 @@ Changelog
 
 ### 0.21.0
  - Drop support for Node 10
+ - Consider empty strings as string literals
+   ([#46](https://github.com/ultraq/thymeleafjs/issues/46))
 
 ### 0.20.5
  - Add support for array access by index: `array[i]`

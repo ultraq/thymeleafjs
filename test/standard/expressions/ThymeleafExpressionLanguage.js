@@ -358,6 +358,13 @@ describe('standard/expressions/ThymeleafExpressionLanguage', function() {
 			});
 			expect(result).toBe('Goodbye :(');
 		});
+
+		test('Executes either branch and returns the empty string literal', function() {
+			[true, false].forEach(condition => {
+				let result = expressionProcessor.process("${condition} ? '' : ''", { condition });
+				expect(result).toBe('');
+			});
+		});
 	});
 
 
