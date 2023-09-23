@@ -3,7 +3,7 @@ ThymeleafJS
 ===========
 
 [![Build Status](https://github.com/ultraq/thymeleafjs/actions/workflows/build.yml/badge.svg)](https://github.com/ultraq/thymeleafjs/actions)
-[![Coverage Status](https://coveralls.io/repos/github/ultraq/thymeleafjs/badge.svg?branch=main)](https://coveralls.io/github/ultraq/thymeleafjs?branch=main)
+[![codecov](https://codecov.io/gh/ultraq/thymeleafjs/graph/badge.svg?token=3l8NvUt6ag)](https://codecov.io/gh/ultraq/thymeleafjs)
 [![npm](https://img.shields.io/npm/v/thymeleaf.svg?maxAge=3600)](https://www.npmjs.com/package/thymeleaf)
 
 A basic implementation of the [Thymeleaf](http://thymeleaf.org/) templating
