@@ -1,5 +1,4 @@
 /coverage
-*.iml
 .*
 jest.config.js
 rollup.config.*

@@ -31,7 +31,7 @@ export const NODE_TYPE_ELEMENT = 1;
  * Create and return a new HTML fragment using JSDOM from the given string.
  * Used for tests.
  * 
- * @param {String} htmlString
+ * @param {string} htmlString
  * @return {Element}
  */
 export function createHtml(htmlString) {
@@ -42,9 +42,9 @@ export function createHtml(htmlString) {
  * Returns the value of a Thymeleaf attribute processor.
  * 
  * @param {Element} element
- * @param {String} prefix
- * @param {String} processorName
- * @return {String} The value of the Thymeleaf attribute processor, or `null`
+ * @param {string} prefix
+ * @param {string} processorName
+ * @return {string} The value of the Thymeleaf attribute processor, or `null`
  *   if the attribute processor wasn't present.
  */
 export function getThymeleafAttributeValue(element, prefix, processorName) {
@@ -56,7 +56,7 @@ export function getThymeleafAttributeValue(element, prefix, processorName) {
  * Use either JSDOM or the browser's native DOM parsing to deserialize the HTML
  * string into a document fragment.
  * 
- * @param {String} htmlString
+ * @param {string} htmlString
  * @return {DocumentFragment}
  */
 export function deserialize(htmlString) {
@@ -74,7 +74,7 @@ export function deserialize(htmlString) {
  * document fragment into an HTML string.
  * 
  * @param {DocumentFragment} documentFragment
- * @return {String}
+ * @return {string}
  */
 export function serialize(documentFragment) {
 	/* istanbul ignore if */

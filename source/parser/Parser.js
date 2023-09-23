@@ -22,7 +22,7 @@ import InputBuffer from './InputBuffer';
  *  - a string that references another rule
  *  - a regular expression
  * 
- * @typedef {String|RegExp|Function} Matchable
+ * @typedef {string | RegExp | Function} Matchable
  */
 
 /**
@@ -51,8 +51,8 @@ export default class Parser {
 	 * more non-terminating symbols in the grammar and all of the input has been
 	 * read.
 	 * 
-	 * @param {String} input
-	 * @return {Object} The parse tree if the input could be parsed, `null`
+	 * @param {string} input
+	 * @return {object} The parse tree if the input could be parsed, `null`
 	 *   otherwise.
 	 */
 	parse(input) {
@@ -81,7 +81,7 @@ export default class Parser {
 	 * 
 	 * @param {InputBuffer} input
 	 * @param {Matchable} expression
-	 * @return {Object}
+	 * @return {object}
 	 */
 	parseWithExpression(input, expression) {
 
@@ -115,7 +115,7 @@ export default class Parser {
 	 * @template T
 	 * @param {InputBuffer} input
 	 * @param {Matchable} expression
-	 * @param {String} name
+	 * @param {string} name
 	 * @param {Function<T>} func
 	 * @return {T}
 	 */

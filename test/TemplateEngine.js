@@ -20,9 +20,10 @@ import Dialect                 from '../source/dialects/Dialect.js';
 import StandardDialect         from '../source/standard/StandardDialect.js';
 import {promisify}             from '../source/utilities/Functions';
 
-import {range} from '@ultraq/array-utils';
 import fs      from 'fs';
 import path    from 'path';
+
+import {range} from '@ultraq/array-utils';
 
 /**
  * Tests for the Thymeleaf processing functions.
@@ -39,7 +40,7 @@ describe('TemplateEngine', function() {
 				'#obj1': {
 					sum: (a, b) => a + b
 				}
-			}
+			};
 		}
 		class TestDialect2 extends Dialect {
 			constructor() {
@@ -49,7 +50,7 @@ describe('TemplateEngine', function() {
 				'#obj2': {
 					multiply: (a, b) => a * b
 				}
-			}
+			};
 		}
 
 		const templateEngine = new TemplateEngine({
@@ -80,6 +81,7 @@ describe('TemplateEngine', function() {
 		});
 	});
 
+	// eslint-disable-next-line jsdoc/require-jsdoc
 	function removeWhitespace(string) {
 		return string.replace(/([\t\n])/g, '');
 	}

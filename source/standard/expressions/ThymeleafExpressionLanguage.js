@@ -26,7 +26,7 @@ import {
 	ZeroOrMore
 }                          from '../../parser/Operators.js';
 import {RegularExpression} from '../../parser/RegularExpression.js';
-import { getByPath }       from '../../utilities/getByPath';
+import {getByPath}       from '../../utilities/getByPath';
 
 import {flatten, remove} from '@ultraq/array-utils';
 

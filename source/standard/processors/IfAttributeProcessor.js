@@ -30,8 +30,8 @@ export default class IfAttributeProcessor extends AttributeProcessor {
 	/**
 	 * Constructor, set this processor to use the `if` name and supplied prefix.
 	 * 
-	 * @param {String} prefix
-	 * @param {Object} [isomorphic]
+	 * @param {string} prefix
+	 * @param {object} [isomorphic]
 	 */
 	constructor(prefix, isomorphic) {
 
@@ -45,12 +45,12 @@ export default class IfAttributeProcessor extends AttributeProcessor {
 	 * 
 	 * @param {Element} element 
 	 *   Element being processed.
-	 * @param {String} attribute
+	 * @param {string} attribute
 	 *   The attribute that was encountered to invoke this processor.
-	 * @param {String} attributeValue
+	 * @param {string} attributeValue
 	 *   The value given by the attribute.
-	 * @param {Object} context
-	 * @return {Boolean} `true` if the element was removed.
+	 * @param {object} context
+	 * @return {boolean} `true` if the element was removed.
 	 */
 	process(element, attribute, attributeValue, context) {
 

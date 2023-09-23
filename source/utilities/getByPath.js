@@ -1,6 +1,6 @@
 /**
  *
- * @param {Object|Array} obj
+ * @param {object|Array} obj
  * @param {string} path
  * @return {*}
  */

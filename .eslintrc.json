@@ -3,11 +3,13 @@
 		"eslint:recommended",
 		"plugin:import/errors",
 		"plugin:import/warnings",
+		"plugin:jsdoc/recommended",
 		"ultraq"
 	],
-	"parser": "babel-eslint",
+	"parser": "@babel/eslint-parser",
 	"parserOptions": {
-		"ecmaVersion": 2018
+		"ecmaVersion": 2020,
+		"requireConfigFile": false
 	},
 	"env": {
 		"browser": true,
@@ -15,15 +17,6 @@
 		"es6": true
 	},
 	"rules": {
-		"no-console": "off",
-		"import/order": ["error", {
-			"groups": [
-				"index",
-				"sibling",
-				"parent",
-				"internal",
-				["external", "builtin"]
-			]
-		}]
+		"no-console": "off"
 	}
 }

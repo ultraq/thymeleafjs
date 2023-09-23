@@ -37,7 +37,10 @@ export default class TemplateEngine {
 	/**
 	 * Constructor, set up a new template engine instance.
 	 * 
-	 * @param {Object} [config=DEFAULT_CONFIGURATION]
+	 * @param {object} [config]
+	 * @param config.dialects
+	 * @param config.messageResolver
+	 * @param config.templateResolver
 	 */
 	constructor({dialects, messageResolver, templateResolver} = DEFAULT_CONFIGURATION) {
 
@@ -62,9 +65,9 @@ export default class TemplateEngine {
 	/**
 	 * Process the Thymeleaf template data, returning the processed template.
 	 *
-	 * @param {String} template
-	 * @param {Object} [context={}]
-	 * @return {Promise<String>}
+	 * @param {string} template
+	 * @param {object} [context]
+	 * @return {Promise<string>}
 	 *   A promise resolved with the processed template, or rejected with an error
 	 *   message.
 	 */
@@ -92,9 +95,9 @@ export default class TemplateEngine {
 	 * Process the Thymeleaf template at the given path, returning a promise of
 	 * the processed template.
 	 * 
-	 * @param {String} filePath
-	 * @param {Object} [context={}]
-	 * @return {Promise<String>}
+	 * @param {string} filePath
+	 * @param {object} [context]
+	 * @return {Promise<string>}
 	 *   A promise of the processed template.  The promise is immediately rejected
 	 *   if this method is called in a browser environment.
 	 */
@@ -114,8 +117,8 @@ export default class TemplateEngine {
 	 * 
 	 * @private
 	 * @param {Element} element
-	 * @param {Object} [context={}]
-	 * @return {Promise<Boolean>} Whether or not the parent node needs
+	 * @param {object} [context]
+	 * @return {Promise<boolean>} Whether or not the parent node needs
 	 *   reprocessing.
 	 */
 	async processNode(element, context = {}) {

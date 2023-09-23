@@ -51,8 +51,8 @@ export default class StandardDialect extends Dialect {
 	 * Create an instance of this dialect with the name "Standard" and given
 	 * prefix.
 	 * 
-	 * @param {String} [prefix='thjs']
-	 * @param {Object} [isomorphic]
+	 * @param {string} [prefix]
+	 * @param {object} [isomorphic]
 	 */
 	constructor(prefix = DEFAULT_PREFIX, isomorphic) {
 

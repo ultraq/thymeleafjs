@@ -22,7 +22,7 @@
 export default class Grammar {
 
 	/**
-	 * @param {String} name
+	 * @param {string} name
 	 * @param {Rule} startingRule
 	 * @param {...Rule} additionalRules
 	 */
@@ -38,7 +38,7 @@ export default class Grammar {
 	 * 
 	 * @param {InputBuffer} input
 	 * @param {Parser} parser
-	 * @return {Object} If the input is accepted, this will be the non-null result
+	 * @return {object} If the input is accepted, this will be the non-null result
 	 *   of matching against the rules of this grammar.
 	 */
 	accept(input, parser) {
@@ -49,7 +49,7 @@ export default class Grammar {
 	/**
 	 * Return the rule that has the given name.
 	 * 
-	 * @param {String} name
+	 * @param {string} name
 	 * @return {Rule}
 	 */
 	findRuleByName(name) {

@@ -70,8 +70,8 @@ describe('processors/standard/AttrAttributeProcessor', function() {
 		let attributeValue = 'data-test-objects=${testObjects}';
 		let testObjects = {
 			list: [
-				{ name: 'test-object-1' },
-				{ name: 'test-object-2' }
+				{name: 'test-object-1'},
+				{name: 'test-object-2'}
 			]
 		};
 		let element = createHtml(`<div ${attribute}="${attributeValue}"></div>`);

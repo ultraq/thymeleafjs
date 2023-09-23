@@ -1,4 +1,4 @@
-import { getByPath, getPathArray } from '../../source/utilities/getByPath.js';
+import {getByPath, getPathArray} from '../../source/utilities/getByPath.js';
 
 describe('utilities/getByPath', function() {
 	const testObj = {

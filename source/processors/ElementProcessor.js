@@ -24,8 +24,8 @@ export default class ElementProcessor {
 	/**
 	 * Constructor, sets this processor's prefix and name.
 	 * 
-	 * @param {String} prefix
-	 * @param {String} name
+	 * @param {string} prefix
+	 * @param {string} name
 	 */
 	constructor(prefix, name) {
 
@@ -38,8 +38,8 @@ export default class ElementProcessor {
 	 * 
 	 * @param {Element} element
 	 *   Element being processed.
-	 * @param {Object} context
-	 * @return {Boolean} Whether or not the parent tree needs reprocessing because
+	 * @param {object} context
+	 * @return {boolean} Whether or not the parent tree needs reprocessing because
 	 *   of modifications made by the processor.
 	 */
 	process(element, context) {

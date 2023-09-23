@@ -24,9 +24,9 @@ export default class AttributeProcessor {
 	/**
 	 * Constructor, sets this processor's prefix and name.
 	 * 
-	 * @param {String} prefix
-	 * @param {String} name
-	 * @param {Object} [isomorphic]
+	 * @param {string} prefix
+	 * @param {string} name
+	 * @param {object} [isomorphic]
 	 */
 	constructor(prefix, name, isomorphic) {
 
@@ -40,12 +40,12 @@ export default class AttributeProcessor {
 	 * 
 	 * @param {Element} element
 	 *   Element being processed.
-	 * @param {String} attribute
+	 * @param {string} attribute
 	 *   The attribute that was encountered to invoke this processor.
-	 * @param {String} attributeValue
+	 * @param {string} attributeValue
 	 *   The value given by the attribute.
-	 * @param {Object} context
-	 * @return {Boolean} Whether or not the parent tree needs reprocessing because
+	 * @param {object} context
+	 * @return {boolean} Whether or not the parent tree needs reprocessing because
 	 *   of modifications made by the processor.
 	 */
 	process(element, attribute, attributeValue, context) {

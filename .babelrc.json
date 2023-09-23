@@ -1,33 +1,9 @@
 {
-	"plugins": [
-		"@babel/plugin-proposal-class-properties",
-		"@babel/plugin-proposal-object-rest-spread",
-		"@babel/plugin-proposal-optional-chaining",
-		"@babel/plugin-transform-runtime"
+	"presets": [
+		"@babel/preset-env"
 	],
-	"env": {
-		"build": {
-			"presets": [
-				["@babel/preset-env", {
-					"modules": false,
-					"targets": {
-						"browsers": [
-							"last 5 chrome versions",
-							"last 5 firefox versions"
-						],
-						"node": "10.0.0"
-					}
-				}]
-			]
-		},
-		"test": {
-			"presets": [
-				["@babel/preset-env", {
-					"targets": {
-						"node": "current"
-					}
-				}]
-			]
-		}
-	}
+	"plugins": [
+		"@babel/plugin-transform-class-properties",
+		"@babel/plugin-transform-runtime"
+	]
 }

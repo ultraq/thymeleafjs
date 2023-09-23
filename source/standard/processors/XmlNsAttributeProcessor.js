@@ -27,8 +27,8 @@ export default class XmlNsAttributeProcessor extends AttributeProcessor {
 	/**
 	 * Constructor, set this processor to operate on the given XML namespace.
 	 * 
-	 * @param {String} prefix
-	 * @param {Object} isomorphic
+	 * @param {string} prefix
+	 * @param {object} isomorphic
 	 */
 	constructor(prefix, isomorphic) {
 
@@ -41,12 +41,12 @@ export default class XmlNsAttributeProcessor extends AttributeProcessor {
 	 * 
 	 * @param {Element} element
 	 *   Element being processed.
-	 * @param {String} attribute
+	 * @param {string} attribute
 	 *   The attribute that was encountered to invoke this processor.
-	 * @param {String} attributeValue
+	 * @param {string} attributeValue
 	 *   The value given by the attribute.
-	 * @param {Object} context
-	 * @return {Boolean} `false`, as removing the XML namespace never requires
+	 * @param {object} context
+	 * @return {boolean} `false`, as removing the XML namespace never requires
 	 *   repropcessing.
 	 */
 	process(element, attribute, attributeValue, context) {

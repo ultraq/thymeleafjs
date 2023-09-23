@@ -31,9 +31,9 @@ const defaultMatchProcessor = result => result;
 export default class Rule {
 
 	/**
-	 * @param {String} name
-	 * @param {Object} expression
-	 * @param {Function} [matchProcessor=defaultMatchProcessor]
+	 * @param {string} name
+	 * @param {object} expression
+	 * @param {Function} [matchProcessor]
 	 */
 	constructor(name, expression, matchProcessor = defaultMatchProcessor) {
 
@@ -48,7 +48,7 @@ export default class Rule {
 	 * 
 	 * @param {InputBuffer} input
 	 * @param {Parser} parser
-	 * @return {Object} If the input is accepted, this will be the non-null result
+	 * @return {object} If the input is accepted, this will be the non-null result
 	 *   of matching against the rule.
 	 */
 	accept(input, parser) {

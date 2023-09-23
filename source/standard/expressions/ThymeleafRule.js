@@ -23,8 +23,8 @@ import Rule from '../../parser/Rule.js';
 export default class ThymeleafRule extends Rule {
 
 	/**
-	 * @param {String} name
-	 * @param {Object} expression
+	 * @param {string} name
+	 * @param {object} expression
 	 * @param {Function} [matchProcessor]
 	 */
 	constructor(name, expression, matchProcessor) {

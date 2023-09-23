@@ -24,18 +24,18 @@ export default class InputBuffer {
 
 	/**
 	 * @private
-	 * @type {Number}
+	 * @type {number}
 	 */
 	position = 0;
 
 	/**
 	 * @private
-	 * @type {Array<Number>}
+	 * @type {Array<number>}
 	 */
 	positionStack = [];
 
 	/**
-	 * @param {String} input
+	 * @param {string} input
 	 */
 	constructor(input) {
 
@@ -57,7 +57,7 @@ export default class InputBuffer {
 	 * Returns whether or not the current position is at the end of the input,
 	 * meaning we've exhausted the entire input string.
 	 * 
-	 * @return {Boolean}
+	 * @return {boolean}
 	 */
 	exhausted() {
 

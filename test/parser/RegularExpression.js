@@ -29,12 +29,12 @@ describe('parser/RegularExpression', function() {
 		let parseSpy = jest.spyOn(parser, 'parseWithExpression');
 		let result = processor(new InputBuffer('abc'), parser);
 		expect(result[0]).toBe('abc');
-		expect(parseSpy).toHaveBeenCalledWith(expect.objectContaining({ input: 'abc' }), /abc/);
+		expect(parseSpy).toHaveBeenCalledWith(expect.objectContaining({input: 'abc'}), /abc/);
 
 		parser = new Parser();
 		parseSpy = jest.spyOn(parser, 'parseWithExpression');
 		result = processor(new InputBuffer('123'), parser);
 		expect(result[0]).toBe('123');
-		expect(parseSpy).toHaveBeenCalledWith(expect.objectContaining({ input: '123' }), /123/);
+		expect(parseSpy).toHaveBeenCalledWith(expect.objectContaining({input: '123'}), /123/);
 	});
 });

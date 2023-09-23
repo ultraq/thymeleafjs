@@ -40,8 +40,8 @@ export default class ExpressionProcessor {
 	/**
 	 * Parse and execute the given input as a Thymeleaf expression.
 	 * 
-	 * @param {String} input
-	 * @param {Object} [context={}]
+	 * @param {string} input
+	 * @param {object} [context]
 	 * @return {*}
 	 */
 	process(input, context = {}) {

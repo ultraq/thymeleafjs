@@ -29,7 +29,7 @@ export default class Matcher {
 	 * 
 	 * @param {Element} element
 	 * @param {AttributeProcessor} processor
-	 * @return {String}
+	 * @return {string}
 	 *   A match result containing what was matched (either an attribute or an
 	 *   element, relevant to the processor being tested), or `null` if nothing
 	 *   was matched.

@@ -19,10 +19,10 @@ import StandardDialect from './standard/StandardDialect.js';
 /**
  * Configuration object for the template engine.
  * 
- * @typedef {Object} Configuration
+ * @typedef {object} Configuration
  * @property {Array<Dialect>} dialects
  *   A list of dialects to include with this instance of the template engine.
- * @property {Object} [isomorphic]
+ * @property {object} [isomorphic]
  *   An object which configures the isomorphic capabilities of the template
  *   engine.
  * @property {Function} messageResolver

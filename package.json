@@ -1,6 +1,6 @@
 {
 	"name": "thymeleaf",
-	"version": "0.21.0",
+	"version": "0.22.0",
 	"description": "A basic implementation of the Thymeleaf templating engine in JavaScript",
 	"author": "Emanuel Rabina <emanuelrabina@gmail.com> (http://www.ultraq.net.nz/)",
 	"license": "Apache-2.0",
@@ -8,56 +8,54 @@
 		"type": "git",
 		"url": "https://github.com/ultraq/thymeleafjs"
 	},
-	"module": "lib/thymeleaf.node.es.js",
 	"main": "lib/thymeleaf.node.cjs.js",
+	"module": "lib/thymeleaf.node.es.js",
 	"browser": {
 		"./lib/thymeleaf.node.es.js": "./lib/thymeleaf.browser.es.js",
 		"./lib/thymeleaf.node.cjs.js": "./lib/thymeleaf.browser.cjs.js"
 	},
+	"types": "index.d.ts",
 	"sideEffects": false,
 	"scripts": {
 		"lint": "eslint \"**/*.js\"",
 		"test": "jest",
-		"coverage": "cat coverage/lcov.info | coveralls",
 		"build": "npm run build:browser && npm run build:node && npm run build:dist",
-		"build:browser": "cross-env BABEL_ENV=build ENVIRONMENT=browser rollup --config",
-		"build:node": "cross-env BABEL_ENV=build ENVIRONMENT=node rollup --config",
-		"build:dist": "cross-env BABEL_ENV=build rollup --config rollup.config.dist.js",
+		"build:browser": "cross-env BABEL_ENV=build ENVIRONMENT=browser rollup --config --bundleConfigAsCjs",
+		"build:node": "cross-env BABEL_ENV=build ENVIRONMENT=node rollup --config --bundleConfigAsCjs",
+		"build:dist": "cross-env BABEL_ENV=build rollup --config rollup.config.dist.js --bundleConfigAsCjs",
 		"watch": "chokidar \"source/**/*.js\" \"test/**/*.js\" -c \"npm run lint && npm test && npm run build\"",
 		"prepublishOnly": "npm run build"
 	},
 	"dependencies": {
-		"@babel/runtime": "^7.10.4",
-		"@ultraq/array-utils": "^2.1.0",
-		"@ultraq/dom-utils": "^0.4.0",
-		"@ultraq/string-utils": "^2.1.0",
+		"@babel/runtime": "^7.22.15",
+		"@ultraq/array-utils": "^3.0.1",
+		"@ultraq/dom-utils": "^0.5.0",
+		"@ultraq/string-utils": "^3.0.0",
 		"dumb-query-selector": "^3.3.0",
-		"jsdom": "^16.3.0"
+		"jsdom": "^22.1.0"
 	},
 	"devDependencies": {
-		"@babel/core": "^7.10.4",
-		"@babel/plugin-proposal-class-properties": "^7.10.4",
-		"@babel/plugin-proposal-object-rest-spread": "^7.10.4",
-		"@babel/plugin-proposal-optional-chaining": "^7.10.4",
-		"@babel/plugin-transform-runtime": "^7.10.4",
-		"@babel/preset-env": "^7.10.4",
-		"@rollup/plugin-babel": "^5.0.4",
-		"@rollup/plugin-commonjs": "^13.0.0",
-		"@rollup/plugin-node-resolve": "^8.1.0",
-		"@rollup/plugin-replace": "^2.3.3",
-		"@types/jest": "^27.4.0",
-		"babel-eslint": "^10.1.0",
-		"chokidar-cli": "^2.1.0",
-		"coveralls": "^3.1.0",
-		"cross-env": "^5.1.0",
-		"eslint": "^7.4.0",
-		"eslint-config-ultraq": "^2.3.4",
-		"eslint-plugin-import": "^2.22.0",
-		"jest": "^27.4.7",
-		"rollup": "^2.21.0",
-		"rollup-plugin-terser": "^6.1.0"
+		"@babel/core": "^7.22.20",
+		"@babel/eslint-parser": "^7.22.15",
+		"@babel/eslint-plugin": "^7.22.10",
+		"@babel/plugin-transform-runtime": "^7.22.15",
+		"@babel/preset-env": "^7.22.20",
+		"@rollup/plugin-babel": "^6.0.3",
+		"@rollup/plugin-commonjs": "^25.0.4",
+		"@rollup/plugin-node-resolve": "^15.2.1",
+		"@rollup/plugin-replace": "^5.0.2",
+		"@rollup/plugin-terser": "^0.4.3",
+		"@types/jest": "^29.5.5",
+		"chokidar-cli": "^3.0.0",
+		"cross-env": "^7.0.3",
+		"eslint": "^8.50.0",
+		"eslint-config-ultraq": "^3.1.1",
+		"eslint-plugin-import": "^2.28.1",
+		"eslint-plugin-jsdoc": "^46.8.2",
+		"jest": "^29.7.0",
+		"rollup": "^3.29.2"
 	},
 	"engines": {
-		"node": ">=12"
+		"node": ">=18"
 	}
 }

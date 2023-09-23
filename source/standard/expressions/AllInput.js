@@ -18,7 +18,7 @@
  * A special kind of expression that requires the referenced rule consume all
  * available input.
  * 
- * @param {String} ruleName
+ * @param {string} ruleName
  * @return {Matchable}
  */
 export const AllInput = ruleName => (input, parser) => {

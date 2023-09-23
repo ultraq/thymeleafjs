@@ -32,10 +32,10 @@ describe('parser/Rule', function() {
 	test('Result can be processed by a configured processor', function() {
 		let rule = new Rule('Test',
 			/Hello!/,
-			result => ({ result })
+			result => ({result})
 		);
 		let result = rule.accept(new InputBuffer('Hello!'), new Parser());
-		expect(result).toEqual({ result: 'Hello!' });
+		expect(result).toEqual({result: 'Hello!'});
 	});
 
 	test('A failed match returns `null`', function() {

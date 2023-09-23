@@ -30,7 +30,7 @@ export default class BlockElementProcessor extends ElementProcessor {
 	/**
 	 * Constructor, set this processor to use the `block` name and supplied prefix.
 	 * 
-	 * @param {String} prefix
+	 * @param {string} prefix
 	 */
 	constructor(prefix) {
 
@@ -43,8 +43,8 @@ export default class BlockElementProcessor extends ElementProcessor {
 	 * 
 	 * @param {Element} element
 	 *   Element being processed.
-	 * @param {Object} context
-	 * @return {Boolean} `true` to indicate that the elements need reprocessing.
+	 * @param {object} context
+	 * @return {boolean} `true` to indicate that the elements need reprocessing.
 	 */
 	process(element, context) {
 

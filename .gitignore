@@ -3,5 +3,4 @@
 /dist
 /lib
 /node_modules
-*.iml
-npm-debug.log
+/types

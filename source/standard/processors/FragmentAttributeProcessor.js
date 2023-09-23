@@ -31,8 +31,8 @@ export default class FragmentAttributeProcessor extends AttributeProcessor {
 	 * Constructor, set this processor to use the `fragment` name and supplied
 	 * prefix.
 	 * 
-	 * @param {String} prefix
-	 * @param {Object} [isomorphic]
+	 * @param {string} prefix
+	 * @param {object} [isomorphic]
 	 */
 	constructor(prefix, isomorphic) {
 

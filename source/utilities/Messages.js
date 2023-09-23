@@ -17,9 +17,9 @@
 /**
  * Build a message string from a processed message expression.
  * 
- * @param {Object} messageInfo
+ * @param {object} messageInfo
  * @param {Function} messageResolver
- * @return {Promise<String>}
+ * @return {Promise<string>}
  */
 export async function buildMessage(messageInfo, messageResolver) {
 	if (messageResolver) {

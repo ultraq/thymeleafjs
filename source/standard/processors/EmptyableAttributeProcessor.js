@@ -27,9 +27,9 @@ export default class EmptyableAttributeProcessor extends AttributeProcessor {
 	/**
 	 * Constructor, set the name of the attribute this processor will operate on.
 	 * 
-	 * @param {String} prefix
-	 * @param {String} name
-	 * @param {Object} [isomorphic]
+	 * @param {string} prefix
+	 * @param {string} name
+	 * @param {object} [isomorphic]
 	 */
 	constructor(prefix, name, isomorphic) {
 
@@ -43,12 +43,12 @@ export default class EmptyableAttributeProcessor extends AttributeProcessor {
 	 * 
 	 * @param {Element} element 
 	 *   Element being processed.
-	 * @param {String} attribute
+	 * @param {string} attribute
 	 *   The attribute that was encountered to invoke this processor.
-	 * @param {String} attributeValue
+	 * @param {string} attributeValue
 	 *   The value given by the attribute.
-	 * @param {Object} context
-	 * @return {Boolean} `false`.
+	 * @param {object} context
+	 * @return {boolean} `false`.
 	 */
 	process(element, attribute, attributeValue, context) {
 

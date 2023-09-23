@@ -30,8 +30,8 @@ export default class EachAttributeProcessor extends AttributeProcessor {
 	/**
 	 * Constructor, set this processor to use the `each` name and supplied prefix.
 	 * 
-	 * @param {String} prefix
-	 * @param {Object} [isomorphic]
+	 * @param {string} prefix
+	 * @param {object} [isomorphic]
 	 */
 	constructor(prefix, isomorphic) {
 
@@ -44,12 +44,12 @@ export default class EachAttributeProcessor extends AttributeProcessor {
 	 * 
 	 * @param {Element} element
 	 *   Element being processed.
-	 * @param {String} attribute
+	 * @param {string} attribute
 	 *   The attribute that was encountered to invoke this processor.
-	 * @param {String} attributeValue
+	 * @param {string} attributeValue
 	 *   The value given by the attribute.
-	 * @param {Object} context
-	 * @return {Boolean} Whether or not the parent element needs to do a second
+	 * @param {object} context
+	 * @return {boolean} Whether or not the parent element needs to do a second
 	 *   pass as its children have been modified by this processor.
 	 */
 	process(element, attribute, attributeValue, context) {

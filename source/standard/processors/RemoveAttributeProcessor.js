@@ -30,8 +30,8 @@ export default class RemoveAttributeProcessor extends AttributeProcessor {
 	 * Constructor, set this processor to use the `remove` name and supplied
 	 * prefix.
 	 * 
-	 * @param {String} prefix
-	 * @param {Object} [isomorphic]
+	 * @param {string} prefix
+	 * @param {object} [isomorphic]
 	 */
 	constructor(prefix, isomorphic) {
 
@@ -45,12 +45,12 @@ export default class RemoveAttributeProcessor extends AttributeProcessor {
 	 * 
 	 * @param {Element} element
 	 *   Element being processed.
-	 * @param {String} attribute
+	 * @param {string} attribute
 	 *   The attribute that was encountered to invoke this processor.
-	 * @param {String} attributeValue
+	 * @param {string} attributeValue
 	 *   The value given by the attribute.
-	 * @param {Object} context
-	 * @return {Boolean} Whether reprocessing behaviour needs to be applied, only
+	 * @param {object} context
+	 * @return {boolean} Whether reprocessing behaviour needs to be applied, only
 	 *   when the current tag has been removed.
 	 */
 	process(element, attribute, attributeValue, context) {

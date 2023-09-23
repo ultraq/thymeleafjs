@@ -22,9 +22,9 @@ import {$} from 'dumb-query-selector';
 /**
  * Extract HTML from the target identified by the given fragment information.
  * 
- * @param {String} dialectPrefix
- * @param {Object} fragmentInfo
- * @param {Object} context
+ * @param {string} dialectPrefix
+ * @param {object} fragmentInfo
+ * @param {object} context
  * @return {Promise<Element>}
  */
 export async function extractFragment(dialectPrefix, fragmentInfo, context) {
