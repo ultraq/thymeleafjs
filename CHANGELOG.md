@@ -3,7 +3,8 @@ Changelog
 =========
 
 ### 0.22.0
- - Minimum supported Node version is no 18
+ - Minimum supported Node version is now 18
+ - Include a generated type definition file from the JSDoc.
 
 ### 0.21.0
  - Drop support for Node 10
